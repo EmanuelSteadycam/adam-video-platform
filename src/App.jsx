@@ -1,128 +1,21 @@
 import React, { useState, useMemo } from 'react';
-import { Search, Filter, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, Menu, LogOut, Video, ChevronDown } from 'lucide-react';
+import { Search, Filter, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video } from 'lucide-react';
+import { videos as videosData } from './videosData';
 
-// Funzione helper per estrarre ID video YouTube
 const getYouTubeID = (url) => {
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
   const match = url.match(regExp);
   return (match && match[2].length === 11) ? match[2] : null;
 };
 
-// Dati di esempio con URL YouTube reali
-const mockVideos = [
-  {
-    id: 1,
-    title: "Effetti dell'alcool sul cervello adolescente",
-    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
-    duration: "8:30",
-    year: 2023,
-    views: 1245,
-    format: "orizzontale",
-    tema: "Alcool",
-    natura: "Informativi",
-    prodottoScuola: false,
-    description: "Documentario scientifico sugli effetti dell'alcool sul cervello in via di sviluppo."
-  },
-  {
-    id: 2,
-    title: "Non giocarti il futuro - Campagna azzardo",
-    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
-    duration: "0:45",
-    year: 2024,
-    views: 3421,
-    format: "verticale",
-    tema: "Azzardo",
-    natura: "Spot Sociali",
-    prodottoScuola: false,
-    description: "Spot sociale sulla prevenzione del gioco d'azzardo tra i giovani."
-  },
-  {
-    id: 3,
-    title: "Dipendenza digitale: riconoscerla e affrontarla",
-    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
-    duration: "15:20",
-    year: 2023,
-    views: 892,
-    format: "orizzontale",
-    tema: "Digitale",
-    natura: "Informativi",
-    prodottoScuola: true,
-    description: "Video educativo prodotto da studenti sul tema della dipendenza da smartphone."
-  },
-  {
-    id: 4,
-    title: "Sostanze stupefacenti: miti e realtà",
-    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
-    duration: "22:15",
-    year: 2022,
-    views: 2156,
-    format: "orizzontale",
-    tema: "Sostanze",
-    natura: "Film",
-    prodottoScuola: false,
-    description: "Cortometraggio che sfata i miti più comuni sulle sostanze stupefacenti."
-  },
-  {
-    id: 5,
-    title: "Social media e salute mentale",
-    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
-    duration: "5:40",
-    year: 2024,
-    views: 4532,
-    format: "verticale",
-    tema: "Digitale",
-    natura: "Web e Social",
-    prodottoScuola: false,
-    description: "Contenuto virale sui social che esplora il rapporto tra social media e benessere psicologico."
-  },
-  {
-    id: 6,
-    title: "Bevi responsabile - Campagna prevenzione",
-    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
-    duration: "1:30",
-    year: 2023,
-    views: 1876,
-    format: "orizzontale",
-    tema: "Alcool",
-    natura: "Spot adv",
-    prodottoScuola: false,
-    description: "Spot pubblicitario sulla sensibilizzazione al consumo responsabile di alcool."
-  },
-  {
-    id: 7,
-    title: "Il gioco che non diverte",
-    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
-    duration: "12:00",
-    year: 2024,
-    views: 678,
-    format: "orizzontale",
-    tema: "Azzardo",
-    natura: "Cortometraggi",
-    prodottoScuola: true,
-    description: "Cortometraggio realizzato da studenti sul tema della ludopatia."
-  },
-  {
-    id: 8,
-    title: "Connessi ma soli",
-    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
-    duration: "18:45",
-    year: 2023,
-    views: 3245,
-    format: "orizzontale",
-    tema: "Digitale",
-    natura: "Sequenze",
-    prodottoScuola: false,
-    description: "Serie di sequenze sulla solitudine nell'era digitale."
-  }
-];
+const addRandomViews = (videos) => {
+  return videos.map(video => ({
+    ...video,
+    views: video.views || Math.floor(Math.random() * 500) + 50
+  }));
+};
+
+const mockVideos = addRandomViews(videosData);
 
 const tematiche = ["Tutte", "Alcool", "Azzardo", "Digitale", "Sostanze"];
 const nature = ["Tutte", "Informativi", "Spot adv", "Spot Sociali", "Film", "Cortometraggi", "Sequenze", "Web e Social"];
@@ -145,7 +38,7 @@ const VideoCard = ({ video, onClick }) => (
         </div>
       </div>
       <div className="absolute bottom-3 right-3 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded font-medium">
-        {video.duration}
+        {video.duration || 'N/D'}
       </div>
       {video.prodottoScuola && (
         <div className="absolute top-3 left-3 bg-purple-600 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 font-medium">
@@ -200,7 +93,7 @@ const VideoModal = ({ video, onClose }) => {
           <div className="flex flex-wrap gap-6 mb-6 text-sm text-zinc-400">
             <div className="flex items-center gap-2">
               <Clock size={16} />
-              <span>{video.duration}</span>
+              <span>{video.duration || 'N/D'}</span>
             </div>
             <div className="flex items-center gap-2">
               <Calendar size={16} />
@@ -282,9 +175,7 @@ const UploadModal = ({ onClose }) => {
           
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">
-                URL YouTube
-              </label>
+              <label className="block text-sm font-medium text-zinc-300 mb-2">URL YouTube</label>
               <input
                 type="url"
                 required
@@ -294,11 +185,8 @@ const UploadModal = ({ onClose }) => {
                 className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-zinc-500"
               />
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">
-                Titolo
-              </label>
+              <label className="block text-sm font-medium text-zinc-300 mb-2">Titolo</label>
               <input
                 type="text"
                 required
@@ -308,11 +196,8 @@ const UploadModal = ({ onClose }) => {
                 className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-zinc-500"
               />
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">
-                Descrizione
-              </label>
+              <label className="block text-sm font-medium text-zinc-300 mb-2">Descrizione</label>
               <textarea
                 required
                 value={description}
@@ -322,95 +207,49 @@ const UploadModal = ({ onClose }) => {
                 className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-zinc-500 resize-none"
               />
             </div>
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-2">
-                  Tematica
-                </label>
-                <select
-                  value={tema}
-                  onChange={(e) => setTema(e.target.value)}
-                  className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                >
+                <label className="block text-sm font-medium text-zinc-300 mb-2">Tematica</label>
+                <select value={tema} onChange={(e) => setTema(e.target.value)} className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent">
                   {tematiche.filter(t => t !== 'Tutte').map(t => (
                     <option key={t} value={t}>{t}</option>
                   ))}
                 </select>
               </div>
-
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-2">
-                  Natura
-                </label>
-                <select
-                  value={natura}
-                  onChange={(e) => setNatura(e.target.value)}
-                  className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                >
+                <label className="block text-sm font-medium text-zinc-300 mb-2">Natura</label>
+                <select value={natura} onChange={(e) => setNatura(e.target.value)} className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent">
                   {nature.filter(n => n !== 'Tutte').map(n => (
                     <option key={n} value={n}>{n}</option>
                   ))}
                 </select>
               </div>
-
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-2">
-                  Formato
-                </label>
-                <select
-                  value={formato}
-                  onChange={(e) => setFormato(e.target.value)}
-                  className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                >
+                <label className="block text-sm font-medium text-zinc-300 mb-2">Formato</label>
+                <select value={formato} onChange={(e) => setFormato(e.target.value)} className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent">
                   {formati.filter(f => f !== 'Tutti').map(f => (
                     <option key={f} value={f}>{f}</option>
                   ))}
                 </select>
               </div>
-
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-2">
-                  Anno produzione
-                </label>
-                <select
-                  value={year}
-                  onChange={(e) => setYear(e.target.value)}
-                  className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                >
+                <label className="block text-sm font-medium text-zinc-300 mb-2">Anno produzione</label>
+                <select value={year} onChange={(e) => setYear(e.target.value)} className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent">
                   {Array.from({ length: new Date().getFullYear() - 1988 + 1 }, (_, i) => new Date().getFullYear() - i).map(y => (
                     <option key={y} value={y}>{y}</option>
                   ))}
                 </select>
               </div>
             </div>
-
             <div>
               <label className="flex items-center gap-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={prodottoScuola}
-                  onChange={(e) => setProdottoScuola(e.target.checked)}
-                  className="w-5 h-5 text-purple-600 border-zinc-700 rounded focus:ring-purple-600 bg-zinc-900"
-                />
+                <input type="checkbox" checked={prodottoScuola} onChange={(e) => setProdottoScuola(e.target.checked)} className="w-5 h-5 text-purple-600 border-zinc-700 rounded focus:ring-purple-600 bg-zinc-900" />
                 <span className="text-sm text-zinc-300">Prodotto da scuole</span>
               </label>
             </div>
-
             <div className="flex gap-3 pt-4">
-              <button
-                type="button"
-                onClick={onClose}
-                className="flex-1 px-6 py-3 border border-zinc-700 text-zinc-300 rounded-lg hover:bg-zinc-800 transition-colors font-medium"
-              >
-                Annulla
-              </button>
-              <button
-                type="submit"
-                className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all font-medium"
-              >
-                Invia per Approvazione
-              </button>
+              <button type="button" onClick={onClose} className="flex-1 px-6 py-3 border border-zinc-700 text-zinc-300 rounded-lg hover:bg-zinc-800 transition-colors font-medium">Annulla</button>
+              <button type="submit" className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all font-medium">Invia per Approvazione</button>
             </div>
           </form>
         </div>
@@ -442,9 +281,11 @@ function App() {
       if (soloScuole && !video.prodottoScuola) return false;
       if (searchQuery && !video.title.toLowerCase().includes(searchQuery.toLowerCase())) return false;
       
-      const [mins, secs] = video.duration.split(':').map(Number);
-      const totalMins = mins + secs / 60;
-      if (maxDuration && totalMins > Number(maxDuration)) return false;
+      if (maxDuration && video.duration) {
+        const [mins, secs] = video.duration.split(':').map(Number);
+        const totalMins = mins + (secs || 0) / 60;
+        if (totalMins > Number(maxDuration)) return false;
+      }
       
       if (minYear && video.year !== Number(minYear)) return false;
       
@@ -484,25 +325,10 @@ function App() {
             <p className="text-zinc-400 text-sm">Piattaforma per operatori sociali, studenti e insegnanti</p>
           </div>
           <div className="space-y-4">
-            <input 
-              type="email" 
-              placeholder="Email"
-              className="w-full px-4 py-4 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-zinc-500"
-            />
-            <input 
-              type="password" 
-              placeholder="Password"
-              className="w-full px-4 py-4 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-zinc-500"
-            />
-            <button 
-              onClick={() => setIsLoggedIn(true)}
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-4 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all"
-            >
-              Accedi
-            </button>
-            <p className="text-center text-sm text-zinc-400">
-              Non hai un account? <a href="#" className="text-purple-400 font-medium hover:text-purple-300 transition-colors">Registrati</a>
-            </p>
+            <input type="email" placeholder="Email" className="w-full px-4 py-4 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-zinc-500" />
+            <input type="password" placeholder="Password" className="w-full px-4 py-4 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-zinc-500" />
+            <button onClick={() => setIsLoggedIn(true)} className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-4 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all">Accedi</button>
+            <p className="text-center text-sm text-zinc-400">Non hai un account? <a href="#" className="text-purple-400 font-medium hover:text-purple-300 transition-colors">Registrati</a></p>
           </div>
         </div>
       </div>
@@ -523,45 +349,26 @@ function App() {
                 <p className="text-[10px] text-zinc-400">Archivio Digitale Addiction e Media</p>
               </div>
             </div>
-
             <div className="flex-1 max-w-2xl">
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500" size={18} />
-                <input 
-                  type="text"
-                  placeholder="Cerca video..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-11 pr-4 py-2.5 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-zinc-500 text-sm"
-                />
+                <input type="text" placeholder="Cerca video..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full pl-11 pr-4 py-2.5 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-zinc-500 text-sm" />
               </div>
             </div>
-
             <div className="flex items-center gap-3 flex-shrink-0">
-              <button 
-                onClick={() => setShowFilters(!showFilters)}
-                className="relative flex items-center gap-2 px-4 py-2.5 bg-zinc-800 border border-zinc-700 text-white rounded-lg hover:border-purple-600 transition-all text-sm font-medium"
-              >
+              <button onClick={() => setShowFilters(!showFilters)} className="relative flex items-center gap-2 px-4 py-2.5 bg-zinc-800 border border-zinc-700 text-white rounded-lg hover:border-purple-600 transition-all text-sm font-medium">
                 <Filter size={18} />
                 <span className="hidden lg:inline">Filtri</span>
                 {activeFiltersCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 bg-purple-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
-                    {activeFiltersCount}
-                  </span>
+                  <span className="absolute -top-1.5 -right-1.5 bg-purple-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">{activeFiltersCount}</span>
                 )}
               </button>
-              <button 
-                onClick={() => setShowUploadModal(true)}
-                className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2.5 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all font-medium text-sm"
-              >
+              <button onClick={() => setShowUploadModal(true)} className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2.5 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all font-medium text-sm">
                 <Upload size={18} />
                 <span className="hidden md:inline">Segnala</span>
               </button>
               <div className="relative">
-                <button 
-                  onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 flex items-center justify-center text-white hover:from-purple-700 hover:to-blue-700 transition-all"
-                >
+                <button onClick={() => setShowUserMenu(!showUserMenu)} className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 flex items-center justify-center text-white hover:from-purple-700 hover:to-blue-700 transition-all">
                   <User size={20} />
                 </button>
                 {showUserMenu && (
@@ -570,10 +377,7 @@ function App() {
                     <a href="#" className="block px-4 py-3 text-zinc-300 hover:bg-zinc-800 transition-colors">I miei video</a>
                     <a href="#" className="block px-4 py-3 text-zinc-300 hover:bg-zinc-800 transition-colors">Impostazioni</a>
                     <hr className="my-2 border-zinc-800" />
-                    <button 
-                      onClick={() => setIsLoggedIn(false)}
-                      className="w-full text-left px-4 py-3 text-red-400 hover:bg-zinc-800 transition-colors flex items-center gap-2"
-                    >
+                    <button onClick={() => setIsLoggedIn(false)} className="w-full text-left px-4 py-3 text-red-400 hover:bg-zinc-800 transition-colors flex items-center gap-2">
                       <LogOut size={16} />
                       Esci
                     </button>
@@ -584,7 +388,6 @@ function App() {
           </div>
         </div>
       </header>
-
       <div className="max-w-[1600px] mx-auto px-6 py-10">
         <div className="mb-8">
           {showFilters && (
@@ -592,132 +395,64 @@ function App() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                 <div>
                   <label className="block text-sm font-medium text-zinc-400 mb-2">Tematica</label>
-                  <select 
-                    value={selectedTema}
-                    onChange={(e) => setSelectedTema(e.target.value)}
-                    className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                  >
-                    {tematiche.map(tema => (
-                      <option key={tema} value={tema}>{tema}</option>
-                    ))}
+                  <select value={selectedTema} onChange={(e) => setSelectedTema(e.target.value)} className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent">
+                    {tematiche.map(tema => (<option key={tema} value={tema}>{tema}</option>))}
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-zinc-400 mb-2">Natura</label>
-                  <select 
-                    value={selectedNatura}
-                    onChange={(e) => setSelectedNatura(e.target.value)}
-                    className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                  >
-                    {nature.map(natura => (
-                      <option key={natura} value={natura}>{natura}</option>
-                    ))}
+                  <select value={selectedNatura} onChange={(e) => setSelectedNatura(e.target.value)} className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent">
+                    {nature.map(natura => (<option key={natura} value={natura}>{natura}</option>))}
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-zinc-400 mb-2">Formato</label>
-                  <select 
-                    value={selectedFormato}
-                    onChange={(e) => setSelectedFormato(e.target.value)}
-                    className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                  >
-                    {formati.map(formato => (
-                      <option key={formato} value={formato}>{formato}</option>
-                    ))}
+                  <select value={selectedFormato} onChange={(e) => setSelectedFormato(e.target.value)} className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent">
+                    {formati.map(formato => (<option key={formato} value={formato}>{formato}</option>))}
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-zinc-400 mb-2">Anno produzione</label>
-                  <select 
-                    value={minYear}
-                    onChange={(e) => setMinYear(e.target.value)}
-                    className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                  >
+                  <select value={minYear} onChange={(e) => setMinYear(e.target.value)} className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent">
                     <option value="">Tutti gli anni</option>
-                    {Array.from({ length: new Date().getFullYear() - 1988 + 1 }, (_, i) => new Date().getFullYear() - i).map(year => (
-                      <option key={year} value={year}>{year}</option>
-                    ))}
+                    {Array.from({ length: new Date().getFullYear() - 1988 + 1 }, (_, i) => new Date().getFullYear() - i).map(year => (<option key={year} value={year}>{year}</option>))}
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-zinc-400 mb-2">Durata (max)</label>
-                  <input 
-                    type="number" 
-                    placeholder="Durata massima (min)"
-                    value={maxDuration}
-                    onChange={(e) => setMaxDuration(e.target.value)}
-                    className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-zinc-500"
-                  />
+                  <input type="number" placeholder="Durata massima (min)" value={maxDuration} onChange={(e) => setMaxDuration(e.target.value)} className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-zinc-500" />
                 </div>
                 <div className="flex items-end">
                   <label className="flex items-center gap-3 cursor-pointer bg-zinc-800 px-4 py-3 rounded-lg w-full hover:bg-zinc-700 transition-colors">
-                    <input 
-                      type="checkbox"
-                      checked={soloScuole}
-                      onChange={(e) => setSoloScuole(e.target.checked)}
-                      className="w-5 h-5 text-purple-600 border-zinc-700 rounded focus:ring-purple-600 bg-zinc-900"
-                    />
+                    <input type="checkbox" checked={soloScuole} onChange={(e) => setSoloScuole(e.target.checked)} className="w-5 h-5 text-purple-600 border-zinc-700 rounded focus:ring-purple-600 bg-zinc-900" />
                     <span className="text-sm text-zinc-300 font-medium">Solo prodotti da scuole</span>
                   </label>
                 </div>
                 <div className="flex items-end lg:col-span-2">
-                  <button 
-                    onClick={resetFilters}
-                    className="w-full px-4 py-3 text-zinc-300 border border-zinc-700 rounded-lg hover:bg-zinc-800 transition-colors font-medium"
-                  >
-                    Reimposta filtri
-                  </button>
+                  <button onClick={resetFilters} className="w-full px-4 py-3 text-zinc-300 border border-zinc-700 rounded-lg hover:bg-zinc-800 transition-colors font-medium">Reimposta filtri</button>
                 </div>
               </div>
             </div>
           )}
         </div>
-
         <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-white">
-            {filteredVideos.length} {filteredVideos.length === 1 ? 'video trovato' : 'video trovati'}
-          </h2>
-          {activeFiltersCount > 0 && (
-            <span className="text-sm text-zinc-400">
-              {activeFiltersCount} {activeFiltersCount === 1 ? 'filtro attivo' : 'filtri attivi'}
-            </span>
-          )}
+          <h2 className="text-2xl font-bold text-white">{filteredVideos.length} {filteredVideos.length === 1 ? 'video trovato' : 'video trovati'}</h2>
+          {activeFiltersCount > 0 && (<span className="text-sm text-zinc-400">{activeFiltersCount} {activeFiltersCount === 1 ? 'filtro attivo' : 'filtri attivi'}</span>)}
         </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredVideos.map(video => (
-            <VideoCard 
-              key={video.id} 
-              video={video} 
-              onClick={() => setSelectedVideo(video)}
-            />
-          ))}
+          {filteredVideos.map(video => (<VideoCard key={video.id} video={video} onClick={() => setSelectedVideo(video)} />))}
         </div>
-
         {filteredVideos.length === 0 && (
           <div className="text-center py-20">
-            <div className="inline-block bg-zinc-900 p-8 rounded-2xl mb-6">
-              <Video size={64} className="text-zinc-700" strokeWidth={1.5} />
-            </div>
+            <div className="inline-block bg-zinc-900 p-8 rounded-2xl mb-6"><Video size={64} className="text-zinc-700" strokeWidth={1.5} /></div>
             <h3 className="text-2xl font-bold text-white mb-3">Nessun video trovato</h3>
             <p className="text-zinc-400 mb-6">Prova a modificare i filtri di ricerca</p>
-            <button 
-              onClick={resetFilters}
-              className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium"
-            >
-              Reimposta filtri
-            </button>
+            <button onClick={resetFilters} className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium">Reimposta filtri</button>
           </div>
         )}
       </div>
-
-      {selectedVideo && (
-        <VideoModal video={selectedVideo} onClose={() => setSelectedVideo(null)} />
-      )}
-
-      {showUploadModal && (
-        <UploadModal onClose={() => setShowUploadModal(false)} />
-      )}
+      {selectedVideo && (<VideoModal video={selectedVideo} onClose={() => setSelectedVideo(null)} />)}
+      {showUploadModal && (<UploadModal onClose={() => setShowUploadModal(false)} />)}
     </div>
   );
 }
