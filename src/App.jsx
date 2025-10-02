@@ -30,16 +30,16 @@ const HeroSection = ({ onVideoClick }) => {
 
   return (
     <div className="relative h-[50vh] w-full overflow-hidden mb-8">
-      <div className="absolute inset-0">
-        <iframe
-          className="w-full h-full scale-150"
-          src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&modestbranding=1&rel=0`}
-          title={heroVideo.title}
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
-      </div>
+      <div className="absolute inset-0 overflow-hidden">
+  <iframe
+    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.77vh] h-[56.25vw] min-h-full min-w-full"
+    src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&modestbranding=1&rel=0`}
+    title={heroVideo.title}
+    frameBorder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen
+  />
+</div>
       <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-black via-black/95 to-transparent" />
     </div>
   );
