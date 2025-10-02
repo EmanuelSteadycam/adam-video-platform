@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { Search, Filter, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video } from 'lucide-react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { Search, Filter, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle } from 'lucide-react';
 import { videos as videosData } from './videosData';
 
 const getYouTubeID = (url) => {
@@ -18,17 +18,147 @@ const addRandomViews = (videos) => {
 const mockVideos = addRandomViews(videosData);
 
 const tematiche = ["Tutte", "Alcool", "Azzardo", "Digitale", "Sostanze"];
-const nature = ["Tutte", "Informativi", "Spot adv", "Spot Sociali", "Film", "Cortometraggi", "Sequenze", "Web e Social"];
+const nature = ["Cortometraggio", "Film", "Informativi", "Sequenza", "Spot adv", "Spot Sociali", "Videoclip", "Web e Social"];
 const formati = ["Tutti", "orizzontale", "verticale"];
 
+const NatureCarousel = ({ onSelectNature }) => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const carouselRef = useRef(null);
+
+  const natureData = [
+    { name: 'Cortometraggio', image: '/images/nature/cortometraggio.jpg', key: 'Cortometraggi' },
+    { name: 'Film', image: '/images/nature/film.jpg', key: 'Film' },
+    { name: 'Info', image: '/images/nature/info.jpg', key: 'Informativi' },
+    { name: 'Sequenza', image: '/images/nature/sequenza.jpg', key: 'Sequenze' },
+    { name: 'Spot ADV', image: '/images/nature/spot-adv.jpg', key: 'Spot adv' },
+    { name: 'Spot Sociale', image: '/images/nature/spot-sociale.jpg', key: 'Spot Sociali' },
+    { name: 'Videoclip', image: '/images/nature/videoclip.jpg', key: 'Videoclip' },
+    { name: 'Web & Social', image: '/images/nature/web-social.jpg', key: 'Web e Social' }
+  ];
+
+  const videoCounts = useMemo(() => {
+    const counts = {};
+    natureData.forEach(nat => {
+      counts[nat.key] = mockVideos.filter(v => v.natura === nat.key).length;
+    });
+    return counts;
+  }, []);
+
+  const nextSlide = () => {
+    setCurrentSlide(prev => (prev + 1) % 2);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide(prev => (prev - 1 + 2) % 2);
+  };
+
+  return (
+    <div className="mb-12">
+      <h2 className="text-2xl font-bold text-white mb-6">I Formati ADAM</h2>
+      <div className="relative">
+        <button
+          onClick={prevSlide}
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-zinc-800/80 hover:bg-zinc-700 text-white p-3 rounded-full transition-all"
+          disabled={currentSlide === 0}
+        >
+          <ChevronLeft size={24} />
+        </button>
+
+        <div className="overflow-hidden" ref={carouselRef}>
+          <div
+            className="flex transition-transform duration-500 ease-out"
+            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+          >
+            {[0, 1].map(slideIndex => (
+              <div key={slideIndex} className="min-w-full grid grid-cols-4 gap-6 px-12">
+                {natureData.slice(slideIndex * 4, slideIndex * 4 + 4).map((nat) => (
+                  <div
+                    key={nat.key}
+                    onClick={() => onSelectNature(nat.key)}
+                    className="group cursor-pointer bg-zinc-900 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+                  >
+                    <div className="relative aspect-video">
+                      <img
+                        src={nat.image}
+                        alt={nat.name}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute top-3 left-3 bg-purple-600 text-white text-xs px-3 py-1 rounded-full font-bold">
+                        {videoCounts[nat.key] || 0} video
+                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <h3 className="text-white font-bold text-lg">{nat.name}</h3>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <button
+          onClick={nextSlide}
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-zinc-800/80 hover:bg-zinc-700 text-white p-3 rounded-full transition-all"
+          disabled={currentSlide === 1}
+        >
+          <ChevronRight size={24} />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const InspireSection = () => {
+  const [randomVideo, setRandomVideo] = useState(null);
+
+  const getRandomVideo = () => {
+    const random = mockVideos[Math.floor(Math.random() * mockVideos.length)];
+    setRandomVideo(random);
+  };
+
+  useEffect(() => {
+    getRandomVideo();
+  }, []);
+
+  if (!randomVideo) return null;
+
+  return (
+    <div className="bg-black rounded-xl p-8 mb-12">
+      <h2 className="text-2xl font-bold text-white mb-6">Lasciati Ispirare</h2>
+      <div className="grid grid-cols-2 gap-8 items-center">
+        <div className="aspect-video rounded-lg overflow-hidden">
+          <img
+            src={randomVideo.thumbnail}
+            alt={randomVideo.title}
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="text-center">
+          <h3 className="text-white text-xl font-semibold mb-4">{randomVideo.title}</h3>
+          <p className="text-zinc-400 mb-6 line-clamp-3">{randomVideo.description}</p>
+          <button
+            onClick={getRandomVideo}
+            className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all font-semibold text-lg"
+          >
+            <Shuffle size={24} />
+            Cambia Video
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const VideoCard = ({ video, onClick }) => (
-  <div 
+  <div
     onClick={onClick}
     className="group cursor-pointer bg-zinc-900 rounded-lg overflow-hidden transition-all duration-300 transform hover:scale-105"
   >
     <div className="relative overflow-hidden aspect-video">
-      <img 
-        src={video.thumbnail} 
+      <img
+        src={video.thumbnail}
         alt={video.title}
         className="w-full h-full object-cover"
       />
@@ -63,10 +193,9 @@ const VideoCard = ({ video, onClick }) => (
     </div>
   </div>
 );
-
 const VideoModal = ({ video, onClose }) => {
   const videoId = getYouTubeID(video.youtubeUrl);
-  
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div className="bg-zinc-900 rounded-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
@@ -81,7 +210,7 @@ const VideoModal = ({ video, onClose }) => {
               allowFullScreen
             />
           </div>
-          <button 
+          <button
             onClick={onClose}
             className="absolute top-6 right-6 bg-black bg-opacity-80 text-white p-2 rounded-full hover:bg-opacity-100 transition-all z-10"
           >
@@ -126,7 +255,7 @@ const VideoModal = ({ video, onClose }) => {
             <h3 className="text-lg font-semibold text-white mb-3">Descrizione</h3>
             <p className="text-zinc-400 leading-relaxed">{video.description}</p>
           </div>
-          <a 
+          
             href={video.youtubeUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -143,174 +272,37 @@ const VideoModal = ({ video, onClose }) => {
   );
 };
 
-const UploadModal = ({ onClose }) => {
-  const [youtubeUrl, setYoutubeUrl] = useState('');
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [tema, setTema] = useState('Alcool');
-  const [natura, setNatura] = useState('Informativi');
-  const [formato, setFormato] = useState('orizzontale');
-  const [year, setYear] = useState(new Date().getFullYear());
-  const [prodottoScuola, setProdottoScuola] = useState(false);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert('Video inviato per approvazione! Un amministratore lo revisionerà presto.');
-    onClose();
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="bg-zinc-900 rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-        <div className="p-8">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-3xl font-bold text-white">Segnala un Video</h2>
-            <button 
-              onClick={onClose}
-              className="text-zinc-400 hover:text-white transition-colors"
-            >
-              <X size={24} />
-            </button>
-          </div>
-          
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">URL YouTube</label>
-              <input
-                type="url"
-                required
-                value={youtubeUrl}
-                onChange={(e) => setYoutubeUrl(e.target.value)}
-                placeholder="https://www.youtube.com/watch?v=..."
-                className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-zinc-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">Titolo</label>
-              <input
-                type="text"
-                required
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Inserisci il titolo del video"
-                className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-zinc-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">Descrizione</label>
-              <textarea
-                required
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Descrivi brevemente il contenuto del video"
-                rows={4}
-                className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-zinc-500 resize-none"
-              />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-2">Tematica</label>
-                <select value={tema} onChange={(e) => setTema(e.target.value)} className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent">
-                  {tematiche.filter(t => t !== 'Tutte').map(t => (
-                    <option key={t} value={t}>{t}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-2">Natura</label>
-                <select value={natura} onChange={(e) => setNatura(e.target.value)} className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent">
-                  {nature.filter(n => n !== 'Tutte').map(n => (
-                    <option key={n} value={n}>{n}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-2">Formato</label>
-                <select value={formato} onChange={(e) => setFormato(e.target.value)} className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent">
-                  {formati.filter(f => f !== 'Tutti').map(f => (
-                    <option key={f} value={f}>{f}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-2">Anno produzione</label>
-                <select value={year} onChange={(e) => setYear(e.target.value)} className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent">
-                  {Array.from({ length: new Date().getFullYear() - 1988 + 1 }, (_, i) => new Date().getFullYear() - i).map(y => (
-                    <option key={y} value={y}>{y}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div>
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input type="checkbox" checked={prodottoScuola} onChange={(e) => setProdottoScuola(e.target.checked)} className="w-5 h-5 text-purple-600 border-zinc-700 rounded focus:ring-purple-600 bg-zinc-900" />
-                <span className="text-sm text-zinc-300">Prodotto da scuole</span>
-              </label>
-            </div>
-            <div className="flex gap-3 pt-4">
-              <button type="button" onClick={onClose} className="flex-1 px-6 py-3 border border-zinc-700 text-zinc-300 rounded-lg hover:bg-zinc-800 transition-colors font-medium">Annulla</button>
-              <button type="submit" className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all font-medium">Invia per Approvazione</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showFilters, setShowFilters] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
-  const [showUploadModal, setShowUploadModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  
-  const [selectedTema, setSelectedTema] = useState('Tutte');
+  const [activeSection, setActiveSection] = useState('all');
   const [selectedNatura, setSelectedNatura] = useState('Tutte');
-  const [selectedFormato, setSelectedFormato] = useState('Tutti');
-  const [maxDuration, setMaxDuration] = useState('');
-  const [minYear, setMinYear] = useState('');
-  const [soloScuole, setSoloScuole] = useState(false);
 
   const filteredVideos = useMemo(() => {
-    return mockVideos.filter(video => {
-      if (selectedTema !== 'Tutte' && video.tema !== selectedTema) return false;
-      if (selectedNatura !== 'Tutte' && video.natura !== selectedNatura) return false;
-      if (selectedFormato !== 'Tutti' && video.format !== selectedFormato) return false;
-      if (soloScuole && !video.prodottoScuola) return false;
-      if (searchQuery && !video.title.toLowerCase().includes(searchQuery.toLowerCase())) return false;
-      
-      if (maxDuration && video.duration) {
-        const [mins, secs] = video.duration.split(':').map(Number);
-        const totalMins = mins + (secs || 0) / 60;
-        if (totalMins > Number(maxDuration)) return false;
-      }
-      
-      if (minYear && video.year !== Number(minYear)) return false;
-      
-      return true;
-    });
-  }, [selectedTema, selectedNatura, selectedFormato, soloScuole, searchQuery, maxDuration, minYear]);
+    let filtered = mockVideos;
 
-  const resetFilters = () => {
-    setSelectedTema('Tutte');
-    setSelectedNatura('Tutte');
-    setSelectedFormato('Tutti');
-    setMaxDuration('');
-    setMinYear('');
-    setSoloScuole(false);
-    setSearchQuery('');
-  };
+    if (searchQuery) {
+      filtered = filtered.filter(video =>
+        video.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
 
-  const activeFiltersCount = [
-    selectedTema !== 'Tutte',
-    selectedNatura !== 'Tutte',
-    selectedFormato !== 'Tutti',
-    soloScuole,
-    maxDuration,
-    minYear
-  ].filter(Boolean).length;
+    if (activeSection === 'most-viewed') {
+      filtered = [...filtered].sort((a, b) => b.views - a.views).slice(0, 20);
+    } else if (activeSection === 'recent') {
+      filtered = [...filtered].slice(0, 5);
+    } else if (activeSection === 'schools') {
+      filtered = filtered.filter(v => v.prodottoScuola);
+    }
+
+    if (selectedNatura !== 'Tutte') {
+      filtered = filtered.filter(v => v.natura === selectedNatura);
+    }
+
+    return filtered;
+  }, [searchQuery, activeSection, selectedNatura]);
 
   if (!isLoggedIn) {
     return (
@@ -336,45 +328,95 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
-      <header className="bg-zinc-900/95 backdrop-blur-lg border-b border-zinc-800 sticky top-0 z-40">
-        <div className="max-w-[1600px] mx-auto px-6 py-4">
-          <div className="flex items-center justify-between gap-6">
-            <div className="flex items-center gap-3 flex-shrink-0">
-              <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-2 rounded-xl">
-                <PlayCircle size={24} strokeWidth={1.5} />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-white leading-none">ADAM</h1>
-                <p className="text-[10px] text-zinc-400">Archivio Digitale Addiction e Media</p>
-              </div>
+    <div className="min-h-screen bg-black flex">
+      <aside className="w-64 bg-zinc-900 border-r border-zinc-800 fixed left-0 top-0 h-full flex flex-col">
+        <div className="p-6 border-b border-zinc-800">
+          <div className="flex items-center gap-3">
+            <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-2 rounded-xl">
+              <PlayCircle size={28} strokeWidth={1.5} />
             </div>
+            <div>
+              <h1 className="text-2xl font-bold text-white">ADAM</h1>
+              <p className="text-[10px] text-zinc-400">Archivio Digitale Addiction e Media</p>
+            </div>
+          </div>
+        </div>
+
+        <nav className="flex-1 p-4">
+          <ul className="space-y-2">
+            <li>
+              <button
+                onClick={() => { setActiveSection('formats'); setSelectedNatura('Tutte'); }}
+                className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'formats' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}
+              >
+                I Formati ADAM
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => { setActiveSection('most-viewed'); setSelectedNatura('Tutte'); }}
+                className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'most-viewed' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}
+              >
+                I Più Visti
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => { setActiveSection('recent'); setSelectedNatura('Tutte'); }}
+                className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'recent' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}
+              >
+                Nuovi Inseriti
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => { setActiveSection('inspire'); setSelectedNatura('Tutte'); }}
+                className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'inspire' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}
+              >
+                Lasciati Ispirare
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => { setActiveSection('schools'); setSelectedNatura('Tutte'); }}
+                className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'schools' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}
+              >
+                Prodotti dalle Scuole
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+<div className="ml-64 flex-1">
+        <header className="bg-zinc-900/95 backdrop-blur-lg border-b border-zinc-800 sticky top-0 z-40">
+          <div className="px-8 py-4 flex items-center justify-between gap-6">
             <div className="flex-1 max-w-2xl">
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500" size={18} />
-                <input type="text" placeholder="Cerca video..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full pl-11 pr-4 py-2.5 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-zinc-500 text-sm" />
+                <input
+                  type="text"
+                  placeholder="Cerca video..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-11 pr-4 py-2.5 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-zinc-500 text-sm"
+                />
               </div>
             </div>
-            <div className="flex items-center gap-3 flex-shrink-0">
-              <button onClick={() => setShowFilters(!showFilters)} className="relative flex items-center gap-2 px-4 py-2.5 bg-zinc-800 border border-zinc-700 text-white rounded-lg hover:border-purple-600 transition-all text-sm font-medium">
-                <Filter size={18} />
-                <span className="hidden lg:inline">Filtri</span>
-                {activeFiltersCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 bg-purple-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">{activeFiltersCount}</span>
-                )}
-              </button>
-              <button onClick={() => setShowUploadModal(true)} className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2.5 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all font-medium text-sm">
+            <div className="flex items-center gap-3">
+              <button className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2.5 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all font-medium text-sm">
                 <Upload size={18} />
-                <span className="hidden md:inline">Segnala</span>
+                <span>Segnala</span>
               </button>
               <div className="relative">
-                <button onClick={() => setShowUserMenu(!showUserMenu)} className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 flex items-center justify-center text-white hover:from-purple-700 hover:to-blue-700 transition-all">
+                <button
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 flex items-center justify-center text-white hover:from-purple-700 hover:to-blue-700 transition-all"
+                >
                   <User size={20} />
                 </button>
                 {showUserMenu && (
-                  <div className="absolute right-0 mt-3 w-56 bg-zinc-900 border border-zinc-800 rounded-lg shadow-2xl py-2 overflow-hidden">
+                  <div className="absolute right-0 mt-3 w-56 bg-zinc-900 border border-zinc-800 rounded-lg shadow-2xl py-2">
                     <a href="#" className="block px-4 py-3 text-zinc-300 hover:bg-zinc-800 transition-colors">Il mio profilo</a>
-                    <a href="#" className="block px-4 py-3 text-zinc-300 hover:bg-zinc-800 transition-colors">I miei video</a>
                     <a href="#" className="block px-4 py-3 text-zinc-300 hover:bg-zinc-800 transition-colors">Impostazioni</a>
                     <hr className="my-2 border-zinc-800" />
                     <button onClick={() => setIsLoggedIn(false)} className="w-full text-left px-4 py-3 text-red-400 hover:bg-zinc-800 transition-colors flex items-center gap-2">
@@ -386,73 +428,50 @@ function App() {
               </div>
             </div>
           </div>
-        </div>
-      </header>
-      <div className="max-w-[1600px] mx-auto px-6 py-10">
-        <div className="mb-8">
-          {showFilters && (
-            <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-                <div>
-                  <label className="block text-sm font-medium text-zinc-400 mb-2">Tematica</label>
-                  <select value={selectedTema} onChange={(e) => setSelectedTema(e.target.value)} className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent">
-                    {tematiche.map(tema => (<option key={tema} value={tema}>{tema}</option>))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-zinc-400 mb-2">Natura</label>
-                  <select value={selectedNatura} onChange={(e) => setSelectedNatura(e.target.value)} className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent">
-                    {nature.map(natura => (<option key={natura} value={natura}>{natura}</option>))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-zinc-400 mb-2">Formato</label>
-                  <select value={selectedFormato} onChange={(e) => setSelectedFormato(e.target.value)} className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent">
-                    {formati.map(formato => (<option key={formato} value={formato}>{formato}</option>))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-zinc-400 mb-2">Anno produzione</label>
-                  <select value={minYear} onChange={(e) => setMinYear(e.target.value)} className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent">
-                    <option value="">Tutti gli anni</option>
-                    {Array.from({ length: new Date().getFullYear() - 1988 + 1 }, (_, i) => new Date().getFullYear() - i).map(year => (<option key={year} value={year}>{year}</option>))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-zinc-400 mb-2">Durata (max)</label>
-                  <input type="number" placeholder="Durata massima (min)" value={maxDuration} onChange={(e) => setMaxDuration(e.target.value)} className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-zinc-500" />
-                </div>
-                <div className="flex items-end">
-                  <label className="flex items-center gap-3 cursor-pointer bg-zinc-800 px-4 py-3 rounded-lg w-full hover:bg-zinc-700 transition-colors">
-                    <input type="checkbox" checked={soloScuole} onChange={(e) => setSoloScuole(e.target.checked)} className="w-5 h-5 text-purple-600 border-zinc-700 rounded focus:ring-purple-600 bg-zinc-900" />
-                    <span className="text-sm text-zinc-300 font-medium">Solo prodotti da scuole</span>
-                  </label>
-                </div>
-                <div className="flex items-end lg:col-span-2">
-                  <button onClick={resetFilters} className="w-full px-4 py-3 text-zinc-300 border border-zinc-700 rounded-lg hover:bg-zinc-800 transition-colors font-medium">Reimposta filtri</button>
-                </div>
+        </header>
+
+        <main className="p-8">
+          {activeSection === 'formats' && (
+            <NatureCarousel onSelectNature={(natura) => {
+              setSelectedNatura(natura);
+              setActiveSection('all');
+            }} />
+          )}
+
+          {activeSection === 'inspire' && <InspireSection />}
+
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-white">
+              {activeSection === 'most-viewed' && 'I Più Visti'}
+              {activeSection === 'recent' && 'Nuovi Inseriti'}
+              {activeSection === 'schools' && 'Prodotti dalle Scuole'}
+              {(activeSection === 'all' || activeSection === 'formats') && selectedNatura !== 'Tutte' && selectedNatura}
+              {activeSection === 'all' && selectedNatura === 'Tutte' && 'Tutti i Video'}
+            </h2>
+            <p className="text-zinc-400 mt-2">{filteredVideos.length} video trovati</p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredVideos.map(video => (
+              <VideoCard key={video.id} video={video} onClick={() => setSelectedVideo(video)} />
+            ))}
+          </div>
+
+          {filteredVideos.length === 0 && (
+            <div className="text-center py-20">
+              <div className="inline-block bg-zinc-900 p-8 rounded-2xl mb-6">
+                <Video size={64} className="text-zinc-700" strokeWidth={1.5} />
               </div>
+              <h3 className="text-2xl font-bold text-white mb-3">Nessun video trovato</h3>
+              <p className="text-zinc-400">Prova con una ricerca diversa</p>
             </div>
           )}
-        </div>
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-white">{filteredVideos.length} {filteredVideos.length === 1 ? 'video trovato' : 'video trovati'}</h2>
-          {activeFiltersCount > 0 && (<span className="text-sm text-zinc-400">{activeFiltersCount} {activeFiltersCount === 1 ? 'filtro attivo' : 'filtri attivi'}</span>)}
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredVideos.map(video => (<VideoCard key={video.id} video={video} onClick={() => setSelectedVideo(video)} />))}
-        </div>
-        {filteredVideos.length === 0 && (
-          <div className="text-center py-20">
-            <div className="inline-block bg-zinc-900 p-8 rounded-2xl mb-6"><Video size={64} className="text-zinc-700" strokeWidth={1.5} /></div>
-            <h3 className="text-2xl font-bold text-white mb-3">Nessun video trovato</h3>
-            <p className="text-zinc-400 mb-6">Prova a modificare i filtri di ricerca</p>
-            <button onClick={resetFilters} className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium">Reimposta filtri</button>
-          </div>
-        )}
+        </main>
       </div>
-      {selectedVideo && (<VideoModal video={selectedVideo} onClose={() => setSelectedVideo(null)} />)}
-      {showUploadModal && (<UploadModal onClose={() => setShowUploadModal(false)} />)}
+
+      {selectedVideo && (
+        <VideoModal video={selectedVideo} onClose={() => setSelectedVideo(null)} />
+      )}
     </div>
   );
 }
