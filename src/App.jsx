@@ -414,7 +414,7 @@ function App() {
                 >
                   <User size={20} />
                 </button>
-                {showUserMenu && (
+                 {showUserMenu && (
                   <div className="absolute right-0 mt-3 w-56 bg-zinc-900 border border-zinc-800 rounded-lg shadow-2xl py-2">
                     <a href="#" className="block px-4 py-3 text-zinc-300 hover:bg-zinc-800 transition-colors">Il mio profilo</a>
                     <a href="#" className="block px-4 py-3 text-zinc-300 hover:bg-zinc-800 transition-colors">Impostazioni</a>
