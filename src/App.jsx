@@ -40,7 +40,7 @@ const HeroSection = ({ onVideoClick }) => {
     allowFullScreen
   />
 </div>
-      <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-black from-0% via-black/95 via-10% to-transparent to-20%" />
+      <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-black from-0% via-black via-75% to-transparent to-100%" />
     </div>
   );
 };
