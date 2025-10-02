@@ -29,7 +29,7 @@ const HeroSection = ({ onVideoClick }) => {
   const videoId = getYouTubeID(heroVideo.youtubeUrl);
 
   return (
-    <div className="relative h-[70vh] w-full overflow-hidden mb-8">
+    <div className="relative h-[50vh] w-full overflow-hidden mb-8">
       <div className="absolute inset-0">
         <iframe
           className="w-full h-full scale-150"
