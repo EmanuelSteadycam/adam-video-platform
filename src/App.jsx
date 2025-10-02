@@ -40,22 +40,7 @@ const HeroSection = ({ onVideoClick }) => {
           allowFullScreen
         />
       </div>
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 p-12">
-        <div className="max-w-2xl">
-          <h1 className="text-5xl font-bold text-white mb-4">{heroVideo.title}</h1>
-          <p className="text-lg text-zinc-300 mb-6 line-clamp-2">{heroVideo.description}</p>
-          <div className="flex gap-4">
-            <button 
-              onClick={() => onVideoClick(heroVideo)}
-              className="bg-white text-black px-8 py-3 rounded-lg font-semibold hover:bg-zinc-200 transition-all flex items-center gap-2"
-            >
-              <PlayCircle size={20} />
-              Guarda Ora
-            </button>
-          </div>
-        </div>
-      </div>
+      <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-black via-black/80 to-transparent" />
     </div>
   );
 };
