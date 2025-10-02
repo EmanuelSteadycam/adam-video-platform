@@ -17,6 +17,104 @@ const addRandomViews = (videos) => {
 
 const mockVideos = addRandomViews(videosData);
 
+const HeroSection = ({ onVideoClick }) => {
+  const [heroVideo, setHeroVideo] = useState(null);
+  
+  useEffect(() => {
+    setHeroVideo(mockVideos[Math.floor(Math.random() * mockVideos.length)]);
+  }, []);
+
+  if (!heroVideo) return null;
+
+  const videoId = getYouTubeID(heroVideo.youtubeUrl);
+
+  return (
+    <div className="relative h-[70vh] w-full overflow-hidden mb-8">
+      <div className="absolute inset-0">
+        <iframe
+          className="w-full h-full scale-150"
+          src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&modestbranding=1&rel=0`}
+          title={heroVideo.title}
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 p-12">
+        <div className="max-w-2xl">
+          <h1 className="text-5xl font-bold text-white mb-4">{heroVideo.title}</h1>
+          <p className="text-lg text-zinc-300 mb-6 line-clamp-2">{heroVideo.description}</p>
+          <div className="flex gap-4">
+            <button 
+              onClick={() => onVideoClick(heroVideo)}
+              className="bg-white text-black px-8 py-3 rounded-lg font-semibold hover:bg-zinc-200 transition-all flex items-center gap-2"
+            >
+              <PlayCircle size={20} />
+              Guarda Ora
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const FiltersSection = ({ onFilterChange, currentFilters }) => {
+  const temi = ['Tutti', ...new Set(mockVideos.map(v => v.tema))];
+  const nature = ['Tutte', 'Cortometraggi', 'Film', 'Informativi', 'Sequenze', 'Spot adv', 'Spot Sociali', 'Videoclip', 'Web e Social'];
+  const years = ['Tutti', ...new Set(mockVideos.map(v => v.year).sort((a, b) => b - a))];
+
+  return (
+    <div className="bg-zinc-900 rounded-xl p-6 mb-8">
+      <div className="grid grid-cols-4 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-zinc-400 mb-2">Tema</label>
+          <select 
+            value={currentFilters.tema}
+            onChange={(e) => onFilterChange({ ...currentFilters, tema: e.target.value })}
+            className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-purple-600"
+          >
+            {temi.map(tema => <option key={tema} value={tema}>{tema}</option>)}
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-zinc-400 mb-2">Formato</label>
+          <select 
+            value={currentFilters.natura}
+            onChange={(e) => onFilterChange({ ...currentFilters, natura: e.target.value })}
+            className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-purple-600"
+          >
+            {nature.map(natura => <option key={natura} value={natura}>{natura}</option>)}
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-zinc-400 mb-2">Anno</label>
+          <select 
+            value={currentFilters.year}
+            onChange={(e) => onFilterChange({ ...currentFilters, year: e.target.value })}
+            className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-purple-600"
+          >
+            {years.map(year => <option key={year} value={year}>{year}</option>)}
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-zinc-400 mb-2">Prodotto da</label>
+          <select 
+            value={currentFilters.scuola}
+            onChange={(e) => onFilterChange({ ...currentFilters, scuola: e.target.value })}
+            className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-purple-600"
+          >
+            <option value="Tutti">Tutti</option>
+            <option value="Scuole">Solo Scuole</option>
+            <option value="Altri">Altri</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const NatureCarousel = ({ onSelectNature }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -72,32 +170,6 @@ const NatureCarousel = ({ onSelectNature }) => {
         <button onClick={nextSlide} disabled={currentSlide === 1} className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-zinc-800/80 hover:bg-zinc-700 text-white p-3 rounded-full transition-all">
           <ChevronRight size={24} />
         </button>
-      </div>
-    </div>
-  );
-};
-
-const InspireSection = () => {
-  const [randomVideo, setRandomVideo] = useState(null);
-  const getRandomVideo = () => setRandomVideo(mockVideos[Math.floor(Math.random() * mockVideos.length)]);
-  useEffect(() => { getRandomVideo(); }, []);
-  if (!randomVideo) return null;
-
-  return (
-    <div className="bg-black rounded-xl p-8 mb-12">
-      <h2 className="text-2xl font-bold text-white mb-6">Lasciati Ispirare</h2>
-      <div className="grid grid-cols-2 gap-8 items-center">
-        <div className="aspect-video rounded-lg overflow-hidden">
-          <img src={randomVideo.thumbnail} alt={randomVideo.title} className="w-full h-full object-cover" />
-        </div>
-        <div className="text-center">
-          <h3 className="text-white text-xl font-semibold mb-4">{randomVideo.title}</h3>
-          <p className="text-zinc-400 mb-6 line-clamp-3">{randomVideo.description}</p>
-          <button onClick={getRandomVideo} className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all font-semibold text-lg">
-            <Shuffle size={24} />
-            Cambia Video
-          </button>
-        </div>
       </div>
     </div>
   );
@@ -171,8 +243,14 @@ function App() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeSection, setActiveSection] = useState('all');
+  const [activeSection, setActiveSection] = useState('home');
   const [selectedNatura, setSelectedNatura] = useState('Tutte');
+  const [filters, setFilters] = useState({
+    tema: 'Tutti',
+    natura: 'Tutte',
+    year: 'Tutti',
+    scuola: 'Tutti'
+  });
 
   const filteredVideos = useMemo(() => {
     let filtered = mockVideos;
@@ -181,8 +259,16 @@ function App() {
     else if (activeSection === 'recent') filtered = [...filtered].slice(0, 5);
     else if (activeSection === 'schools') filtered = filtered.filter(v => v.prodottoScuola);
     if (selectedNatura !== 'Tutte') filtered = filtered.filter(v => v.natura === selectedNatura);
+    
+    // Applica filtri avanzati
+    if (filters.tema !== 'Tutti') filtered = filtered.filter(v => v.tema === filters.tema);
+    if (filters.natura !== 'Tutte') filtered = filtered.filter(v => v.natura === filters.natura);
+    if (filters.year !== 'Tutti') filtered = filtered.filter(v => v.year === parseInt(filters.year));
+    if (filters.scuola === 'Scuole') filtered = filtered.filter(v => v.prodottoScuola);
+    else if (filters.scuola === 'Altri') filtered = filtered.filter(v => !v.prodottoScuola);
+    
     return filtered;
-  }, [searchQuery, activeSection, selectedNatura]);
+  }, [searchQuery, activeSection, selectedNatura, filters]);
 
   if (!isLoggedIn) {
     return (
@@ -206,7 +292,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-black flex">
-      <aside className="w-64 bg-zinc-900 border-r border-zinc-800 fixed left-0 top-0 h-full flex flex-col">
+      <aside className="w-64 bg-zinc-900 border-r border-zinc-800 fixed left-0 top-0 h-full flex flex-col z-50">
         <div className="p-6 border-b border-zinc-800">
           <div className="flex items-center gap-3">
             <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-2 rounded-xl"><PlayCircle size={28} strokeWidth={1.5} /></div>
@@ -216,12 +302,12 @@ function App() {
             </div>
           </div>
         </div>
-        <nav className="flex-1 p-4">
+        <nav className="flex-1 p-4 overflow-y-auto">
           <ul className="space-y-2">
+            <li><button onClick={() => { setActiveSection('home'); setSelectedNatura('Tutte'); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'home' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>Home</button></li>
             <li><button onClick={() => { setActiveSection('formats'); setSelectedNatura('Tutte'); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'formats' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>I Formati ADAM</button></li>
             <li><button onClick={() => { setActiveSection('most-viewed'); setSelectedNatura('Tutte'); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'most-viewed' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>I Più Visti</button></li>
             <li><button onClick={() => { setActiveSection('recent'); setSelectedNatura('Tutte'); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'recent' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>Nuovi Inseriti</button></li>
-            <li><button onClick={() => { setActiveSection('inspire'); setSelectedNatura('Tutte'); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'inspire' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>Lasciati Ispirare</button></li>
             <li><button onClick={() => { setActiveSection('schools'); setSelectedNatura('Tutte'); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'schools' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>Prodotti dalle Scuole</button></li>
           </ul>
         </nav>
@@ -252,10 +338,16 @@ function App() {
           </div>
         </header>
         <main className="p-8">
+          {activeSection === 'home' && (
+            <>
+              <HeroSection onVideoClick={setSelectedVideo} />
+              <FiltersSection onFilterChange={setFilters} currentFilters={filters} />
+            </>
+          )}
           {activeSection === 'formats' && <NatureCarousel onSelectNature={(natura) => { setSelectedNatura(natura); setActiveSection('all'); }} />}
-          {activeSection === 'inspire' && <InspireSection />}
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-white">
+              {activeSection === 'home' && 'Esplora i Video'}
               {activeSection === 'most-viewed' && 'I Più Visti'}
               {activeSection === 'recent' && 'Nuovi Inseriti'}
               {activeSection === 'schools' && 'Prodotti dalle Scuole'}
