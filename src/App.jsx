@@ -31,16 +31,60 @@ const HeroSection = ({ onVideoClick }) => {
   return (
     <div className="relative h-[50vh] w-full overflow-hidden mb-8">
       <div className="absolute inset-0 overflow-hidden">
-  <iframe
-    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.77vh] h-[56.25vw] min-h-full min-w-full"
-    src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&modestbranding=1&rel=0`}
-    title={heroVideo.title}
-    frameBorder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowFullScreen
-  />
-</div>
+        <iframe
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.77vh] h-[56.25vw] min-h-full min-w-full"
+          src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&modestbranding=1&rel=0`}
+          title={heroVideo.title}
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+      </div>
       <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-black from-0% via-black via-70% to-transparent to-100%" />
+    </div>
+  );
+};
+
+const InspireSection = ({ onVideoClick }) => {
+  const [inspireVideo, setInspireVideo] = useState(null);
+  
+  const getRandomVideo = () => {
+    setInspireVideo(mockVideos[Math.floor(Math.random() * mockVideos.length)]);
+  };
+
+  useEffect(() => {
+    getRandomVideo();
+  }, []);
+
+  if (!inspireVideo) return null;
+
+  return (
+    <div className="max-w-4xl mx-auto">
+      <div className="bg-zinc-900 rounded-xl overflow-hidden mb-8">
+        <div className="aspect-video">
+          <img src={inspireVideo.thumbnail} alt={inspireVideo.title} className="w-full h-full object-cover" />
+        </div>
+        <div className="p-8 text-center">
+          <h3 className="text-2xl font-bold text-white mb-4">{inspireVideo.title}</h3>
+          <p className="text-zinc-400 mb-6 line-clamp-3">{inspireVideo.description}</p>
+          <div className="flex gap-4 justify-center">
+            <button 
+              onClick={() => onVideoClick(inspireVideo)}
+              className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all flex items-center gap-2"
+            >
+              <PlayCircle size={20} />
+              Guarda Video
+            </button>
+            <button 
+              onClick={getRandomVideo}
+              className="bg-zinc-800 text-white px-8 py-3 rounded-lg font-semibold hover:bg-zinc-700 transition-all flex items-center gap-2"
+            >
+              <Shuffle size={20} />
+              Lasciati Ispirare
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -294,6 +338,7 @@ function App() {
             <li><button onClick={() => { setActiveSection('most-viewed'); setSelectedNatura('Tutte'); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'most-viewed' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>I Più Visti</button></li>
             <li><button onClick={() => { setActiveSection('recent'); setSelectedNatura('Tutte'); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'recent' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>Nuovi Inseriti</button></li>
             <li><button onClick={() => { setActiveSection('schools'); setSelectedNatura('Tutte'); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'schools' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>Prodotti dalle Scuole</button></li>
+            <li><button onClick={() => { setActiveSection('inspire'); setSelectedNatura('Tutte'); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'inspire' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>Lasciati Ispirare</button></li>
           </ul>
         </nav>
       </aside>
@@ -330,12 +375,14 @@ function App() {
             </>
           )}
           {activeSection === 'formats' && <NatureCarousel onSelectNature={(natura) => { setSelectedNatura(natura); setActiveSection('all'); }} />}
+          {activeSection === 'inspire' && <InspireSection onVideoClick={setSelectedVideo} />}
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-white">
               {activeSection === 'home' && 'Esplora i Video'}
               {activeSection === 'most-viewed' && 'I Più Visti'}
               {activeSection === 'recent' && 'Nuovi Inseriti'}
               {activeSection === 'schools' && 'Prodotti dalle Scuole'}
+              {activeSection === 'inspire' && 'Lasciati Ispirare'}
               {(activeSection === 'all' || activeSection === 'formats') && selectedNatura !== 'Tutte' && selectedNatura}
               {activeSection === 'all' && selectedNatura === 'Tutte' && 'Tutti i Video'}
             </h2>
