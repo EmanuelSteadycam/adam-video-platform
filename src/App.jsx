@@ -60,11 +60,21 @@ const InspireSection = ({ onVideoClick }) => {
 
   const videoId = getYouTubeID(inspireVideo.youtubeUrl);
 
-return (
+const getTemaColor = (tema) => {
+    const colors = {
+      'Alcool': 'bg-yellow-500',
+      'Azzardo': 'bg-red-500',
+      'Digitale': 'bg-blue-500',
+      'Sostanze': 'bg-green-500'
+    };
+    return colors[tema] || 'bg-gray-500';
+  };
+
+  return (
     <div className="w-full mb-8">
-      <div className="bg-zinc-900">
+      <div className="bg-zinc-900 rounded-xl overflow-hidden">
         <div className="grid grid-cols-2">
-          <div className="aspect-video rounded-l-xl overflow-hidden">
+          <div className="aspect-video">
             <iframe
               className="w-full h-full"
               src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&rel=0&modestbranding=1`}
@@ -82,6 +92,9 @@ return (
             >
               <Shuffle size={32} />
             </button>
+            <span className={`${getTemaColor(inspireVideo.tema)} text-white text-xs px-3 py-1 rounded-full font-medium`}>
+              {inspireVideo.tema}
+            </span>
           </div>
         </div>
       </div>
