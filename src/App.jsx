@@ -60,11 +60,11 @@ const InspireSection = ({ onVideoClick }) => {
 
   const videoId = getYouTubeID(inspireVideo.youtubeUrl);
 
-  return (
+return (
     <div className="max-w-6xl mx-auto mb-8">
-      <div className="bg-zinc-900 rounded-xl overflow-hidden p-8">
-        <div className="grid grid-cols-2 gap-8 items-center">
-          <div className="aspect-video rounded-lg overflow-hidden">
+      <div className="bg-zinc-900 rounded-xl overflow-hidden">
+        <div className="grid grid-cols-2">
+          <div className="aspect-video">
             <iframe
               className="w-full h-full"
               src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&rel=0&modestbranding=1`}
@@ -74,7 +74,7 @@ const InspireSection = ({ onVideoClick }) => {
               allowFullScreen
             />
           </div>
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col items-center justify-center gap-4 p-8">
             <h2 className="text-3xl font-bold text-white">Lasciati Ispirare</h2>
             <button 
               onClick={getRandomVideo}
