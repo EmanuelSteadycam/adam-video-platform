@@ -58,28 +58,28 @@ const InspireSection = ({ onVideoClick }) => {
 
   if (!inspireVideo) return null;
 
+  const videoId = getYouTubeID(inspireVideo.youtubeUrl);
+
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="bg-zinc-900 rounded-xl overflow-hidden mb-8">
-        <div className="aspect-video">
-          <img src={inspireVideo.thumbnail} alt={inspireVideo.title} className="w-full h-full object-cover" />
-        </div>
-        <div className="p-8 text-center">
-          <h3 className="text-2xl font-bold text-white mb-4">{inspireVideo.title}</h3>
-          <p className="text-zinc-400 mb-6 line-clamp-3">{inspireVideo.description}</p>
-          <div className="flex gap-4 justify-center">
-            <button 
-              onClick={() => onVideoClick(inspireVideo)}
-              className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all flex items-center gap-2"
-            >
-              <PlayCircle size={20} />
-              Guarda Video
-            </button>
+    <div className="max-w-6xl mx-auto mb-8">
+      <div className="bg-zinc-900 rounded-xl overflow-hidden p-8">
+        <div className="grid grid-cols-2 gap-8 items-center">
+          <div className="aspect-video rounded-lg overflow-hidden">
+            <iframe
+              className="w-full h-full"
+              src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&rel=0&modestbranding=1`}
+              title={inspireVideo.title}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+          <div className="flex justify-center">
             <button 
               onClick={getRandomVideo}
-              className="bg-zinc-800 text-white px-8 py-3 rounded-lg font-semibold hover:bg-zinc-700 transition-all flex items-center gap-2"
+              className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-12 py-4 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all flex items-center gap-3 text-lg"
             >
-              <Shuffle size={20} />
+              <Shuffle size={24} />
               Lasciati Ispirare
             </button>
           </div>
