@@ -61,10 +61,10 @@ const InspireSection = ({ onVideoClick }) => {
   const videoId = getYouTubeID(inspireVideo.youtubeUrl);
 
 return (
-    <div className="max-w-6xl mx-auto mb-8">
-      <div className="bg-zinc-900 rounded-xl overflow-hidden">
+    <div className="w-full mb-8">
+      <div className="bg-zinc-900">
         <div className="grid grid-cols-2">
-          <div className="aspect-video">
+          <div className="aspect-video rounded-l-xl overflow-hidden">
             <iframe
               className="w-full h-full"
               src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&rel=0&modestbranding=1`}
