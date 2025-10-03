@@ -74,13 +74,13 @@ const InspireSection = ({ onVideoClick }) => {
               allowFullScreen
             />
           </div>
-          <div className="flex justify-center">
+          <div className="flex flex-col items-center gap-4">
+            <h2 className="text-3xl font-bold text-white">Lasciati Ispirare</h2>
             <button 
               onClick={getRandomVideo}
-              className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-12 py-4 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all flex items-center gap-3 text-lg"
+              className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 rounded-full font-semibold hover:from-purple-700 hover:to-blue-700 transition-all"
             >
-              <Shuffle size={24} />
-              Lasciati Ispirare
+              <Shuffle size={32} />
             </button>
           </div>
         </div>
