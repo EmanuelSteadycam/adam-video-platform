@@ -3386,7 +3386,7 @@ export const videos = [
     "views": 0,
     "format": "orizzontale",
     "tema": "Azzardo",
-    "natura": "Corti e blob",
+    "natura": "Cortometraggio",
     "prodottoScuola": false,
     "description": "Cortometraggio girato senza dialoghi, con il solo commento di un brano musicale “El Zogadur”. Un uomo al bar prova a giocare ad una slot e vince una piccola somma. Incuriosito, continua a giocare e vince nuovamente. Il montaggio ci mostra flash della sua vita: la casa, il lavoro, una famiglia felice con due figli. La vicenda prosegue e iniziamo a vedere gli effetti del gioco d’azzardo: l’uomo arriva in ritardo a prendere la figlia a scuola, non gioca più con il figlio, viene rimproverato sul lavoro. Alla fine la moglie e i figli se ne vanno di casa. L’uomo finisce i soldi e passeggia lungo il lago: i suoi vestiti sono rovinati, la barba è lunga. Trova un euro e tenendolo in mano ripercorre all’indietro tutta la sua vicenda, fino alla prima giocata: qui la storia cambia, l’uomo rinuncia a giocare e se ne va con gli amici. Compare lo slogan: Gioco a perdere. Chi gioca ipoteca il futuro. Il video è stato realizzato con il contributo di Comunità montana del Piambello, Piano di Zona Valceresio, Distretto di Tradate e Regione Lombardia. Progetto realizzato da Intrecciteatrali per la Regia di Leopoldo Pescatore. La prima parte è molto ben costruita e rende bene la situazione di avvicinamento al gioco, con le vincite iniziali che invogliano a continuare: è possibile utilizzare il corto interrompendolo dopo circa un minuto e chiedendo di immaginarne la continuazione."
   },
@@ -3400,7 +3400,7 @@ export const videos = [
     "views": 0,
     "format": "orizzontale",
     "tema": "Azzardo",
-    "natura": "Corti e blob",
+    "natura": "Cortometraggio",
     "prodottoScuola": false,
     "description": "Su richiesta della cooperativa Parsec e della Regione Lazio, il regista Emiliano Mancuso ha deciso di raccontare il gioco dal punto di vista dei non giocatori. Conosciamo quindi un programmatore di poker online, la tabaccaia obbligata ogni giorno a vedere vite che si consumano appese alle slot machine, un’abitante della Tiburtina che assiste alla trasformazione del suo quartiere in una Las Vegas decadente. L’unico giocatore è in realtà un ex giocatore di cavalli, testimone di un altro tempo, forse più affascinante in cui anche le scommesse avevano delle regole di decenza. Testi di Andrea Tarquini; riprese e color di Roberto Nieddu; montaggio di Andrea Tarquini; regia di Emiliano Mancuso. Prodotto da Pcm Studio per Parsec. Primo classificato al Controvento Corto Film Festival 2018."
   },
