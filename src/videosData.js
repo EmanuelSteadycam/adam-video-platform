@@ -4688,7 +4688,7 @@ export const videos = [
     "views": 0,
     "format": "orizzontale",
     "tema": "Digitale",
-    "natura": "Corti e blob",
+    "natura": "Cortometraggio",
     "prodottoScuola": false,
     "description": "Cortometraggio realizzato da Emanuele Lucci e Mario Savina (Scarti). Una voce over maschile ci informa che “nel 2014 l’umanità ha attraversato la più grande crisi delle comunicazioni nella storia”. Il video racconta questa vicenda attraverso le voci di tre persone comuni, “che di colpo si sono trovate catapultate in un mondo che non le apparteneva”. E’ la sera del 22 febbraio quando di colpo Whatsapp smette di funzionare. Un ragazzo sta cercando gli amici per vedere insieme una partita di calcio; una ragazza è al suo primo appuntamento, con un’amica che fa il tifo per lei via messaggi; un terzo ragazzo sta raggiungendo gli amici al cinema. Il blocco di Whatsapp costringe tutti a cambiare comportamenti: si alza lo sguardo dal cellulare e ci si guarda intorno. I due al primo appuntamento finalmente si guardano negli occhi; il ragazzo che cerca gli amici per la partita incontra una ragazza e inizia a parlare con lei; al cinema, le persone dicono “al diavolo, ce lo scegliamo da soli il film!”. E’ come un risveglio collettivo, ma dura poco, perché di colpo Whatsapp ricomincia a funzionare. Tutti, sentendo le notifiche, tornano alle vecchie abitudini. “Per un attimo ho creduto addirittura di poter vivere senza: che cretina!”. Il video è stato utilizzato in alcuni incontri informativi rivolti alla cittadinanza."
   },
@@ -4702,7 +4702,7 @@ export const videos = [
     "views": 0,
     "format": "orizzontale",
     "tema": "Digitale",
-    "natura": "Corti e blob",
+    "natura": "Cortometraggio",
     "prodottoScuola": false,
     "description": "Cortometraggio realizzato da Keiichi Matsuda. Il video è interamente girato in soggettiva: seguiamo le vicende di Juliana Restrepo, una quarantenne che vive e lavora a Medellin. Il suo sguardo sulla realtà è costantemente in realtà aumentata: all’inizio sta viaggiando in autobus, ma noi vediamo un videogioco a cui sta giocando, i suoi punti fedeltà, il suo livello raggiunto nell’app di lavoro (Job Monkey) e mille altre informazioni collegate a ciò che le sta intorno. Mentre la donna fa la spesa in un supermercato il suo dispositivo inizia ad avere dei problemi: l’assistenza del suo operatore telefonico la informa che qualcuno sta cercando di hackerare la sua identità digitale. La donna è preoccupata per lo stato dei suoi punti: l’operatore la invita a recarsi al più vicino centro di assistenza. Tornata in strada, la donna viene avvicinata da un individuo dall’identità mascherata, che la pugnala alla mano. La sua identità digitale viene azzerata e la visione torna priva di realtà aumentata. La donna, disperata, si chiede che cosa fare: attraversa la strada e raggiunge una statua della Madonna. Qui la realtà aumentata si riattiva, con le scritte “Start again”. La donna fa una croce con la mano e in questo modo aderisce al Cattolicesimo – Livello 1. Il cortometraggio, denso di dettagli, è stato utilizzato anni fa durante alcune formazioni per operatori, risultando poco comprensibile. Oggi (2023) può essere riproposto, per ragionare su diversi aspetti legati al digitale e qui presenti nella realtà aumentata messa in scena (marketing, lavoro precario, rischi legati ai furti di identità, ecc…)."
   },
@@ -4716,7 +4716,7 @@ export const videos = [
     "views": 0,
     "format": "orizzontale",
     "tema": "Digitale",
-    "natura": "Corti e blob",
+    "natura": "Cortometraggio",
     "prodottoScuola": false,
     "description": "Cortometraggio realizzato da Eran May-raz e Daniel Lazo; interamente in inglese, su Youtube sono disponibili i sottotitoli in italiano. In un mondo in cui una tecnologia analoga ai Google Glass è integrata direttamente negli occhi delle persone, è possibile ad accedere a miriadi di app semplicemente con lo sguardo. Un giovane single è nel suo appartamento: gioca a un videogioco che gli permette di fare esercizio fisico, poi si prepara la cena seguendo le istruzioni gamificate di un’altra app. Quindi si prepara ad un appuntamento con una ragazza. Al tavolo del ristorante l’uomo attiva un’app, Wingman, che attraverso suggerimenti basati sulle informazioni e sulla lettura delle espressioni della ragazza gli permette di trasformare il goffo approccio iniziale in un successo. A fine serata la ragazza accetta di salire nell’appartamento di lui per un drink. Al momento del brindisi, però, lei si accorge dell’app per appuntamenti: arrabbiata, decide di andarsene. L’uomo, però, la blocca: è un ingegnere che lavora per Sight ed appare in grado di hackerare il sistema di lei, costringendola a restare. Il cortometraggio termina così. Il video è stato utilizzato con studenti delle scuole superiori nell’ambito del percorso “Social Media corpo e relazioni”, per ragionare sulle relazioni tra i sessi e sui rischi legati alla violenza di genere."
   },
