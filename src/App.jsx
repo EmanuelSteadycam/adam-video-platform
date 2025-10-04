@@ -70,11 +70,21 @@ const getTemaColor = (tema) => {
     return colors[tema] || 'bg-gray-500';
   };
 
+ const getBorderColor = (tema) => {
+    const colors = {
+      'Alcool': 'border-yellow-500',
+      'Azzardo': 'border-red-500',
+      'Digitale': 'border-blue-500',
+      'Sostanze': 'border-green-500'
+    };
+    return colors[tema] || 'border-gray-500';
+  };
+
   return (
     <div className="w-full mb-8">
       <div className="bg-zinc-900 rounded-xl overflow-hidden">
         <div className="grid grid-cols-2">
-          <div className="aspect-video">
+          <div className={`aspect-video rounded-l-xl overflow-hidden border-t-2 ${getBorderColor(inspireVideo.tema)}`}>
             <iframe
               className="w-full h-full"
               src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&rel=0&modestbranding=1`}
@@ -84,17 +94,19 @@ const getTemaColor = (tema) => {
               allowFullScreen
             />
           </div>
-          <div className="flex flex-col items-center justify-center gap-4 p-8">
-            <h2 className="text-3xl font-bold text-white">Lasciati Ispirare</h2>
+          <div className="flex flex-col items-center justify-center p-8">
+            <h2 className="text-3xl font-bold text-white mb-4">Lasciati Ispirare</h2>
             <button 
               onClick={getRandomVideo}
-              className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 rounded-full font-semibold hover:from-purple-700 hover:to-blue-700 transition-all"
+              className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 rounded-full font-semibold hover:from-purple-700 hover:to-blue-700 transition-all mb-5"
             >
               <Shuffle size={32} />
             </button>
-            <span className={`${getTemaColor(inspireVideo.tema)} text-white text-xs px-3 py-1 rounded-full font-medium`}>
-              {inspireVideo.tema}
-            </span>
+            <div className="mt-[30px]">
+              <span className={`${getTemaColor(inspireVideo.tema)} text-white text-xs px-3 py-1 rounded-full font-medium`}>
+                {inspireVideo.tema}
+              </span>
+            </div>
           </div>
         </div>
       </div>
