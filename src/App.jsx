@@ -207,7 +207,7 @@ const natureData = [
               <div key={slideIndex} className="min-w-full grid grid-cols-4 gap-6 px-12">
                 {natureData.slice(slideIndex * 4, slideIndex * 4 + 4).map((nat) => (
                   <div key={nat.key} onClick={() => onSelectNature(nat.key)} className="group cursor-pointer bg-zinc-900 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl">
-                    <div className="relative aspect-video">
+  <div className="relative aspect-[9/16]">
                       <img src={nat.image} alt={nat.name} className="w-full h-full object-cover" />
                       <div className="absolute top-3 left-3 bg-purple-600 text-white text-xs px-3 py-1 rounded-full font-bold">{videoCounts[nat.key] || 0} video</div>
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
