@@ -176,7 +176,7 @@ const natureData = [
     { name: 'Cortometraggio', image: '/images/nature/cortometraggio.jpg', key: 'Cortometraggio' },
     { name: 'Film', image: '/images/nature/film.jpg', key: 'Film' },
     { name: 'Info', image: '/images/nature/info.jpg', key: 'Info' },
-    { name: 'Sequenza', image: '/images/nature/sequenza.jpg', key: 'Sequenza' },
+    { name: 'Sequenza', image: '/images/nature/sequenza.jpg', key: 'Sequenze' },
     { name: 'Spot ADV', image: '/images/nature/spot-adv.jpg', key: 'Spot commerciale' },
     { name: 'Spot Sociale', image: '/images/nature/spot-sociale.jpg', key: 'Spot sociale' },
     { name: 'Videoclip', image: '/images/nature/videoclip.jpg', key: 'Videoclip' },
