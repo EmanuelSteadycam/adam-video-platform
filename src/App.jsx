@@ -80,11 +80,11 @@ const getTemaColor = (tema) => {
     return colors[tema] || 'border-gray-500';
   };
 
- return (
+return (
     <div className="w-full mb-8">
-      <div className={`bg-zinc-900 rounded-xl overflow-hidden border-t-2 ${getBorderColor(inspireVideo.tema)}`}>
+      <div className={`bg-zinc-900 rounded-xl border-2 ${getBorderColor(inspireVideo.tema)}`}>
         <div className="grid grid-cols-2">
-          <div className="aspect-video overflow-hidden">
+          <div className="aspect-video rounded-l-xl overflow-hidden">
             <iframe
               className="w-full h-full"
               src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&rel=0&modestbranding=1`}
