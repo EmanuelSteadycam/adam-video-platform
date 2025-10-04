@@ -212,8 +212,8 @@ const natureData = [
                       <div className="absolute top-3 left-3 bg-purple-600 text-white text-xs px-3 py-1 rounded-full font-bold">{videoCounts[nat.key] || 0} video</div>
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                       <div className="absolute bottom-4 left-4 right-4">
-                        <h3 className="text-white font-bold text-lg">{nat.name}</h3>
-                      </div>
+  <h3 className="text-white font-semibold text-[32px] text-center">{nat.name}</h3>
+</div>
                     </div>
                   </div>
                 ))}
