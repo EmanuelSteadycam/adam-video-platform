@@ -84,9 +84,9 @@ return (
     <div className="w-full mb-8">
       <div className="bg-zinc-900 rounded-xl">
         <div className="grid grid-cols-2">
-          <div className={`aspect-video rounded-l-xl overflow-hidden border-2 ${getBorderColor(inspireVideo.tema)}`}>
-            <iframe
-              className="w-full h-full"
+          <div className={`aspect-video overflow-hidden border-2 rounded-xl ${getBorderColor(inspireVideo.tema)}`}>
+  <iframe
+    className="w-full h-full rounded-xl"
               src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&rel=0&modestbranding=1`}
               title={inspireVideo.title}
               frameBorder="0"
