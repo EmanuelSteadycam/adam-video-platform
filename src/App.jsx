@@ -82,9 +82,9 @@ const getTemaColor = (tema) => {
 
 return (
     <div className="w-full mb-8">
-      <div className={`bg-zinc-900 rounded-xl border-2 ${getBorderColor(inspireVideo.tema)}`}>
+      <div className="bg-zinc-900 rounded-xl">
         <div className="grid grid-cols-2">
-          <div className="aspect-video rounded-l-xl overflow-hidden">
+          <div className={`aspect-video rounded-l-xl overflow-hidden border-2 ${getBorderColor(inspireVideo.tema)}`}>
             <iframe
               className="w-full h-full"
               src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&rel=0&modestbranding=1`}
@@ -95,10 +95,10 @@ return (
             />
           </div>
           <div className="flex flex-col items-center justify-center p-8">
-            <h2 className="text-3xl font-bold text-white mb-4">Lasciati Ispirare</h2>
+            <h2 className="text-3xl font-bold text-white">Lasciati Ispirare</h2>
             <button 
               onClick={getRandomVideo}
-              className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 rounded-full font-semibold hover:from-purple-700 hover:to-blue-700 transition-all mb-5"
+              className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 rounded-full font-semibold hover:from-purple-700 hover:to-blue-700 transition-all mt-12 mb-5"
             >
               <Shuffle size={32} />
             </button>
