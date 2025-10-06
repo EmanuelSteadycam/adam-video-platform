@@ -418,7 +418,7 @@ function App() {
         </button>
       </div>
     )}
-    <div className="relative">
+   <div className={`relative transition-all duration-300 ${selectedTemaTag && !searchQuery ? 'w-[400px]' : 'w-full'}`}>
   {selectedTemaTag && (
     <button 
       onClick={(e) => {
@@ -437,43 +437,45 @@ function App() {
     </button>
   )}
   <Search className={`absolute ${selectedTemaTag ? 'left-[120px]' : 'left-4'} top-1/2 transform -translate-y-1/2 text-zinc-500 z-10`} size={18} />
- {(selectedTemaTag || searchQuery) && (
-  <button
-    onClick={(e) => {
-      setSelectedTemaTag(null);
-      setSearchQuery('');
-      setFilters({...filters, tema: 'Tutti'});
+  {(selectedTemaTag || searchQuery) && (
+    <button
+      onClick={(e) => {
+        setSelectedTemaTag(null);
+        setSearchQuery('');
+        setFilters({...filters, tema: 'Tutti'});
+      }}
+      className="absolute right-4 top-1/2 transform -translate-y-1/2 text-zinc-500 hover:text-white transition-colors z-10"
+    >
+      <X size={18} />
+    </button>
+  )}
+  <input 
+    type="text" 
+    placeholder={selectedTemaTag ? `Cerca video a tema ${selectedTemaTag}` : "Cerca video..."} 
+    value={searchQuery} 
+    onChange={(e) => setSearchQuery(e.target.value)} 
+    onFocus={(e) => {
+      e.target.parentElement.classList.remove('w-[400px]');
+      e.target.parentElement.classList.add('w-full');
+      if (!selectedTemaTag) setIsSearchFocused(true);
     }}
-    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-zinc-500 hover:text-white transition-colors z-10"
-  >
-    <X size={18} />
-  </button>
-)}
-      <input 
-        type="text" 
-        placeholder={selectedTemaTag ? `Cerca video a tema ${selectedTemaTag}` : "Cerca video..."} 
-        value={searchQuery} 
-        onChange={(e) => setSearchQuery(e.target.value)} 
-        onFocus={(e) => {
-  e.target.parentElement.style.width = '100%';
-  e.target.style.width = '100%';
-  if (!selectedTemaTag) setIsSearchFocused(true);
-}}
-onBlur={(e) => {
-  if (!searchQuery && !selectedTemaTag) e.target.style.width = '400px';
-  setTimeout(() => setIsSearchFocused(false), 200);
-}}
-className="w-[400px] text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300 outline-none"
-        
-          style={{ 
-  backgroundColor: '#262626',
-  paddingLeft: selectedTemaTag ? '155px' : '44px',
-  paddingRight: '40px',
-          paddingTop: '10px',
-          paddingBottom: '10px'
-        }}
-      />
-    </div>
+    onBlur={(e) => {
+      if (!searchQuery && !selectedTemaTag) {
+        e.target.parentElement.classList.remove('w-full');
+        e.target.parentElement.classList.add('w-[400px]');
+      }
+      setTimeout(() => setIsSearchFocused(false), 200);
+    }}
+    className="w-full text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300 outline-none"
+    style={{ 
+      backgroundColor: '#262626',
+      paddingLeft: selectedTemaTag ? '155px' : '44px',
+      paddingRight: '40px',
+      paddingTop: '10px',
+      paddingBottom: '10px'
+    }}
+  />
+</div>
   </div>
 </div>
             <div className="flex items-center gap-3">
