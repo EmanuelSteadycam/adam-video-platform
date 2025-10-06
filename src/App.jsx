@@ -374,15 +374,15 @@ function App() {
         <header className="bg-black sticky top-0 z-40">
   <div className="px-4 lg:px-8 py-4 flex items-center justify-between gap-2 lg:gap-6">
     <button 
-      onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-      className="lg:hidden text-white p-2"
-    >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
-      </svg>
-    </button>
+  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+  className="lg:hidden text-white p-2"
+>
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <line x1="3" y1="12" x2="21" y2="12" />
+    <line x1="3" y1="6" x2="21" y2="6" />
+    <line x1="3" y1="18" x2="21" y2="18" />
+  </svg>
+</button>
           <div className="flex-1 max-w-2xl hidden md:block">
   <div className="relative">
     {isSearchFocused && (
