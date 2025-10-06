@@ -374,8 +374,8 @@ function App() {
           <div className="px-8 py-4 flex items-center justify-between gap-6">
            <div className="flex-1 max-w-2xl">
   <div className="relative">
-    {selectedTemaTag && (
-      <div className="absolute top-full left-0 mt-2 bg-zinc-900 rounded-lg shadow-xl py-2 min-w-[150px] z-50">
+    {isSearchFocused && (
+  <div className="absolute top-full left-0 mt-2 bg-zinc-900 rounded-lg shadow-xl py-2 min-w-[150px] z-50">
         <button 
           onClick={() => {
             setSelectedTemaTag('Alcool');
@@ -441,11 +441,13 @@ function App() {
         value={searchQuery} 
         onChange={(e) => setSearchQuery(e.target.value)} 
         onFocus={(e) => {
-          e.target.style.width = '100%';
-        }}
-        onBlur={(e) => {
-          if (!searchQuery && !selectedTemaTag) e.target.style.width = '400px';
-        }}
+  e.target.style.width = '100%';
+  setIsSearchFocused(true);
+}}
+onBlur={(e) => {
+  if (!searchQuery && !selectedTemaTag) e.target.style.width = '400px';
+  setTimeout(() => setIsSearchFocused(false), 200);
+}}
         className="w-[400px] text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300 outline-none"
         style={{ 
           backgroundColor: '#262626',
