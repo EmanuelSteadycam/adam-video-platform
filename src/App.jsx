@@ -368,7 +368,7 @@ function App() {
         </nav>
       </aside>
       <div className="ml-64 flex-1">
-        <header className="bg-zinc-900/95 backdrop-blur-lg border-b border-zinc-800 sticky top-0 z-40">
+        <header className="bg-black border-b border-zinc-800 sticky top-0 z-40">
           <div className="px-8 py-4 flex items-center justify-between gap-6">
             <div className="flex-1 max-w-2xl">
               <div className="relative">
