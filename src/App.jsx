@@ -386,7 +386,7 @@ function App() {
 >
   <Menu size={24} />
 </button>
-          <div className="flex-1 max-w-2xl hidden md:block">
+          <div className="flex-1 max-w-2xl">
   <div className="relative">
     {isSearchFocused && (
       <div className="absolute top-full left-0 mt-2 bg-zinc-900 rounded-lg shadow-xl py-2 min-w-[150px] z-50">
