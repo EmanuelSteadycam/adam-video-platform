@@ -372,10 +372,10 @@ function App() {
       <div className="ml-64 flex-1">
         <header className="bg-black sticky top-0 z-40">
           <div className="px-8 py-4 flex items-center justify-between gap-6">
-           <div className="flex-1 max-w-2xl">
+          <div className="flex-1 max-w-2xl">
   <div className="relative">
     {isSearchFocused && (
-  <div className="absolute top-full left-0 mt-2 bg-zinc-900 rounded-lg shadow-xl py-2 min-w-[150px] z-50">
+      <div className="absolute top-full left-0 mt-2 bg-zinc-900 rounded-lg shadow-xl py-2 min-w-[150px] z-50">
         <button 
           onClick={() => {
             setSelectedTemaTag('Alcool');
@@ -420,59 +420,57 @@ function App() {
     )}
     <div className="relative">
       <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500 z-10" size={18} />
-{selectedTemaTag && (
-  <button 
-    onClick={(e) => {
-      e.stopPropagation();
-      setIsSearchFocused(!isSearchFocused);
-    }}
-    className="absolute left-11 top-1/2 transform -translate-y-1/2 flex items-center gap-2 bg-zinc-800 px-2 py-1 rounded text-xs font-medium z-10"
-    style={{ 
-      color: selectedTemaTag === 'Alcool' ? '#eab308' : 
-             selectedTemaTag === 'Azzardo' ? '#ef4444' : 
-             selectedTemaTag === 'Digitale' ? '#3b82f6' : '#22c55e'
-    }}
-  >
-    {selectedTemaTag}
-    <ChevronLeft size={12} className="rotate-[-90deg]" />
-  </button>
-) : (
-  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500" size={18} />
-)}
-{(selectedTemaTag || searchQuery) && (
-  <button
-    onClick={() => {
-      setSelectedTemaTag(null);
-      setSearchQuery('');
-      setFilters({...filters, tema: 'Tutti'});
-    }}
-    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-zinc-500 hover:text-white transition-colors z-10"
-  >
-    <X size={18} />
-  </button>
-)}
-<input 
-  type="text" 
-  placeholder={selectedTemaTag ? `Cerca video a tema ${selectedTemaTag}` : "Cerca video..."} 
-  value={searchQuery} 
-  onChange={(e) => setSearchQuery(e.target.value)} 
-  onFocus={(e) => {
-    e.target.style.width = '100%';
-    if (!selectedTemaTag) setIsSearchFocused(true);
-  }}
-  onBlur={(e) => {
-    if (!searchQuery && !selectedTemaTag) e.target.style.width = '400px';
-    setTimeout(() => setIsSearchFocused(false), 200);
-  }}
-  className="w-[400px] text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300 outline-none"
-  style={{ 
-    backgroundColor: '#262626',
-    paddingLeft: selectedTemaTag ? '165px' : '44px',
-    paddingRight: selectedTemaTag || searchQuery ? '40px' : '16px',
-    paddingTop: '10px',
-    paddingBottom: '10px'
-  }}
-/>
+      {selectedTemaTag && (
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsSearchFocused(!isSearchFocused);
+          }}
+          className="absolute left-11 top-1/2 transform -translate-y-1/2 flex items-center gap-2 bg-zinc-800 px-2 py-1 rounded text-xs font-medium z-10"
+          style={{ 
+            color: selectedTemaTag === 'Alcool' ? '#eab308' : 
+                   selectedTemaTag === 'Azzardo' ? '#ef4444' : 
+                   selectedTemaTag === 'Digitale' ? '#3b82f6' : '#22c55e'
+          }}
+        >
+          {selectedTemaTag}
+          <ChevronLeft size={12} className="rotate-[-90deg]" />
+        </button>
+      )}
+      {(selectedTemaTag || searchQuery) && (
+        <button
+          onClick={() => {
+            setSelectedTemaTag(null);
+            setSearchQuery('');
+            setFilters({...filters, tema: 'Tutti'});
+          }}
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 text-zinc-500 hover:text-white transition-colors z-10"
+        >
+          <X size={18} />
+        </button>
+      )}
+      <input 
+        type="text" 
+        placeholder={selectedTemaTag ? `Cerca video a tema ${selectedTemaTag}` : "Cerca video..."} 
+        value={searchQuery} 
+        onChange={(e) => setSearchQuery(e.target.value)} 
+        onFocus={(e) => {
+          e.target.style.width = '100%';
+          if (!selectedTemaTag) setIsSearchFocused(true);
+        }}
+        onBlur={(e) => {
+          if (!searchQuery && !selectedTemaTag) e.target.style.width = '400px';
+          setTimeout(() => setIsSearchFocused(false), 200);
+        }}
+        className="w-[400px] text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300 outline-none"
+        style={{ 
+          backgroundColor: '#262626',
+          paddingLeft: selectedTemaTag ? '165px' : '44px',
+          paddingRight: selectedTemaTag || searchQuery ? '40px' : '16px',
+          paddingTop: '10px',
+          paddingBottom: '10px'
+        }}
+      />
     </div>
   </div>
 </div>
