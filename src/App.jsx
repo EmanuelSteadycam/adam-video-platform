@@ -437,15 +437,14 @@ function App() {
     </button>
   )}
   <Search className={`absolute ${selectedTemaTag ? 'left-[120px]' : 'left-4'} top-1/2 transform -translate-y-1/2 text-zinc-500 z-10`} size={18} />
-  {(selectedTemaTag || searchQuery) && (
+ {(selectedTemaTag || searchQuery) && (
   <button
     onClick={(e) => {
       setSelectedTemaTag(null);
       setSearchQuery('');
       setFilters({...filters, tema: 'Tutti'});
     }}
-    className="absolute top-1/2 transform -translate-y-1/2 text-zinc-500 hover:text-white transition-colors z-10"
-    style={{ right: selectedTemaTag || searchQuery ? 'calc(100% - 390px)' : '16px' }}
+    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-zinc-500 hover:text-white transition-colors z-10"
   >
     <X size={18} />
   </button>
@@ -456,6 +455,7 @@ function App() {
         value={searchQuery} 
         onChange={(e) => setSearchQuery(e.target.value)} 
         onFocus={(e) => {
+  e.target.parentElement.style.width = '100%';
   e.target.style.width = '100%';
   if (!selectedTemaTag) setIsSearchFocused(true);
 }}
@@ -463,7 +463,7 @@ onBlur={(e) => {
   if (!searchQuery && !selectedTemaTag) e.target.style.width = '400px';
   setTimeout(() => setIsSearchFocused(false), 200);
 }}
-className={`${selectedTemaTag || searchQuery ? 'w-full' : 'w-[400px]'} text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300 outline-none`}
+className="w-[400px] text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300 outline-none"
         
           style={{ 
   backgroundColor: '#262626',
