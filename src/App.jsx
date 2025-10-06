@@ -116,12 +116,12 @@ return (
 
 const FiltersSection = ({ onFilterChange, currentFilters }) => {
   const temi = ['Tutti', ...new Set(mockVideos.map(v => v.tema))];
-  const nature = ['Tutte', 'Cortometraggi', 'Film', 'Informativi', 'Sequenze', 'Spot adv', 'Spot Sociali', 'Videoclip', 'Web e Social'];
+  const nature = ['Tutte', 'Cortometraggio', 'Film', 'Info', 'Sequenza', 'Spot commerciale', 'Spot sociale', 'Videoclip', 'Web e social'];
   const years = ['Tutti', ...new Set(mockVideos.map(v => v.year).sort((a, b) => b - a))];
 
   return (
     <div className="bg-zinc-900 rounded-xl p-6 mb-8">
-      
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div>
           <label className="block text-sm font-medium text-zinc-400 mb-2">Tema</label>
           <select 
