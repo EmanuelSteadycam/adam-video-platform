@@ -394,12 +394,13 @@ function App() {
         </header>
         <main className="p-8">
           {activeSection === 'home' && (
-            <>
-              <HeroSection onVideoClick={setSelectedVideo} />
-              <FiltersSection onFilterChange={setFilters} currentFilters={filters} />
-            </>
-          )}
-          {activeSection === 'formats' && <NatureCarousel onSelectNature={(natura) => { setSelectedNatura(natura); setActiveSection('all'); }} />}
+  <>
+    <HeroSection onVideoClick={setSelectedVideo} />
+    <NatureCarousel onSelectNature={(natura) => { setSelectedNatura(natura); setActiveSection('all'); }} />
+    <FiltersSection onFilterChange={setFilters} currentFilters={filters} />
+  </>
+)}
+{activeSection === 'formats' && <NatureCarousel onSelectNature={(natura) => { setSelectedNatura(natura); setActiveSection('all'); }} />}
           {activeSection === 'inspire' && <InspireSection onVideoClick={setSelectedVideo} />}
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-white">
