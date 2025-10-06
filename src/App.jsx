@@ -180,7 +180,7 @@ const natureData = [
     { name: 'Spot ADV', image: '/images/nature/spot-adv.jpg', key: 'Spot commerciale' },
     { name: 'Spot Sociale', image: '/images/nature/spot-sociale.jpg', key: 'Spot sociale' },
     { name: 'Videoclip', image: '/images/nature/videoclip.jpg', key: 'Videoclip' },
-    { name: 'Web & Social', image: '/images/nature/web-social.jpg', key: 'Web e social' }
+    { name: 'Web e Social', image: '/images/nature/web-social.jpg', key: 'Web e social' }
   ];
 
   const videoCounts = useMemo(() => {
