@@ -419,25 +419,25 @@ function App() {
       </div>
     )}
     <div className="relative">
-      <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500 z-10" size={18} />
-      {selectedTemaTag && (
-        <button 
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsSearchFocused(!isSearchFocused);
-          }}
-          className="absolute left-11 top-1/2 transform -translate-y-1/2 flex items-center gap-2 bg-zinc-800 px-2 py-1 rounded text-xs font-medium z-10"
-          style={{ 
-            color: selectedTemaTag === 'Alcool' ? '#eab308' : 
-                   selectedTemaTag === 'Azzardo' ? '#ef4444' : 
-                   selectedTemaTag === 'Digitale' ? '#3b82f6' : '#22c55e'
-          }}
-        >
-          {selectedTemaTag}
-          <ChevronLeft size={12} className="rotate-[-90deg]" />
-        </button>
-      )}
-      {(selectedTemaTag || searchQuery) && (
+  {selectedTemaTag && (
+    <button 
+      onClick={(e) => {
+        e.stopPropagation();
+        setIsSearchFocused(!isSearchFocused);
+      }}
+      className="absolute left-4 top-1/2 transform -translate-y-1/2 flex items-center gap-2 bg-zinc-800 px-2 py-1 rounded text-xs font-medium z-10"
+      style={{ 
+        color: selectedTemaTag === 'Alcool' ? '#eab308' : 
+               selectedTemaTag === 'Azzardo' ? '#ef4444' : 
+               selectedTemaTag === 'Digitale' ? '#3b82f6' : '#22c55e'
+      }}
+    >
+      {selectedTemaTag}
+      <ChevronLeft size={12} className="rotate-[-90deg]" />
+    </button>
+  )}
+  <Search className={`absolute ${selectedTemaTag ? 'left-[120px]' : 'left-4'} top-1/2 transform -translate-y-1/2 text-zinc-500 z-10`} size={18} />
+  {(selectedTemaTag || searchQuery) && (
         <button
   onClick={(e) => {
     const input = e.target.closest('.relative').querySelector('input');
@@ -466,9 +466,10 @@ onBlur={(e) => {
 }}
 className={`${selectedTemaTag || searchQuery ? 'w-full' : 'w-[400px]'} text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300 outline-none`}
         style={{ 
-          backgroundColor: '#262626',
-          paddingLeft: selectedTemaTag ? '165px' : '44px',
-          paddingRight: selectedTemaTag || searchQuery ? '40px' : '16px',
+          style={{ 
+  backgroundColor: '#262626',
+  paddingLeft: selectedTemaTag ? '155px' : '44px',
+  paddingRight: '40px',
           paddingTop: '10px',
           paddingBottom: '10px'
         }}
