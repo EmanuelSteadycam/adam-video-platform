@@ -47,12 +47,12 @@ const HeroSection = ({ onVideoClick }) => {
         />
       </div>
       <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-black from-0% via-black via-70% to-transparent to-100%">
-        {logoAnim && (
-          <div className="absolute left-8 md:left-16 top-1/2 -translate-y-1/2 w-48 md:w-64">
-            <Lottie animationData={logoAnim} loop={true} />
-          </div>
-        )}
-      </div>
+  {logoAnim && (
+    <div className="absolute left-8 md:left-16 top-[30%] -translate-y-1/2 w-64 md:w-96">
+      <Lottie animationData={logoAnim} loop={true} autoplay={true} />
+    </div>
+  )}
+</div>
     </div>
   );
 };
