@@ -465,7 +465,7 @@ onBlur={(e) => {
   setTimeout(() => setIsSearchFocused(false), 200);
 }}
 className={`${selectedTemaTag || searchQuery ? 'w-full' : 'w-[400px]'} text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300 outline-none`}
-        style={{ 
+        
           style={{ 
   backgroundColor: '#262626',
   paddingLeft: selectedTemaTag ? '155px' : '44px',
