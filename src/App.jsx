@@ -374,15 +374,15 @@ function App() {
   <div className="relative">
     <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500" size={18} />
     <input 
-      type="text" 
-      placeholder="Cerca video..." 
-      value={searchQuery} 
-      onChange={(e) => setSearchQuery(e.target.value)} 
-      onFocus={(e) => e.target.style.width = '100%'}
-      onBlur={(e) => !searchQuery && (e.target.style.width = '400px')}
-      className="w-[400px] pl-11 pr-4 py-2.5 text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300"
-      style={{ backgroundColor: '#262626' }}
-    />
+  type="text" 
+  placeholder="Cerca video..." 
+  value={searchQuery} 
+  onChange={(e) => setSearchQuery(e.target.value)} 
+  onFocus={(e) => e.target.style.width = '100%'}
+  onBlur={(e) => !searchQuery && (e.target.style.width = '400px')}
+  className="w-[400px] pl-11 pr-4 py-2.5 text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300 outline-none"
+  style={{ backgroundColor: '#262626' }}
+/>
   </div>
 </div>
             <div className="flex items-center gap-3">
