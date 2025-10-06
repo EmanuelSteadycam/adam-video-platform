@@ -350,28 +350,33 @@ function App() {
   return (
     <div className="min-h-screen bg-black flex">
       
+{isMobileMenuOpen && (
+  <div 
+    className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+    onClick={() => setIsMobileMenuOpen(false)}
+  />
+)}
 <aside className={`w-64 bg-zinc-900 border-r border-zinc-800 fixed left-0 top-0 h-full flex flex-col z-50 transition-transform duration-300 lg:translate-x-0 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-      <aside className={`w-64 bg-zinc-900 border-r border-zinc-800 fixed left-0 top-0 h-full flex flex-col z-50 transition-transform duration-300 lg:translate-x-0 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="p-6 border-b border-zinc-800">
-          <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-2 rounded-xl"><PlayCircle size={28} strokeWidth={1.5} /></div>
-            <div>
-              <h1 className="text-2xl font-bold text-white">ADAM</h1>
-              <p className="text-[10px] text-zinc-400">Archivio Digitale Addiction e Media</p>
-            </div>
-          </div>
-        </div>
-        <nav className="flex-1 p-4 overflow-y-auto">
-          <ul className="space-y-2">
-<li><button onClick={() => { setActiveSection('home'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'home' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>Home</button></li>
-<li><button onClick={() => { setActiveSection('formats'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'formats' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>I Formati ADAM</button></li>
-<li><button onClick={() => { setActiveSection('most-viewed'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'most-viewed' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>I Più Visti</button></li>
-<li><button onClick={() => { setActiveSection('recent'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'recent' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>Nuovi Inseriti</button></li>
-<li><button onClick={() => { setActiveSection('schools'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'schools' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>Prodotti dalle Scuole</button></li>
-<li><button onClick={() => { setActiveSection('inspire'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'inspire' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>Lasciati Ispirare</button></li>
-          </ul>
-        </nav>
-      </aside>
+  <div className="p-6 border-b border-zinc-800">
+    <div className="flex items-center gap-3">
+      <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-2 rounded-xl"><PlayCircle size={28} strokeWidth={1.5} /></div>
+      <div>
+        <h1 className="text-2xl font-bold text-white">ADAM</h1>
+        <p className="text-[10px] text-zinc-400">Archivio Digitale Addiction e Media</p>
+      </div>
+    </div>
+  </div>
+  <nav className="flex-1 p-4 overflow-y-auto">
+    <ul className="space-y-2">
+      <li><button onClick={() => { setActiveSection('home'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'home' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>Home</button></li>
+      <li><button onClick={() => { setActiveSection('formats'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'formats' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>I Formati ADAM</button></li>
+      <li><button onClick={() => { setActiveSection('most-viewed'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'most-viewed' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>I Più Visti</button></li>
+      <li><button onClick={() => { setActiveSection('recent'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'recent' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>Nuovi Inseriti</button></li>
+      <li><button onClick={() => { setActiveSection('schools'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'schools' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>Prodotti dalle Scuole</button></li>
+      <li><button onClick={() => { setActiveSection('inspire'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'inspire' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>Lasciati Ispirare</button></li>
+    </ul>
+  </nav>
+</aside>
       <div className="lg:ml-64 flex-1">
         <header className="bg-black sticky top-0 z-40">
   <div className="px-4 lg:px-8 py-4 flex items-center justify-between gap-2 lg:gap-6">
