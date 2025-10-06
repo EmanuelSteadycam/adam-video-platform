@@ -439,11 +439,13 @@ function App() {
       )}
       {(selectedTemaTag || searchQuery) && (
         <button
-          onClick={() => {
-            setSelectedTemaTag(null);
-            setSearchQuery('');
-            setFilters({...filters, tema: 'Tutti'});
-          }}
+  onClick={(e) => {
+    const input = e.target.closest('.relative').querySelector('input');
+    input.style.width = '400px';
+    setSelectedTemaTag(null);
+    setSearchQuery('');
+    setFilters({...filters, tema: 'Tutti'});
+  }}
           className="absolute right-4 top-1/2 transform -translate-y-1/2 text-zinc-500 hover:text-white transition-colors z-10"
         >
           <X size={18} />
@@ -455,14 +457,14 @@ function App() {
         value={searchQuery} 
         onChange={(e) => setSearchQuery(e.target.value)} 
         onFocus={(e) => {
-          e.target.style.width = '100%';
-          if (!selectedTemaTag) setIsSearchFocused(true);
-        }}
-        onBlur={(e) => {
-          if (!searchQuery && !selectedTemaTag) e.target.style.width = '400px';
-          setTimeout(() => setIsSearchFocused(false), 200);
-        }}
-        className="w-[400px] text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300 outline-none"
+  e.target.style.width = '100%';
+  if (!selectedTemaTag) setIsSearchFocused(true);
+}}
+onBlur={(e) => {
+  if (!searchQuery && !selectedTemaTag) e.target.style.width = '400px';
+  setTimeout(() => setIsSearchFocused(false), 200);
+}}
+className={`${selectedTemaTag || searchQuery ? 'w-full' : 'w-[400px]'} text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300 outline-none`}
         style={{ 
           backgroundColor: '#262626',
           paddingLeft: selectedTemaTag ? '165px' : '44px',
