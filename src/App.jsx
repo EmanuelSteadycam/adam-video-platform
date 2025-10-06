@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import Lottie from 'lottie-react';
 import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu } from 'lucide-react';
+import Lottie from 'lottie-react';
 import { videos as videosData } from './videosData';
 
 const getYouTubeID = (url) => {
@@ -20,9 +21,14 @@ const mockVideos = addRandomViews(videosData);
 
 const HeroSection = ({ onVideoClick }) => {
   const [heroVideo, setHeroVideo] = useState(null);
+  const [logoAnim, setLogoAnim] = useState(null);
   
   useEffect(() => {
     setHeroVideo(mockVideos[Math.floor(Math.random() * mockVideos.length)]);
+    fetch('/logo-animation.json')
+      .then(response => response.json())
+      .then(data => setLogoAnim(data))
+      .catch(err => console.error('Errore caricamento logo:', err));
   }, []);
 
   if (!heroVideo) return null;
@@ -41,7 +47,13 @@ const HeroSection = ({ onVideoClick }) => {
           allowFullScreen
         />
       </div>
-      <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-black from-0% via-black via-70% to-transparent to-100%" />
+      <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-black from-0% via-black via-70% to-transparent to-100%">
+        {logoAnim && (
+          <div className="absolute left-8 md:left-16 top-1/2 -translate-y-1/2 w-48 md:w-64">
+            <Lottie animationData={logoAnim} loop={true} />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
