@@ -29,7 +29,7 @@ const HeroSection = ({ onVideoClick }) => {
   const videoId = getYouTubeID(heroVideo.youtubeUrl);
 
   return (
-    <div className="relative h-[50vh] w-full overflow-hidden mb-8">
+    <div className="relative h-[30vh] md:h-[50vh] w-full overflow-hidden mb-4 md:mb-8">
       <div className="absolute inset-0 overflow-hidden">
         <iframe
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.77vh] h-[56.25vw] min-h-full min-w-full"
@@ -83,7 +83,7 @@ const getTemaColor = (tema) => {
 return (
     <div className="w-full mb-8">
       <div className="bg-zinc-900 rounded-xl">
-        <div className="grid grid-cols-2">
+        <div className="grid grid-cols-1 lg:grid-cols-2">
           <div className={`aspect-video overflow-hidden border-2 rounded-xl ${getBorderColor(inspireVideo.tema)}`}>
   <iframe
     className="w-full h-full rounded-xl"
@@ -95,7 +95,7 @@ return (
             />
           </div>
           <div className="flex flex-col items-center justify-center p-8">
-            <h2 className="text-3xl font-bold text-white">Lasciati Ispirare</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-white">Lasciati Ispirare</h2>
             <button 
               onClick={getRandomVideo}
               className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 rounded-full font-semibold hover:from-purple-700 hover:to-blue-700 transition-all mt-12 mb-5"
@@ -121,7 +121,7 @@ const FiltersSection = ({ onFilterChange, currentFilters }) => {
 
   return (
     <div className="bg-zinc-900 rounded-xl p-6 mb-8">
-      <div className="grid grid-cols-4 gap-4">
+      
         <div>
           <label className="block text-sm font-medium text-zinc-400 mb-2">Tema</label>
           <select 
@@ -204,7 +204,7 @@ const natureData = [
         <div className="overflow-hidden">
           <div className="flex transition-transform duration-500 ease-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
             {[0, 1].map(slideIndex => (
-              <div key={slideIndex} className="min-w-full grid grid-cols-4 gap-6 px-12">
+              <div key={slideIndex} className="min-w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 px-4 md:px-12">
                 {natureData.slice(slideIndex * 4, slideIndex * 4 + 4).map((nat) => (
                   <div key={nat.key} onClick={() => onSelectNature(nat.key)} className="group cursor-pointer bg-zinc-900 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl">
   <div className="relative aspect-[9/16]">
@@ -212,7 +212,7 @@ const natureData = [
                       <div className="absolute top-3 left-3 bg-purple-600 text-white text-xs px-3 py-1 rounded-full font-bold">{videoCounts[nat.key] || 0} video</div>
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                       <div className="absolute bottom-4 left-4 right-4">
-  <h3 className="text-white font-semibold text-[32px] text-center">{nat.name}</h3>
+  <h3 className="text-white font-semibold text-lg md:text-[32px] text-center">{nat.name}</h3>
 </div>
                     </div>
                   </div>
@@ -300,6 +300,7 @@ function App() {
   const [activeSection, setActiveSection] = useState('home');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [selectedTemaTag, setSelectedTemaTag] = useState(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedNatura, setSelectedNatura] = useState('Tutte');
   const [filters, setFilters] = useState({
     tema: 'Tutti',
@@ -348,7 +349,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-black flex">
-      <aside className="w-64 bg-zinc-900 border-r border-zinc-800 fixed left-0 top-0 h-full flex flex-col z-50">
+      <aside className={`w-64 bg-zinc-900 border-r border-zinc-800 fixed left-0 top-0 h-full flex flex-col z-50 transition-transform duration-300 lg:translate-x-0 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="p-6 border-b border-zinc-800">
           <div className="flex items-center gap-3">
             <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-2 rounded-xl"><PlayCircle size={28} strokeWidth={1.5} /></div>
@@ -369,10 +370,20 @@ function App() {
           </ul>
         </nav>
       </aside>
-      <div className="ml-64 flex-1">
+      <div className="lg:ml-64 flex-1">
         <header className="bg-black sticky top-0 z-40">
-          <div className="px-8 py-4 flex items-center justify-between gap-6">
-          <div className="flex-1 max-w-2xl">
+  <div className="px-4 lg:px-8 py-4 flex items-center justify-between gap-2 lg:gap-6">
+    <button 
+      onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+      className="lg:hidden text-white p-2"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+          <div className="flex-1 max-w-2xl hidden md:block">
   <div className="relative">
     {isSearchFocused && (
       <div className="absolute top-full left-0 mt-2 bg-zinc-900 rounded-lg shadow-xl py-2 min-w-[150px] z-50">
@@ -478,8 +489,11 @@ function App() {
 </div>
   </div>
 </div>
-            <div className="flex items-center gap-3">
-              <button className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2.5 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all font-medium text-sm"><Upload size={18} /><span>Segnala</span></button>
+            <div className="flex items-center gap-2 lg:gap-3">
+  <button className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-3 lg:px-4 py-2.5 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all font-medium text-sm">
+    <Upload size={18} />
+    <span className="hidden sm:inline">Segnala</span>
+  </button>
               <div className="relative">
                 <button onClick={() => setShowUserMenu(!showUserMenu)} className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 flex items-center justify-center text-white hover:from-purple-700 hover:to-blue-700 transition-all"><User size={20} /></button>
                 {showUserMenu && (
@@ -494,7 +508,7 @@ function App() {
             </div>
           </div>
         </header>
-        <main className="p-8 bg-black">
+        <main className="p-4 md:p-8 bg-black">
           {activeSection === 'home' && (
   <>
     <HeroSection onVideoClick={setSelectedVideo} />
