@@ -419,13 +419,14 @@ function App() {
       </div>
     )}
     <div className="relative">
-      {selectedTemaTag ? (
+      <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500 z-10" size={18} />
+{selectedTemaTag && (
   <button 
     onClick={(e) => {
       e.stopPropagation();
       setIsSearchFocused(!isSearchFocused);
     }}
-    className="absolute left-4 top-1/2 transform -translate-y-1/2 flex items-center gap-2 bg-zinc-800 px-2 py-1 rounded text-xs font-medium z-10"
+    className="absolute left-11 top-1/2 transform -translate-y-1/2 flex items-center gap-2 bg-zinc-800 px-2 py-1 rounded text-xs font-medium z-10"
     style={{ 
       color: selectedTemaTag === 'Alcool' ? '#eab308' : 
              selectedTemaTag === 'Azzardo' ? '#ef4444' : 
@@ -452,7 +453,7 @@ function App() {
 )}
 <input 
   type="text" 
-  placeholder={selectedTemaTag ? "Affina ricerca..." : "Cerca video..."} 
+  placeholder={selectedTemaTag ? `Cerca video a tema ${selectedTemaTag}` : "Cerca video..."} 
   value={searchQuery} 
   onChange={(e) => setSearchQuery(e.target.value)} 
   onFocus={(e) => {
@@ -463,15 +464,15 @@ function App() {
     if (!searchQuery && !selectedTemaTag) e.target.style.width = '400px';
     setTimeout(() => setIsSearchFocused(false), 200);
   }}
-        className="w-[400px] text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300 outline-none"
-        style={{ 
-          backgroundColor: '#262626',
-          paddingLeft: selectedTemaTag ? '140px' : '44px',
-          paddingRight: '16px',
-          paddingTop: '10px',
-          paddingBottom: '10px'
-        }}
-      />
+  className="w-[400px] text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300 outline-none"
+  style={{ 
+    backgroundColor: '#262626',
+    paddingLeft: selectedTemaTag ? '165px' : '44px',
+    paddingRight: selectedTemaTag || searchQuery ? '40px' : '16px',
+    paddingTop: '10px',
+    paddingBottom: '10px'
+  }}
+/>
     </div>
   </div>
 </div>
