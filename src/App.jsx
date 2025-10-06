@@ -1,5 +1,4 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import Lottie from 'lottie-react';
 import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu } from 'lucide-react';
 import Lottie from 'lottie-react';
 import { videos as videosData } from './videosData';
