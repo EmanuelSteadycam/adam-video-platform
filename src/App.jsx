@@ -298,6 +298,7 @@ function App() {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeSection, setActiveSection] = useState('home');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [selectedNatura, setSelectedNatura] = useState('Tutte');
   const [filters, setFilters] = useState({
     tema: 'Tutti',
@@ -370,19 +371,53 @@ function App() {
       <div className="ml-64 flex-1">
         <header className="bg-black sticky top-0 z-40">
           <div className="px-8 py-4 flex items-center justify-between gap-6">
-            <div className="flex-1 max-w-2xl">
-  <div className="relative">
+            <div className="flex-1 max-w-2xl flex items-center gap-4">
+  {isSearchFocused && (
+    <div className="flex gap-2">
+      <button 
+        onClick={() => setFilters({...filters, tema: 'Alcool'})}
+        className="px-4 py-2 bg-yellow-500 text-white rounded-lg text-sm font-medium hover:bg-yellow-600 transition-colors"
+      >
+        Alcool
+      </button>
+      <button 
+        onClick={() => setFilters({...filters, tema: 'Azzardo'})}
+        className="px-4 py-2 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600 transition-colors"
+      >
+        Azzardo
+      </button>
+      <button 
+        onClick={() => setFilters({...filters, tema: 'Digitale'})}
+        className="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors"
+      >
+        Digitale
+      </button>
+      <button 
+        onClick={() => setFilters({...filters, tema: 'Sostanze'})}
+        className="px-4 py-2 bg-green-500 text-white rounded-lg text-sm font-medium hover:bg-green-600 transition-colors"
+      >
+        Sostanze
+      </button>
+    </div>
+  )}
+  <div className="relative flex-1">
     <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500" size={18} />
     <input 
-  type="text" 
-  placeholder="Cerca video..." 
-  value={searchQuery} 
-  onChange={(e) => setSearchQuery(e.target.value)} 
-  onFocus={(e) => e.target.style.width = '100%'}
-  onBlur={(e) => !searchQuery && (e.target.style.width = '400px')}
-  className="w-[400px] pl-11 pr-4 py-2.5 text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300 outline-none"
-  style={{ backgroundColor: '#262626' }}
-/>
+      type="text" 
+      placeholder="Cerca video..." 
+      value={searchQuery} 
+      onChange={(e) => setSearchQuery(e.target.value)} 
+      onFocus={(e) => {
+        e.target.style.width = '100%';
+        setIsSearchFocused(true);
+      }}
+      onBlur={(e) => {
+        if (!searchQuery) e.target.style.width = '400px';
+        setTimeout(() => setIsSearchFocused(false), 200);
+      }}
+      className="w-[400px] pl-11 pr-4 py-2.5 text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300 outline-none"
+      style={{ backgroundColor: '#262626' }}
+    />
   </div>
 </div>
             <div className="flex items-center gap-3">
