@@ -299,6 +299,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeSection, setActiveSection] = useState('home');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [selectedTemaTag, setSelectedTemaTag] = useState(null);
   const [selectedNatura, setSelectedNatura] = useState('Tutte');
   const [filters, setFilters] = useState({
     tema: 'Tutti',
@@ -371,55 +372,90 @@ function App() {
       <div className="ml-64 flex-1">
         <header className="bg-black sticky top-0 z-40">
           <div className="px-8 py-4 flex items-center justify-between gap-6">
-           <div className="flex-1 max-w-2xl flex items-center gap-4">
-  {isSearchFocused && (
-    <div className="relative">
+           <div className="flex-1 max-w-2xl">
+  <div className="relative">
+    {selectedTemaTag && (
       <div className="absolute top-full left-0 mt-2 bg-zinc-900 rounded-lg shadow-xl py-2 min-w-[150px] z-50">
         <button 
-          onClick={() => setFilters({...filters, tema: 'Alcool'})}
-          className="w-full text-left px-4 py-2 text-white hover:bg-zinc-800 transition-colors text-sm"
+          onClick={() => {
+            setSelectedTemaTag('Alcool');
+            setFilters({...filters, tema: 'Alcool'});
+          }}
+          className="w-full text-left px-4 py-2 text-white hover:bg-zinc-800 transition-colors text-sm flex items-center justify-between"
         >
           Alcool
+          {selectedTemaTag === 'Alcool' && <span className="text-yellow-500">✓</span>}
         </button>
         <button 
-          onClick={() => setFilters({...filters, tema: 'Azzardo'})}
-          className="w-full text-left px-4 py-2 text-white hover:bg-zinc-800 transition-colors text-sm"
+          onClick={() => {
+            setSelectedTemaTag('Azzardo');
+            setFilters({...filters, tema: 'Azzardo'});
+          }}
+          className="w-full text-left px-4 py-2 text-white hover:bg-zinc-800 transition-colors text-sm flex items-center justify-between"
         >
           Azzardo
+          {selectedTemaTag === 'Azzardo' && <span className="text-red-500">✓</span>}
         </button>
         <button 
-          onClick={() => setFilters({...filters, tema: 'Digitale'})}
-          className="w-full text-left px-4 py-2 text-white hover:bg-zinc-800 transition-colors text-sm"
+          onClick={() => {
+            setSelectedTemaTag('Digitale');
+            setFilters({...filters, tema: 'Digitale'});
+          }}
+          className="w-full text-left px-4 py-2 text-white hover:bg-zinc-800 transition-colors text-sm flex items-center justify-between"
         >
           Digitale
+          {selectedTemaTag === 'Digitale' && <span className="text-blue-500">✓</span>}
         </button>
         <button 
-          onClick={() => setFilters({...filters, tema: 'Sostanze'})}
-          className="w-full text-left px-4 py-2 text-white hover:bg-zinc-800 transition-colors text-sm"
+          onClick={() => {
+            setSelectedTemaTag('Sostanze');
+            setFilters({...filters, tema: 'Sostanze'});
+          }}
+          className="w-full text-left px-4 py-2 text-white hover:bg-zinc-800 transition-colors text-sm flex items-center justify-between"
         >
           Sostanze
+          {selectedTemaTag === 'Sostanze' && <span className="text-green-500">✓</span>}
         </button>
       </div>
+    )}
+    <div className="relative">
+      {selectedTemaTag ? (
+        <button 
+          onClick={() => setSelectedTemaTag(selectedTemaTag)}
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 flex items-center gap-2 bg-zinc-800 px-2 py-1 rounded text-xs font-medium"
+          style={{ 
+            color: selectedTemaTag === 'Alcool' ? '#eab308' : 
+                   selectedTemaTag === 'Azzardo' ? '#ef4444' : 
+                   selectedTemaTag === 'Digitale' ? '#3b82f6' : '#22c55e'
+          }}
+        >
+          {selectedTemaTag}
+          <ChevronLeft size={12} className="rotate-[-90deg]" />
+        </button>
+      ) : (
+        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500" size={18} />
+      )}
+      <input 
+        type="text" 
+        placeholder={selectedTemaTag ? "Affina ricerca..." : "Cerca video..."} 
+        value={searchQuery} 
+        onChange={(e) => setSearchQuery(e.target.value)} 
+        onFocus={(e) => {
+          e.target.style.width = '100%';
+        }}
+        onBlur={(e) => {
+          if (!searchQuery && !selectedTemaTag) e.target.style.width = '400px';
+        }}
+        className="w-[400px] text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300 outline-none"
+        style={{ 
+          backgroundColor: '#262626',
+          paddingLeft: selectedTemaTag ? '140px' : '44px',
+          paddingRight: '16px',
+          paddingTop: '10px',
+          paddingBottom: '10px'
+        }}
+      />
     </div>
-  )}
-  <div className="relative flex-1">
-    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500" size={18} />
-    <input 
-      type="text" 
-      placeholder="Cerca video..." 
-      value={searchQuery} 
-      onChange={(e) => setSearchQuery(e.target.value)} 
-      onFocus={(e) => {
-        e.target.style.width = '100%';
-        setIsSearchFocused(true);
-      }}
-      onBlur={(e) => {
-        if (!searchQuery) e.target.style.width = '400px';
-        setTimeout(() => setIsSearchFocused(false), 200);
-      }}
-      className="w-[400px] pl-11 pr-4 py-2.5 text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300 outline-none"
-      style={{ backgroundColor: '#262626' }}
-    />
   </div>
 </div>
             <div className="flex items-center gap-3">
