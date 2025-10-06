@@ -420,34 +420,49 @@ function App() {
     )}
     <div className="relative">
       {selectedTemaTag ? (
-        <button 
-          onClick={() => setSelectedTemaTag(selectedTemaTag)}
-          className="absolute left-4 top-1/2 transform -translate-y-1/2 flex items-center gap-2 bg-zinc-800 px-2 py-1 rounded text-xs font-medium"
-          style={{ 
-            color: selectedTemaTag === 'Alcool' ? '#eab308' : 
-                   selectedTemaTag === 'Azzardo' ? '#ef4444' : 
-                   selectedTemaTag === 'Digitale' ? '#3b82f6' : '#22c55e'
-          }}
-        >
-          {selectedTemaTag}
-          <ChevronLeft size={12} className="rotate-[-90deg]" />
-        </button>
-      ) : (
-        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500" size={18} />
-      )}
-      <input 
-        type="text" 
-        placeholder={selectedTemaTag ? "Affina ricerca..." : "Cerca video..."} 
-        value={searchQuery} 
-        onChange={(e) => setSearchQuery(e.target.value)} 
-        onFocus={(e) => {
-  e.target.style.width = '100%';
-  setIsSearchFocused(true);
-}}
-onBlur={(e) => {
-  if (!searchQuery && !selectedTemaTag) e.target.style.width = '400px';
-  setTimeout(() => setIsSearchFocused(false), 200);
-}}
+  <button 
+    onClick={(e) => {
+      e.stopPropagation();
+      setIsSearchFocused(!isSearchFocused);
+    }}
+    className="absolute left-4 top-1/2 transform -translate-y-1/2 flex items-center gap-2 bg-zinc-800 px-2 py-1 rounded text-xs font-medium z-10"
+    style={{ 
+      color: selectedTemaTag === 'Alcool' ? '#eab308' : 
+             selectedTemaTag === 'Azzardo' ? '#ef4444' : 
+             selectedTemaTag === 'Digitale' ? '#3b82f6' : '#22c55e'
+    }}
+  >
+    {selectedTemaTag}
+    <ChevronLeft size={12} className="rotate-[-90deg]" />
+  </button>
+) : (
+  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500" size={18} />
+)}
+{(selectedTemaTag || searchQuery) && (
+  <button
+    onClick={() => {
+      setSelectedTemaTag(null);
+      setSearchQuery('');
+      setFilters({...filters, tema: 'Tutti'});
+    }}
+    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-zinc-500 hover:text-white transition-colors z-10"
+  >
+    <X size={18} />
+  </button>
+)}
+<input 
+  type="text" 
+  placeholder={selectedTemaTag ? "Affina ricerca..." : "Cerca video..."} 
+  value={searchQuery} 
+  onChange={(e) => setSearchQuery(e.target.value)} 
+  onFocus={(e) => {
+    e.target.style.width = '100%';
+    if (!selectedTemaTag) setIsSearchFocused(true);
+  }}
+  onBlur={(e) => {
+    if (!searchQuery && !selectedTemaTag) e.target.style.width = '400px';
+    setTimeout(() => setIsSearchFocused(false), 200);
+  }}
         className="w-[400px] text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300 outline-none"
         style={{ 
           backgroundColor: '#262626',
