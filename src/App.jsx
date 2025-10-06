@@ -386,7 +386,7 @@ function App() {
 >
   <Menu size={24} />
 </button>
-          <div className="flex-1 max-w-2xl">
+          <div className="flex-1 max-w-2xl hidden md:block">
   <div className="relative">
     {isSearchFocused && (
       <div className="absolute top-full left-0 mt-2 bg-zinc-900 rounded-lg shadow-xl py-2 min-w-[150px] z-50">
@@ -515,6 +515,112 @@ function App() {
           {activeSection === 'home' && (
   <>
     <HeroSection onVideoClick={setSelectedVideo} />
+    <div className="md:hidden mb-6">
+      <div className="relative">
+        {isSearchFocused && (
+          <div className="absolute top-full left-0 mt-2 bg-zinc-900 rounded-lg shadow-xl py-2 min-w-[150px] z-50">
+            <button 
+              onClick={() => {
+                setSelectedTemaTag('Alcool');
+                setFilters({...filters, tema: 'Alcool'});
+              }}
+              className="w-full text-left px-4 py-2 text-white hover:bg-zinc-800 transition-colors text-sm flex items-center justify-between"
+            >
+              Alcool
+              {selectedTemaTag === 'Alcool' && <span className="text-yellow-500">✓</span>}
+            </button>
+            <button 
+              onClick={() => {
+                setSelectedTemaTag('Azzardo');
+                setFilters({...filters, tema: 'Azzardo'});
+              }}
+              className="w-full text-left px-4 py-2 text-white hover:bg-zinc-800 transition-colors text-sm flex items-center justify-between"
+            >
+              Azzardo
+              {selectedTemaTag === 'Azzardo' && <span className="text-red-500">✓</span>}
+            </button>
+            <button 
+              onClick={() => {
+                setSelectedTemaTag('Digitale');
+                setFilters({...filters, tema: 'Digitale'});
+              }}
+              className="w-full text-left px-4 py-2 text-white hover:bg-zinc-800 transition-colors text-sm flex items-center justify-between"
+            >
+              Digitale
+              {selectedTemaTag === 'Digitale' && <span className="text-blue-500">✓</span>}
+            </button>
+            <button 
+              onClick={() => {
+                setSelectedTemaTag('Sostanze');
+                setFilters({...filters, tema: 'Sostanze'});
+              }}
+              className="w-full text-left px-4 py-2 text-white hover:bg-zinc-800 transition-colors text-sm flex items-center justify-between"
+            >
+              Sostanze
+              {selectedTemaTag === 'Sostanze' && <span className="text-green-500">✓</span>}
+            </button>
+          </div>
+        )}
+        <div className={`relative transition-all duration-300 w-full`}>
+          {selectedTemaTag && (
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsSearchFocused(!isSearchFocused);
+              }}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 flex items-center gap-2 bg-zinc-800 px-2 py-1 rounded text-xs font-medium z-10"
+              style={{ 
+                color: selectedTemaTag === 'Alcool' ? '#eab308' : 
+                       selectedTemaTag === 'Azzardo' ? '#ef4444' : 
+                       selectedTemaTag === 'Digitale' ? '#3b82f6' : '#22c55e'
+              }}
+            >
+              {selectedTemaTag}
+              <ChevronLeft size={12} className="rotate-[-90deg]" />
+            </button>
+          )}
+          <Search className={`absolute ${selectedTemaTag ? 'left-[120px]' : 'left-4'} top-1/2 transform -translate-y-1/2 text-zinc-500 z-10`} size={18} />
+          {(selectedTemaTag || searchQuery) && (
+            <button
+              onClick={(e) => {
+                setSelectedTemaTag(null);
+                setSearchQuery('');
+                setFilters({...filters, tema: 'Tutti'});
+              }}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-zinc-500 hover:text-white transition-colors z-10"
+            >
+              <X size={18} />
+            </button>
+          )}
+          <input 
+            type="text" 
+            placeholder={selectedTemaTag ? `Cerca video a tema ${selectedTemaTag}` : "Cerca video..."} 
+            value={searchQuery} 
+            onChange={(e) => setSearchQuery(e.target.value)} 
+            onFocus={(e) => {
+              e.target.parentElement.classList.remove('w-[400px]');
+              e.target.parentElement.classList.add('w-full');
+              if (!selectedTemaTag) setIsSearchFocused(true);
+            }}
+            onBlur={(e) => {
+              if (!searchQuery && !selectedTemaTag) {
+                e.target.parentElement.classList.remove('w-full');
+                e.target.parentElement.classList.add('w-[400px]');
+              }
+              setTimeout(() => setIsSearchFocused(false), 200);
+            }}
+            className="w-full text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300 outline-none"
+            style={{ 
+              backgroundColor: '#262626',
+              paddingLeft: selectedTemaTag ? '155px' : '44px',
+              paddingRight: '40px',
+              paddingTop: '10px',
+              paddingBottom: '10px'
+            }}
+          />
+        </div>
+      </div>
+    </div>
     <NatureCarousel onSelectNature={(natura) => { setSelectedNatura(natura); setActiveSection('all'); }} />
     <FiltersSection onFilterChange={setFilters} currentFilters={filters} />
   </>
