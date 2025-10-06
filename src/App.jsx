@@ -392,7 +392,7 @@ function App() {
             </div>
           </div>
         </header>
-        <main className="p-8">
+        <main className="p-8 bg-black">
           {activeSection === 'home' && (
   <>
     <HeroSection onVideoClick={setSelectedVideo} />
