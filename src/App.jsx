@@ -371,11 +371,20 @@ function App() {
         <header className="bg-black sticky top-0 z-40">
           <div className="px-8 py-4 flex items-center justify-between gap-6">
             <div className="flex-1 max-w-2xl">
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500" size={18} />
-                <input type="text" placeholder="Cerca video..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full pl-11 pr-4 py-2.5 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-zinc-500 text-sm" />
-              </div>
-            </div>
+  <div className="relative">
+    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500" size={18} />
+    <input 
+      type="text" 
+      placeholder="Cerca video..." 
+      value={searchQuery} 
+      onChange={(e) => setSearchQuery(e.target.value)} 
+      onFocus={(e) => e.target.style.width = '100%'}
+      onBlur={(e) => !searchQuery && (e.target.style.width = '400px')}
+      className="w-[400px] pl-11 pr-4 py-2.5 text-white rounded-lg placeholder-zinc-500 text-sm transition-all duration-300"
+      style={{ backgroundColor: '#262626' }}
+    />
+  </div>
+</div>
             <div className="flex items-center gap-3">
               <button className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2.5 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all font-medium text-sm"><Upload size={18} /><span>Segnala</span></button>
               <div className="relative">
