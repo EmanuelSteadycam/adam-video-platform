@@ -371,33 +371,35 @@ function App() {
       <div className="ml-64 flex-1">
         <header className="bg-black sticky top-0 z-40">
           <div className="px-8 py-4 flex items-center justify-between gap-6">
-            <div className="flex-1 max-w-2xl flex items-center gap-4">
+           <div className="flex-1 max-w-2xl flex items-center gap-4">
   {isSearchFocused && (
-    <div className="flex gap-2">
-      <button 
-        onClick={() => setFilters({...filters, tema: 'Alcool'})}
-        className="px-4 py-2 bg-yellow-500 text-white rounded-lg text-sm font-medium hover:bg-yellow-600 transition-colors"
-      >
-        Alcool
-      </button>
-      <button 
-        onClick={() => setFilters({...filters, tema: 'Azzardo'})}
-        className="px-4 py-2 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600 transition-colors"
-      >
-        Azzardo
-      </button>
-      <button 
-        onClick={() => setFilters({...filters, tema: 'Digitale'})}
-        className="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors"
-      >
-        Digitale
-      </button>
-      <button 
-        onClick={() => setFilters({...filters, tema: 'Sostanze'})}
-        className="px-4 py-2 bg-green-500 text-white rounded-lg text-sm font-medium hover:bg-green-600 transition-colors"
-      >
-        Sostanze
-      </button>
+    <div className="relative">
+      <div className="absolute top-full left-0 mt-2 bg-zinc-900 rounded-lg shadow-xl py-2 min-w-[150px] z-50">
+        <button 
+          onClick={() => setFilters({...filters, tema: 'Alcool'})}
+          className="w-full text-left px-4 py-2 text-white hover:bg-zinc-800 transition-colors text-sm"
+        >
+          Alcool
+        </button>
+        <button 
+          onClick={() => setFilters({...filters, tema: 'Azzardo'})}
+          className="w-full text-left px-4 py-2 text-white hover:bg-zinc-800 transition-colors text-sm"
+        >
+          Azzardo
+        </button>
+        <button 
+          onClick={() => setFilters({...filters, tema: 'Digitale'})}
+          className="w-full text-left px-4 py-2 text-white hover:bg-zinc-800 transition-colors text-sm"
+        >
+          Digitale
+        </button>
+        <button 
+          onClick={() => setFilters({...filters, tema: 'Sostanze'})}
+          className="w-full text-left px-4 py-2 text-white hover:bg-zinc-800 transition-colors text-sm"
+        >
+          Sostanze
+        </button>
+      </div>
     </div>
   )}
   <div className="relative flex-1">
