@@ -438,19 +438,18 @@ function App() {
   )}
   <Search className={`absolute ${selectedTemaTag ? 'left-[120px]' : 'left-4'} top-1/2 transform -translate-y-1/2 text-zinc-500 z-10`} size={18} />
   {(selectedTemaTag || searchQuery) && (
-        <button
-  onClick={(e) => {
-    const input = e.target.closest('.relative').querySelector('input');
-    input.style.width = '400px';
-    setSelectedTemaTag(null);
-    setSearchQuery('');
-    setFilters({...filters, tema: 'Tutti'});
-  }}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 text-zinc-500 hover:text-white transition-colors z-10"
-        >
-          <X size={18} />
-        </button>
-      )}
+  <button
+    onClick={(e) => {
+      setSelectedTemaTag(null);
+      setSearchQuery('');
+      setFilters({...filters, tema: 'Tutti'});
+    }}
+    className="absolute top-1/2 transform -translate-y-1/2 text-zinc-500 hover:text-white transition-colors z-10"
+    style={{ right: selectedTemaTag || searchQuery ? 'calc(100% - 390px)' : '16px' }}
+  >
+    <X size={18} />
+  </button>
+)}
       <input 
         type="text" 
         placeholder={selectedTemaTag ? `Cerca video a tema ${selectedTemaTag}` : "Cerca video..."} 
