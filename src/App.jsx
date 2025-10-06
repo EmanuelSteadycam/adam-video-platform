@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import Lottie from 'lottie-react';
-import logoAnimation from './logo-animation.json';
 import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu } from 'lucide-react';
 import { videos as videosData } from './videosData';
 
