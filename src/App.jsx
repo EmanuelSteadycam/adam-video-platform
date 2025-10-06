@@ -432,7 +432,7 @@ function App() {
         </button>
       </div>
     )}
-   <div className={`relative transition-all duration-300 ${selectedTemaTag && !searchQuery ? 'w-[400px]' : 'w-full'}`}>
+   <div className={`relative transition-all duration-300 ${selectedTemaTag && !searchQuery ? 'w-full md:w-[400px]' : 'w-full'}`}>
   {selectedTemaTag && (
     <button 
       onClick={(e) => {
