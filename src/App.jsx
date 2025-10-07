@@ -180,7 +180,7 @@ return (
             <h2 className="text-2xl md:text-3xl font-bold text-white">Lasciati Ispirare</h2>
             <button 
               onClick={getRandomVideo}
-              className="bg-gradient-to-r from-yellow-400 to-amber-600 text-white p-4 rounded-full font-semibold hover:from-yellow-500 hover:to-amber-700 transition-all mt-12 mb-5"
+              className="bg-zinc-800 text-zinc-300 p-4 rounded-full font-semibold hover:bg-zinc-700 hover:text-white transition-all mt-12 mb-5"
             >
               <Shuffle size={32} />
             </button>
@@ -453,7 +453,7 @@ function App() {
       <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-purple-900 to-zinc-900 flex items-center justify-center p-4">
         <div className="bg-zinc-900/80 backdrop-blur-xl rounded-2xl shadow-2xl p-10 max-w-md w-full border border-zinc-800">
           <div className="text-center mb-8">
-            <div className="inline-block bg-gradient-to-r from-yellow-400 to-amber-600 text-white p-5 rounded-2xl mb-6"><PlayCircle size={56} strokeWidth={1.5} /></div>
+            <div className="inline-block bg-zinc-800 text-zinc-300 p-5 rounded-2xl mb-6"><PlayCircle size={56} strokeWidth={1.5} /></div>
             <h1 className="text-4xl font-bold text-white mb-2">ADAM</h1>
             <p className="text-xl text-[#FFDA2A] font-medium mb-3">Archivio Digitale Addiction e Media</p>
             <p className="text-zinc-400 text-sm">Piattaforma per operatori sociali, studenti e insegnanti</p>
@@ -480,7 +480,7 @@ function App() {
 <aside className={`w-64 bg-zinc-900 border-r border-zinc-800 fixed left-0 top-0 h-full flex flex-col z-50 transition-transform duration-300 lg:translate-x-0 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
   <div className="p-6 border-b border-zinc-800">
     <div className="flex items-center gap-3">
-      <div className="bg-gradient-to-r from-yellow-400 to-amber-600 text-white p-2 rounded-xl"><PlayCircle size={28} strokeWidth={1.5} /></div>
+      <div className="bg-zinc-800 text-zinc-300 p-2 rounded-xl"><PlayCircle size={28} strokeWidth={1.5} /></div>
       <div>
         <h1 className="text-2xl font-bold text-white">ADAM</h1>
         <p className="text-[10px] text-zinc-400">Archivio Digitale Addiction e Media</p>
@@ -489,12 +489,12 @@ function App() {
   </div>
   <nav className="flex-1 p-4 overflow-y-auto">
     <ul className="space-y-2">
-      <li><button onClick={() => { setActiveSection('home'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'home' ? 'bg-zinc-800 text-white' : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'}`}>Home</button></li>
-      <li><button onClick={() => { setActiveSection('formats'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'formats' ? 'bg-zinc-800 text-white' : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'}`}>I Formati ADAM</button></li>
-      <li><button onClick={() => { setActiveSection('most-viewed'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'most-viewed' ? 'bg-zinc-800 text-white' : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'}`}>I Più Visti</button></li>
-      <li><button onClick={() => { setActiveSection('recent'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'recent' ? 'bg-zinc-800 text-white' : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'}`}>Nuovi Inseriti</button></li>
-      <li><button onClick={() => { setActiveSection('schools'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'schools' ? 'bg-zinc-800 text-white' : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'}`}>Prodotti dalle Scuole</button></li>
-      <li><button onClick={() => { setActiveSection('inspire'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'inspire' ? 'bg-zinc-800 text-white' : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'}`}>Lasciati Ispirare</button></li>
+      <li><button onClick={() => { setActiveSection('home'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'home' ? 'bg-zinc-800 text-zinc-300' : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'}`}>Home</button></li>
+      <li><button onClick={() => { setActiveSection('formats'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'formats' ? 'bg-zinc-800 text-zinc-300' : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'}`}>I Formati ADAM</button></li>
+      <li><button onClick={() => { setActiveSection('most-viewed'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'most-viewed' ? 'bg-zinc-800 text-zinc-300' : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'}`}>I Più Visti</button></li>
+      <li><button onClick={() => { setActiveSection('recent'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'recent' ? 'bg-zinc-800 text-zinc-300' : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'}`}>Nuovi Inseriti</button></li>
+      <li><button onClick={() => { setActiveSection('schools'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'schools' ? 'bg-zinc-800 text-zinc-300' : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'}`}>Prodotti dalle Scuole</button></li>
+      <li><button onClick={() => { setActiveSection('inspire'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'inspire' ? 'bg-zinc-800 text-zinc-300' : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'}`}>Lasciati Ispirare</button></li>
     </ul>
   </nav>
 </aside>
@@ -619,7 +619,7 @@ function App() {
     <span className="hidden sm:inline">Segnala</span>
   </button>
               <div className="relative">
-                <button onClick={() => setShowUserMenu(!showUserMenu)} className="w-10 h-10 rounded-full bg-gradient-to-r from-yellow-400 to-amber-600 flex items-center justify-center text-white hover:from-yellow-500 hover:to-amber-700 transition-all"><User size={20} /></button>
+                <button onClick={() => setShowUserMenu(!showUserMenu)} className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-white hover:bg-zinc-700 hover:text-white transition-all"><User size={20} /></button>
                 {showUserMenu && (
                   <div className="absolute right-0 mt-3 w-56 bg-zinc-900 border border-zinc-800 rounded-lg shadow-2xl py-2">
                     <button className="block w-full text-left px-4 py-3 text-zinc-300 hover:bg-zinc-800 transition-colors">Il mio profilo</button>
