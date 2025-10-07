@@ -9,6 +9,44 @@ const getYouTubeID = (url) => {
   return (match && match[2].length === 11) ? match[2] : null;
 };
 
+const VideoThumbnail = ({ youtubeUrl, title, className = "" }) => {
+  const [thumbnailIndex, setThumbnailIndex] = useState(0);
+  const [isError, setIsError] = useState(false);
+  
+  const videoId = getYouTubeID(youtubeUrl);
+  
+  const thumbnailOptions = [
+    `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+    `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
+    `https://img.youtube.com/vi/${videoId}/default.jpg`
+  ];
+
+  const handleError = () => {
+    if (thumbnailIndex < thumbnailOptions.length - 1) {
+      setThumbnailIndex(prev => prev + 1);
+    } else {
+      setIsError(true);
+    }
+  };
+
+  if (isError) {
+    return (
+      <div className={`w-full h-full bg-gradient-to-br from-purple-900/50 to-blue-900/50 flex items-center justify-center ${className}`}>
+        <PlayCircle className="text-white/30" size={64} strokeWidth={1} />
+      </div>
+    );
+  }
+
+  return (
+    <img 
+      src={thumbnailOptions[thumbnailIndex]}
+      alt={title} 
+      className={className}
+      onError={handleError}
+    />
+  );
+};
+
 const addRandomViews = (videos) => {
   return videos.map(video => ({
     ...video,
@@ -256,14 +294,11 @@ const VideoCard = ({ video, onClick }) => (
   <div onClick={onClick} className="group cursor-pointer bg-zinc-900 rounded-lg overflow-hidden transition-all duration-300 transform hover:scale-105">
     <div className="relative overflow-hidden aspect-video">
     
-  <img 
-  src={`https://img.youtube.com/vi/${getYouTubeID(video.youtubeUrl)}/hqdefault.jpg`}
-  alt={video.title} 
-  className="w-full h-full object-cover"
-  onError={(e) => {
-    e.target.src = `https://img.youtube.com/vi/${getYouTubeID(video.youtubeUrl)}/mqdefault.jpg`;
-  }}
-/>
+  <VideoThumbnail 
+    youtubeUrl={video.youtubeUrl}
+    title={video.title}
+    className="w-full h-full object-cover"
+  />
       <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
         <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <PlayCircle className="text-white" size={56} strokeWidth={1.5} />
