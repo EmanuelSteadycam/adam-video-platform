@@ -21,6 +21,7 @@ const mockVideos = addRandomViews(videosData);
 const HeroSection = ({ onVideoClick }) => {
   const [heroVideo, setHeroVideo] = useState(null);
   const [logoAnim, setLogoAnim] = useState(null);
+  const lottieRef = useRef(null);
   
   useEffect(() => {
     setHeroVideo(mockVideos[Math.floor(Math.random() * mockVideos.length)]);
@@ -49,8 +50,18 @@ const HeroSection = ({ onVideoClick }) => {
       <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-black from-0% via-black via-70% to-transparent to-100%">
   {logoAnim && (
     <div className="absolute left-4 md:left-8 top-[20%] -translate-y-1/2 w-48 md:w-80">
-      <Lottie animationData={logoAnim} loop={true} autoplay={true} />
-    </div>
+  <Lottie 
+    animationData={logoAnim} 
+    loop={true} 
+    autoplay={true}
+    lottieRef={lottieRef}
+    onComplete={() => {
+      if (lottieRef.current) {
+        lottieRef.current.setDirection(lottieRef.current.playDirection * -1);
+      }
+    }}
+  />
+</div>
   )}
 </div>
     </div>
