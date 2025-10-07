@@ -144,20 +144,20 @@ const InspireSection = ({ onVideoClick }) => {
 
 const getTemaColor = (tema) => {
     const colors = {
-      'Alcool': 'bg-yellow-500',
-      'Azzardo': 'bg-red-500',
-      'Digitale': 'bg-blue-500',
-      'Sostanze': 'bg-green-500'
+      'Alcool': 'bg-amber-700',
+      'Azzardo': 'bg-rose-900',
+      'Digitale': 'bg-blue-900',
+      'Sostanze': 'bg-emerald-800'
     };
     return colors[tema] || 'bg-gray-500';
   };
 
  const getBorderColor = (tema) => {
     const colors = {
-      'Alcool': 'border-yellow-500',
-      'Azzardo': 'border-red-500',
-      'Digitale': 'border-blue-500',
-      'Sostanze': 'border-green-500'
+      'Alcool': 'border-amber-700',
+      'Azzardo': 'border-rose-900',
+      'Digitale': 'border-blue-900',
+      'Sostanze': 'border-emerald-800'
     };
     return colors[tema] || 'border-gray-500';
   };
