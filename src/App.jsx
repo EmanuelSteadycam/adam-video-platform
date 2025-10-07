@@ -311,39 +311,70 @@ const natureData = [
   );
 };
 
-const VideoCard = ({ video, onClick }) => (
-  <div onClick={onClick} className="group cursor-pointer bg-zinc-900 rounded-lg overflow-hidden transition-all duration-300 transform hover:scale-105">
-    <div className="relative overflow-hidden aspect-video">
-    
-  <VideoThumbnail 
-    youtubeUrl={video.youtubeUrl}
-    title={video.title}
-    className="w-full h-full object-cover"
-  />
-      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <PlayCircle className="text-white" size={56} strokeWidth={1.5} />
+const VideoCard = ({ video, onClick }) => {
+  const getTemaColor = (tema) => {
+    const colors = {
+      'Alcool': '#eab308',
+      'Azzardo': '#ef4444',
+      'Digitale': '#3b82f6',
+      'Sostanze': '#22c55e'
+    };
+    return colors[tema] || '#6b7280';
+  };
+
+  const getFormatIcon = (natura) => {
+    // Ritorna orientamento: vertical per 9:16, horizontal per 16:9
+    const verticalFormats = ['Cortometraggio', 'Sequenze', 'Videoclip', 'Web e social'];
+    return verticalFormats.includes(natura) ? 'vertical' : 'horizontal';
+  };
+
+  return (
+    <div onClick={onClick} className="group cursor-pointer bg-zinc-900 rounded-lg overflow-hidden transition-all duration-300 transform hover:scale-105">
+      <div className="relative overflow-hidden aspect-video">
+        <VideoThumbnail 
+          youtubeUrl={video.youtubeUrl}
+          title={video.title}
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <PlayCircle className="text-white" size={56} strokeWidth={1.5} />
+          </div>
         </div>
+        <div className="absolute bottom-3 right-3 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded font-medium">{video.duration || 'N/D'}</div>
+        {video.prodottoScuola && (
+          <div className="absolute top-3 left-3 text-black text-xs px-2 py-1 rounded-full flex items-center gap-1 font-medium" style={{ backgroundColor: '#FFDA2A' }}>
+            <School size={12} />
+            <span>Scuola</span>
+          </div>
+        )}
       </div>
-      <div className="absolute bottom-3 right-3 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded font-medium">{video.duration || 'N/D'}</div>
-      {video.prodottoScuola && (
-        <div className="absolute top-3 left-3 bg-[#FFDA2A] text-black text-xs px-2 py-1 rounded-full flex items-center gap-1 font-medium">
-          <School size={12} />
-          <span>Scuola</span>
+      
+      {/* Linea colorata tematica */}
+      <div className="h-1" style={{ backgroundColor: getTemaColor(video.tema) }}></div>
+      
+      <div className="p-4">
+        <h3 className="font-medium text-white mb-2 line-clamp-2 text-sm group-hover:text-zinc-300 transition-colors">{video.title}</h3>
+        <div className="flex items-center justify-between text-xs text-zinc-400 mb-2">
+          <div className="flex items-center gap-3">
+            <span>{video.year}</span>
+            <span className="flex items-center gap-1"><Eye size={12} />{video.views}</span>
+          </div>
+          {/* Icona formato */}
+          <div className="flex items-center gap-1">
+            {getFormatIcon(video.natura) === 'vertical' ? (
+              <div className="w-2 h-3 border border-zinc-400 rounded-sm"></div>
+            ) : (
+              <div className="w-3 h-2 border border-zinc-400 rounded-sm"></div>
+            )}
+          </div>
         </div>
-      )}
-    </div>
-    <div className="p-4">
-      <h3 className="font-medium text-white mb-2 line-clamp-2 text-sm group-hover:text-[#FFDA2A] transition-colors">{video.title}</h3>
-      <div className="flex items-center justify-between text-xs text-zinc-400">
-        <div className="flex items-center gap-3">
-          <span>{video.year}</span>
-          <span className="flex items-center gap-1"><Eye size={12} />{video.views}</span>
-        </div>
+        {/* Info Natura */}
+        <div className="text-xs text-zinc-500">{video.natura}</div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const VideoModal = ({ video, onClose }) => {
   const videoId = getYouTubeID(video.youtubeUrl);
