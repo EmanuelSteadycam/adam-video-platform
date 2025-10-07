@@ -314,10 +314,10 @@ const natureData = [
 const VideoCard = ({ video, onClick }) => {
   const getTemaColor = (tema) => {
     const colors = {
-      'Alcool': '#eab308',
-      'Azzardo': '#ef4444',
-      'Digitale': '#3b82f6',
-      'Sostanze': '#22c55e'
+      'Alcool': '#b45309',
+      'Azzardo': '#881337',
+      'Digitale': '#1e3a8a',
+      'Sostanze': '#065f46'
     };
     return colors[tema] || '#6b7280';
   };
