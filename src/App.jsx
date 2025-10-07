@@ -256,14 +256,13 @@ const VideoCard = ({ video, onClick }) => (
   <div onClick={onClick} className="group cursor-pointer bg-zinc-900 rounded-lg overflow-hidden transition-all duration-300 transform hover:scale-105">
     <div className="relative overflow-hidden aspect-video">
       <img 
-  src={video.thumbnail} 
+  <img 
+  src={`https://img.youtube.com/vi/${getYouTubeID(video.youtubeUrl)}/maxresdefault.jpg`}
   alt={video.title} 
   className="w-full h-full object-cover"
   onError={(e) => {
-    // Fallback se l'immagine non carica
-    const videoId = video.youtubeUrl.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/)?.[1];
+    const videoId = getYouTubeID(video.youtubeUrl);
     if (videoId) {
-      // Prova prima con hqdefault, poi sddefault come ultimo fallback
       if (e.target.src.includes('maxresdefault')) {
         e.target.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
       } else if (e.target.src.includes('hqdefault')) {
