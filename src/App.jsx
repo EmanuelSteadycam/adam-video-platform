@@ -266,17 +266,20 @@ const VideoCard = ({ video, onClick }) => (
       if (e.target.src.includes('maxresdefault')) {
         e.target.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
       } else if (e.target.src.includes('hqdefault')) {
-        e.target.src = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
+        e.target.src = `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+      } else if (e.target.src.includes('mqdefault')) {
+        e.target.src = `https://img.youtube.com/vi/${videoId}/default.jpg`;
       } else {
-        // Placeholder finale - immagine grigia con icona
-        e.target.style.display = 'none';
-        e.target.parentElement.innerHTML = `
-          <div class="w-full h-full bg-zinc-800 flex items-center justify-center">
-            <svg class="text-zinc-600" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <polygon points="5 3 19 12 5 21 5 3"></polygon>
-            </svg>
-          </div>
+        // Se anche default.jpg fallisce (video privato/cancellato), mostra placeholder
+        const placeholder = document.createElement('div');
+        placeholder.className = 'w-full h-full bg-gradient-to-br from-zinc-800 to-zinc-900 flex flex-col items-center justify-center gap-3';
+        placeholder.innerHTML = `
+          <svg class="text-zinc-600" width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          <span class="text-zinc-500 text-xs">Anteprima non disponibile</span>
         `;
+        e.target.parentElement.replaceChild(placeholder, e.target);
       }
     }
   }}
