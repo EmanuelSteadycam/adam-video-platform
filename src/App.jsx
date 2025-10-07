@@ -257,31 +257,11 @@ const VideoCard = ({ video, onClick }) => (
     <div className="relative overflow-hidden aspect-video">
     
   <img 
-  src={`https://img.youtube.com/vi/${getYouTubeID(video.youtubeUrl)}/maxresdefault.jpg`}
+  src={`https://img.youtube.com/vi/${getYouTubeID(video.youtubeUrl)}/hqdefault.jpg`}
   alt={video.title} 
-  className="w-full h-full object-cover bg-zinc-800"
+  className="w-full h-full object-cover"
   onError={(e) => {
-    const videoId = getYouTubeID(video.youtubeUrl);
-    if (videoId) {
-      if (e.target.src.includes('maxresdefault')) {
-        e.target.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-      } else if (e.target.src.includes('hqdefault')) {
-        e.target.src = `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
-      } else if (e.target.src.includes('mqdefault')) {
-        e.target.src = `https://img.youtube.com/vi/${videoId}/default.jpg`;
-      } else {
-        // Se anche default.jpg fallisce (video privato/cancellato), mostra placeholder
-        const placeholder = document.createElement('div');
-        placeholder.className = 'w-full h-full bg-gradient-to-br from-zinc-800 to-zinc-900 flex flex-col items-center justify-center gap-3';
-        placeholder.innerHTML = `
-          <svg class="text-zinc-600" width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
-          <span class="text-zinc-500 text-xs">Anteprima non disponibile</span>
-        `;
-        e.target.parentElement.replaceChild(placeholder, e.target);
-      }
-    }
+    e.target.src = `https://img.youtube.com/vi/${getYouTubeID(video.youtubeUrl)}/mqdefault.jpg`;
   }}
 />
       <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
