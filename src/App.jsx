@@ -259,7 +259,7 @@ const VideoCard = ({ video, onClick }) => (
   <img 
   src={`https://img.youtube.com/vi/${getYouTubeID(video.youtubeUrl)}/maxresdefault.jpg`}
   alt={video.title} 
-  className="w-full h-full object-cover"
+  className="w-full h-full object-cover bg-zinc-800"
   onError={(e) => {
     const videoId = getYouTubeID(video.youtubeUrl);
     if (videoId) {
@@ -267,6 +267,16 @@ const VideoCard = ({ video, onClick }) => (
         e.target.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
       } else if (e.target.src.includes('hqdefault')) {
         e.target.src = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
+      } else {
+        // Placeholder finale - immagine grigia con icona
+        e.target.style.display = 'none';
+        e.target.parentElement.innerHTML = `
+          <div class="w-full h-full bg-zinc-800 flex items-center justify-center">
+            <svg class="text-zinc-600" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+          </div>
+        `;
       }
     }
   }}
