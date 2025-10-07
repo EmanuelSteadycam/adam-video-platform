@@ -461,7 +461,7 @@ function App() {
           <div className="space-y-4">
             <input type="email" placeholder="Email" className="w-full px-4 py-4 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-[#FFDA2A] focus:border-transparent placeholder-zinc-500" />
             <input type="password" placeholder="Password" className="w-full px-4 py-4 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-[#FFDA2A] focus:border-transparent placeholder-zinc-500" />
-            <button onClick={() => setIsLoggedIn(true)} className="w-full bg-gradient-to-r from-yellow-400 to-amber-600 text-white py-4 rounded-lg font-semibold hover:from-yellow-500 hover:to-amber-700 transition-all">Accedi</button>
+            <button onClick={() => setIsLoggedIn(true)} className="w-full bg-zinc-800 text-zinc-300 py-4 rounded-lg font-semibold hover:bg-white hover:text-black transition-all">Accedi</button>
           </div>
         </div>
       </div>
@@ -614,7 +614,7 @@ function App() {
   </div>
 </div>
             <div className="flex items-center gap-2 lg:gap-3">
-  <button className="flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-amber-600 text-white px-3 lg:px-4 py-2.5 rounded-lg hover:from-yellow-500 hover:to-amber-700 transition-all font-medium text-sm">
+  <button className="flex items-center gap-2 text-black px-3 lg:px-4 py-2.5 rounded-lg hover:bg-yellow-600 transition-all font-medium text-sm" style={{ backgroundColor: '#FFDA2A' }}>
     <Upload size={18} />
     <span className="hidden sm:inline">Segnala</span>
   </button>
