@@ -255,7 +255,23 @@ const natureData = [
 const VideoCard = ({ video, onClick }) => (
   <div onClick={onClick} className="group cursor-pointer bg-zinc-900 rounded-lg overflow-hidden transition-all duration-300 transform hover:scale-105">
     <div className="relative overflow-hidden aspect-video">
-      <img src={video.thumbnail} alt={video.title} className="w-full h-full object-cover" />
+      <img 
+  src={video.thumbnail} 
+  alt={video.title} 
+  className="w-full h-full object-cover"
+  onError={(e) => {
+    // Fallback se l'immagine non carica
+    const videoId = video.youtubeUrl.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/)?.[1];
+    if (videoId) {
+      // Prova prima con hqdefault, poi sddefault come ultimo fallback
+      if (e.target.src.includes('maxresdefault')) {
+        e.target.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+      } else if (e.target.src.includes('hqdefault')) {
+        e.target.src = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
+      }
+    }
+  }}
+/>
       <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
         <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <PlayCircle className="text-white" size={56} strokeWidth={1.5} />
