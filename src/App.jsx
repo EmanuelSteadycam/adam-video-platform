@@ -361,12 +361,9 @@ const VideoCard = ({ video, onClick }) => {
             <span className="flex items-center gap-1"><Eye size={12} />{video.views}</span>
           </div>
           {/* Icona formato */}
-          <div className="flex items-center gap-1">
-            {getFormatIcon(video.natura) === 'vertical' ? (
-              <div className="w-2 h-3 border border-zinc-400 rounded-sm"></div>
-            ) : (
-              <div className="w-3 h-2 border border-zinc-400 rounded-sm"></div>
-            )}
+          {/* Icona formato */}
+          <div className="flex items-center gap-1 text-zinc-400">
+            <Video size={12} />
           </div>
         </div>
         {/* Info Natura */}
