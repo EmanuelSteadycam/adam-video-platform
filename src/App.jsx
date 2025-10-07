@@ -255,7 +255,7 @@ const natureData = [
 const VideoCard = ({ video, onClick }) => (
   <div onClick={onClick} className="group cursor-pointer bg-zinc-900 rounded-lg overflow-hidden transition-all duration-300 transform hover:scale-105">
     <div className="relative overflow-hidden aspect-video">
-      <img 
+    
   <img 
   src={`https://img.youtube.com/vi/${getYouTubeID(video.youtubeUrl)}/maxresdefault.jpg`}
   alt={video.title} 
