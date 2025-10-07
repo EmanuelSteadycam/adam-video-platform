@@ -405,8 +405,7 @@ const VideoModal = ({ video, onClose }) => {
             <span className="bg-blue-600/20 text-blue-400 px-3 py-1.5 rounded-full text-sm font-medium border border-blue-600/30">{video.natura}</span>
           </div>
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-white mb-3">Descrizione</h3>
-            <p className="text-zinc-400 leading-relaxed">{video.description}</p>
+            <p className="text-zinc-400 leading-relaxed line-clamp-2">{video.description}</p>
           </div>
         </div>
       </div>
