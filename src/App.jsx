@@ -180,7 +180,7 @@ return (
             <h2 className="text-2xl md:text-3xl font-bold text-white">Lasciati Ispirare</h2>
             <button 
               onClick={getRandomVideo}
-              className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 rounded-full font-semibold hover:from-purple-700 hover:to-blue-700 transition-all mt-12 mb-5"
+              className="bg-gradient-to-r from-yellow-400 to-amber-600 text-white p-4 rounded-full font-semibold hover:from-yellow-500 hover:to-amber-700 transition-all mt-12 mb-5"
             >
               <Shuffle size={32} />
             </button>
@@ -209,7 +209,7 @@ const FiltersSection = ({ onFilterChange, currentFilters }) => {
           <select 
             value={currentFilters.tema}
             onChange={(e) => onFilterChange({ ...currentFilters, tema: e.target.value })}
-            className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-purple-600"
+            className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-[#FFDA2A]"
           >
             {temi.map(tema => <option key={tema} value={tema}>{tema}</option>)}
           </select>
@@ -219,7 +219,7 @@ const FiltersSection = ({ onFilterChange, currentFilters }) => {
           <select 
             value={currentFilters.natura}
             onChange={(e) => onFilterChange({ ...currentFilters, natura: e.target.value })}
-            className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-purple-600"
+            className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-[#FFDA2A]"
           >
             {nature.map(natura => <option key={natura} value={natura}>{natura}</option>)}
           </select>
@@ -229,7 +229,7 @@ const FiltersSection = ({ onFilterChange, currentFilters }) => {
           <select 
             value={currentFilters.year}
             onChange={(e) => onFilterChange({ ...currentFilters, year: e.target.value })}
-            className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-purple-600"
+            className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-[#FFDA2A]"
           >
             {years.map(year => <option key={year} value={year}>{year}</option>)}
           </select>
@@ -239,7 +239,7 @@ const FiltersSection = ({ onFilterChange, currentFilters }) => {
           <select 
             value={currentFilters.scuola}
             onChange={(e) => onFilterChange({ ...currentFilters, scuola: e.target.value })}
-            className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-purple-600"
+            className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-[#FFDA2A]"
           >
             <option value="Tutti">Tutti</option>
             <option value="Scuole">Solo Scuole</option>
@@ -291,7 +291,7 @@ const natureData = [
                   <div key={nat.key} onClick={() => onSelectNature(nat.key)} className="group cursor-pointer bg-zinc-900 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl">
   <div className="relative aspect-[9/16]">
                       <img src={nat.image} alt={nat.name} className="w-full h-full object-cover" />
-                      <div className="absolute top-3 left-3 bg-purple-600 text-white text-xs px-3 py-1 rounded-full font-bold">{videoCounts[nat.key] || 0} video</div>
+                      <div className="absolute top-3 left-3 bg-[#FFDA2A] text-black text-xs px-3 py-1 rounded-full font-bold">{videoCounts[nat.key] || 0} video</div>
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                       <div className="absolute bottom-4 left-4 right-4">
   <h3 className="text-white font-semibold text-lg md:text-[32px] text-center">{nat.name}</h3>
@@ -327,14 +327,14 @@ const VideoCard = ({ video, onClick }) => (
       </div>
       <div className="absolute bottom-3 right-3 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded font-medium">{video.duration || 'N/D'}</div>
       {video.prodottoScuola && (
-        <div className="absolute top-3 left-3 bg-purple-600 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 font-medium">
+        <div className="absolute top-3 left-3 bg-[#FFDA2A] text-black text-xs px-2 py-1 rounded-full flex items-center gap-1 font-medium">
           <School size={12} />
           <span>Scuola</span>
         </div>
       )}
     </div>
     <div className="p-4">
-      <h3 className="font-medium text-white mb-2 line-clamp-2 text-sm group-hover:text-purple-400 transition-colors">{video.title}</h3>
+      <h3 className="font-medium text-white mb-2 line-clamp-2 text-sm group-hover:text-[#FFDA2A] transition-colors">{video.title}</h3>
       <div className="flex items-center justify-between text-xs text-zinc-400">
         <div className="flex items-center gap-3">
           <span>{video.year}</span>
@@ -398,10 +398,10 @@ const VideoModal = ({ video, onClose }) => {
             <div className="flex items-center gap-2"><Calendar size={16} /><span>{video.year}</span></div>
             <div className="flex items-center gap-2"><Eye size={16} /><span>{video.views} visualizzazioni</span></div>
             <div className="flex items-center gap-2"><Video size={16} /><span>{video.format}</span></div>
-            {video.prodottoScuola && <div className="flex items-center gap-2 text-purple-400"><School size={16} /><span>Prodotto da scuole</span></div>}
+            {video.prodottoScuola && <div className="flex items-center gap-2 text-[#FFDA2A]"><School size={16} /><span>Prodotto da scuole</span></div>}
           </div>
           <div className="flex gap-3 mb-6">
-            <span className="bg-purple-600/20 text-purple-400 px-3 py-1.5 rounded-full text-sm font-medium border border-purple-600/30">{video.tema}</span>
+            <span className="bg-[#FFDA2A]/20 text-[#FFDA2A] px-3 py-1.5 rounded-full text-sm font-medium border border-purple-600/30">{video.tema}</span>
             <span className="bg-blue-600/20 text-blue-400 px-3 py-1.5 rounded-full text-sm font-medium border border-blue-600/30">{video.natura}</span>
           </div>
           <div className="mb-6">
@@ -453,15 +453,15 @@ function App() {
       <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-purple-900 to-zinc-900 flex items-center justify-center p-4">
         <div className="bg-zinc-900/80 backdrop-blur-xl rounded-2xl shadow-2xl p-10 max-w-md w-full border border-zinc-800">
           <div className="text-center mb-8">
-            <div className="inline-block bg-gradient-to-r from-purple-600 to-blue-600 text-white p-5 rounded-2xl mb-6"><PlayCircle size={56} strokeWidth={1.5} /></div>
+            <div className="inline-block bg-gradient-to-r from-yellow-400 to-amber-600 text-white p-5 rounded-2xl mb-6"><PlayCircle size={56} strokeWidth={1.5} /></div>
             <h1 className="text-4xl font-bold text-white mb-2">ADAM</h1>
-            <p className="text-xl text-purple-400 font-medium mb-3">Archivio Digitale Addiction e Media</p>
+            <p className="text-xl text-[#FFDA2A] font-medium mb-3">Archivio Digitale Addiction e Media</p>
             <p className="text-zinc-400 text-sm">Piattaforma per operatori sociali, studenti e insegnanti</p>
           </div>
           <div className="space-y-4">
-            <input type="email" placeholder="Email" className="w-full px-4 py-4 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-zinc-500" />
-            <input type="password" placeholder="Password" className="w-full px-4 py-4 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-zinc-500" />
-            <button onClick={() => setIsLoggedIn(true)} className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-4 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all">Accedi</button>
+            <input type="email" placeholder="Email" className="w-full px-4 py-4 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-[#FFDA2A] focus:border-transparent placeholder-zinc-500" />
+            <input type="password" placeholder="Password" className="w-full px-4 py-4 bg-zinc-800 border border-zinc-700 text-white rounded-lg focus:ring-2 focus:ring-[#FFDA2A] focus:border-transparent placeholder-zinc-500" />
+            <button onClick={() => setIsLoggedIn(true)} className="w-full bg-gradient-to-r from-yellow-400 to-amber-600 text-white py-4 rounded-lg font-semibold hover:from-yellow-500 hover:to-amber-700 transition-all">Accedi</button>
           </div>
         </div>
       </div>
@@ -480,7 +480,7 @@ function App() {
 <aside className={`w-64 bg-zinc-900 border-r border-zinc-800 fixed left-0 top-0 h-full flex flex-col z-50 transition-transform duration-300 lg:translate-x-0 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
   <div className="p-6 border-b border-zinc-800">
     <div className="flex items-center gap-3">
-      <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-2 rounded-xl"><PlayCircle size={28} strokeWidth={1.5} /></div>
+      <div className="bg-gradient-to-r from-yellow-400 to-amber-600 text-white p-2 rounded-xl"><PlayCircle size={28} strokeWidth={1.5} /></div>
       <div>
         <h1 className="text-2xl font-bold text-white">ADAM</h1>
         <p className="text-[10px] text-zinc-400">Archivio Digitale Addiction e Media</p>
@@ -489,12 +489,12 @@ function App() {
   </div>
   <nav className="flex-1 p-4 overflow-y-auto">
     <ul className="space-y-2">
-      <li><button onClick={() => { setActiveSection('home'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'home' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>Home</button></li>
-      <li><button onClick={() => { setActiveSection('formats'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'formats' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>I Formati ADAM</button></li>
-      <li><button onClick={() => { setActiveSection('most-viewed'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'most-viewed' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>I Più Visti</button></li>
-      <li><button onClick={() => { setActiveSection('recent'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'recent' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>Nuovi Inseriti</button></li>
-      <li><button onClick={() => { setActiveSection('schools'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'schools' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>Prodotti dalle Scuole</button></li>
-      <li><button onClick={() => { setActiveSection('inspire'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'inspire' ? 'bg-purple-600 text-white' : 'text-zinc-300 hover:bg-zinc-800'}`}>Lasciati Ispirare</button></li>
+      <li><button onClick={() => { setActiveSection('home'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'home' ? 'bg-[#FFDA2A] text-black' : 'text-zinc-300 hover:bg-zinc-800'}`}>Home</button></li>
+      <li><button onClick={() => { setActiveSection('formats'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'formats' ? 'bg-[#FFDA2A] text-black' : 'text-zinc-300 hover:bg-zinc-800'}`}>I Formati ADAM</button></li>
+      <li><button onClick={() => { setActiveSection('most-viewed'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'most-viewed' ? 'bg-[#FFDA2A] text-black' : 'text-zinc-300 hover:bg-zinc-800'}`}>I Più Visti</button></li>
+      <li><button onClick={() => { setActiveSection('recent'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'recent' ? 'bg-[#FFDA2A] text-black' : 'text-zinc-300 hover:bg-zinc-800'}`}>Nuovi Inseriti</button></li>
+      <li><button onClick={() => { setActiveSection('schools'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'schools' ? 'bg-[#FFDA2A] text-black' : 'text-zinc-300 hover:bg-zinc-800'}`}>Prodotti dalle Scuole</button></li>
+      <li><button onClick={() => { setActiveSection('inspire'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'inspire' ? 'bg-[#FFDA2A] text-black' : 'text-zinc-300 hover:bg-zinc-800'}`}>Lasciati Ispirare</button></li>
     </ul>
   </nav>
 </aside>
@@ -614,12 +614,12 @@ function App() {
   </div>
 </div>
             <div className="flex items-center gap-2 lg:gap-3">
-  <button className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-3 lg:px-4 py-2.5 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all font-medium text-sm">
+  <button className="flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-amber-600 text-white px-3 lg:px-4 py-2.5 rounded-lg hover:from-yellow-500 hover:to-amber-700 transition-all font-medium text-sm">
     <Upload size={18} />
     <span className="hidden sm:inline">Segnala</span>
   </button>
               <div className="relative">
-                <button onClick={() => setShowUserMenu(!showUserMenu)} className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 flex items-center justify-center text-white hover:from-purple-700 hover:to-blue-700 transition-all"><User size={20} /></button>
+                <button onClick={() => setShowUserMenu(!showUserMenu)} className="w-10 h-10 rounded-full bg-gradient-to-r from-yellow-400 to-amber-600 flex items-center justify-center text-white hover:from-yellow-500 hover:to-amber-700 transition-all"><User size={20} /></button>
                 {showUserMenu && (
                   <div className="absolute right-0 mt-3 w-56 bg-zinc-900 border border-zinc-800 rounded-lg shadow-2xl py-2">
                     <button className="block w-full text-left px-4 py-3 text-zinc-300 hover:bg-zinc-800 transition-colors">Il mio profilo</button>
