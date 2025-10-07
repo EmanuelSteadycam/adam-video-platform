@@ -3,6 +3,26 @@ import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogO
 import Lottie from 'lottie-react';
 import { videos as videosData } from './videosData';
 
+// Aggiungi gli stili per la scrollbar custom
+const styles = document.createElement('style');
+styles.textContent = `
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #18181b;
+    border-radius: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #7c3aed;
+    border-radius: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #6d28d9;
+  }
+`;
+document.head.appendChild(styles);
+
 const getYouTubeID = (url) => {
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
   const match = url.match(regExp);
@@ -336,7 +356,14 @@ const VideoModal = ({ video, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="bg-zinc-900 rounded-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+      <div 
+        className="bg-zinc-900 rounded-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar" 
+        onClick={e => e.stopPropagation()}
+        style={{
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#7c3aed #18181b'
+        }}
+      >
         <div className="relative">
           <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
             <iframe 
