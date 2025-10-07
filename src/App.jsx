@@ -144,12 +144,12 @@ const InspireSection = ({ onVideoClick }) => {
 
 const getTemaColor = (tema) => {
     const colors = {
-      'Alcool': 'bg-amber-700',
-      'Azzardo': 'bg-rose-900',
-      'Digitale': 'bg-blue-900',
-      'Sostanze': 'bg-emerald-800'
+      'Alcool': '#D97706',
+      'Azzardo': '#BE123C',
+      'Digitale': '#1e3a8a',
+      'Sostanze': '#065f46'
     };
-    return colors[tema] || 'bg-gray-500';
+    return colors[tema] || '#6b7280';
   };
 
  const getBorderColor = (tema) => {
@@ -382,8 +382,8 @@ const VideoModal = ({ video, onClose }) => {
 
   const getTemaScrollbarColor = (tema) => {
     const colors = {
-      'Alcool': '#b45309',
-      'Azzardo': '#881337',
+      'Alcool': '#D97706',
+      'Azzardo': '#BE123C',
       'Digitale': '#1e3a8a',
       'Sostanze': '#065f46'
     };
