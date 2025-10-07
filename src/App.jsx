@@ -298,12 +298,27 @@ const VideoCard = ({ video, onClick }) => (
 
 const VideoModal = ({ video, onClose }) => {
   const videoId = getYouTubeID(video.youtubeUrl);
+  const [key, setKey] = useState(0);
+
+  useEffect(() => {
+    // Forza il ricaricamento dell'iframe quando il modal si apre
+    setKey(prev => prev + 1);
+  }, [video]);
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div className="bg-zinc-900 rounded-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
         <div className="relative">
           <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
-            <iframe className="absolute top-0 left-0 w-full h-full" src={`https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1`} title={video.title} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+            <iframe 
+              key={key}
+              className="absolute top-0 left-0 w-full h-full" 
+              src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0&modestbranding=1`} 
+              title={video.title} 
+              frameBorder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowFullScreen 
+            />
           </div>
           <button onClick={onClose} className="absolute top-6 right-6 bg-black bg-opacity-80 text-white p-2 rounded-full hover:bg-opacity-100 transition-all z-10"><X size={24} /></button>
         </div>
