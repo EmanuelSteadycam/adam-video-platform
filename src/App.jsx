@@ -6,19 +6,19 @@ import { videos as videosData } from './videosData';
 // Aggiungi gli stili per la scrollbar custom
 const styles = document.createElement('style');
 styles.textContent = `
-  .custom-scrollbar::-webkit-scrollbar {
+  .modal-scrollbar::-webkit-scrollbar {
     width: 8px;
   }
-  .custom-scrollbar::-webkit-scrollbar-track {
+  .modal-scrollbar::-webkit-scrollbar-track {
     background: #18181b;
     border-radius: 4px;
   }
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #7c3aed;
+  .modal-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-color, #7c3aed);
     border-radius: 4px;
   }
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #6d28d9;
+  .modal-scrollbar::-webkit-scrollbar-thumb:hover {
+    opacity: 0.8;
   }
 `;
 document.head.appendChild(styles);
@@ -349,19 +349,32 @@ const VideoModal = ({ video, onClose }) => {
   const videoId = getYouTubeID(video.youtubeUrl);
   const [key, setKey] = useState(0);
 
+  const getTemaScrollbarColor = (tema) => {
+    const colors = {
+      'Alcool': '#eab308',
+      'Azzardo': '#ef4444',
+      'Digitale': '#3b82f6',
+      'Sostanze': '#22c55e'
+    };
+    return colors[tema] || '#7c3aed';
+  };
+
   useEffect(() => {
     // Forza il ricaricamento dell'iframe quando il modal si apre
     setKey(prev => prev + 1);
   }, [video]);
 
+  const scrollbarColor = getTemaScrollbarColor(video.tema);
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div 
-        className="bg-zinc-900 rounded-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar" 
+        className="bg-zinc-900 rounded-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto modal-scrollbar" 
         onClick={e => e.stopPropagation()}
         style={{
           scrollbarWidth: 'thin',
-          scrollbarColor: '#7c3aed #18181b'
+          scrollbarColor: `${scrollbarColor} #18181b`,
+          '--scrollbar-color': scrollbarColor
         }}
       >
         <div className="relative">
