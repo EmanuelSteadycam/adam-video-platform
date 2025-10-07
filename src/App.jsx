@@ -31,8 +31,9 @@ const VideoThumbnail = ({ youtubeUrl, title, className = "" }) => {
 
   if (isError) {
     return (
-      <div className={`w-full h-full bg-gradient-to-br from-purple-900/50 to-blue-900/50 flex items-center justify-center ${className}`}>
-        <PlayCircle className="text-white/30" size={64} strokeWidth={1} />
+      <div className="w-full h-full bg-gradient-to-br from-purple-900 to-blue-900 flex items-center justify-center relative">
+        <div className="absolute inset-0 bg-black/40" />
+        <PlayCircle className="text-white/50 relative z-10" size={80} strokeWidth={1.5} />
       </div>
     );
   }
