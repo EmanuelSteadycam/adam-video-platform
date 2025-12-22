@@ -711,12 +711,12 @@ function App() {
         {playlist.length}
       </span>
     )}
-  </button>
+ </button>
   <button className="flex items-center gap-2 text-black px-3 lg:px-4 py-2.5 rounded-lg hover:bg-yellow-600 transition-all font-medium text-sm" style={{ backgroundColor: '#FFDA2A' }}>
     <Upload size={18} />
     <span className="hidden sm:inline">Segnala</span>
   </button>
-              <div className="relative">
+  <div className="relative">
                 <button onClick={() => setShowUserMenu(!showUserMenu)} className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-white hover:bg-zinc-700 hover:text-white transition-all"><User size={20} /></button>
                 {showUserMenu && (
                   <div className="absolute right-0 mt-3 w-56 bg-zinc-900 border border-zinc-800 rounded-lg shadow-2xl py-2">
