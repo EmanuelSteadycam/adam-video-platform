@@ -360,9 +360,9 @@ const VideoCard = ({ video, onClick }) => {
             <span>{video.year}</span>
             <span className="flex items-center gap-1"><Eye size={12} />{video.views}</span>
           </div>
-          {/* Icona formato */}
-          <div className="flex items-center gap-1 text-zinc-400" title={video.formato}>
-            {video.formato === 'verticale' ? (
+         {/* Icona formato */}
+          <div className="flex items-center gap-1 text-zinc-400" title={video.format}>
+            {video.format === 'verticale' ? (
               <Smartphone size={12} />
             ) : (
               <Monitor size={12} />
