@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor } from 'lucide-react';
+import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward } from 'lucide-react';
 import Lottie from 'lottie-react';
 import { videos as videosData } from './videosData';
 
@@ -467,6 +467,53 @@ function App() {
     year: 'Tutti',
     scuola: 'Tutti'
   });
+  const [playlist, setPlaylist] = useState([]);
+  const [showPlaylist, setShowPlaylist] = useState(false);
+  const [playingPlaylist, setPlayingPlaylist] = useState(false);
+  const [currentPlaylistIndex, setCurrentPlaylistIndex] = useState(0);
+
+  // Carica playlist all'avvio
+  useEffect(() => {
+    const loadPlaylist = async () => {
+      try {
+        const data = await window.storage.get('user-playlist');
+        if (data && data.value) {
+          setPlaylist(JSON.parse(data.value));
+        }
+      } catch (err) {
+        console.log('Nessuna playlist salvata');
+      }
+    };
+    loadPlaylist();
+  }, []);
+
+  // Salva playlist quando cambia
+  useEffect(() => {
+    const savePlaylist = async () => {
+      try {
+        await window.storage.set('user-playlist', JSON.stringify(playlist));
+      } catch (err) {
+        console.error('Errore salvataggio playlist:', err);
+      }
+    };
+    if (playlist.length > 0) {
+      savePlaylist();
+    }
+  }, [playlist]);
+
+  const addToPlaylist = (video) => {
+    if (!playlist.find(v => v.id === video.id)) {
+      setPlaylist([...playlist, video]);
+    }
+  };
+
+  const removeFromPlaylist = (videoId) => {
+    setPlaylist(playlist.filter(v => v.id !== videoId));
+  };
+
+  const isInPlaylist = (videoId) => {
+    return playlist.some(v => v.id === videoId);
+  };
 
   const filteredVideos = useMemo(() => {
     let filtered = mockVideos;
@@ -652,6 +699,19 @@ function App() {
   </div>
 </div>
             <div className="flex items-center gap-2 lg:gap-3">
+  <div className="flex items-center gap-2 lg:gap-3">
+  <button 
+    onClick={() => setShowPlaylist(true)}
+    className="relative flex items-center gap-2 bg-zinc-800 text-zinc-300 px-3 lg:px-4 py-2.5 rounded-lg hover:bg-zinc-700 hover:text-white transition-all font-medium text-sm"
+  >
+    <List size={18} />
+    <span className="hidden sm:inline">Playlist</span>
+    {playlist.length > 0 && (
+      <span className="absolute -top-1 -right-1 text-black text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold" style={{ backgroundColor: '#FFDA2A' }}>
+        {playlist.length}
+      </span>
+    )}
+  </button>
   <button className="flex items-center gap-2 text-black px-3 lg:px-4 py-2.5 rounded-lg hover:bg-yellow-600 transition-all font-medium text-sm" style={{ backgroundColor: '#FFDA2A' }}>
     <Upload size={18} />
     <span className="hidden sm:inline">Segnala</span>
