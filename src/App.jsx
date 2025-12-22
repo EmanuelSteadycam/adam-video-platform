@@ -367,7 +367,6 @@ const VideoCard = ({ video, onClick }) => {
             ) : (
               <Monitor size={12} />
             )}
-            )}
           </div>
         </div>
         {/* Info Natura */}
