@@ -428,7 +428,14 @@ const VideoModal = ({ video, onClose }) => {
             <div className="flex items-center gap-2"><Clock size={16} /><span>{video.duration || 'N/D'}</span></div>
             <div className="flex items-center gap-2"><Calendar size={16} /><span>{video.year}</span></div>
             <div className="flex items-center gap-2"><Eye size={16} /><span>{video.views} visualizzazioni</span></div>
-            <div className="flex items-center gap-2"><Video size={16} /><span>{video.format}</span></div>
+            <div className="flex items-center gap-2">
+              {video.format === 'verticale' ? (
+                <Smartphone size={16} />
+              ) : (
+                <Monitor size={16} />
+              )}
+              <span>{video.format}</span>
+            </div>
             {video.prodottoScuola && <div className="flex items-center gap-2 text-[#FFDA2A]"><School size={16} /><span>Prodotto da scuole</span></div>}
           </div>
           <div className="flex gap-3 mb-6">
