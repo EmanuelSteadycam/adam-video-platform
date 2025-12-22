@@ -698,8 +698,7 @@ function App() {
 </div>
   </div>
 </div>
-            <div className="flex items-center gap-2 lg:gap-3">
-  <div className="flex items-center gap-2 lg:gap-3">
+           <div className="flex items-center gap-2 lg:gap-3">
   <button 
     onClick={() => setShowPlaylist(true)}
     className="relative flex items-center gap-2 bg-zinc-800 text-zinc-300 px-3 lg:px-4 py-2.5 rounded-lg hover:bg-zinc-700 hover:text-white transition-all font-medium text-sm"
@@ -728,6 +727,7 @@ function App() {
                 )}
               </div>
             </div>
+          </div>
         </header>
         <main className="p-4 md:p-8 bg-black">
           {activeSection === 'home' && (
