@@ -414,7 +414,7 @@ const VideoModal = ({ video, onClose }) => {
   const scrollbarColor = getTemaScrollbarColor(video.tema);
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center p-4" onClick={onClose}>
+    <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div 
         className="bg-zinc-900 rounded-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto modal-scrollbar" 
         onClick={e => e.stopPropagation()}
@@ -436,7 +436,7 @@ const VideoModal = ({ video, onClose }) => {
               allowFullScreen 
             />
           </div>
-          <button onClick={onClose} className="absolute top-6 right-6 bg-black bg-opacity-80 text-white p-2 rounded-full hover:bg-opacity-100 transition-all z-10"><X size={24} /></button>
+          <button onClick={onClose} className="absolute top-6 right-6 md:top-6 md:-right-14 bg-black bg-opacity-80 text-white p-2 rounded-full hover:bg-opacity-100 transition-all z-10"><X size={24} /></button>
         </div>
         <div className="p-8">
           <h2 className="text-3xl font-bold text-white mb-4">{video.title}</h2>
