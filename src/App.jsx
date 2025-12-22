@@ -311,7 +311,7 @@ const natureData = [
   );
 };
 
-const VideoCard = ({ video, onClick }) => {
+const VideoCard = ({ video, onClick, onAddToPlaylist, isInPlaylist }) => {
   const getTemaColor = (tema) => {
     const colors = {
       'Alcool': '#b45309',
@@ -352,6 +352,22 @@ const VideoCard = ({ video, onClick }) => {
       
       {/* Linea colorata tematica */}
       <div className="h-1" style={{ backgroundColor: getTemaColor(video.tema) }}></div>
+      
+      {/* Pulsante Playlist */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onAddToPlaylist(video);
+        }}
+        className="absolute top-3 right-3 bg-black bg-opacity-80 hover:bg-opacity-100 text-white p-2 rounded-full transition-all z-10"
+        title={isInPlaylist ? "In playlist" : "Aggiungi a playlist"}
+      >
+        {isInPlaylist ? (
+          <Check size={16} style={{ color: '#FFDA2A' }} />
+        ) : (
+          <Plus size={16} />
+        )}
+      </button>
       
       <div className="p-4">
         <h3 className="font-medium text-white mb-2 line-clamp-2 text-sm group-hover:text-zinc-300 transition-colors">{video.title}</h3>
@@ -858,7 +874,7 @@ function App() {
             <p className="text-zinc-400 mt-2">{filteredVideos.length} video trovati</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredVideos.map(video => <VideoCard key={video.id} video={video} onClick={() => setSelectedVideo(video)} />)}
+            {filteredVideos.map(video => <VideoCard key={video.id} video={video} onClick={() => setSelectedVideo(video)} onAddToPlaylist={addToPlaylist} isInPlaylist={isInPlaylist(video.id)} />)}
           </div>
           {filteredVideos.length === 0 && (
             <div className="text-center py-20">
