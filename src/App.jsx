@@ -363,9 +363,10 @@ const VideoCard = ({ video, onClick }) => {
           {/* Icona formato */}
           <div className="flex items-center gap-1 text-zinc-400" title={video.formato}>
             {video.formato === 'verticale' ? (
-              <Video size={12} className="rotate-90" />
+              <Smartphone size={12} />
             ) : (
-              <Video size={12} />
+              <Monitor size={12} />
+            )}
             )}
           </div>
         </div>
