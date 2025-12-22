@@ -728,7 +728,6 @@ function App() {
                 )}
               </div>
             </div>
-          </div>
         </header>
         <main className="p-4 md:p-8 bg-black">
           {activeSection === 'home' && (
