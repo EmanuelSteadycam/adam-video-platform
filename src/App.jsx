@@ -440,7 +440,7 @@ const VideoModal = ({ video, onClose }) => {
         </div>
         <div className="p-8">
           <h2 className="text-3xl font-bold text-white mb-4">{video.title}</h2>
-          <div className="flex flex-wrap gap-6 mb-6 text-sm text-zinc-400">
+         <div className="flex flex-wrap gap-6 mb-6 text-sm text-zinc-400">
             <div className="flex items-center gap-2"><Clock size={16} /><span>{video.duration || 'N/D'}</span></div>
             <div className="flex items-center gap-2"><Calendar size={16} /><span>{video.year}</span></div>
             <div className="flex items-center gap-2"><Eye size={16} /><span>{video.views} visualizzazioni</span></div>
@@ -452,8 +452,33 @@ const VideoModal = ({ video, onClose }) => {
               )}
               <span>{video.format}</span>
             </div>
-            {video.prodottoScuola && <div className="flex items-center gap-2 text-[#FFDA2A]"><School size={16} /><span>Prodotto da scuole</span></div>}
+            {video.prodottoScuola && <div className="flex items-center gap-2 text-purple-400"><School size={16} /><span>Prodotto da scuole</span></div>}
           </div>
+          
+          {/* Pulsante Aggiungi a Playlist */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              window.videoModalAddToPlaylist?.(video);
+            }}
+            className="mb-6 flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all"
+            style={{ 
+              backgroundColor: window.videoModalIsInPlaylist?.(video.id) ? '#FFDA2A' : '#27272a',
+              color: window.videoModalIsInPlaylist?.(video.id) ? '#000' : '#d4d4d8'
+            }}
+          >
+            {window.videoModalIsInPlaylist?.(video.id) ? (
+              <>
+                <Check size={16} />
+                <span>In Playlist</span>
+              </>
+            ) : (
+              <>
+                <Plus size={16} />
+                <span>Aggiungi a Playlist</span>
+              </>
+            )}
+          </button>
           <div className="flex gap-3 mb-6">
             <span className="bg-[#FFDA2A]/20 text-[#FFDA2A] px-3 py-1.5 rounded-full text-sm font-medium border border-purple-600/30">{video.tema}</span>
             <span className="bg-blue-600/20 text-blue-400 px-3 py-1.5 rounded-full text-sm font-medium border border-blue-600/30">{video.natura}</span>
@@ -885,7 +910,11 @@ function App() {
           )}
         </main>
       </div>
-      {selectedVideo && <VideoModal video={selectedVideo} onClose={() => setSelectedVideo(null)} />}
+      {selectedVideo && (() => {
+        window.videoModalAddToPlaylist = addToPlaylist;
+        window.videoModalIsInPlaylist = isInPlaylist;
+        return <VideoModal video={selectedVideo} onClose={() => setSelectedVideo(null)} />;
+      })()}
     </div>
   );
 }
