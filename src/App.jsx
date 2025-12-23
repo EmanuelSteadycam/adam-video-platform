@@ -615,32 +615,7 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
             onStateChange: (event) => {
               // 0 = video finito
               if (event.data === 0) {
-                // Controlla se era in fullscreen
-                const isFullscreen = document.fullscreenElement || 
-                                   document.webkitFullscreenElement || 
-                                   document.mozFullScreenElement;
-                
-                if (isFullscreen) {
-                  // Salva stato fullscreen
-                  playerRef.current = { wasFullscreen: true };
-                }
-                
                 onNext();
-              }
-            },
-            onReady: (event) => {
-              // Se il video precedente era fullscreen, ripristina
-              if (playerRef.current?.wasFullscreen) {
-                setTimeout(() => {
-                  const iframe = event.target.getIframe();
-                  if (iframe.requestFullscreen) {
-                    iframe.requestFullscreen();
-                  } else if (iframe.webkitRequestFullscreen) {
-                    iframe.webkitRequestFullscreen();
-                  } else if (iframe.mozRequestFullScreen) {
-                    iframe.mozRequestFullScreen();
-                  }
-                }, 500);
               }
             }
           }
@@ -679,14 +654,8 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
   return (
     <div className="fixed inset-0 bg-black z-50 flex flex-col">
       {/* Header */}
-      <div className="bg-zinc-900 px-6 py-4 flex items-center justify-between border-b border-zinc-800">
-        <div className="flex items-center gap-4">
-          <button 
-            onClick={onClose}
-            className="text-zinc-400 hover:text-white transition-colors"
-          >
-            <X size={24} />
-          </button>
+      <div className="bg-zinc-900 px-6 py-3 flex items-center justify-between border-b border-zinc-800">
+        <div className="flex items-center gap-6">
           <div>
             <h3 className="text-white font-semibold">Riproduzione Playlist</h3>
             <p className="text-zinc-400 text-sm">{currentIndex + 1} di {playlist.length}</p>
@@ -694,20 +663,26 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
         </div>
         
         {/* Controlli */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-6">
           <button
             onClick={onPrevious}
             disabled={currentIndex === 0}
             className="text-white hover:text-zinc-300 disabled:text-zinc-600 disabled:cursor-not-allowed transition-colors"
           >
-            <SkipBack size={24} />
+            <SkipBack size={32} />
           </button>
           <button
             onClick={onNext}
             disabled={currentIndex === playlist.length - 1}
             className="text-white hover:text-zinc-300 disabled:text-zinc-600 disabled:cursor-not-allowed transition-colors"
           >
-            <SkipForward size={24} />
+            <SkipForward size={32} />
+          </button>
+          <button 
+            onClick={onClose}
+            className="text-zinc-400 hover:text-white transition-colors ml-4"
+          >
+            <X size={28} />
           </button>
         </div>
       </div>
@@ -736,15 +711,15 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
       </div>
 
       {/* Info Video Corrente */}
-      <div className="bg-zinc-900 px-6 py-4 border-t border-zinc-800">
+      <div className="bg-zinc-900 px-6 py-3 border-t border-zinc-800">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-start gap-4">
+          <div className="flex items-center gap-4">
             <div 
-              className="w-1 h-16 rounded-full flex-shrink-0"
+              className="w-1 h-10 rounded-full flex-shrink-0"
               style={{ backgroundColor: getTemaColor(currentVideo.tema) }}
             />
             <div className="flex-1">
-              <h2 className="text-white font-semibold text-lg mb-1">{currentVideo.title}</h2>
+              <h2 className="text-white font-semibold text-base mb-0.5">{currentVideo.title}</h2>
               <div className="flex items-center gap-4 text-sm text-zinc-400">
                 <span>{currentVideo.tema}</span>
                 <span>•</span>
