@@ -491,7 +491,31 @@ const VideoModal = ({ video, onClose }) => {
     </div>
   );
 };
-const PlaylistSidebar = ({ playlist, onRemove, onPlay, onClose, isOpen }) => {
+const PlaylistSidebar = ({ playlist, onRemove, onPlay, onClose, isOpen, onReorder }) => {
+  const [draggedIndex, setDraggedIndex] = useState(null);
+
+  const handleDragStart = (index) => {
+    setDraggedIndex(index);
+  };
+
+  const handleDragOver = (e, index) => {
+    e.preventDefault();
+    if (draggedIndex === null || draggedIndex === index) return;
+    
+    // Riordina array
+    const newPlaylist = [...playlist];
+    const draggedItem = newPlaylist[draggedIndex];
+    newPlaylist.splice(draggedIndex, 1);
+    newPlaylist.splice(index, 0, draggedItem);
+    
+    onReorder(newPlaylist);
+    setDraggedIndex(index);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedIndex(null);
+  };
+
   if (!isOpen) return null;
 
   return (
