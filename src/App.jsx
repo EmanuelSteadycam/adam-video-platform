@@ -491,7 +491,99 @@ const VideoModal = ({ video, onClose }) => {
     </div>
   );
 };
+const PlaylistSidebar = ({ playlist, onRemove, onPlay, onClose, isOpen }) => {
+  if (!isOpen) return null;
 
+  return (
+    <>
+      {/* Overlay */}
+      <div 
+        className="fixed inset-0 bg-black bg-opacity-50 z-40"
+        onClick={onClose}
+      />
+      
+      {/* Sidebar */}
+      <div className="fixed right-0 top-0 h-full w-full md:w-96 bg-zinc-900 z-50 transform transition-transform duration-300 flex flex-col">
+        {/* Header */}
+        <div className="p-6 border-b border-zinc-800 flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+              <List size={24} />
+              La mia Playlist
+            </h2>
+            <p className="text-zinc-400 text-sm mt-1">{playlist.length} video</p>
+          </div>
+          <button 
+            onClick={onClose}
+            className="text-zinc-400 hover:text-white transition-colors"
+          >
+            <X size={24} />
+          </button>
+        </div>
+
+        {/* Lista video */}
+        <div className="flex-1 overflow-y-auto p-4">
+          {playlist.length === 0 ? (
+            <div className="text-center py-20">
+              <List size={48} className="text-zinc-700 mx-auto mb-4" />
+              <p className="text-zinc-400">Nessun video in playlist</p>
+              <p className="text-zinc-500 text-sm mt-2">Aggiungi video per creare la tua playlist</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {playlist.map((video, index) => (
+                <div 
+                  key={video.id}
+                  className="bg-zinc-800 rounded-lg overflow-hidden flex gap-3 p-3 group hover:bg-zinc-750 transition-colors"
+                >
+                  {/* Thumbnail */}
+                  <div className="relative w-24 h-16 flex-shrink-0 rounded overflow-hidden">
+                    <VideoThumbnail 
+                      youtubeUrl={video.youtubeUrl}
+                      title={video.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">{index + 1}</span>
+                    </div>
+                  </div>
+                  
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-white text-sm font-medium line-clamp-2 mb-1">{video.title}</h3>
+                    <p className="text-zinc-400 text-xs">{video.duration || 'N/D'} • {video.year}</p>
+                  </div>
+                  
+                  {/* Rimuovi */}
+                  <button
+                    onClick={() => onRemove(video.id)}
+                    className="text-zinc-500 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Footer con pulsante Play */}
+        {playlist.length > 0 && (
+          <div className="p-4 border-t border-zinc-800">
+            <button
+              onClick={onPlay}
+              className="w-full flex items-center justify-center gap-2 text-black py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-all"
+              style={{ backgroundColor: '#FFDA2A' }}
+            >
+              <Play size={20} />
+              Riproduci Playlist
+            </button>
+          </div>
+        )}
+      </div>
+    </>
+  );
+};
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
