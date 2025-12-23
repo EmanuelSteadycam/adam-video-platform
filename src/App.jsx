@@ -1007,6 +1007,21 @@ function App() {
         window.videoModalIsInPlaylist = isInPlaylist;
         return <VideoModal video={selectedVideo} onClose={() => setSelectedVideo(null)} />;
       })()}
+      
+      {/* Playlist Sidebar */}
+      <PlaylistSidebar 
+        playlist={playlist}
+        onRemove={removeFromPlaylist}
+        onPlay={() => {
+          if (playlist.length > 0) {
+            setPlayingPlaylist(true);
+            setCurrentPlaylistIndex(0);
+            setShowPlaylist(false);
+          }
+        }}
+        onClose={() => setShowPlaylist(false)}
+        isOpen={showPlaylist}
+      />
     </div>
   );
 }
