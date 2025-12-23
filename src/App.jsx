@@ -554,7 +554,8 @@ const PlaylistSidebar = ({ playlist, onRemove, onPlay, onClose, isOpen, onReorde
               <p className="text-zinc-500 text-sm mt-2">Aggiungi video per creare la tua playlist</p>
             </div>
           ) : (
-           {playlist.map((video, index) => (
+            <div className="space-y-3">
+              {playlist.map((video, index) => (
                 <div 
                   key={video.id}
                   draggable
