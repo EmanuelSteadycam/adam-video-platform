@@ -587,11 +587,56 @@ const PlaylistSidebar = ({ playlist, onRemove, onPlay, onClose, isOpen }) => {
 
 const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious }) => {
   const [key, setKey] = useState(0);
+  const [player, setPlayer] = useState(null);
   const currentVideo = playlist[currentIndex];
+  const playerRef = useRef(null);
 
   useEffect(() => {
     setKey(prev => prev + 1);
   }, [currentIndex]);
+
+  // Inizializza YouTube Player
+  useEffect(() => {
+    if (!currentVideo || currentVideo.source === 'nas') return;
+
+    const videoId = getYouTubeID(currentVideo.youtubeUrl);
+    
+    const initPlayer = () => {
+      if (window.YT && window.YT.Player) {
+        const newPlayer = new window.YT.Player(`youtube-player-${key}`, {
+          videoId: videoId,
+          playerVars: {
+            autoplay: 1,
+            mute: 0,
+            rel: 0,
+            modestbranding: 1
+          },
+          events: {
+            onStateChange: (event) => {
+              // 0 = video finito
+              if (event.data === 0) {
+                onNext();
+              }
+            }
+          }
+        });
+        setPlayer(newPlayer);
+      }
+    };
+
+    // Aspetta che YT sia caricato
+    if (window.YT) {
+      initPlayer();
+    } else {
+      window.onYouTubeIframeAPIReady = initPlayer;
+    }
+
+    return () => {
+      if (player) {
+        player.destroy();
+      }
+    };
+  }, [currentVideo, key]);
 
   if (!currentVideo) return null;
 
