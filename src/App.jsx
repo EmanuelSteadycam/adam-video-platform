@@ -701,14 +701,9 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
                 onEnded={onNext}
               />
             ) : (
-              <iframe 
-                key={key}
+              <div 
+                id={`youtube-player-${key}`}
                 className="w-full h-full"
-                src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&rel=0&modestbranding=1`}
-                title={currentVideo.title}
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
               />
             )}
           </div>
