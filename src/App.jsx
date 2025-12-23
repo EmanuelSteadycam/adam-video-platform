@@ -1133,6 +1133,32 @@ function App() {
         onClose={() => setShowPlaylist(false)}
         isOpen={showPlaylist}
       />
+      
+      {/* Playlist Player */}
+      {playingPlaylist && (
+        <PlaylistPlayer 
+          playlist={playlist}
+          currentIndex={currentPlaylistIndex}
+          onClose={() => {
+            setPlayingPlaylist(false);
+            setCurrentPlaylistIndex(0);
+          }}
+          onNext={() => {
+            if (currentPlaylistIndex < playlist.length - 1) {
+              setCurrentPlaylistIndex(prev => prev + 1);
+            } else {
+              // Fine playlist
+              setPlayingPlaylist(false);
+              setCurrentPlaylistIndex(0);
+            }
+          }}
+          onPrevious={() => {
+            if (currentPlaylistIndex > 0) {
+              setCurrentPlaylistIndex(prev => prev - 1);
+            }
+          }}
+        />
+      )}
     </div>
   );
 }
