@@ -682,7 +682,7 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
             onClick={onClose}
             className="text-zinc-400 hover:text-white transition-colors ml-4"
           >
-            <X size={28} />
+            <X size={36} />
           </button>
         </div>
       </div>
