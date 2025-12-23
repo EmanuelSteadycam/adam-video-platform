@@ -554,11 +554,16 @@ const PlaylistSidebar = ({ playlist, onRemove, onPlay, onClose, isOpen, onReorde
               <p className="text-zinc-500 text-sm mt-2">Aggiungi video per creare la tua playlist</p>
             </div>
           ) : (
-            <div className="space-y-3">
-              {playlist.map((video, index) => (
+           {playlist.map((video, index) => (
                 <div 
                   key={video.id}
-                  className="bg-zinc-800 rounded-lg overflow-hidden flex gap-3 p-3 group hover:bg-zinc-750 transition-colors"
+                  draggable
+                  onDragStart={() => handleDragStart(index)}
+                  onDragOver={(e) => handleDragOver(e, index)}
+                  onDragEnd={handleDragEnd}
+                  className={`bg-zinc-800 rounded-lg overflow-hidden flex gap-3 p-3 group hover:bg-zinc-750 transition-colors cursor-move ${
+                    draggedIndex === index ? 'opacity-50' : ''
+                  }`}
                 >
                   {/* Thumbnail */}
                   <div className="relative w-24 h-16 flex-shrink-0 rounded overflow-hidden">
@@ -1187,6 +1192,7 @@ function App() {
       <PlaylistSidebar 
         playlist={playlist}
         onRemove={removeFromPlaylist}
+        onReorder={setPlaylist}
         onPlay={() => {
           if (playlist.length > 0) {
             setPlayingPlaylist(true);
