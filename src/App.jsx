@@ -615,7 +615,32 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
             onStateChange: (event) => {
               // 0 = video finito
               if (event.data === 0) {
+                // Controlla se era in fullscreen
+                const isFullscreen = document.fullscreenElement || 
+                                   document.webkitFullscreenElement || 
+                                   document.mozFullScreenElement;
+                
+                if (isFullscreen) {
+                  // Salva stato fullscreen
+                  playerRef.current = { wasFullscreen: true };
+                }
+                
                 onNext();
+              }
+            },
+            onReady: (event) => {
+              // Se il video precedente era fullscreen, ripristina
+              if (playerRef.current?.wasFullscreen) {
+                setTimeout(() => {
+                  const iframe = event.target.getIframe();
+                  if (iframe.requestFullscreen) {
+                    iframe.requestFullscreen();
+                  } else if (iframe.webkitRequestFullscreen) {
+                    iframe.webkitRequestFullscreen();
+                  } else if (iframe.mozRequestFullScreen) {
+                    iframe.mozRequestFullScreen();
+                  }
+                }, 500);
               }
             }
           }
