@@ -584,6 +584,117 @@ const PlaylistSidebar = ({ playlist, onRemove, onPlay, onClose, isOpen }) => {
     </>
   );
 };
+
+const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious }) => {
+  const [key, setKey] = useState(0);
+  const currentVideo = playlist[currentIndex];
+
+  useEffect(() => {
+    setKey(prev => prev + 1);
+  }, [currentIndex]);
+
+  if (!currentVideo) return null;
+
+  const videoId = getYouTubeID(currentVideo.youtubeUrl);
+  const getTemaColor = (tema) => {
+    const colors = {
+      'Alcool': '#D97706',
+      'Azzardo': '#BE123C',
+      'Digitale': '#1e3a8a',
+      'Sostanze': '#065f46'
+    };
+    return colors[tema] || '#6b7280';
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black z-50 flex flex-col">
+      {/* Header */}
+      <div className="bg-zinc-900 px-6 py-4 flex items-center justify-between border-b border-zinc-800">
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={onClose}
+            className="text-zinc-400 hover:text-white transition-colors"
+          >
+            <X size={24} />
+          </button>
+          <div>
+            <h3 className="text-white font-semibold">Riproduzione Playlist</h3>
+            <p className="text-zinc-400 text-sm">{currentIndex + 1} di {playlist.length}</p>
+          </div>
+        </div>
+        
+        {/* Controlli */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={onPrevious}
+            disabled={currentIndex === 0}
+            className="text-white hover:text-zinc-300 disabled:text-zinc-600 disabled:cursor-not-allowed transition-colors"
+          >
+            <SkipBack size={24} />
+          </button>
+          <button
+            onClick={onNext}
+            disabled={currentIndex === playlist.length - 1}
+            className="text-white hover:text-zinc-300 disabled:text-zinc-600 disabled:cursor-not-allowed transition-colors"
+          >
+            <SkipForward size={24} />
+          </button>
+        </div>
+      </div>
+
+      {/* Video Player */}
+      <div className="flex-1 flex items-center justify-center bg-black">
+        <div className="w-full h-full max-w-7xl">
+          <div className="relative w-full h-full">
+            {currentVideo.source === 'nas' ? (
+              <video 
+                key={key}
+                className="w-full h-full"
+                src={currentVideo.videoUrl}
+                controls
+                autoPlay
+                onEnded={onNext}
+              />
+            ) : (
+              <iframe 
+                key={key}
+                className="w-full h-full"
+                src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&rel=0&modestbranding=1`}
+                title={currentVideo.title}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Info Video Corrente */}
+      <div className="bg-zinc-900 px-6 py-4 border-t border-zinc-800">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-start gap-4">
+            <div 
+              className="w-1 h-16 rounded-full flex-shrink-0"
+              style={{ backgroundColor: getTemaColor(currentVideo.tema) }}
+            />
+            <div className="flex-1">
+              <h2 className="text-white font-semibold text-lg mb-1">{currentVideo.title}</h2>
+              <div className="flex items-center gap-4 text-sm text-zinc-400">
+                <span>{currentVideo.tema}</span>
+                <span>•</span>
+                <span>{currentVideo.natura}</span>
+                <span>•</span>
+                <span>{currentVideo.year}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
