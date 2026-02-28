@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward } from 'lucide-react';
+import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Zap, Sparkles } from 'lucide-react';
 import Lottie from 'lottie-react';
 import { videos as videosData } from './videosData';
 
@@ -196,27 +196,67 @@ return (
   );
 };
 
+const TEMA_COLORS = {
+  'Alcool':   { solid: '#D97706', border: '#D97706', dim: 'rgba(217,119,6,0.15)' },
+  'Azzardo':  { solid: '#BE123C', border: '#BE123C', dim: 'rgba(190,18,60,0.15)' },
+  'Digitale': { solid: '#1e3a8a', border: '#3b82f6', dim: 'rgba(59,130,246,0.15)' },
+  'Sostanze': { solid: '#065f46', border: '#10b981', dim: 'rgba(16,185,129,0.15)' },
+};
+
 const FiltersSection = ({ onFilterChange, currentFilters }) => {
-  const temi = ['Tutti', ...new Set(mockVideos.map(v => v.tema))];
+  const temi = ['Tutti', 'Alcool', 'Azzardo', 'Digitale', 'Sostanze'];
   const nature = ['Tutte', 'Cortometraggio', 'Film', 'Info', 'Sequenza', 'Spot commerciale', 'Spot sociale', 'Videoclip', 'Web e social'];
   const years = ['Tutti', ...new Set(mockVideos.map(v => v.year).sort((a, b) => b - a))];
 
+  const activeTema = currentFilters.tema;
+  const activeBorderColor = TEMA_COLORS[activeTema]?.border || '#3f3f46';
+
   return (
-    <div className="bg-zinc-900 rounded-xl p-6 mb-8">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-zinc-400 mb-2">Tema</label>
-          <select 
-            value={currentFilters.tema}
-            onChange={(e) => onFilterChange({ ...currentFilters, tema: e.target.value })}
-            className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-[#FFDA2A]"
+    <div
+      className="bg-zinc-900 rounded-xl p-6 mb-8 transition-all duration-300"
+      style={{ borderTop: `3px solid ${activeTema !== 'Tutti' ? activeBorderColor : 'transparent'}` }}
+    >
+      {/* Selezione tema con pulsanti colorati */}
+      <div className="mb-5">
+        <label className="block text-sm font-medium text-zinc-400 mb-3">Tema</label>
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => onFilterChange({ ...currentFilters, tema: 'Tutti' })}
+            className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-white"
+            style={{
+              backgroundColor: activeTema === 'Tutti' ? '#52525b' : 'transparent',
+              border: '2px solid #52525b',
+            }}
           >
-            {temi.map(tema => <option key={tema} value={tema}>{tema}</option>)}
-          </select>
+            Tutti
+          </button>
+          {['Alcool', 'Azzardo', 'Digitale', 'Sostanze'].map(tema => {
+            const c = TEMA_COLORS[tema];
+            const isActive = activeTema === tema;
+            const noVideos = tema === 'Sostanze';
+            return (
+              <button
+                key={tema}
+                onClick={() => onFilterChange({ ...currentFilters, tema })}
+                className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-white"
+                style={{
+                  backgroundColor: isActive ? c.solid : c.dim,
+                  border: `2px solid ${c.border}`,
+                }}
+                title={noVideos ? 'Nessun video disponibile' : ''}
+              >
+                {tema}
+              </button>
+            );
+          })}
         </div>
+      </div>
+
+      {/* Altri filtri */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
           <label className="block text-sm font-medium text-zinc-400 mb-2">Formato</label>
-          <select 
+          <select
             value={currentFilters.natura}
             onChange={(e) => onFilterChange({ ...currentFilters, natura: e.target.value })}
             className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-[#FFDA2A]"
@@ -226,7 +266,7 @@ const FiltersSection = ({ onFilterChange, currentFilters }) => {
         </div>
         <div>
           <label className="block text-sm font-medium text-zinc-400 mb-2">Anno</label>
-          <select 
+          <select
             value={currentFilters.year}
             onChange={(e) => onFilterChange({ ...currentFilters, year: e.target.value })}
             className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-[#FFDA2A]"
@@ -236,7 +276,7 @@ const FiltersSection = ({ onFilterChange, currentFilters }) => {
         </div>
         <div>
           <label className="block text-sm font-medium text-zinc-400 mb-2">Prodotto da</label>
-          <select 
+          <select
             value={currentFilters.scuola}
             onChange={(e) => onFilterChange({ ...currentFilters, scuola: e.target.value })}
             className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-[#FFDA2A]"
@@ -480,7 +520,14 @@ const VideoModal = ({ video, onClose }) => {
             )}
           </button>
           <div className="flex gap-3 mb-6">
-            <span className="bg-[#FFDA2A]/20 text-[#FFDA2A] px-3 py-1.5 rounded-full text-sm font-medium border border-purple-600/30">{video.tema}</span>
+            <span
+              className="px-3 py-1.5 rounded-full text-sm font-semibold"
+              style={{
+                backgroundColor: TEMA_COLORS[video.tema]?.dim || 'rgba(255,218,42,0.15)',
+                color: TEMA_COLORS[video.tema]?.border || '#FFDA2A',
+                border: `1.5px solid ${TEMA_COLORS[video.tema]?.border || '#FFDA2A'}`,
+              }}
+            >{video.tema}</span>
             <span className="bg-blue-600/20 text-blue-400 px-3 py-1.5 rounded-full text-sm font-medium border border-blue-600/30">{video.natura}</span>
           </div>
           <div className="mb-6">
@@ -616,57 +663,57 @@ const PlaylistSidebar = ({ playlist, onRemove, onPlay, onClose, isOpen, onReorde
 };
 
 const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious }) => {
-  const [key, setKey] = useState(0);
-  const [player, setPlayer] = useState(null);
   const currentVideo = playlist[currentIndex];
   const playerRef = useRef(null);
+  const onNextRef = useRef(onNext);
+  const containerRef = useRef(null);
 
-  useEffect(() => {
-    setKey(prev => prev + 1);
-  }, [currentIndex]);
+  useEffect(() => { onNextRef.current = onNext; }, [onNext]);
 
   // Inizializza YouTube Player
   useEffect(() => {
     if (!currentVideo || currentVideo.source === 'nas') return;
 
     const videoId = getYouTubeID(currentVideo.youtubeUrl);
-    
+
     const initPlayer = () => {
-      if (window.YT && window.YT.Player) {
-        const newPlayer = new window.YT.Player(`youtube-player-${key}`, {
-          videoId: videoId,
-          playerVars: {
-            autoplay: 1,
-            mute: 0,
-            rel: 0,
-            modestbranding: 1
-          },
-          events: {
-            onStateChange: (event) => {
-              // 0 = video finito
-              if (event.data === 0) {
-                onNext();
-              }
-            }
-          }
-        });
-        setPlayer(newPlayer);
+      if (!window.YT || !window.YT.Player) return;
+
+      // Distruggi il player precedente
+      if (playerRef.current) {
+        try { playerRef.current.destroy(); } catch (e) {}
+        playerRef.current = null;
       }
+
+      // Ricrea il div contenitore per evitare conflitti con l'API
+      if (containerRef.current) {
+        containerRef.current.innerHTML = '<div id="yt-playlist-player" style="width:100%;height:100%"></div>';
+      }
+
+      playerRef.current = new window.YT.Player('yt-playlist-player', {
+        videoId,
+        playerVars: { autoplay: 1, rel: 0, modestbranding: 1 },
+        events: {
+          onStateChange: (event) => {
+            if (event.data === 0) onNextRef.current();
+          }
+        }
+      });
     };
 
-    // Aspetta che YT sia caricato
-    if (window.YT) {
+    if (window.YT && window.YT.Player) {
       initPlayer();
     } else {
       window.onYouTubeIframeAPIReady = initPlayer;
     }
 
     return () => {
-      if (player) {
-        player.destroy();
+      if (playerRef.current) {
+        try { playerRef.current.destroy(); } catch (e) {}
+        playerRef.current = null;
       }
     };
-  }, [currentVideo, key]);
+  }, [currentIndex]);
 
   if (!currentVideo) return null;
 
@@ -731,10 +778,12 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
                 onEnded={onNext}
               />
             ) : (
-              <div 
-                id={`youtube-player-${key}`}
+              <div
+                ref={containerRef}
                 className="w-full h-full"
-              />
+              >
+                <div id="yt-playlist-player" style={{ width: '100%', height: '100%' }} />
+              </div>
             )}
           </div>
         </div>
@@ -887,13 +936,26 @@ function App() {
     </div>
   </div>
   <nav className="flex-1 p-4 overflow-y-auto">
-    <ul className="space-y-2">
-      <li><button onClick={() => { setActiveSection('home'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'home' ? 'bg-zinc-800 text-zinc-300' : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'}`}>Home</button></li>
-      <li><button onClick={() => { setActiveSection('formats'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'formats' ? 'bg-zinc-800 text-zinc-300' : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'}`}>I Formati ADAM</button></li>
-      <li><button onClick={() => { setActiveSection('most-viewed'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'most-viewed' ? 'bg-zinc-800 text-zinc-300' : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'}`}>I Più Visti</button></li>
-      <li><button onClick={() => { setActiveSection('recent'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'recent' ? 'bg-zinc-800 text-zinc-300' : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'}`}>Nuovi Inseriti</button></li>
-      <li><button onClick={() => { setActiveSection('schools'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'schools' ? 'bg-zinc-800 text-zinc-300' : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'}`}>Prodotti dalle Scuole</button></li>
-      <li><button onClick={() => { setActiveSection('inspire'); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }} className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === 'inspire' ? 'bg-zinc-800 text-zinc-300' : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'}`}>Lasciati Ispirare</button></li>
+    <ul className="space-y-1">
+      {[
+        { section: 'home',        label: 'Home',                icon: Home },
+        { section: 'formats',     label: 'I Formati ADAM',      icon: LayoutGrid },
+        { section: 'most-viewed', label: 'I Più Visti',         icon: TrendingUp },
+        { section: 'recent',      label: 'Nuovi Inseriti',      icon: Clock },
+        { section: 'schools',     label: 'Prodotti dalle Scuole', icon: School },
+        { section: 'inspire',     label: 'Lasciati Ispirare',   icon: Sparkles },
+        { section: 'wow',         label: 'WOW',                 icon: Zap },
+      ].map(({ section, label, icon: Icon }) => (
+        <li key={section}>
+          <button
+            onClick={() => { setActiveSection(section); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }}
+            className={`w-full text-left px-4 py-3 rounded-lg transition-colors flex items-center gap-3 ${activeSection === section ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'}`}
+          >
+            <Icon size={18} className="flex-shrink-0" />
+            <span>{label}</span>
+          </button>
+        </li>
+      ))}
     </ul>
   </nav>
 </aside>
