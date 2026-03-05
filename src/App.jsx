@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Zap, Sparkles, ArrowUpDown } from 'lucide-react';
+import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Zap, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown } from 'lucide-react';
 import Lottie from 'lottie-react';
 import { videos as videosData } from './videosData';
 
@@ -250,22 +250,75 @@ const TEMA_COLORS = {
   'Sostanze': { solid: '#065f46', border: '#10b981', dim: 'rgba(16,185,129,0.15)' },
 };
 
+const CustomSelect = ({ value, onChange, options }) => {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const selected = options.find(o => o.value === value);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen(v => !v)}
+        className="w-full flex items-center justify-between bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 hover:bg-zinc-700 transition-colors"
+      >
+        <span className="text-sm truncate">{selected?.label ?? value}</span>
+        <ChevronDown
+          size={16}
+          className="text-zinc-400 flex-shrink-0 ml-2 transition-transform duration-200"
+          style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}
+        />
+      </button>
+      {open && (
+        <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-zinc-800 border border-zinc-700 rounded-lg overflow-hidden shadow-xl max-h-60 overflow-y-auto modal-scrollbar" style={{'--scrollbar-color': '#52525b'}}>
+          {options.map(o => (
+            <button
+              key={o.value}
+              onClick={() => { onChange(o.value); setOpen(false); }}
+              className="w-full text-left px-4 py-2.5 text-sm hover:bg-zinc-700 transition-colors flex items-center justify-between"
+              style={{ color: o.value === value ? '#FFDA2A' : '#ffffff' }}
+            >
+              {o.label}
+              {o.value === value && <Check size={14} className="flex-shrink-0" />}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const FiltersSection = ({ onFilterChange, currentFilters }) => {
   const nature = ['Tutte', 'Cortometraggio', 'Film', 'Info', 'Sequenza', 'Spot commerciale', 'Spot sociale', 'Videoclip', 'Web e social'];
   const years = ['Tutti', ...new Set(mockVideos.map(v => v.year).sort((a, b) => b - a))];
   const [hoveredTema, setHoveredTema] = useState(null);
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   const activeTema = currentFilters.tema;
   const activeBorderColor = TEMA_COLORS[activeTema]?.border || '#3f3f46';
+
+  // Conta filtri avanzati attivi
+  const advancedCount = [
+    currentFilters.natura !== 'Tutte',
+    currentFilters.year !== 'Tutti',
+    currentFilters.scuola !== 'Tutti',
+  ].filter(Boolean).length;
 
   return (
     <div
       className="bg-zinc-900 rounded-xl p-6 mb-8 transition-all duration-300"
       style={{ borderTop: `3px solid ${activeTema !== 'Tutti' ? activeBorderColor : 'transparent'}` }}
     >
-      {/* Selezione tema con pulsanti colorati */}
-      <div className="mb-5">
-        <label className="block text-sm font-medium text-zinc-400 mb-3">Tema</label>
+      {/* Tema + toggle filtri avanzati sulla stessa riga */}
+      <div className="flex items-center justify-between gap-4 flex-wrap">
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => onFilterChange({ ...currentFilters, tema: 'Tutti' })}
@@ -300,43 +353,58 @@ const FiltersSection = ({ onFilterChange, currentFilters }) => {
             );
           })}
         </div>
+
+        {/* Bottone Filtri avanzati */}
+        <button
+          onClick={() => setShowAdvanced(v => !v)}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 relative"
+          style={{
+            backgroundColor: showAdvanced || advancedCount > 0 ? '#27272a' : 'transparent',
+            border: '2px solid #3f3f46',
+            color: advancedCount > 0 ? '#FFDA2A' : '#a1a1aa',
+          }}
+        >
+          <SlidersHorizontal size={16} />
+          <span>Filtri avanzati</span>
+          {advancedCount > 0 && (
+            <span className="bg-[#FFDA2A] text-black text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+              {advancedCount}
+            </span>
+          )}
+          <ChevronDown size={14} className="transition-transform duration-200" style={{ transform: showAdvanced ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+        </button>
       </div>
 
-      {/* Altri filtri */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-zinc-400 mb-2">Formato</label>
-          <select
-            value={currentFilters.natura}
-            onChange={(e) => onFilterChange({ ...currentFilters, natura: e.target.value })}
-            className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-[#FFDA2A]"
-          >
-            {nature.map(natura => <option key={natura} value={natura}>{natura}</option>)}
-          </select>
+      {/* Filtri avanzati espandibili */}
+      {showAdvanced && (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-5 pt-5 border-t border-zinc-800">
+          {[
+            {
+              label: 'Formato',
+              value: currentFilters.natura,
+              onChange: (v) => onFilterChange({ ...currentFilters, natura: v }),
+              options: nature.map(n => ({ value: n, label: n })),
+            },
+            {
+              label: 'Anno',
+              value: currentFilters.year,
+              onChange: (v) => onFilterChange({ ...currentFilters, year: v }),
+              options: years.map(y => ({ value: y, label: y })),
+            },
+            {
+              label: 'Prodotto da',
+              value: currentFilters.scuola,
+              onChange: (v) => onFilterChange({ ...currentFilters, scuola: v }),
+              options: [{ value: 'Tutti', label: 'Tutti' }, { value: 'Scuole', label: 'Solo Scuole' }, { value: 'Altri', label: 'Altri' }],
+            },
+          ].map(({ label, value, onChange, options }) => (
+            <div key={label}>
+              <label className="block text-sm font-medium text-zinc-400 mb-2">{label}</label>
+              <CustomSelect value={value} onChange={onChange} options={options} />
+            </div>
+          ))}
         </div>
-        <div>
-          <label className="block text-sm font-medium text-zinc-400 mb-2">Anno</label>
-          <select
-            value={currentFilters.year}
-            onChange={(e) => onFilterChange({ ...currentFilters, year: e.target.value })}
-            className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-[#FFDA2A]"
-          >
-            {years.map(year => <option key={year} value={year}>{year}</option>)}
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-zinc-400 mb-2">Prodotto da</label>
-          <select
-            value={currentFilters.scuola}
-            onChange={(e) => onFilterChange({ ...currentFilters, scuola: e.target.value })}
-            className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-[#FFDA2A]"
-          >
-            <option value="Tutti">Tutti</option>
-            <option value="Scuole">Solo Scuole</option>
-            <option value="Altri">Altri</option>
-          </select>
-        </div>
-      </div>
+      )}
     </div>
   );
 };
@@ -1339,7 +1407,7 @@ function App() {
                 {activeSection === 'most-viewed' && 'I Più Visti'}
                 {activeSection === 'recent' && 'Nuovi Inseriti'}
                 {activeSection === 'schools' && 'Prodotti dalle Scuole'}
-                {activeSection === 'inspire' && 'Lasciati Ispirare'}
+                {activeSection === 'inspire' && 'Esplora i Video'}
                 {activeSection === 'formats' && selectedNatura !== 'Tutte' && `Formato dei video: ${selectedNatura}`}
                 {activeSection === 'formats' && selectedNatura === 'Tutte' && 'Tutti i Video'}
                 {activeSection === 'all' && selectedNatura !== 'Tutte' && selectedNatura}
