@@ -14,7 +14,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "CI VUOLE PIU’ FEGY. Realizzato in animazione, lo spot è un breve cortometraggio che racconta un’indagine tra gli organi interni del corpo. Il fegato, infatti, è stato ucciso: per scoprire il colpevole vengono interrogati il cuore, il cervello, l’intestino e infine l’occhio. Quest’ultimo passa in rassegna i sospettati e individua come colpevole… l’olio di palma! In questo modo il vero colpevole, l’alcool, può festeggiare: ma non lo fa bevendo, perché “l’alcool fa male, anzi uccide”. Il video fa parte di una campagna di quattro video (tutti presenti in archivio), realizzati tecnicamente dagli studenti della Scuola di Cinema Luchino Visconti e promossa da vari enti, tra cui la Fondazione Cariplo e gli Alcolisti Anonimi."
+    "description": "CI VUOLE PIU’ FEGY. Realizzato in animazione, lo spot è un breve cortometraggio che racconta un’indagine tra gli organi interni del corpo. Il fegato, infatti, è stato ucciso: per scoprire il colpevole vengono interrogati il cuore, il cervello, l’intestino e infine l’occhio. Quest’ultimo passa in rassegna i sospettati e individua come colpevole… l’olio di palma! In questo modo il vero colpevole, l’alcool, può festeggiare: ma non lo fa bevendo, perché “l’alcool fa male, anzi uccide”. Il video fa parte di una campagna di quattro video (tutti presenti in archivio), realizzati tecnicamente dagli studenti della Scuola di Cinema Luchino Visconti e promossa da vari enti, tra cui la Fondazione Cariplo e gli Alcolisti Anonimi.",
+    "dataInserimento": "2025-04-20"
   },
   {
     "id": "HD1931-02",
@@ -28,7 +29,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "SICURO COME LA MORTE. Un uomo sulla cinquantina si sveglia in piena notte a causa di una chiamata in arrivo sul suo cellulare. Si alza e si trascina lentamente nella propria routine, preparandosi ad uscire. Tutto porta a pensare che si tratti di un genitore stufo di dover recuperare figli e amici ubriachi fuori da una discoteca: il finale ci rivela invece che l’uomo è la morte. Il video fa parte di una campagna di quattro video (tutti presenti in archivio), realizzati tecnicamente dagli studenti della Scuola di Cinema Luchino Visconti e promossa da vari enti, tra cui la Fondazione Cariplo e gli Alcolisti Anonimi. Il registro comico, molto difficile su questo tema, lo rende un buon spot da utilizzare insieme ad altre pubblicità sociali per ragionare sull’efficacia."
+    "description": "SICURO COME LA MORTE. Un uomo sulla cinquantina si sveglia in piena notte a causa di una chiamata in arrivo sul suo cellulare. Si alza e si trascina lentamente nella propria routine, preparandosi ad uscire. Tutto porta a pensare che si tratti di un genitore stufo di dover recuperare figli e amici ubriachi fuori da una discoteca: il finale ci rivela invece che l’uomo è la morte. Il video fa parte di una campagna di quattro video (tutti presenti in archivio), realizzati tecnicamente dagli studenti della Scuola di Cinema Luchino Visconti e promossa da vari enti, tra cui la Fondazione Cariplo e gli Alcolisti Anonimi. Il registro comico, molto difficile su questo tema, lo rende un buon spot da utilizzare insieme ad altre pubblicità sociali per ragionare sull’efficacia.",
+    "dataInserimento": "2025-03-24"
   },
   {
     "id": "HD1931-03",
@@ -42,7 +44,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "TUTTO IL RESTO NON E’ NOIA. Attraverso le immagini e l’audio di una telefonata tra due ragazze, ripercorriamo una serata tra amici in discoteca dove l’alcool fa perdere il controllo. La riflessione nelle parole di una delle ragazze è che sì, si ha voglia di staccare dopo una settimana di scuola, ma così “ci perdiamo tutto il resto”. Su questa frase compare il claim dello spot: “Tutto il resto non è noia”. Il video fa parte di una campagna di quattro video (tutti presenti in archivio), realizzati tecnicamente dagli studenti della Scuola di Cinema Luchino Visconti e promossa da vari enti, tra cui la Fondazione Cariplo e gli Alcolisti Anonimi. Lo spot mantiene un difficile equilibrio: ci si aspetta un colpo di scena tragico che non c’è, mentre la sceneggiatura riesce ad evitare il paternalismo. Il messaggio non si concentra sul “non bere”, ma prova a valorizzare l’importanza del non perdere il controllo, per non perdersi tutto ciò che circonda l’alcool. Interessante da utilizzare insieme ad altre pubblicità sociali per ragionare sull’efficacia."
+    "description": "TUTTO IL RESTO NON E’ NOIA. Attraverso le immagini e l’audio di una telefonata tra due ragazze, ripercorriamo una serata tra amici in discoteca dove l’alcool fa perdere il controllo. La riflessione nelle parole di una delle ragazze è che sì, si ha voglia di staccare dopo una settimana di scuola, ma così “ci perdiamo tutto il resto”. Su questa frase compare il claim dello spot: “Tutto il resto non è noia”. Il video fa parte di una campagna di quattro video (tutti presenti in archivio), realizzati tecnicamente dagli studenti della Scuola di Cinema Luchino Visconti e promossa da vari enti, tra cui la Fondazione Cariplo e gli Alcolisti Anonimi. Lo spot mantiene un difficile equilibrio: ci si aspetta un colpo di scena tragico che non c’è, mentre la sceneggiatura riesce ad evitare il paternalismo. Il messaggio non si concentra sul “non bere”, ma prova a valorizzare l’importanza del non perdere il controllo, per non perdersi tutto ciò che circonda l’alcool. Interessante da utilizzare insieme ad altre pubblicità sociali per ragionare sull’efficacia.",
+    "dataInserimento": "2023-03-29"
   },
   {
     "id": "HD1931-04",
@@ -56,7 +59,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "FULMINE. Un ragazzo si beve una birra, riparato sotto la chioma di un albero mentre imperversa un potente temporale. Una voce femminile prima lo informa sui numeri di morti provocate dai fulmini (10 persone) e poi su quelle correlate all’abuso di alcol (più di 20.000 persone). In quell’istante una scintilla attraversa la lattina e il ragazzo fa appena in tempo a gettarla a terra prima che un fulmine la colpisca. Sulla lattina bruciacchiata compare il claim, ribadito dalla voce over femminile: “Non succede, ma se succede…”.  Il video fa parte di una campagna di quattro video (tutti presenti in archivio), realizzati tecnicamente dagli studenti della Scuola di Cinema Luchino Visconti e promossa da vari enti, tra cui la Fondazione Cariplo e gli Alcolisti Anonimi. Lo spot lavora sul registro informativo, comunicando un dato (i morti correlati al consumo di alcool) e mettendolo a confronto con la paura di morire colpiti da un fulmine, statisticamente molto meno probabile. Interessante da utilizzare insieme ad altre pubblicità sociali per ragionare sui diversi registri comunicativi (informativo, drammatico, comico) e sulla loro efficacia."
+    "description": "FULMINE. Un ragazzo si beve una birra, riparato sotto la chioma di un albero mentre imperversa un potente temporale. Una voce femminile prima lo informa sui numeri di morti provocate dai fulmini (10 persone) e poi su quelle correlate all’abuso di alcol (più di 20.000 persone). In quell’istante una scintilla attraversa la lattina e il ragazzo fa appena in tempo a gettarla a terra prima che un fulmine la colpisca. Sulla lattina bruciacchiata compare il claim, ribadito dalla voce over femminile: “Non succede, ma se succede…”.  Il video fa parte di una campagna di quattro video (tutti presenti in archivio), realizzati tecnicamente dagli studenti della Scuola di Cinema Luchino Visconti e promossa da vari enti, tra cui la Fondazione Cariplo e gli Alcolisti Anonimi. Lo spot lavora sul registro informativo, comunicando un dato (i morti correlati al consumo di alcool) e mettendolo a confronto con la paura di morire colpiti da un fulmine, statisticamente molto meno probabile. Interessante da utilizzare insieme ad altre pubblicità sociali per ragionare sui diversi registri comunicativi (informativo, drammatico, comico) e sulla loro efficacia.",
+    "dataInserimento": "2025-08-03"
   },
   {
     "id": "HD1931-05",
@@ -70,7 +74,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "THE NIGHT IS FULL OF GREAT DRIVERS. Con montaggio alternato e musica ritmata e allegra vediamo due noti piloti di Formula Uno, Daniel Ricciardo e Sergio Perez, uscire gioiosamente da dei locali con le chiavi dell’auto. I due appaiono molto “allegri”, nel classico stato in cui ci si sente quando si è bevuto. Vediamo entrambi salire sull’auto e allacciarsi le cinture, ma quando l’inquadratura si sposta capiamo che sono sul sedile posteriore di un taxi. Al posto dei due piloti ci sono due giovani, vestiti allo stesso modo. Il messaggio è chiaro: sotto l’effetto dell’alcool ci sentiamo tutti piloti sicuri come quelli di Formula 1. La scritta finale (in inglese) ci ricorda però che “è quando ti senti un grande pilota che non dovresti guidare”. In chiusura il logo della Heineken e il claim “When you drive never drink”. Lo spot lavora sulla messa in scena di uno stato d’animo (l’illusoria fiducia nelle proprie capacità dovuta all’alcool), con un messaggio molto diretto rivolto ad un pubblico maschile. Viene evitata la messa in scena di eventi tragici (l’incidente dovuto all’alcool), proponendo una soluzione concreta (prendere il taxi). Utilizzabile insieme ad altri spot su alcool e guida per ragionare sull’efficacia."
+    "description": "THE NIGHT IS FULL OF GREAT DRIVERS. Con montaggio alternato e musica ritmata e allegra vediamo due noti piloti di Formula Uno, Daniel Ricciardo e Sergio Perez, uscire gioiosamente da dei locali con le chiavi dell’auto. I due appaiono molto “allegri”, nel classico stato in cui ci si sente quando si è bevuto. Vediamo entrambi salire sull’auto e allacciarsi le cinture, ma quando l’inquadratura si sposta capiamo che sono sul sedile posteriore di un taxi. Al posto dei due piloti ci sono due giovani, vestiti allo stesso modo. Il messaggio è chiaro: sotto l’effetto dell’alcool ci sentiamo tutti piloti sicuri come quelli di Formula 1. La scritta finale (in inglese) ci ricorda però che “è quando ti senti un grande pilota che non dovresti guidare”. In chiusura il logo della Heineken e il claim “When you drive never drink”. Lo spot lavora sulla messa in scena di uno stato d’animo (l’illusoria fiducia nelle proprie capacità dovuta all’alcool), con un messaggio molto diretto rivolto ad un pubblico maschile. Viene evitata la messa in scena di eventi tragici (l’incidente dovuto all’alcool), proponendo una soluzione concreta (prendere il taxi). Utilizzabile insieme ad altri spot su alcool e guida per ragionare sull’efficacia.",
+    "dataInserimento": "2024-02-18"
   },
   {
     "id": "HD1931-06",
@@ -84,7 +89,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "MINI PARCHEGGIATA. Un ragazzo visibilmente ubriaco prova ad entrare nella sua auto, una vecchia Mini ferma in un parcheggio sotterraneo. L’auto, come se avesse volontà propria, gli impedisce di entrare, colpendolo con la portiera laterale e posteriore. Compare il claim finale, scritto e recitato da una voce femminile: “Se guidi non bevi”. Subito dopo vediamo la testimonial della campagna “Notti sicure”, la comica di Zelig Claudia Penoni. I credits finali ci informano che lo spot è promosso dalle quattro aziende sanitarie di Area Vasta Romagna. Lo spot lavora sul registro comico: utilizzabile insieme ad altri spot su alcool e guida (presenti in questo archivio) che utilizzano registri diversi (informativo, drammatico...) per ragionare sull’efficacia."
+    "description": "MINI PARCHEGGIATA. Un ragazzo visibilmente ubriaco prova ad entrare nella sua auto, una vecchia Mini ferma in un parcheggio sotterraneo. L’auto, come se avesse volontà propria, gli impedisce di entrare, colpendolo con la portiera laterale e posteriore. Compare il claim finale, scritto e recitato da una voce femminile: “Se guidi non bevi”. Subito dopo vediamo la testimonial della campagna “Notti sicure”, la comica di Zelig Claudia Penoni. I credits finali ci informano che lo spot è promosso dalle quattro aziende sanitarie di Area Vasta Romagna. Lo spot lavora sul registro comico: utilizzabile insieme ad altri spot su alcool e guida (presenti in questo archivio) che utilizzano registri diversi (informativo, drammatico...) per ragionare sull’efficacia.",
+    "dataInserimento": "2025-02-05"
   },
   {
     "id": "HD1931-07",
@@ -98,7 +104,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "SPOT ALCOOL. Tratto dalla puntata 18 della sesta stagione della serie animata South Park. Il video è una parodia che condensa visivamente i messaggi veicolati dagli spot commerciali degli alcolici, esplicitandoli con la voce over: “Tu, amici, divertimento, bere, ragazze fiche, tu sei fico, bere di più, macchinone, tette, bere…” Il montaggio e il tono della voce vanno in crescendo, fino al finale in cui, con scritta su sfondo nero, la voce conclude: “Bevi responsabilmente”. Pur trattandosi di una parodia tratta da una serie tv, il video può essere utilizzato come spot sociale sull’alcool, in quanto lavora in modo ironico sulla decostruzione degli immaginari associati al bere (divertimento, lusso, sesso, sicurezza in se stessi…)."
+    "description": "SPOT ALCOOL. Tratto dalla puntata 18 della sesta stagione della serie animata South Park. Il video è una parodia che condensa visivamente i messaggi veicolati dagli spot commerciali degli alcolici, esplicitandoli con la voce over: “Tu, amici, divertimento, bere, ragazze fiche, tu sei fico, bere di più, macchinone, tette, bere…” Il montaggio e il tono della voce vanno in crescendo, fino al finale in cui, con scritta su sfondo nero, la voce conclude: “Bevi responsabilmente”. Pur trattandosi di una parodia tratta da una serie tv, il video può essere utilizzato come spot sociale sull’alcool, in quanto lavora in modo ironico sulla decostruzione degli immaginari associati al bere (divertimento, lusso, sesso, sicurezza in se stessi…).",
+    "dataInserimento": "2025-05-22"
   },
   {
     "id": "HD1931-08",
@@ -112,7 +119,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "LIKE MY ADDICTION. Il 1 agosto 2017 è andato online il profilo di una ragazza, Louie Delage, dalla vita apparentemente perfetta. Si è trattato in realtà di un falso profilo, costruito e alimentato dalla Fondazione francese contro le dipendenze Addict Aide. Grazie ad un accorto social media management, il profilo è arrivato ad avere più di 50.000 follower. Questo video è stato l’ultimo post, in cui viene svelato il senso della campagna: Louie Delage compare spesso con un bicchiere di alcolici in mano, ma noi non ce ne accorgiamo: infatti si tende a sottostimare il rischio di dipendenza quando riguarda persone a noi vicine. La campagna ha avuto grande popolarità in tutto il mondo, generando oltre un miliardo di “media impressions” (reazioni, commenti, condivisioni ecc…)."
+    "description": "LIKE MY ADDICTION. Il 1 agosto 2017 è andato online il profilo di una ragazza, Louie Delage, dalla vita apparentemente perfetta. Si è trattato in realtà di un falso profilo, costruito e alimentato dalla Fondazione francese contro le dipendenze Addict Aide. Grazie ad un accorto social media management, il profilo è arrivato ad avere più di 50.000 follower. Questo video è stato l’ultimo post, in cui viene svelato il senso della campagna: Louie Delage compare spesso con un bicchiere di alcolici in mano, ma noi non ce ne accorgiamo: infatti si tende a sottostimare il rischio di dipendenza quando riguarda persone a noi vicine. La campagna ha avuto grande popolarità in tutto il mondo, generando oltre un miliardo di “media impressions” (reazioni, commenti, condivisioni ecc…).",
+    "dataInserimento": "2025-02-05"
   },
   {
     "id": "HD1931-09",
@@ -126,7 +134,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "#SEISICURO ALCOL E GUIDA. Un uomo visibilmente ubriaco si siede alla guida di auto e fatica ad infilare la chiave. Di fianco a lui compare il comico Dario Vergassola, testimonial della campagna, che fa capire all’uomo che l’alcool gli ha rallentato i riflessi e gli prospetta un futuro poco roseo: “Finirai a Ribosca dove dovrai accettare un lavoro con turni di venti ore” (le immagini ci mostrano l’uomo portare il fieno alle mucche). Vergassola conclude: “Ricordati di fare il pieno, non a te, alla macchina!”. In chiusura compare il logo della Polizia di stato e la scritta “alcool e droga sono incompatibili con la guida”. Lo spot fa parte di una campagna di tre video, tutti con Vergassola protagonista, relativi alla sicurezza alla guida. Interessante la scelta del registro comico, in genere meno frequentato dalle comunicazioni sociali governative."
+    "description": "#SEISICURO ALCOL E GUIDA. Un uomo visibilmente ubriaco si siede alla guida di auto e fatica ad infilare la chiave. Di fianco a lui compare il comico Dario Vergassola, testimonial della campagna, che fa capire all’uomo che l’alcool gli ha rallentato i riflessi e gli prospetta un futuro poco roseo: “Finirai a Ribosca dove dovrai accettare un lavoro con turni di venti ore” (le immagini ci mostrano l’uomo portare il fieno alle mucche). Vergassola conclude: “Ricordati di fare il pieno, non a te, alla macchina!”. In chiusura compare il logo della Polizia di stato e la scritta “alcool e droga sono incompatibili con la guida”. Lo spot fa parte di una campagna di tre video, tutti con Vergassola protagonista, relativi alla sicurezza alla guida. Interessante la scelta del registro comico, in genere meno frequentato dalle comunicazioni sociali governative.",
+    "dataInserimento": "2025-07-18"
   },
   {
     "id": "HD1931-10",
@@ -140,7 +149,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "CHI BEVE E CHI SI DIVERTE. Un gruppo di ragazzi e ragazze, ben vestiti, in una discoteca. Uno di loro ordina un giro di shottini: “E’ una festa no? Vediamo chi regge!”. Li beve tutti e si ubriaca. Di conseguenza, inizia a fare figuracce (riprese dal cellulare), vomita in bagno, mentre la sua ragazza, visibilmente schifata, gli sfila le chiavi della macchina dicendo “tu stasera non guidi”. Un rapido rewind ci riporta al bancone, dove questa volta il ragazzo posa lo shottino senza berlo: la sua ragazza gli sorride. Una voce maschile fuori campo sentenzia: “In ogni serata c’è chi beve e chi si diverte. E tu?”. Lo spot è stato realizzato per la campagna del Ministero della Salute nel 2016. E’ stato utilizzato in classi delle scuole superiori e in formazione operatori, insieme ad altri spot sociali, per discuterne l’efficacia. Nonostante il messaggio che non lascia spazio ad equilibri (o bevi o ti diverti, quando invece l’esperienza di molti è quella di bere e divertirsi), in più di un’occasione gli studenti ne hanno apprezzato il messaggio semplice e diretto."
+    "description": "CHI BEVE E CHI SI DIVERTE. Un gruppo di ragazzi e ragazze, ben vestiti, in una discoteca. Uno di loro ordina un giro di shottini: “E’ una festa no? Vediamo chi regge!”. Li beve tutti e si ubriaca. Di conseguenza, inizia a fare figuracce (riprese dal cellulare), vomita in bagno, mentre la sua ragazza, visibilmente schifata, gli sfila le chiavi della macchina dicendo “tu stasera non guidi”. Un rapido rewind ci riporta al bancone, dove questa volta il ragazzo posa lo shottino senza berlo: la sua ragazza gli sorride. Una voce maschile fuori campo sentenzia: “In ogni serata c’è chi beve e chi si diverte. E tu?”. Lo spot è stato realizzato per la campagna del Ministero della Salute nel 2016. E’ stato utilizzato in classi delle scuole superiori e in formazione operatori, insieme ad altri spot sociali, per discuterne l’efficacia. Nonostante il messaggio che non lascia spazio ad equilibri (o bevi o ti diverti, quando invece l’esperienza di molti è quella di bere e divertirsi), in più di un’occasione gli studenti ne hanno apprezzato il messaggio semplice e diretto.",
+    "dataInserimento": "2023-05-26"
   },
   {
     "id": "HD1931-11",
@@ -154,7 +164,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "CHIEDITI PERCHE’. Su immagini generiche di guida notturna, una voce maschile fuori campo ci dice che “tutti sanno che chi guida dopo aver assunto alcol o droghe diventa un pericolo per se stesso e gli altri”. E allora perché continuiamo a farlo? Lo spot insiste sulla domanda “Perchè”, fornendoci alcune informazioni sul numero degli incidenti correlati al consumo e sul fatto che il 90% di essi poteva essere evitato con “comportamenti prudenti”. In chiusura l’invito: “Non farti guidare da alcool e droghe. Non farlo”. La campagna,  volta a sensibilizzare i giovani sul tema della guida sotto l’effetto di alcol e droghe, è stata realizzata  dal Dipartimento per l’Informazione e l’Editoria della Presidenza del Consiglio in collaborazione con il Dipartimento per le Politiche Antidroga e il Ministero dell’Interno. Lo spot è andato in onda in tv da Natale 2022 al 16 gennaio 2023. Utilizzabile insieme ad altri spot che utilizzano un registro differente (comico, drammatico, ecc…) per ragionare sull’efficacia."
+    "description": "CHIEDITI PERCHE’. Su immagini generiche di guida notturna, una voce maschile fuori campo ci dice che “tutti sanno che chi guida dopo aver assunto alcol o droghe diventa un pericolo per se stesso e gli altri”. E allora perché continuiamo a farlo? Lo spot insiste sulla domanda “Perchè”, fornendoci alcune informazioni sul numero degli incidenti correlati al consumo e sul fatto che il 90% di essi poteva essere evitato con “comportamenti prudenti”. In chiusura l’invito: “Non farti guidare da alcool e droghe. Non farlo”. La campagna,  volta a sensibilizzare i giovani sul tema della guida sotto l’effetto di alcol e droghe, è stata realizzata  dal Dipartimento per l’Informazione e l’Editoria della Presidenza del Consiglio in collaborazione con il Dipartimento per le Politiche Antidroga e il Ministero dell’Interno. Lo spot è andato in onda in tv da Natale 2022 al 16 gennaio 2023. Utilizzabile insieme ad altri spot che utilizzano un registro differente (comico, drammatico, ecc…) per ragionare sull’efficacia.",
+    "dataInserimento": "2024-02-08"
   },
   {
     "id": "HD1931-12",
@@ -168,7 +179,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "SOMEONE WAITS FOR YOU – CANE. Un ragazzo cresce il suo cane, un golden retriever. I due sono inseparabili, ma un giorno il ragazzo va via in macchina con gli amici, portando con se una cassa di birra Budweiser. Il cane rimane sveglio ad attenderlo per tutta la notte, con lo sguardo triste. Una scritta su sfondo nero commenta, in inglese: “Per qualcuno l’attesa non ha mai avuto fine. Ma possiamo cambiare questa situazione”. E’ mattina: la porta si apre, il cane solleva la testa e si trova davanti il suo padrone. I due si fanno le coccole, mentre il ragazzo si scusa (sempre in inglese) e spiega che la sera prima non era in condizioni per guidare, quindi è rimasto da Dave. Compare un’altra scritta: “Organizzati per tornare a casa. I tuoi amici contano su di te”. In chiusura il logo delle birra Budweiser con l’hashtag “#FriendsAreWaiting”. Lo spot è stato usato in numerosi interventi con studenti delle superiori, che ne hanno spesso sottolineato l’efficacia per l’uso della narrazione, l’impatto emotivo e il messaggio positivo. Il cane funziona come simbolo universale di affetto. Lo spot fa leva sul senso di responsabilità del bevitore, sottolineando che la sua vita ha valore per gli altri. Non vengono messi in scena il consumo di alcool e i suoi effetti: ne veniamo informati dal protagonista, che ha scelto di rimanere a dormire da un amico. Lo spunto narrativo permette di sviluppare un discorso rispetto alle strategie di sicurezza, il “paracadute” che ci permette di evitare i rischi più immediati, come un incidente."
+    "description": "SOMEONE WAITS FOR YOU – CANE. Un ragazzo cresce il suo cane, un golden retriever. I due sono inseparabili, ma un giorno il ragazzo va via in macchina con gli amici, portando con se una cassa di birra Budweiser. Il cane rimane sveglio ad attenderlo per tutta la notte, con lo sguardo triste. Una scritta su sfondo nero commenta, in inglese: “Per qualcuno l’attesa non ha mai avuto fine. Ma possiamo cambiare questa situazione”. E’ mattina: la porta si apre, il cane solleva la testa e si trova davanti il suo padrone. I due si fanno le coccole, mentre il ragazzo si scusa (sempre in inglese) e spiega che la sera prima non era in condizioni per guidare, quindi è rimasto da Dave. Compare un’altra scritta: “Organizzati per tornare a casa. I tuoi amici contano su di te”. In chiusura il logo delle birra Budweiser con l’hashtag “#FriendsAreWaiting”. Lo spot è stato usato in numerosi interventi con studenti delle superiori, che ne hanno spesso sottolineato l’efficacia per l’uso della narrazione, l’impatto emotivo e il messaggio positivo. Il cane funziona come simbolo universale di affetto. Lo spot fa leva sul senso di responsabilità del bevitore, sottolineando che la sua vita ha valore per gli altri. Non vengono messi in scena il consumo di alcool e i suoi effetti: ne veniamo informati dal protagonista, che ha scelto di rimanere a dormire da un amico. Lo spunto narrativo permette di sviluppare un discorso rispetto alle strategie di sicurezza, il “paracadute” che ci permette di evitare i rischi più immediati, come un incidente.",
+    "dataInserimento": "2026-01-31"
   },
   {
     "id": "HD1932-01",
@@ -182,7 +194,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "LA7 TAGADA’ Puntata del 17/01/2020. Sabato sera nella Capitale, fra discoteca, alcol e test per rilevare chi guida in stato di ebbrezza. L'inviata Mariagrazia Gerina segue gli uomini della Polizia Municipale di Roma durante i controlli. Vengono intervistati ragazzi diciassettenni: uno di loro dice che è normale che si beva, “mica è droga”. Gli agenti spiegano come funziona l’etilometro. All’uscita di un locale tre giovani spiegano che loro hanno trent’anni, quindi “ce la fanno a bere e a guidare pure”."
+    "description": "LA7 TAGADA’ Puntata del 17/01/2020. Sabato sera nella Capitale, fra discoteca, alcol e test per rilevare chi guida in stato di ebbrezza. L'inviata Mariagrazia Gerina segue gli uomini della Polizia Municipale di Roma durante i controlli. Vengono intervistati ragazzi diciassettenni: uno di loro dice che è normale che si beva, “mica è droga”. Gli agenti spiegano come funziona l’etilometro. All’uscita di un locale tre giovani spiegano che loro hanno trent’anni, quindi “ce la fanno a bere e a guidare pure”.",
+    "dataInserimento": "2024-03-11"
   },
   {
     "id": "HD1932-02",
@@ -196,7 +209,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Il noto canale Youtube TELOSPIEGO dedica un video all’alcool e ai suoi effetti sul corpo umano. Con le consuete animazioni su sfondo giallo e uno stille chiaro e leggero, il video spiega che cosa capita all’alcool quando viene ingerito: la sua scomposizione da parte del fegato, l’assorbimento e la messa in circolo, gli effetti immediati, quelli del giorno dopo e quelli a lungo termine. Viene puntualizzato che l’alcool è una droga e che, come tale, può dare dipendenza. Interessante esempio di formato informativo, molto conosciuto: il canale ha oltre duecentomila iscritti, mentre questo video conta oltre un milione di visualizzazioni."
+    "description": "Il noto canale Youtube TELOSPIEGO dedica un video all’alcool e ai suoi effetti sul corpo umano. Con le consuete animazioni su sfondo giallo e uno stille chiaro e leggero, il video spiega che cosa capita all’alcool quando viene ingerito: la sua scomposizione da parte del fegato, l’assorbimento e la messa in circolo, gli effetti immediati, quelli del giorno dopo e quelli a lungo termine. Viene puntualizzato che l’alcool è una droga e che, come tale, può dare dipendenza. Interessante esempio di formato informativo, molto conosciuto: il canale ha oltre duecentomila iscritti, mentre questo video conta oltre un milione di visualizzazioni.",
+    "dataInserimento": "2025-12-23"
   },
   {
     "id": "HD1932-03",
@@ -210,7 +224,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Sul canale Youtube della clinica milanese AlmaPhysio (canale di successo, con oltre 800 mila iscritti) il fondatore Gianluca Italiano spiega undici effetti positivi sul corpo umano quando si smette di consumare alcool: dal pancreas al fegato, dalla libido sessuale agli effetti su lucidità e memoria. Bisognerebbe modificare la percezione sociale secondo cui il bere alcolici viene associato alla socialità e al divertimento. Nella parte finale del video si fa rifermento alla dipendenza, suggerendo di chiedere aiuto se si riscontrano alcune caratteristiche dell’addiction, come il non riuscire a fermarsi. Video molto lungo (20 minuti), ma dal quale possono essere estrapolate clip."
+    "description": "Sul canale Youtube della clinica milanese AlmaPhysio (canale di successo, con oltre 800 mila iscritti) il fondatore Gianluca Italiano spiega undici effetti positivi sul corpo umano quando si smette di consumare alcool: dal pancreas al fegato, dalla libido sessuale agli effetti su lucidità e memoria. Bisognerebbe modificare la percezione sociale secondo cui il bere alcolici viene associato alla socialità e al divertimento. Nella parte finale del video si fa rifermento alla dipendenza, suggerendo di chiedere aiuto se si riscontrano alcune caratteristiche dell’addiction, come il non riuscire a fermarsi. Video molto lungo (20 minuti), ma dal quale possono essere estrapolate clip.",
+    "dataInserimento": "2023-07-30"
   },
   {
     "id": "HD1932-04",
@@ -224,7 +239,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Per ubriachi e drogati alla guida ma anche per chi usa il cellulare al volante sarà tolleranza zero. Il Consiglio dei Ministri ha dato il via libera al Ddl sulla sicurezza stradale e la delega per la riforma del Codice della Strada, che impone anche una stretta ai neopatentati: non potranno guidare supercar per i primi tre anni, il limite attuale è di un anno. Per chi è stato condannato per guida in stato di ebbrezza viene inoltre introdotto l’Alcolock, un dispositivo che impedisce l’accensione dell’auto se rivela un tasso alcolemico superiore a quello consentito."
+    "description": "Per ubriachi e drogati alla guida ma anche per chi usa il cellulare al volante sarà tolleranza zero. Il Consiglio dei Ministri ha dato il via libera al Ddl sulla sicurezza stradale e la delega per la riforma del Codice della Strada, che impone anche una stretta ai neopatentati: non potranno guidare supercar per i primi tre anni, il limite attuale è di un anno. Per chi è stato condannato per guida in stato di ebbrezza viene inoltre introdotto l’Alcolock, un dispositivo che impedisce l’accensione dell’auto se rivela un tasso alcolemico superiore a quello consentito.",
+    "dataInserimento": "2025-07-09"
   },
   {
     "id": "HD1932-05",
@@ -238,7 +254,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Il video, prodotto dal noto canale Youtube Cartoni Morti, presenta in modo ironico i danni che l'alcool provoca al nostro organismo e il concetto di rischio associato all'alcool. Le informazioni scientifiche sono tradotte in linguaggio semplice e diretto. Il rischio zero non esiste, perchè l'alcool è sempre dannoso per il nostro organismo: occorre allora chiedersi \"quanto si rischia\". Il video spiega gli effetti negativi sulla base della quantità di unità alcoliche assunte. Se si vuole mantenere il rischio basso, occorre bere moderatamente e non \"spaccarsi il sabato sera\". Il video è un esempio interessante di informazione che lavora sul concetto di riduzione del danno."
+    "description": "Il video, prodotto dal noto canale Youtube Cartoni Morti, presenta in modo ironico i danni che l'alcool provoca al nostro organismo e il concetto di rischio associato all'alcool. Le informazioni scientifiche sono tradotte in linguaggio semplice e diretto. Il rischio zero non esiste, perchè l'alcool è sempre dannoso per il nostro organismo: occorre allora chiedersi \"quanto si rischia\". Il video spiega gli effetti negativi sulla base della quantità di unità alcoliche assunte. Se si vuole mantenere il rischio basso, occorre bere moderatamente e non \"spaccarsi il sabato sera\". Il video è un esempio interessante di informazione che lavora sul concetto di riduzione del danno.",
+    "dataInserimento": "2023-07-20"
   },
   {
     "id": "HD1933-01",
@@ -252,7 +269,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Il protagonista della serie tv Sex Education, l’adolescente Otis, ha organizzato una festa: la casa è piena di ragazzi che si divertono, parlano tra loro, bevono. Otis, visibilmente ubriaco, sale su un tavolo, chiede silenzio e si lancia in un discorso in cui mette in imbarazzo Ola, la ragazza che lo ha appena lasciato, e Maeve, di cui è ancora innamorato. Alla fine del discorso le due ragazze se ne vanno, dando dello stronzo a Otis, che si rimette a ballare. La sequenza è stata utilizzata in classe per ragionare sugli effetti dell’alcool, non necessariamente tragici: quanto a volte il bere ci porta a perdere il controllo delle nostre parole, dicendo o facendo cose di cui il giorno dopo ci pentiamo? Un utilizzo della scena in questa direzione può essere con il mandato “che cosa capita il giorno dopo”, anche assegnando ruoli diversi (Otis, Ola, Maeve, uno degli amici, ecc…). Un altro elemento utile per la discussione è che, nella sequenza, non vediamo nessuno riprendere Otis con il proprio smartphone, nonostante la serie sia ambientata ai giorni nostri."
+    "description": "Il protagonista della serie tv Sex Education, l’adolescente Otis, ha organizzato una festa: la casa è piena di ragazzi che si divertono, parlano tra loro, bevono. Otis, visibilmente ubriaco, sale su un tavolo, chiede silenzio e si lancia in un discorso in cui mette in imbarazzo Ola, la ragazza che lo ha appena lasciato, e Maeve, di cui è ancora innamorato. Alla fine del discorso le due ragazze se ne vanno, dando dello stronzo a Otis, che si rimette a ballare. La sequenza è stata utilizzata in classe per ragionare sugli effetti dell’alcool, non necessariamente tragici: quanto a volte il bere ci porta a perdere il controllo delle nostre parole, dicendo o facendo cose di cui il giorno dopo ci pentiamo? Un utilizzo della scena in questa direzione può essere con il mandato “che cosa capita il giorno dopo”, anche assegnando ruoli diversi (Otis, Ola, Maeve, uno degli amici, ecc…). Un altro elemento utile per la discussione è che, nella sequenza, non vediamo nessuno riprendere Otis con il proprio smartphone, nonostante la serie sia ambientata ai giorni nostri.",
+    "dataInserimento": "2023-12-02"
   },
   {
     "id": "HD1933-02",
@@ -266,7 +284,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "I due protagonisti del film hanno organizzato una festa gigantesca a casa propria, con centinaia di ragazzi invitati. Al grido di “Avanti fino all’alba!” si scatena il divertimento: tutti bevono, ballano, si tuffano in piscina. Qualcuno inizia a perdere il controllo: un ragazzo si lancia con lo skate giù dal tetto, il vetro di una finestra viene rotto, i soprammobili vengono usati per bere la birra. La sequenza è stata utilizzata sia nelle classi che in formazione con operatori e insegnanti, insieme ad altre sequenze sul consumo, con il mandato: “Chi è più a rischio? Perchè?”. Spesso viene evidenziato come questo contesto di consumo contenga situazioni di rischio a breve termine; il gruppo può funzionare sia da moltiplicatore (rischio perché anche altri lo fanno), sia da protezione (se mi faccio male non sono da solo)."
+    "description": "I due protagonisti del film hanno organizzato una festa gigantesca a casa propria, con centinaia di ragazzi invitati. Al grido di “Avanti fino all’alba!” si scatena il divertimento: tutti bevono, ballano, si tuffano in piscina. Qualcuno inizia a perdere il controllo: un ragazzo si lancia con lo skate giù dal tetto, il vetro di una finestra viene rotto, i soprammobili vengono usati per bere la birra. La sequenza è stata utilizzata sia nelle classi che in formazione con operatori e insegnanti, insieme ad altre sequenze sul consumo, con il mandato: “Chi è più a rischio? Perchè?”. Spesso viene evidenziato come questo contesto di consumo contenga situazioni di rischio a breve termine; il gruppo può funzionare sia da moltiplicatore (rischio perché anche altri lo fanno), sia da protezione (se mi faccio male non sono da solo).",
+    "dataInserimento": "2025-02-26"
   },
   {
     "id": "HD1933-03",
@@ -280,7 +299,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Con un commento di musica elettronica che alterna parti più melodiche con sezioni maggiormente ritmate e “dure”, vediamo immagini di ragazzi e ragazze in costume che sulla spiaggia festeggiano lo “spring break”, la pausa scolastica statunitense tra marzo e aprile. Alcool e sessualità esibita dominano alcune scene: una ragazza si fa versare la birra sul seno, altre ricevono birra in bocca da ragazzi che tengono le lattine come se stessero urinando. Il video può essere utilizzato (analogamente ad “Avanti fino all’alba” tratta da Project X, presente in questo archivio) insieme ad altre sequenze sul consumo, con il mandato “Chi ti sembra più a rischio? Perchè?”. Rispetto a Project X, questa sequenza (come il film da cui è tratta) mette maggiormente l’accento sul corpo femminile."
+    "description": "Con un commento di musica elettronica che alterna parti più melodiche con sezioni maggiormente ritmate e “dure”, vediamo immagini di ragazzi e ragazze in costume che sulla spiaggia festeggiano lo “spring break”, la pausa scolastica statunitense tra marzo e aprile. Alcool e sessualità esibita dominano alcune scene: una ragazza si fa versare la birra sul seno, altre ricevono birra in bocca da ragazzi che tengono le lattine come se stessero urinando. Il video può essere utilizzato (analogamente ad “Avanti fino all’alba” tratta da Project X, presente in questo archivio) insieme ad altre sequenze sul consumo, con il mandato “Chi ti sembra più a rischio? Perchè?”. Rispetto a Project X, questa sequenza (come il film da cui è tratta) mette maggiormente l’accento sul corpo femminile.",
+    "dataInserimento": "2024-06-24"
   },
   {
     "id": "HD1933-04",
@@ -294,7 +314,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Dopo una gigantesca bevuta di birra, sia Homer che Marge salgono in auto ubriachi. Homer si mette alla guida, pur consapevole di essere sbronzo, e in poco tempo ribalta la macchina."
+    "description": "Dopo una gigantesca bevuta di birra, sia Homer che Marge salgono in auto ubriachi. Homer si mette alla guida, pur consapevole di essere sbronzo, e in poco tempo ribalta la macchina.",
+    "dataInserimento": "2025-10-07"
   },
   {
     "id": "HD1933-05",
@@ -308,7 +329,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Walt (il protagonista delle serie) e suo cognato Hank stanno chiacchierando e bevendo tequila ad un tavolo, durante una festa a bordo piscina. Al tavolo con loro c’è il figlio adolescente di Walt: il padre gli versa un bicchiere di tequila. La cosa viene accolta dal ragazzo e dal cognato come una sorta di iniziazione. Il papà però esagera: al terzo bicchiere versato al figlio il cognato gli porta via la bottiglia, facendolo infurare. Il figlio si sente male e vomita nella piscina. Utilizzabile con adulti per ragionare sulla perdita di controllo legata al consumo di alcool."
+    "description": "Walt (il protagonista delle serie) e suo cognato Hank stanno chiacchierando e bevendo tequila ad un tavolo, durante una festa a bordo piscina. Al tavolo con loro c’è il figlio adolescente di Walt: il padre gli versa un bicchiere di tequila. La cosa viene accolta dal ragazzo e dal cognato come una sorta di iniziazione. Il papà però esagera: al terzo bicchiere versato al figlio il cognato gli porta via la bottiglia, facendolo infurare. Il figlio si sente male e vomita nella piscina. Utilizzabile con adulti per ragionare sulla perdita di controllo legata al consumo di alcool.",
+    "dataInserimento": "2024-08-12"
   },
   {
     "id": "HD1933-06",
@@ -322,7 +344,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "L’adolescente Cook ha radunato i suoi amici al pub per festeggiare il suo compleanno. Nonostante Cook inviti continuamente a bere, la festa non sembra decollare: i ragazzi stanno seduti al tavolo, visibilmente imbarazzati. Cook ordina un giro di tequile e le beve di un fiato quasi tutte. L’amico JJ fa un gioco di prestigio, facendo comparire un pesce rosso in un bicchiere d’acqua: Cook afferra il bicchiere e beve tutto, pesce compreso. Vedendo ciò una delle ragazze vomita: Cook dall’odore del vomito indovina che la ragazza ha bevuto frullato alla fragola. Nel finale il festeggiato ordina altre sedici tequila. Sequenza utilizzata sia in classe che con adulti: può essere abbinata ad altre situazioni di consumo, con il mandato di scegliere chi è più a rischio, oppure può essere visionata singolarmente, chiedendo ai partecipanti di continuare la storia (anche assegnando personaggi diversi)."
+    "description": "L’adolescente Cook ha radunato i suoi amici al pub per festeggiare il suo compleanno. Nonostante Cook inviti continuamente a bere, la festa non sembra decollare: i ragazzi stanno seduti al tavolo, visibilmente imbarazzati. Cook ordina un giro di tequile e le beve di un fiato quasi tutte. L’amico JJ fa un gioco di prestigio, facendo comparire un pesce rosso in un bicchiere d’acqua: Cook afferra il bicchiere e beve tutto, pesce compreso. Vedendo ciò una delle ragazze vomita: Cook dall’odore del vomito indovina che la ragazza ha bevuto frullato alla fragola. Nel finale il festeggiato ordina altre sedici tequila. Sequenza utilizzata sia in classe che con adulti: può essere abbinata ad altre situazioni di consumo, con il mandato di scegliere chi è più a rischio, oppure può essere visionata singolarmente, chiedendo ai partecipanti di continuare la storia (anche assegnando personaggi diversi).",
+    "dataInserimento": "2023-03-11"
   },
   {
     "id": "HD1933-07",
@@ -336,7 +359,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "L'adolescente Nina si risveglia intontita dopo l'ubriacatura della sera precedente. La sua ragazza, Micol, è già sveglia e si sta preparando per uscire. Nina scorre i messaggi sul suo smartphone e inizia a ricordare qualcosa della festa appena trascorsa, finchè un messaggio di Akemi le riporta l'immagine di lei che bacia la ragazzina (nella serie Akemi ha 13 anni). Nina, sconvolta, si alza a va a scusarsi con Micol, spiegando che non voleva farlo ma era ubriaca: \"Ho baciato una bambina davanti a tutta la scuola!\". Micol non è arrabbiata, prima di uscire dice a Nina di portare i vestiti in lavanderia perchè sono pieni di vomito. La sequenza mette bene in scena la perdita di controllo dovuta all'abuso di alcool, dal punto di vista del giorno dopo. Utilizzabile in laboratori con studenti delle superiori, con possibile mandato di continuare la vicenda."
+    "description": "L'adolescente Nina si risveglia intontita dopo l'ubriacatura della sera precedente. La sua ragazza, Micol, è già sveglia e si sta preparando per uscire. Nina scorre i messaggi sul suo smartphone e inizia a ricordare qualcosa della festa appena trascorsa, finchè un messaggio di Akemi le riporta l'immagine di lei che bacia la ragazzina (nella serie Akemi ha 13 anni). Nina, sconvolta, si alza a va a scusarsi con Micol, spiegando che non voleva farlo ma era ubriaca: \"Ho baciato una bambina davanti a tutta la scuola!\". Micol non è arrabbiata, prima di uscire dice a Nina di portare i vestiti in lavanderia perchè sono pieni di vomito. La sequenza mette bene in scena la perdita di controllo dovuta all'abuso di alcool, dal punto di vista del giorno dopo. Utilizzabile in laboratori con studenti delle superiori, con possibile mandato di continuare la vicenda.",
+    "dataInserimento": "2024-12-21"
   },
   {
     "id": "HD1934-01",
@@ -350,7 +374,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Nima Nourizadeh. Tre ragazzi piuttosto \"sfigati\" di nome Costa, Thomas e JB vogliono organizzare una festa per il compleanno di Thomas a casa di quest'ultimo, approfittando anche della disponibilità dei genitori del ragazzo, che gli lasciano la casa libera per l'occasione. L'obiettivo dei tre amici è diventare più popolari e poter partecipare finalmente a feste da sballo in futuro. Dopo essersi procurati in giornata tutto il necessario per il party (tra cui alcol e marijuana), i tre cercano in tutti modi di far venire più gente possibile; in particolare Costa riesce a pubblicizzare molto la serata tramite internet, passaparola, annunci e perfino la radio. . Il party così degenera durante la notte, fino ad arrivare alla partecipazione di quasi 2000 ragazzi. Verso la fine della festa succede qualcosa di inaspettato: lo spacciatore dal quale i tre si erano recati quella mattina per comprare la marijuana si presenta alla festa del ragazzo armato di lanciafiamme e devasta tutto il quartiere ma soprattutto la casa del festeggiato. Il motivo di questo come di altri imprevisti è Costa, che aveva deciso di rubare un nano da giardino proprio allo spacciatore, senza sapere che all'interno erano nascoste innumerevoli pastiglie di ecstasy. Così, quando il nano viene letteralmente rotto a mazzate, tutti gli invitati fanno incetta delle pastiglie, consumandole in poco tempo ed aumentando la follia generale. Alla fine deve intervenire la polizia per cercare di ristabilire la situazione. Dal film sono estrapolabili diverse sequenze che mettono in scena situazioni di consumo di alcool, comportamenti a rischio e perdita di controllo. La sequenza “Avanti fino all’alba”, presente in questo archivio, è stata utilizzata sia con studenti delle superiori che con adulti."
+    "description": "Regia: Nima Nourizadeh. Tre ragazzi piuttosto \"sfigati\" di nome Costa, Thomas e JB vogliono organizzare una festa per il compleanno di Thomas a casa di quest'ultimo, approfittando anche della disponibilità dei genitori del ragazzo, che gli lasciano la casa libera per l'occasione. L'obiettivo dei tre amici è diventare più popolari e poter partecipare finalmente a feste da sballo in futuro. Dopo essersi procurati in giornata tutto il necessario per il party (tra cui alcol e marijuana), i tre cercano in tutti modi di far venire più gente possibile; in particolare Costa riesce a pubblicizzare molto la serata tramite internet, passaparola, annunci e perfino la radio. . Il party così degenera durante la notte, fino ad arrivare alla partecipazione di quasi 2000 ragazzi. Verso la fine della festa succede qualcosa di inaspettato: lo spacciatore dal quale i tre si erano recati quella mattina per comprare la marijuana si presenta alla festa del ragazzo armato di lanciafiamme e devasta tutto il quartiere ma soprattutto la casa del festeggiato. Il motivo di questo come di altri imprevisti è Costa, che aveva deciso di rubare un nano da giardino proprio allo spacciatore, senza sapere che all'interno erano nascoste innumerevoli pastiglie di ecstasy. Così, quando il nano viene letteralmente rotto a mazzate, tutti gli invitati fanno incetta delle pastiglie, consumandole in poco tempo ed aumentando la follia generale. Alla fine deve intervenire la polizia per cercare di ristabilire la situazione. Dal film sono estrapolabili diverse sequenze che mettono in scena situazioni di consumo di alcool, comportamenti a rischio e perdita di controllo. La sequenza “Avanti fino all’alba”, presente in questo archivio, è stata utilizzata sia con studenti delle superiori che con adulti.",
+    "dataInserimento": "2025-05-06"
   },
   {
     "id": "HD1934-02",
@@ -364,7 +389,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Harmony Korine. Brit, Candy, Cotty e Faith, studentesse di un college di provincia, aspettano da tempo di fare una vacanza memorabile. Nell'imminenza di un nuovo \"spring break\", Brit, Candy e Cotty, armate di pistole ad acqua, rapinano un fast food per potersi concedere finalmente la vacanza tanto sognata. Messa di fronte al fatto compiuto, Faith, la più salda di principi, non si fa troppi scrupoli e dà il via libera alla partenza per la Florida con i soldi procurati dalle più disinibite compagne. La vacanza comincia nel migliore dei modi, ma dopo una retata le ragazze vengono accusate di consumo di droga e costrette al carcere. Dopo una sola notte sono rimesse in libertà grazie al pagamento della cauzione da parte di Alien, un noto criminale del posto. Questi offre loro protezione e uno scampolo di vita dorata da \"pupe del gangster\", senza chiedere esplicitamente niente in cambio. Faith, trovandosi a disagio, preferisce tornarsene a casa. Le altre restano e si lasciano trasportare dal contesto, arrivando, un po' per riconoscenza ma soprattutto per divertimento, a fare piccole rapine, con uso di armi vere. Rivendicando un'invasione del suo territorio, Big Arch, vecchio amico e ora rivale di Alien, lo intimidisce con alcuni colpi esplosi contro la sua auto. Ne resta ferita Cotty, ad un braccio. La ragazza viene medicata ma, ormai traumatizzata, riparte immediatamente verso casa. Ormai sole, Brit e Candy perdono gli ultimi freni e suggellano l'intesa con Alien nell'unanime intento di vendetta verso il comune nemico. Recatisi nel covo di questo armati fino al collo, Alien viene ucciso subito, mentre le due ragazze fanno fuori con estrema freddezza tutta la gang fino al capo, nella sua camera da letto. Poi, con la Lamborghini dello stesso Big Arch, ripartono verso casa. Dal film sono estrapolabili diverse sequenze che mettono in scena situazioni di consumo di alcool, comportamenti a rischio, perdita di controllo e sessualità."
+    "description": "Regia: Harmony Korine. Brit, Candy, Cotty e Faith, studentesse di un college di provincia, aspettano da tempo di fare una vacanza memorabile. Nell'imminenza di un nuovo \"spring break\", Brit, Candy e Cotty, armate di pistole ad acqua, rapinano un fast food per potersi concedere finalmente la vacanza tanto sognata. Messa di fronte al fatto compiuto, Faith, la più salda di principi, non si fa troppi scrupoli e dà il via libera alla partenza per la Florida con i soldi procurati dalle più disinibite compagne. La vacanza comincia nel migliore dei modi, ma dopo una retata le ragazze vengono accusate di consumo di droga e costrette al carcere. Dopo una sola notte sono rimesse in libertà grazie al pagamento della cauzione da parte di Alien, un noto criminale del posto. Questi offre loro protezione e uno scampolo di vita dorata da \"pupe del gangster\", senza chiedere esplicitamente niente in cambio. Faith, trovandosi a disagio, preferisce tornarsene a casa. Le altre restano e si lasciano trasportare dal contesto, arrivando, un po' per riconoscenza ma soprattutto per divertimento, a fare piccole rapine, con uso di armi vere. Rivendicando un'invasione del suo territorio, Big Arch, vecchio amico e ora rivale di Alien, lo intimidisce con alcuni colpi esplosi contro la sua auto. Ne resta ferita Cotty, ad un braccio. La ragazza viene medicata ma, ormai traumatizzata, riparte immediatamente verso casa. Ormai sole, Brit e Candy perdono gli ultimi freni e suggellano l'intesa con Alien nell'unanime intento di vendetta verso il comune nemico. Recatisi nel covo di questo armati fino al collo, Alien viene ucciso subito, mentre le due ragazze fanno fuori con estrema freddezza tutta la gang fino al capo, nella sua camera da letto. Poi, con la Lamborghini dello stesso Big Arch, ripartono verso casa. Dal film sono estrapolabili diverse sequenze che mettono in scena situazioni di consumo di alcool, comportamenti a rischio, perdita di controllo e sessualità.",
+    "dataInserimento": "2023-11-27"
   },
   {
     "id": "HD1934-03",
@@ -378,7 +404,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Todd Philips. Doug Billings (un agente immobiliare), Phil Wenneck (un insegnante), Stuart Price (un dentista) e Alan Garner (un disoccupato stramboide) sono un gruppo di amici in partenza per Las Vegas per celebrare l'addio al celibato di Doug. Dopo aver preso una suite al lussuosissimo Caesars Palace, brindano alla notte che non dimenticheranno mai.\nLa mattina dopo, Stu, Alan e Phil si svegliano completamente disorientati: la suite è devastata, una gallina gira per la stanza, a Stu manca un dente, nel bagno si trova una tigre, nel ripostiglio c'è un neonato che piange e, soprattutto, Doug è scomparso.\nI tre si organizzano per cercare di ricostruire, attraverso i pochi indizi che rintracciano, come hanno trascorso le ultime dodici ore, nella speranza di ritrovare l'amico. Dopo mille peripezie, Doug viene ritrovato: è sul tetto dell'albergo, dove era stato lasciato per scherzo. Il gruppo parte così in auto per arrivare appena in tempo al matrimonio."
+    "description": "Regia: Todd Philips. Doug Billings (un agente immobiliare), Phil Wenneck (un insegnante), Stuart Price (un dentista) e Alan Garner (un disoccupato stramboide) sono un gruppo di amici in partenza per Las Vegas per celebrare l'addio al celibato di Doug. Dopo aver preso una suite al lussuosissimo Caesars Palace, brindano alla notte che non dimenticheranno mai.\nLa mattina dopo, Stu, Alan e Phil si svegliano completamente disorientati: la suite è devastata, una gallina gira per la stanza, a Stu manca un dente, nel bagno si trova una tigre, nel ripostiglio c'è un neonato che piange e, soprattutto, Doug è scomparso.\nI tre si organizzano per cercare di ricostruire, attraverso i pochi indizi che rintracciano, come hanno trascorso le ultime dodici ore, nella speranza di ritrovare l'amico. Dopo mille peripezie, Doug viene ritrovato: è sul tetto dell'albergo, dove era stato lasciato per scherzo. Il gruppo parte così in auto per arrivare appena in tempo al matrimonio.",
+    "dataInserimento": "2024-06-01"
   },
   {
     "id": "HD1935-01",
@@ -392,7 +419,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Cortometraggio",
     "prodottoScuola": false,
-    "description": "Un uomo trascorre qualche giorno in un cottage su un lago, da solo. Comunica via messaggio con persone diverse. Lo vediamo andare via con la propria auto e ritornare con una bottiglia di vodka. Intuiamo che l’uomo sta provando a smettere di bere, ma durante il giorno continua a tirare giù sorsate dalla bottiglia. Il giorno seguente la scena si ripete con una nuova bottiglia, mentre continuano ad arrivare messaggi. Nel finale c’è un colpo di scena: l’uomo estrae dalla tasca una moneta che certifica il suo essere sobrio da un mese, poi lo vediamo versare la vodka nel lavandino e riempire d’acqua la bottiglia. Capiamo così che per tutto il suo soggiorno l’uomo ha sempre bevuto acqua, usando la bottiglia di vodka come contenitore. Cortometraggio in inglese, ma non parlato: i messaggi scritti sono facilmente comprensibili. Utilizzabile interrompendolo prima del finale e chiedendo come continua la storia."
+    "description": "Un uomo trascorre qualche giorno in un cottage su un lago, da solo. Comunica via messaggio con persone diverse. Lo vediamo andare via con la propria auto e ritornare con una bottiglia di vodka. Intuiamo che l’uomo sta provando a smettere di bere, ma durante il giorno continua a tirare giù sorsate dalla bottiglia. Il giorno seguente la scena si ripete con una nuova bottiglia, mentre continuano ad arrivare messaggi. Nel finale c’è un colpo di scena: l’uomo estrae dalla tasca una moneta che certifica il suo essere sobrio da un mese, poi lo vediamo versare la vodka nel lavandino e riempire d’acqua la bottiglia. Capiamo così che per tutto il suo soggiorno l’uomo ha sempre bevuto acqua, usando la bottiglia di vodka come contenitore. Cortometraggio in inglese, ma non parlato: i messaggi scritti sono facilmente comprensibili. Utilizzabile interrompendolo prima del finale e chiedendo come continua la storia.",
+    "dataInserimento": "2024-10-29"
   },
   {
     "id": "HD1935-02",
@@ -406,7 +434,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Cortometraggio",
     "prodottoScuola": false,
-    "description": "Video di prevenzione uso alcolici realizzato dall'associazione L'arcobaleno VIP Alba-Bra con i ragazzi del Liceo Psicopedagogico L. Da Vinci di Alba all'interno del progetto voglio una vita responsabile. Collaborazione con il CSV di Cuneo e ASL CN2 Sert di Alba. Il cortometraggio tratta un tema di stretta attualità e cioè il consumo e l'abuso di alcol come causa di incidenti stradali e sul lavoro. Vengono prese in esame diverse situazioni dove, dopo un consumo alcolico, appare la scritta 'tu ti fideresti delle sue mani?' E’ il caso di un gruppo di ragazze in discoteca: dopo aver ballato e molto bevuto, una di loro deve mettersi alla guida dell'auto. Oppure il guidatore di uno scuola-bus un pò alticcio. Le situazioni messe in scena proseguono: un barbiere pronto a fare la barba con un affilatissimo rasoio ad un ignaro cliente, un medico che beve prima di un intervento chirurgico, fino al macellaio che dopo un goccetto si trancia una mano. A questo punto il corto torna sulla prima sequenza che riguarda le ragazze in discoteca e la scritta 'loro NO' presuppone che abbiano scelto di far guidare la ragazza che non ha bevuto. La didascalia ci ricorda che: 'gli alcolici sono tra le principali cause di incidente su strada e sul lavoro. Pensaci'"
+    "description": "Video di prevenzione uso alcolici realizzato dall'associazione L'arcobaleno VIP Alba-Bra con i ragazzi del Liceo Psicopedagogico L. Da Vinci di Alba all'interno del progetto voglio una vita responsabile. Collaborazione con il CSV di Cuneo e ASL CN2 Sert di Alba. Il cortometraggio tratta un tema di stretta attualità e cioè il consumo e l'abuso di alcol come causa di incidenti stradali e sul lavoro. Vengono prese in esame diverse situazioni dove, dopo un consumo alcolico, appare la scritta 'tu ti fideresti delle sue mani?' E’ il caso di un gruppo di ragazze in discoteca: dopo aver ballato e molto bevuto, una di loro deve mettersi alla guida dell'auto. Oppure il guidatore di uno scuola-bus un pò alticcio. Le situazioni messe in scena proseguono: un barbiere pronto a fare la barba con un affilatissimo rasoio ad un ignaro cliente, un medico che beve prima di un intervento chirurgico, fino al macellaio che dopo un goccetto si trancia una mano. A questo punto il corto torna sulla prima sequenza che riguarda le ragazze in discoteca e la scritta 'loro NO' presuppone che abbiano scelto di far guidare la ragazza che non ha bevuto. La didascalia ci ricorda che: 'gli alcolici sono tra le principali cause di incidente su strada e sul lavoro. Pensaci'",
+    "dataInserimento": "2024-01-16"
   },
   {
     "id": "HD1935-03",
@@ -420,7 +449,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Cortometraggio",
     "prodottoScuola": false,
-    "description": "Regia di Riccardo Avitabile. Due uomini sulla trentina si trovano in un locale a bere con gli amici. Uno shottino tira l’altro e i due alla fine escono dal locale abbastanza alticci. Salgono in auto e iniziano a percorrere la strada. Una ragazza attraversa la strada guardando il cellulare: vedendo arrivare l’auto si accuccia. L’auto la evita per un soffio. I due uomini scendono, soccorrono la ragazza e intanto si guardano, consapevoli di aver rischiato un omicidio stradale. Cortometraggio senza dialoghi, l’audio è affidato alla musica."
+    "description": "Regia di Riccardo Avitabile. Due uomini sulla trentina si trovano in un locale a bere con gli amici. Uno shottino tira l’altro e i due alla fine escono dal locale abbastanza alticci. Salgono in auto e iniziano a percorrere la strada. Una ragazza attraversa la strada guardando il cellulare: vedendo arrivare l’auto si accuccia. L’auto la evita per un soffio. I due uomini scendono, soccorrono la ragazza e intanto si guardano, consapevoli di aver rischiato un omicidio stradale. Cortometraggio senza dialoghi, l’audio è affidato alla musica.",
+    "dataInserimento": "2025-09-08"
   },
   {
     "id": "HD1936-01",
@@ -434,7 +464,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Videoclip",
     "prodottoScuola": false,
-    "description": "Testo e immagini ci raccontano un “dopo festa”: il protagonista è in “hangover”, ovvero nello stato confusionale che segue il risveglio dopo l’ubriacatura. Mentre esplora la villa dove si è risvegliato, gli oggetti e le persone intorno a lui generano flashback in cui vediamo che cosa è accaduto nel party della notte precedente: persone che ballano e bevono, belle ragazze, un aereo privato, una Mini arancione che traina uno yacht. Il meccanismo narrativo è il medesimo di “Una notte da leoni” (“The Hangover” nel titolo originale), film del 2009. Il videoclip presenta un product placement esplicito della Mini e della vodka “Quattro Volte”: l’alcool viene quindi esplictamente associato ad uno stile di vita lussuoso ed esclusivo."
+    "description": "Testo e immagini ci raccontano un “dopo festa”: il protagonista è in “hangover”, ovvero nello stato confusionale che segue il risveglio dopo l’ubriacatura. Mentre esplora la villa dove si è risvegliato, gli oggetti e le persone intorno a lui generano flashback in cui vediamo che cosa è accaduto nel party della notte precedente: persone che ballano e bevono, belle ragazze, un aereo privato, una Mini arancione che traina uno yacht. Il meccanismo narrativo è il medesimo di “Una notte da leoni” (“The Hangover” nel titolo originale), film del 2009. Il videoclip presenta un product placement esplicito della Mini e della vodka “Quattro Volte”: l’alcool viene quindi esplictamente associato ad uno stile di vita lussuoso ed esclusivo.",
+    "dataInserimento": "2025-09-10"
   },
   {
     "id": "HD1936-02",
@@ -448,7 +479,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Videoclip",
     "prodottoScuola": false,
-    "description": "Il singolo è stato pubblicato online il 12 maggio 2015 in collaborazione con il Ministero della Salute, con l’obiettivo esplicito di sensibilizzare i giovani rispetto ai rischi dell’alcool. Il video è interamente girato all’interno di una discoteca, dove sul palco si esibiscono Elio e le Storie Tese, mentre nel locale accadono diverse situazioni (qualcuno balla, due ragazzi sono sulle poltroncine, tre ragazze stanno intorno ad una colonna, ecc…). Il video è infatti pensato per una fruizione a 360° su Youtube, muovendo il mouse o il visore VR: in questo modo lo spettatore crea la propria regia, scoprendo le varie situazioni. Il testo della canzone racconta un sabato sera alcolico, evidenziandone i rischi: dal vomito al coma etilico, dal sesso non protetto all’incidente stradale. Si tratta quindi di marketing sociale che utilizza un formato diverso dallo spot:. Utilizzabile sia per ragionare rispetto all’efficacia dell’operazione, ma anche rispetto alle informazioni veicolate."
+    "description": "Il singolo è stato pubblicato online il 12 maggio 2015 in collaborazione con il Ministero della Salute, con l’obiettivo esplicito di sensibilizzare i giovani rispetto ai rischi dell’alcool. Il video è interamente girato all’interno di una discoteca, dove sul palco si esibiscono Elio e le Storie Tese, mentre nel locale accadono diverse situazioni (qualcuno balla, due ragazzi sono sulle poltroncine, tre ragazze stanno intorno ad una colonna, ecc…). Il video è infatti pensato per una fruizione a 360° su Youtube, muovendo il mouse o il visore VR: in questo modo lo spettatore crea la propria regia, scoprendo le varie situazioni. Il testo della canzone racconta un sabato sera alcolico, evidenziandone i rischi: dal vomito al coma etilico, dal sesso non protetto all’incidente stradale. Si tratta quindi di marketing sociale che utilizza un formato diverso dallo spot:. Utilizzabile sia per ragionare rispetto all’efficacia dell’operazione, ma anche rispetto alle informazioni veicolate.",
+    "dataInserimento": "2025-09-15"
   },
   {
     "id": "HD1936-03",
@@ -462,7 +494,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Videoclip",
     "prodottoScuola": false,
-    "description": "Il video inizia con una parte recitata di circa un minuto, con Gue Pequeno che sale in auto con delle ragazze, riceve una telefonata dalla mamma e le dice che non rientra a casa, perché “faccio after”. Su queste parole parte la canzone. Il video, girato nella lussuosa Villa Peyrano, nel piacentino, ci mostra tanti giovani che ballano e bevono nella villa e nei suoi giardini. Il testo ribadisce la voglia di far festa: “non ci voglio andare a letto, voglio andare dove suonano l’elettro”."
+    "description": "Il video inizia con una parte recitata di circa un minuto, con Gue Pequeno che sale in auto con delle ragazze, riceve una telefonata dalla mamma e le dice che non rientra a casa, perché “faccio after”. Su queste parole parte la canzone. Il video, girato nella lussuosa Villa Peyrano, nel piacentino, ci mostra tanti giovani che ballano e bevono nella villa e nei suoi giardini. Il testo ribadisce la voglia di far festa: “non ci voglio andare a letto, voglio andare dove suonano l’elettro”.",
+    "dataInserimento": "2025-08-10"
   },
   {
     "id": "HD1936-04",
@@ -476,7 +509,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Videoclip",
     "prodottoScuola": false,
-    "description": "Il video è un cortometraggio, girato a Torino, che racconta le vicende di una giovane ragazza: la mattina litiga con capo dello studio in cui lavora e si licenzia mandando tutti a quel paese; la sera rientra a casa, racconta quanto è successo al marito/compagno (sempre interpretato da Willie Peyote), che però non la ascolta. Sempre più arrabbiata e scontenta, esce di casa, compra alcolici in un negozio di liquori e cammina bevendo per la movida torinese. Nel finale, abbastanza ubriaca, regala il suo cellulare ad un barbone, raggiunge in taxi l’aeroporto e vola via. I dialoghi non si sentono, l’audio è quello degli estratti di tre canzoni di Willie Peyote: “Che bella giornata” (per la prima parte sul lavoro), “E allora ciao” (a casa), “C’era una vodka” (la serata alcolica). Quest’ultima parte (che inizia a 3’07’’) può anche essere isolata: il testo della canzone è tutto sull’alcool, con versi come “Ma non riesco a concepire di uscire senza bere / Perché è come essere Superman senza alcun potere” o il famoso ritornello “Ho avuto dei problemi con l'alcool in passato / Ma ora va tutto bene, siamo tornati insieme”. Il video nella sua interezza può servire per ragionare sulle ragioni del bere: l’assunzione di alcool, in questa narrazione, derivano da un forte disagio."
+    "description": "Il video è un cortometraggio, girato a Torino, che racconta le vicende di una giovane ragazza: la mattina litiga con capo dello studio in cui lavora e si licenzia mandando tutti a quel paese; la sera rientra a casa, racconta quanto è successo al marito/compagno (sempre interpretato da Willie Peyote), che però non la ascolta. Sempre più arrabbiata e scontenta, esce di casa, compra alcolici in un negozio di liquori e cammina bevendo per la movida torinese. Nel finale, abbastanza ubriaca, regala il suo cellulare ad un barbone, raggiunge in taxi l’aeroporto e vola via. I dialoghi non si sentono, l’audio è quello degli estratti di tre canzoni di Willie Peyote: “Che bella giornata” (per la prima parte sul lavoro), “E allora ciao” (a casa), “C’era una vodka” (la serata alcolica). Quest’ultima parte (che inizia a 3’07’’) può anche essere isolata: il testo della canzone è tutto sull’alcool, con versi come “Ma non riesco a concepire di uscire senza bere / Perché è come essere Superman senza alcun potere” o il famoso ritornello “Ho avuto dei problemi con l'alcool in passato / Ma ora va tutto bene, siamo tornati insieme”. Il video nella sua interezza può servire per ragionare sulle ragioni del bere: l’assunzione di alcool, in questa narrazione, derivano da un forte disagio.",
+    "dataInserimento": "2023-03-24"
   },
   {
     "id": "HD1936-05",
@@ -490,7 +524,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Videoclip",
     "prodottoScuola": false,
-    "description": "Il rapper americano Post Malone canta il suo difficile rapporto con l’alcool. Il video ci presenta in loop immagini del rapper, mentre il testo (in inglese con sottotitoli in lingua) descrive l’ambivalenza del bere, rivolgendosi direttamente all’alcool: “Tu sei la ragione per cui vengo preso a calci in culo / ma se l’unico modo per affogare la mia tristezza”. Utilizzabile insieme ad altri videoclip (o ad estratti di essi) per ragionare sulle diverse rappresentazioni dell’alcool: divertimento e socialità (come in Faccio After del Pagante)? Consumo fashion (come in Hangover dei Flo Rida)? Rimedio ad un disagio (come in Willie Peyote o in Nitro)? Dipendenza?"
+    "description": "Il rapper americano Post Malone canta il suo difficile rapporto con l’alcool. Il video ci presenta in loop immagini del rapper, mentre il testo (in inglese con sottotitoli in lingua) descrive l’ambivalenza del bere, rivolgendosi direttamente all’alcool: “Tu sei la ragione per cui vengo preso a calci in culo / ma se l’unico modo per affogare la mia tristezza”. Utilizzabile insieme ad altri videoclip (o ad estratti di essi) per ragionare sulle diverse rappresentazioni dell’alcool: divertimento e socialità (come in Faccio After del Pagante)? Consumo fashion (come in Hangover dei Flo Rida)? Rimedio ad un disagio (come in Willie Peyote o in Nitro)? Dipendenza?",
+    "dataInserimento": "2025-04-05"
   },
   {
     "id": "HD1936-06",
@@ -504,7 +539,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Videoclip",
     "prodottoScuola": false,
-    "description": "Su immagini del rapper italiano Nitro e di un gruppo di persone che ballano, tutti con il bicchiere in mano, la canzone racconta i motivi per cui si assume l’alcool, legati all’anestetizzare un dolore: “Io ti amo solo quando bevo / Quando mi butto giù, butto giù veleno / Io ti amo solo quando bevo / Da sobrio rischio di capire ciò che vedo”. E più avanti: “Questi fanno del moralismo, sì ogni tanto mi anestetizzo ma / Voglio solo essere libero di farmi male e sanguinare / Voglio solo essere libero di farmi male”. Utilizzabile insieme ad altri videoclip presenti in questo archivio per ragionare sulle diverse rappresentazioni dell’alcool."
+    "description": "Su immagini del rapper italiano Nitro e di un gruppo di persone che ballano, tutti con il bicchiere in mano, la canzone racconta i motivi per cui si assume l’alcool, legati all’anestetizzare un dolore: “Io ti amo solo quando bevo / Quando mi butto giù, butto giù veleno / Io ti amo solo quando bevo / Da sobrio rischio di capire ciò che vedo”. E più avanti: “Questi fanno del moralismo, sì ogni tanto mi anestetizzo ma / Voglio solo essere libero di farmi male e sanguinare / Voglio solo essere libero di farmi male”. Utilizzabile insieme ad altri videoclip presenti in questo archivio per ragionare sulle diverse rappresentazioni dell’alcool.",
+    "dataInserimento": "2023-08-19"
   },
   {
     "id": "HD1937-01",
@@ -518,7 +554,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Web e social",
     "prodottoScuola": false,
-    "description": "All’interno di una discoteca di Verona un giovane ventiquattrenne, Federico, viene intervistato da una ragazza bionda nell’ambito di una campagna su alcool e guida (“Divertiti responsabilmente”). L’intervistatrice pone alcune domande a Federico: chi è il guidatore designato, è giusto bere e poi guidare, quali sono i limiti, ecc… A tutte le domande Federico risponde con le sue opinioni, non sempre in linea con il messaggio che ci si aspetta: “Secondo me io guido meglio da ubriaco”. Nel finale la ragazza chiede a Federico di lasciare un messaggio ai giovani sulla sicurezza stradale: “Bevete responsabilmente… cioè, se lo tenete l’alcool, bevete cazzo!”. Il video ha avuto un’enorme diffusione online (quello su Youtube qui linkata ha quasi due milioni di views), diventando anche una gif su Whatsapp e rendendo Federico famoso suo malgrado. Questa diffusione è positiva in termini di ricaduta del messaggio?"
+    "description": "All’interno di una discoteca di Verona un giovane ventiquattrenne, Federico, viene intervistato da una ragazza bionda nell’ambito di una campagna su alcool e guida (“Divertiti responsabilmente”). L’intervistatrice pone alcune domande a Federico: chi è il guidatore designato, è giusto bere e poi guidare, quali sono i limiti, ecc… A tutte le domande Federico risponde con le sue opinioni, non sempre in linea con il messaggio che ci si aspetta: “Secondo me io guido meglio da ubriaco”. Nel finale la ragazza chiede a Federico di lasciare un messaggio ai giovani sulla sicurezza stradale: “Bevete responsabilmente… cioè, se lo tenete l’alcool, bevete cazzo!”. Il video ha avuto un’enorme diffusione online (quello su Youtube qui linkata ha quasi due milioni di views), diventando anche una gif su Whatsapp e rendendo Federico famoso suo malgrado. Questa diffusione è positiva in termini di ricaduta del messaggio?",
+    "dataInserimento": "2024-06-21"
   },
   {
     "id": "HD1937-02",
@@ -532,7 +569,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Web e social",
     "prodottoScuola": false,
-    "description": "Un uomo di mezz’età, vestito elegantemente, ci parla seduto a un tavolo. Il tono e la posa sono quelli del “consiglio dell’esperto”: l’uomo infatti ci propone un rimedio contro i malanni di stagione. Prendete un limone, una carote, una gamba di sedano… poi buttate il tutto nel cestino e aprite una bottiglia di Prosecco, così “state sicuramente meglio”. Quindi nessun problema per i cambi di stagione! Video semplice, sintetico e con un colpo di scena finale, circolato in modo virale sui social e su Whatsapp. L’autore, Nicola Menin, è il proprietario della cantina La Fuita, che produce Prosecco: il video ha generato un’enorme visibilità ma anche la necessità di scusarsi per il gesto di buttare via la frutta. Che cosa possiamo imparare da questo studio di caso per costruire un prodotto analogo ma con un messaggio che promuova salute?"
+    "description": "Un uomo di mezz’età, vestito elegantemente, ci parla seduto a un tavolo. Il tono e la posa sono quelli del “consiglio dell’esperto”: l’uomo infatti ci propone un rimedio contro i malanni di stagione. Prendete un limone, una carote, una gamba di sedano… poi buttate il tutto nel cestino e aprite una bottiglia di Prosecco, così “state sicuramente meglio”. Quindi nessun problema per i cambi di stagione! Video semplice, sintetico e con un colpo di scena finale, circolato in modo virale sui social e su Whatsapp. L’autore, Nicola Menin, è il proprietario della cantina La Fuita, che produce Prosecco: il video ha generato un’enorme visibilità ma anche la necessità di scusarsi per il gesto di buttare via la frutta. Che cosa possiamo imparare da questo studio di caso per costruire un prodotto analogo ma con un messaggio che promuova salute?",
+    "dataInserimento": "2024-06-14"
   },
   {
     "id": "HD1937-03",
@@ -546,7 +584,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Web e social",
     "prodottoScuola": false,
-    "description": "Il video è una clip di circa 4 minuti tratta da un video più lungo. Il noto comico Natalino Balasso veste i panni del promotore di alcolici e si rivolge al “maschio pubere stordito”, che pensa al sesso ma non riesce ad attirare l’attenzione delle donne, collezionando figuracce. “Sei timido? Non drogarti, la droga ti avvelena l’anima. Segui il nostro rimedio: bevi alcool!”. Il video ricorda la pubblicità parodia degli alcolici tratta da South Park, presente in questo archivio: il discorso di Balasso però è più lungo, tocca anche gli effetti fisici dell’alcool e cita alcune strategie di marketing. Utilizzabile singolarmente per riflettere sugli aspetti economici e promozionali del mercato dell’alcool e sugli stili di vita proposti da pubblicità e videoclip."
+    "description": "Il video è una clip di circa 4 minuti tratta da un video più lungo. Il noto comico Natalino Balasso veste i panni del promotore di alcolici e si rivolge al “maschio pubere stordito”, che pensa al sesso ma non riesce ad attirare l’attenzione delle donne, collezionando figuracce. “Sei timido? Non drogarti, la droga ti avvelena l’anima. Segui il nostro rimedio: bevi alcool!”. Il video ricorda la pubblicità parodia degli alcolici tratta da South Park, presente in questo archivio: il discorso di Balasso però è più lungo, tocca anche gli effetti fisici dell’alcool e cita alcune strategie di marketing. Utilizzabile singolarmente per riflettere sugli aspetti economici e promozionali del mercato dell’alcool e sugli stili di vita proposti da pubblicità e videoclip.",
+    "dataInserimento": "2025-04-11"
   },
   {
     "id": "HD1937-04",
@@ -560,7 +599,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Web e social",
     "prodottoScuola": false,
-    "description": "Il video è una notizia letta con una voce femminile artificiale, montata su un’immagine fissa di Tiziano Ferro. Come svela il documentario di Amazon Prime “Ferro”, il noto cantante ha avuto problemi di alcolismo in passato. Questo si somma (o deriva) da altre lotte che ha dovuto sostenere fin dall’infanzia: il rapporto con il corpo (Tiziano Ferro era più grasso), le derisioni, a difficoltà a manifestare liberamente la propria omosessualità. In tutto questo l’alcolismo agiva nell’ombra, perché “ti guarda appassire in solitudine, mentre sorridi di fronte a tutti”."
+    "description": "Il video è una notizia letta con una voce femminile artificiale, montata su un’immagine fissa di Tiziano Ferro. Come svela il documentario di Amazon Prime “Ferro”, il noto cantante ha avuto problemi di alcolismo in passato. Questo si somma (o deriva) da altre lotte che ha dovuto sostenere fin dall’infanzia: il rapporto con il corpo (Tiziano Ferro era più grasso), le derisioni, a difficoltà a manifestare liberamente la propria omosessualità. In tutto questo l’alcolismo agiva nell’ombra, perché “ti guarda appassire in solitudine, mentre sorridi di fronte a tutti”.",
+    "dataInserimento": "2023-11-22"
   },
   {
     "id": "HD1937-05",
@@ -574,7 +614,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Web e social",
     "prodottoScuola": false,
-    "description": "Il breve video di Tik Tok è una reaction ad una breve clip di SkuolaNet in cui una donna afferma: \"Tra i 12 e i 24 anni l'alcool è un killer di neuroni\". Segue un montaggio di giovani che bevono e fanno festa. Clip utilizzabile per lanciare velocemente un dibattito su informazioni, salute e comportamento. Possibile il confronto, in una visione successiva, con il video sui rischi dell'alcool di Cartoni Morti (presente in archivio)."
+    "description": "Il breve video di Tik Tok è una reaction ad una breve clip di SkuolaNet in cui una donna afferma: \"Tra i 12 e i 24 anni l'alcool è un killer di neuroni\". Segue un montaggio di giovani che bevono e fanno festa. Clip utilizzabile per lanciare velocemente un dibattito su informazioni, salute e comportamento. Possibile il confronto, in una visione successiva, con il video sui rischi dell'alcool di Cartoni Morti (presente in archivio).",
+    "dataInserimento": "2025-11-08"
   },
   {
     "id": "HD1937-06",
@@ -588,7 +629,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Web e social",
     "prodottoScuola": false,
-    "description": "Video di sette secondi presente su Tik Tok. Un ragazzo con una bottiglia in mano ci dice: \"Ok ragazzi, l'alcool non sarà una risposta, però… ti fa dimenticare la domanda\". Possibile utilizzo in formazione o in classe come esempio di formato comunicativo: è possibile utilizzare lo stesso stile e registro per lanciare un messaggio si salute?"
+    "description": "Video di sette secondi presente su Tik Tok. Un ragazzo con una bottiglia in mano ci dice: \"Ok ragazzi, l'alcool non sarà una risposta, però… ti fa dimenticare la domanda\". Possibile utilizzo in formazione o in classe come esempio di formato comunicativo: è possibile utilizzare lo stesso stile e registro per lanciare un messaggio si salute?",
+    "dataInserimento": "2025-06-13"
   },
   {
     "id": "HD1922-09",
@@ -602,7 +644,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "COMPRA UN CRICETO. Una ragazza è intenta a compilare una schedina del 10 e Lotto. Due ragazze, vestite in stile Iene, spuntano ai lati e si chiedono: “Ma lo sa che un giocatore patologico spende in media 600 euro a settimana?”. Quindi elencano una serie di acquisti alternativi per quella cifra, dall’iPhone ai calzini ai criceti. La ragazza, convinta, strappa la schedina. Lo spot si chiude con lo slogan “Non sprecare tempo e soldi, compra un criceto”, mentre un criceto entra in campo per mangiare un biscotto. Spot molto utilizzato nei laboratori come esempio di registro ironico che seleziona un’informazione precisa e lavora nel comunicarla. Il criceto è un elemento inaspettato che aggancia l’attenzione."
+    "description": "COMPRA UN CRICETO. Una ragazza è intenta a compilare una schedina del 10 e Lotto. Due ragazze, vestite in stile Iene, spuntano ai lati e si chiedono: “Ma lo sa che un giocatore patologico spende in media 600 euro a settimana?”. Quindi elencano una serie di acquisti alternativi per quella cifra, dall’iPhone ai calzini ai criceti. La ragazza, convinta, strappa la schedina. Lo spot si chiude con lo slogan “Non sprecare tempo e soldi, compra un criceto”, mentre un criceto entra in campo per mangiare un biscotto. Spot molto utilizzato nei laboratori come esempio di registro ironico che seleziona un’informazione precisa e lavora nel comunicarla. Il criceto è un elemento inaspettato che aggancia l’attenzione.",
+    "dataInserimento": "2025-09-19"
   },
   {
     "id": "HD1922-10",
@@ -616,7 +659,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "I DEMOTIVATORI. Il video si compone di tre brevi scen in cui due ragazzi, presentati all’inizio come “I demotivatori”, prendono a botte chi gioca d’azardo: un ragazzo che esce dalla tabaccheria con un gratta e vinci, uno che sta giocando ad una slot, un terzo chiuso in bagno con lo smartphone collegato ad un sito di scommesse. Lo spot si chiude con lo slogan “Il gioco d’azzardo fa male…”. Spot realizzato in seguito ad un laboratorio sull’azzardo gestito da un insegnante dell’APRO. Il registro è comico, la realizzazione molto amatoriale trasmette un’idea un po’ trash. Molto utilizzato nei laboratori come esempio di spot sociale di cui valutare l’efficacia e la diffondibilità. Protagonisti solo maschili in quanto la classe coinvolta non aveva ragazze."
+    "description": "I DEMOTIVATORI. Il video si compone di tre brevi scen in cui due ragazzi, presentati all’inizio come “I demotivatori”, prendono a botte chi gioca d’azardo: un ragazzo che esce dalla tabaccheria con un gratta e vinci, uno che sta giocando ad una slot, un terzo chiuso in bagno con lo smartphone collegato ad un sito di scommesse. Lo spot si chiude con lo slogan “Il gioco d’azzardo fa male…”. Spot realizzato in seguito ad un laboratorio sull’azzardo gestito da un insegnante dell’APRO. Il registro è comico, la realizzazione molto amatoriale trasmette un’idea un po’ trash. Molto utilizzato nei laboratori come esempio di spot sociale di cui valutare l’efficacia e la diffondibilità. Protagonisti solo maschili in quanto la classe coinvolta non aveva ragazze.",
+    "dataInserimento": "2024-02-12"
   },
   {
     "id": "HD1922-11",
@@ -630,7 +674,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "RESTART. L’inquadatura resta fissa su una slot da bar, mentre una mano continua a premere il tasto per giocare. Il montaggio aumenta il ritmo progressivamente, mentre la musica sale di intensità. Al culmine del climax, stacco e sullo schermo nero la scritta “Restart. Cambia gioco”. In coda, la mano sembra indecisa, poi esce di campo senza più premere il pulsante. Spot realizzato da un gruppo di studenti durante un progetto di Alternanza Scuola Lavora presso il SerD di Alba. Le riprese sono avvenute in un bar prima della rimozione delle VLT. Idea visiva molto semplice, la tensione è data dal montaggio visivo e sonoro. Utilizzato come esempio di registro “drammatico”. Lo slogan si limita ad invitare ad una “rinascita”, un cambio di comportamento: con quali aiuti? Rivolgendosi a chi? E’ davvero possibile “cambiare gioco” così facilmente? In questo senso può essere utilizzato per introdurre i temi della dipendenza, cura e servizi."
+    "description": "RESTART. L’inquadatura resta fissa su una slot da bar, mentre una mano continua a premere il tasto per giocare. Il montaggio aumenta il ritmo progressivamente, mentre la musica sale di intensità. Al culmine del climax, stacco e sullo schermo nero la scritta “Restart. Cambia gioco”. In coda, la mano sembra indecisa, poi esce di campo senza più premere il pulsante. Spot realizzato da un gruppo di studenti durante un progetto di Alternanza Scuola Lavora presso il SerD di Alba. Le riprese sono avvenute in un bar prima della rimozione delle VLT. Idea visiva molto semplice, la tensione è data dal montaggio visivo e sonoro. Utilizzato come esempio di registro “drammatico”. Lo slogan si limita ad invitare ad una “rinascita”, un cambio di comportamento: con quali aiuti? Rivolgendosi a chi? E’ davvero possibile “cambiare gioco” così facilmente? In questo senso può essere utilizzato per introdurre i temi della dipendenza, cura e servizi.",
+    "dataInserimento": "2025-02-03"
   },
   {
     "id": "HD1922-13",
@@ -644,7 +689,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "NESSUNO CORRE. Immagini di riprese televisive di sport famosi (calcio, basket, motociclismo…) si alternano a quelle di soldi che vengono allungati su un tavolo, in quantità crescenti. La musica dà il ritmo al montaggio, fino allo slogan: “Nessuno corre così veloce come i soldi che scommetti su di lui”. Spot progettato e realizzato d un gruppo di studenti durante un progetto di Alternanza Scuola Lavoro presso il SerD di Alba. E’ stato scelto il tema delle scommesse sportive, meno presente tra gli spot sociali ma consumo importante tra i ragazzi, a cui il video prova a rivolgersi. Utilizzabile insieme ad altri spot sociali per valutare l’efficacia. Come potrebbe essere modificato lo slogan? Possibile tema di lavoro: l’illusione di competenza (“conosco lo sport, quindi vinco”)."
+    "description": "NESSUNO CORRE. Immagini di riprese televisive di sport famosi (calcio, basket, motociclismo…) si alternano a quelle di soldi che vengono allungati su un tavolo, in quantità crescenti. La musica dà il ritmo al montaggio, fino allo slogan: “Nessuno corre così veloce come i soldi che scommetti su di lui”. Spot progettato e realizzato d un gruppo di studenti durante un progetto di Alternanza Scuola Lavoro presso il SerD di Alba. E’ stato scelto il tema delle scommesse sportive, meno presente tra gli spot sociali ma consumo importante tra i ragazzi, a cui il video prova a rivolgersi. Utilizzabile insieme ad altri spot sociali per valutare l’efficacia. Come potrebbe essere modificato lo slogan? Possibile tema di lavoro: l’illusione di competenza (“conosco lo sport, quindi vinco”).",
+    "dataInserimento": "2025-01-23"
   },
   {
     "id": "HD1922-17",
@@ -658,7 +704,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "SI’ AL GIOCO SENZA AZZARDO. Video realizzato nell'ambito del progetto di prevenzione e contrasto ai gioco d'azzardo finanziato dal Ser.D ASL VCO. Nel video, interpretato da studenti delle scuole superiori, una persona al centro dell’inquadratura espone un problema economico: “Le cure per mio fratello sono costose”, “Vorrei comprarmi il motorino”. Ai lati di chi parla compaiono prima un diavoletto, che propone di giocare d’azzardo per vincere; poi un angelo, che spiega la reale probabilità matematica di ottenere una vincita cospicua con quel gioco. Nell’ultima parte del video vengono mostrati i dati dei soldi giocati nei territori di Verbania, Omegna e Domodossola, per poi chiudere con lo slogan “Sì al gioco senza azzardo”. Il video lavora su un’unica inquadratura per veicolare informazioni sull’azzardo in forma narrativa."
+    "description": "SI’ AL GIOCO SENZA AZZARDO. Video realizzato nell'ambito del progetto di prevenzione e contrasto ai gioco d'azzardo finanziato dal Ser.D ASL VCO. Nel video, interpretato da studenti delle scuole superiori, una persona al centro dell’inquadratura espone un problema economico: “Le cure per mio fratello sono costose”, “Vorrei comprarmi il motorino”. Ai lati di chi parla compaiono prima un diavoletto, che propone di giocare d’azzardo per vincere; poi un angelo, che spiega la reale probabilità matematica di ottenere una vincita cospicua con quel gioco. Nell’ultima parte del video vengono mostrati i dati dei soldi giocati nei territori di Verbania, Omegna e Domodossola, per poi chiudere con lo slogan “Sì al gioco senza azzardo”. Il video lavora su un’unica inquadratura per veicolare informazioni sull’azzardo in forma narrativa.",
+    "dataInserimento": "2024-11-17"
   },
   {
     "id": "HD1922-36",
@@ -672,7 +719,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "NON GIOCARTI LA VITA, VINCILA – SPEED DRAWING. Video realizzato con la tecnica dello speed drawing (disegno velocizzato) dalle studentesse Sabrina Rana e Marta Simonetti della classe 5A dell’Istituto Ferrini di Verbania. I disegni animati ci raccontano la storia di un uomo che inizia a giocare sempre di più alle slot, per poi trovarsi a perdere gli affetti famigliari, soldi e lavoro, Nella parte finale l’uomo, di fronte ad una slot con i tasti “Gioca ancora” e “Torna a vivere”, sceglie la seconda opzione e ritrova amore, famiglia e lavoro. Il commento musicale è “Everyday” di Carly Comando. Esempio di produzione mediale realizzata da ragazzi, può essere oggetto di ulteriore sintesi. Il percorso di recupero viene messo in scena come una scelta individuale, esercitata grazie alla pura volontà dell’uomo e non attraverso servizi di aiuto."
+    "description": "NON GIOCARTI LA VITA, VINCILA – SPEED DRAWING. Video realizzato con la tecnica dello speed drawing (disegno velocizzato) dalle studentesse Sabrina Rana e Marta Simonetti della classe 5A dell’Istituto Ferrini di Verbania. I disegni animati ci raccontano la storia di un uomo che inizia a giocare sempre di più alle slot, per poi trovarsi a perdere gli affetti famigliari, soldi e lavoro, Nella parte finale l’uomo, di fronte ad una slot con i tasti “Gioca ancora” e “Torna a vivere”, sceglie la seconda opzione e ritrova amore, famiglia e lavoro. Il commento musicale è “Everyday” di Carly Comando. Esempio di produzione mediale realizzata da ragazzi, può essere oggetto di ulteriore sintesi. Il percorso di recupero viene messo in scena come una scelta individuale, esercitata grazie alla pura volontà dell’uomo e non attraverso servizi di aiuto.",
+    "dataInserimento": "2024-01-26"
   },
   {
     "id": "HD1922-38",
@@ -686,7 +734,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "AZZARDA UN BALLO. Spot realizzato dagli alunni della 1C del Liceo Classico “Foscolo” di Pavia, con la Cooperativa La casa del giovane. Responsabile scientifico: Simone Feder del Movimento NO SLOT. Un ragazzo introduce una monetina in un juke box e poi chiama gli amici: tutti ballano e si divertono nella stanza, al ritmo di una musica rock. Poco per volta le persone scompaiono; le luci virano su tonalità fredde, la musica rock sfuma mentre il jukebox trasforma il suo schermo e diventa una slot machine che gira incessantemente. La musica si fa funerea, mentre i ragazzi, uno per volta, giocano alla slot. L’ultimo si accascia sulla macchina, mentre compare lo slogan: “Azzarda un ballo, non la vita”. Esempio di prodotto realizzato dai ragazzi nell’ambito di un progetto di contrasto all’azzardo. La comunicazione si concentra sull’aspetto antisociale dell’azzardo, con un effetto straniante perché i ragazzi in scena non sono i fruitori abituali di quel tipo di gioco. Possibile spunto di lavoro: come possiamo attualizzare il messaggio, lavorando ad esempio su altre tipologie di gioco?"
+    "description": "AZZARDA UN BALLO. Spot realizzato dagli alunni della 1C del Liceo Classico “Foscolo” di Pavia, con la Cooperativa La casa del giovane. Responsabile scientifico: Simone Feder del Movimento NO SLOT. Un ragazzo introduce una monetina in un juke box e poi chiama gli amici: tutti ballano e si divertono nella stanza, al ritmo di una musica rock. Poco per volta le persone scompaiono; le luci virano su tonalità fredde, la musica rock sfuma mentre il jukebox trasforma il suo schermo e diventa una slot machine che gira incessantemente. La musica si fa funerea, mentre i ragazzi, uno per volta, giocano alla slot. L’ultimo si accascia sulla macchina, mentre compare lo slogan: “Azzarda un ballo, non la vita”. Esempio di prodotto realizzato dai ragazzi nell’ambito di un progetto di contrasto all’azzardo. La comunicazione si concentra sull’aspetto antisociale dell’azzardo, con un effetto straniante perché i ragazzi in scena non sono i fruitori abituali di quel tipo di gioco. Possibile spunto di lavoro: come possiamo attualizzare il messaggio, lavorando ad esempio su altre tipologie di gioco?",
+    "dataInserimento": "2025-11-10"
   },
   {
     "id": "HD1922-39",
@@ -700,7 +749,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "CHE COSA SEI DISPOSTO A PERDERE PER UNA VINCITA. Spot realizzato dagli alunni della 5CP del Liceo Scienze Umane “Cairoli” di Pavia, con la Cooperativa La casa del giovane. Responsabile scientifico: Simone Feder del Movimento NO SLOT. Un gruppo di ragazze invita un loro coetaneo a giocare a calcio, ma il ragazzo rifiuta. Più tardi vediamo le ragazze giocare al campetto, divertendosi insieme; il ragazzo, invece, è nel salone di casa, con i suoi famigliari. Ad un tratto, magicamente, al posto del tavolo compare una slot: il ragazzo inizia a giocarci, mentre intorno a lui il tempo passa e i famigliari, uno a uno, scompaiono. Ad un certo punto la macchina restituisce una vincita: il ragazzo prende i soldi, ma quando la camera torna su di lui vediamo che è diventato un anziano. Compare lo slogan finale: “Che cosa sei disposto a perdere per una vincita?”. Video di oltre tre minuti di durata, più simile ad un cortometraggio che ad uno spot."
+    "description": "CHE COSA SEI DISPOSTO A PERDERE PER UNA VINCITA. Spot realizzato dagli alunni della 5CP del Liceo Scienze Umane “Cairoli” di Pavia, con la Cooperativa La casa del giovane. Responsabile scientifico: Simone Feder del Movimento NO SLOT. Un gruppo di ragazze invita un loro coetaneo a giocare a calcio, ma il ragazzo rifiuta. Più tardi vediamo le ragazze giocare al campetto, divertendosi insieme; il ragazzo, invece, è nel salone di casa, con i suoi famigliari. Ad un tratto, magicamente, al posto del tavolo compare una slot: il ragazzo inizia a giocarci, mentre intorno a lui il tempo passa e i famigliari, uno a uno, scompaiono. Ad un certo punto la macchina restituisce una vincita: il ragazzo prende i soldi, ma quando la camera torna su di lui vediamo che è diventato un anziano. Compare lo slogan finale: “Che cosa sei disposto a perdere per una vincita?”. Video di oltre tre minuti di durata, più simile ad un cortometraggio che ad uno spot.",
+    "dataInserimento": "2024-02-03"
   },
   {
     "id": "HD1922-40",
@@ -714,7 +764,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "RESTA CON I PIEDI PER TERRA. Spot realizzato dagli alunni della 2D dell’IC “Enrico Toti” di Lentate sul Seveso, con la Cooperativa OASI. Siamo su un’astronave, dove una famiglia è in viaggio. Dalla base NASA sulla terra arriva l’allarme: c’è un guasto, occorre ripararlo. Il compito è affidato al papà, che però non se ne occupa perché troppo impegnato a giocare ad una slot machine. Il portellone dell’astronave si apre e il papà, la figlia e la slot vengono risucchiati nello spazio. Il papà ha in mano un gancio per salvare la vita della figlia, ma esita, pensando di agganciare la slot. Stacco sulla scritta: “E tu chi sceglieresti?”, seguita dallo slogan “Ritorna con i piedi per terra”. Video di oltre tre minuti di durata, più simile ad un cortometraggio che ad uno spot. Interessante il coinvolgimento di ragazzi di seconda media: la scelta del genere fantascienza permette di calare il problema dell’azzardo in un contesto originale e inaspettato, con il finale sospeso che interpella lo spettatore."
+    "description": "RESTA CON I PIEDI PER TERRA. Spot realizzato dagli alunni della 2D dell’IC “Enrico Toti” di Lentate sul Seveso, con la Cooperativa OASI. Siamo su un’astronave, dove una famiglia è in viaggio. Dalla base NASA sulla terra arriva l’allarme: c’è un guasto, occorre ripararlo. Il compito è affidato al papà, che però non se ne occupa perché troppo impegnato a giocare ad una slot machine. Il portellone dell’astronave si apre e il papà, la figlia e la slot vengono risucchiati nello spazio. Il papà ha in mano un gancio per salvare la vita della figlia, ma esita, pensando di agganciare la slot. Stacco sulla scritta: “E tu chi sceglieresti?”, seguita dallo slogan “Ritorna con i piedi per terra”. Video di oltre tre minuti di durata, più simile ad un cortometraggio che ad uno spot. Interessante il coinvolgimento di ragazzi di seconda media: la scelta del genere fantascienza permette di calare il problema dell’azzardo in un contesto originale e inaspettato, con il finale sospeso che interpella lo spettatore.",
+    "dataInserimento": "2024-06-04"
   },
   {
     "id": "HD1922-41",
@@ -728,7 +779,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "LEGALMENTE - DIVERTITI DAVVERO NON GIOCARE D’AZZARDO. Spot realizzato dagli alunni della 3ER/C dell’ISP “Luigi Cossa” di Pavia, con la Cooperativa La casa del giovane. Responsabile scientifico: Simone Feder del Movimento NO SLOT. Un ragazzo si veste elegantemente perché, spiega al papà, oggi ha diciotto anni e “può farlo legalmente”. Il padre, pensando ad un appuntamento galante, dà al figlio una rosa e lo esorta a “tenere alto l’onore”. Il ragazzo arriva al bar, dà la rosa alla barista e poi chiede un Gratta e Vinci: avendo 18 anni può infatti giocare legalmente. Il ragazzo esce tutto contento con il suo biglietto; subito dopo escono la barista, a braccetto con il suo fidanzato. I due passano di fianco al protagonista e gli augurano, con un po’ di sarcasmo, di divertirsi “legalmente!”. Il ragazzo rimane a guardare il suo Gratta e Vinci, pensieroso. Il video è la parodia dell’incredibile spot 2012 dell’AAMS, visibile qui: https://youtu.be/w6XJw7uOOZk (imbarazzante sotto più punti di vista)."
+    "description": "LEGALMENTE - DIVERTITI DAVVERO NON GIOCARE D’AZZARDO. Spot realizzato dagli alunni della 3ER/C dell’ISP “Luigi Cossa” di Pavia, con la Cooperativa La casa del giovane. Responsabile scientifico: Simone Feder del Movimento NO SLOT. Un ragazzo si veste elegantemente perché, spiega al papà, oggi ha diciotto anni e “può farlo legalmente”. Il padre, pensando ad un appuntamento galante, dà al figlio una rosa e lo esorta a “tenere alto l’onore”. Il ragazzo arriva al bar, dà la rosa alla barista e poi chiede un Gratta e Vinci: avendo 18 anni può infatti giocare legalmente. Il ragazzo esce tutto contento con il suo biglietto; subito dopo escono la barista, a braccetto con il suo fidanzato. I due passano di fianco al protagonista e gli augurano, con un po’ di sarcasmo, di divertirsi “legalmente!”. Il ragazzo rimane a guardare il suo Gratta e Vinci, pensieroso. Il video è la parodia dell’incredibile spot 2012 dell’AAMS, visibile qui: https://youtu.be/w6XJw7uOOZk (imbarazzante sotto più punti di vista).",
+    "dataInserimento": "2023-12-15"
   },
   {
     "id": "HD1922-42",
@@ -742,7 +794,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "NON GIOCARTI I TUOI AFFETTI. Spot realizzato dagli alunni della 3TA dell’ITCTA “Bordoni” di Pavia, con la Cooperativa La casa del giovane. Responsabile scientifico: Simone Feder del Movimento NO SLOT. Tre storie parallele: una ragazza aspetta al parco il suo fidanzato, che tarda perché impegnato a giocare ad una slot online su smartphone; un ragazzo perde il portafoglio, un amico glielo restituisce ma vuoto; una madre porta la figlia in un bar e poi si ferma a giocare ad una slot, finché la bambina si allontana da sola nella pioggia. Nel finale i tre personaggi che hanno subito le conseguenze del gioco (la ragazza, la bambina e il giovane che aveva perso il portafoglio) si ritrovano in un parco e si danno la mano, mentre compare lo slogan “Non giocarti i tuoi affetti”. Il video, della lunghezza di un cortometraggio, si concentra sul tema della perdita delle relazioni famigliari da parte di chi soffre di azzardo problematico."
+    "description": "NON GIOCARTI I TUOI AFFETTI. Spot realizzato dagli alunni della 3TA dell’ITCTA “Bordoni” di Pavia, con la Cooperativa La casa del giovane. Responsabile scientifico: Simone Feder del Movimento NO SLOT. Tre storie parallele: una ragazza aspetta al parco il suo fidanzato, che tarda perché impegnato a giocare ad una slot online su smartphone; un ragazzo perde il portafoglio, un amico glielo restituisce ma vuoto; una madre porta la figlia in un bar e poi si ferma a giocare ad una slot, finché la bambina si allontana da sola nella pioggia. Nel finale i tre personaggi che hanno subito le conseguenze del gioco (la ragazza, la bambina e il giovane che aveva perso il portafoglio) si ritrovano in un parco e si danno la mano, mentre compare lo slogan “Non giocarti i tuoi affetti”. Il video, della lunghezza di un cortometraggio, si concentra sul tema della perdita delle relazioni famigliari da parte di chi soffre di azzardo problematico.",
+    "dataInserimento": "2024-03-15"
   },
   {
     "id": "HD1922-43",
@@ -756,7 +809,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "TORNA SUI TUOI PASSI. Spot realizzato dagli alunni della 3CSU del Liceo di Scienze Umane “Cairoli” di Pavia, con la Cooperativa La casa del giovane. Responsabile scientifico: Simone Feder del Movimento NO SLOT. Un padre accompagna il figlio adolescente a scuola, poi, anziché andare al lavoro, va in un bar e inizia a giocare ad una slot. In classe finisce la mattinata: il figlio ritorna a casa e sente dei rumori. Temendo che ci sia un ladro, apre la porta della propria camera e sorprende il padre a rubare dal suo salvadanaio. Lo stacco di montaggio ci riporta all’uomo davanti alla slot: le riprese iniziano ad andare a ritroso, finché ci ritroviamo al punto di partenza. Questa volta l’uomo si incammina verso il lavoro, mentre compare lo slogan “Torna sui tuoi passi, non t’azzardare!”. Il video mette in scena il furto da parte del padre, come nello spot “Papà ladro” dell’Associazione Risvegli, presente in questo archivio. La messa in scena, però, è più dilatata e meno precisa (quando è avvenuto il furto, prima o dopo la scuola?). Come avviene in altri spot, non viene contemplata l’indicazione di un aiuto o di una terapia: la “guarigione” viene presentata come un ravvedimento personale, un “tornare sui propri passi”."
+    "description": "TORNA SUI TUOI PASSI. Spot realizzato dagli alunni della 3CSU del Liceo di Scienze Umane “Cairoli” di Pavia, con la Cooperativa La casa del giovane. Responsabile scientifico: Simone Feder del Movimento NO SLOT. Un padre accompagna il figlio adolescente a scuola, poi, anziché andare al lavoro, va in un bar e inizia a giocare ad una slot. In classe finisce la mattinata: il figlio ritorna a casa e sente dei rumori. Temendo che ci sia un ladro, apre la porta della propria camera e sorprende il padre a rubare dal suo salvadanaio. Lo stacco di montaggio ci riporta all’uomo davanti alla slot: le riprese iniziano ad andare a ritroso, finché ci ritroviamo al punto di partenza. Questa volta l’uomo si incammina verso il lavoro, mentre compare lo slogan “Torna sui tuoi passi, non t’azzardare!”. Il video mette in scena il furto da parte del padre, come nello spot “Papà ladro” dell’Associazione Risvegli, presente in questo archivio. La messa in scena, però, è più dilatata e meno precisa (quando è avvenuto il furto, prima o dopo la scuola?). Come avviene in altri spot, non viene contemplata l’indicazione di un aiuto o di una terapia: la “guarigione” viene presentata come un ravvedimento personale, un “tornare sui propri passi”.",
+    "dataInserimento": "2023-10-02"
   },
   {
     "id": "HD1922-44",
@@ -770,7 +824,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "FAI COME RONALDO. Video realizzato dagli studenti nell’ambito di un laboratorio del progetto “SteadyGAP” condotto dalla Prof.ssa Anna Zanaria dell’ITI OMAR di Novara. Regia di Angelino Andrea. Una voce over (dello studente Matteo Longo) ci apostrofa, raccontandoci la storia di Daniele, che ha perso la casa con le scommesse sportive ed ora “vive sotto un ponte ed è pelato”. L’invito è a fare come Cristiano Ronaldo, cioè “scegliere il meglio” (come nello spot di E-Campus, qui citato) e rivolgersi ad una comunità dove dei professionisti possono aiutare. Lo spot si chiude con l’invito a non giocare. Tutto il video gioca su una sottile chiave ironica, comunicando l’invito a chiedere aiuto per i problemi con l’azzardo ma attraverso un montaggio di materiali eterogenei (la storia di Daniele, la presenza di Ronaldo) che restano impressi nello spettatore. Vengono evitate le immagini stereotipate sulla dipendenza da azzardo, sostituite da brevi clip video di sessioni di gioco online o di reactions di youtuber/streamer."
+    "description": "FAI COME RONALDO. Video realizzato dagli studenti nell’ambito di un laboratorio del progetto “SteadyGAP” condotto dalla Prof.ssa Anna Zanaria dell’ITI OMAR di Novara. Regia di Angelino Andrea. Una voce over (dello studente Matteo Longo) ci apostrofa, raccontandoci la storia di Daniele, che ha perso la casa con le scommesse sportive ed ora “vive sotto un ponte ed è pelato”. L’invito è a fare come Cristiano Ronaldo, cioè “scegliere il meglio” (come nello spot di E-Campus, qui citato) e rivolgersi ad una comunità dove dei professionisti possono aiutare. Lo spot si chiude con l’invito a non giocare. Tutto il video gioca su una sottile chiave ironica, comunicando l’invito a chiedere aiuto per i problemi con l’azzardo ma attraverso un montaggio di materiali eterogenei (la storia di Daniele, la presenza di Ronaldo) che restano impressi nello spettatore. Vengono evitate le immagini stereotipate sulla dipendenza da azzardo, sostituite da brevi clip video di sessioni di gioco online o di reactions di youtuber/streamer.",
+    "dataInserimento": "2023-09-16"
   },
   {
     "id": "HD1922-45",
@@ -784,7 +839,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "RAGAZZO FORTUNATO. Video realizzato dagli studenti nell’ambito di un laboratorio del progetto “SteadyGAP” condotto dalla Prof.ssa Anna Zanaria dell’ITI OMAR di Novara. Nella parte iniziale una musica epica commenta alcuni dati sul gioco d’azzardo, tra cui la presenza di 5 milioni di ludopatici in Italia (non viene riportata alcuna fonte). La musica cambia e parte “Ragazzo fortunato” di Jovanotti, con un lungo montaggio di immagini che mostrano vincite all’azzardo. Nella parte finale, sempre sullo stesso commento sonoro, le immagini mostrano “come è veramente” il gioco d’azzardo, con una serie di immagini che mostrano persone che perdono e problemi di dipendenza. Il video si concentra sulle rappresentazioni positive che vengono date dell’azzardo, per smontarle nella parte finale. La durata è eccessiva per un formato spot: un possibile lavoro potrebbe essere quello di sintetizzare il messaggio in un video di 30-45 secondi."
+    "description": "RAGAZZO FORTUNATO. Video realizzato dagli studenti nell’ambito di un laboratorio del progetto “SteadyGAP” condotto dalla Prof.ssa Anna Zanaria dell’ITI OMAR di Novara. Nella parte iniziale una musica epica commenta alcuni dati sul gioco d’azzardo, tra cui la presenza di 5 milioni di ludopatici in Italia (non viene riportata alcuna fonte). La musica cambia e parte “Ragazzo fortunato” di Jovanotti, con un lungo montaggio di immagini che mostrano vincite all’azzardo. Nella parte finale, sempre sullo stesso commento sonoro, le immagini mostrano “come è veramente” il gioco d’azzardo, con una serie di immagini che mostrano persone che perdono e problemi di dipendenza. Il video si concentra sulle rappresentazioni positive che vengono date dell’azzardo, per smontarle nella parte finale. La durata è eccessiva per un formato spot: un possibile lavoro potrebbe essere quello di sintetizzare il messaggio in un video di 30-45 secondi.",
+    "dataInserimento": "2024-05-12"
   },
   {
     "id": "HD1922-46",
@@ -798,7 +854,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "PADRE GIOCATORE. Video realizzato dallo studente Carlos Davila nell’ambito di un laboratorio del progetto “SteadyGAP” condotto dalla Prof.ssa Anna Zanaria dell’ITI OMAR di Novara. Viene raccontata la storia di un padre di famiglia, che perde la sua famiglia serena a causa del gioco d’azzardo. Le immagini mostrano quanto viene raccontato dalla voce over. L’uomo perde il lavoro e poi rovina il rapporto con la moglie e i figli. Alla fine compare lo slogan: “Le dipendenze da gioco ti allontana dalle cose più importanti: te stesso e la tua famiglia!!”."
+    "description": "PADRE GIOCATORE. Video realizzato dallo studente Carlos Davila nell’ambito di un laboratorio del progetto “SteadyGAP” condotto dalla Prof.ssa Anna Zanaria dell’ITI OMAR di Novara. Viene raccontata la storia di un padre di famiglia, che perde la sua famiglia serena a causa del gioco d’azzardo. Le immagini mostrano quanto viene raccontato dalla voce over. L’uomo perde il lavoro e poi rovina il rapporto con la moglie e i figli. Alla fine compare lo slogan: “Le dipendenze da gioco ti allontana dalle cose più importanti: te stesso e la tua famiglia!!”.",
+    "dataInserimento": "2025-12-11"
   },
   {
     "id": "HD1922-47",
@@ -812,7 +869,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "RABBIA. Video realizzato dagli studenti Luca Termopoli, Matteo Petronio e Davide Fantini nell’ambito di un laboratorio del progetto “SteadyGAP” condotto dalla Prof.ssa Anna Zanaria dell’ITI OMAR di Novara. Sulle immagini sfocate di fiches e roulette compare una domanda: “ti hanno mai detto che il gioco d’azzardo può causare isterismo e irascibilità?”. Segue un montaggio di spezzoni video con persone che reagiscono alla sconfitta urlando e spaccando oggetti. Sulle note dei Metallica il video ci invita a “non imitarli” e a coltivare le nostre passioni, scommettendo su noi stessi e non sul gioco d’azzardo. Interessante l’idea comunicativa di utilizzare video di reazioni esagerate alla sconfitta, molto presenti online (esiste il termine “rage quit” per indicarne la categoria nel gaming), per invitare a non esagerare con l’azzardo."
+    "description": "RABBIA. Video realizzato dagli studenti Luca Termopoli, Matteo Petronio e Davide Fantini nell’ambito di un laboratorio del progetto “SteadyGAP” condotto dalla Prof.ssa Anna Zanaria dell’ITI OMAR di Novara. Sulle immagini sfocate di fiches e roulette compare una domanda: “ti hanno mai detto che il gioco d’azzardo può causare isterismo e irascibilità?”. Segue un montaggio di spezzoni video con persone che reagiscono alla sconfitta urlando e spaccando oggetti. Sulle note dei Metallica il video ci invita a “non imitarli” e a coltivare le nostre passioni, scommettendo su noi stessi e non sul gioco d’azzardo. Interessante l’idea comunicativa di utilizzare video di reazioni esagerate alla sconfitta, molto presenti online (esiste il termine “rage quit” per indicarne la categoria nel gaming), per invitare a non esagerare con l’azzardo.",
+    "dataInserimento": "2024-03-11"
   },
   {
     "id": "HD1922-48",
@@ -826,7 +884,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "BOB. Video realizzato da uno studente nell’ambito di un laboratorio del progetto “SteadyGAP” condotto dalla Prof.ssa Anna Zanaria dell’ITI OMAR di Novara. Un disegno animato molto semplice (realizzato con il programma Paint) ci mostra la storia di Bob, narrata dalla voce over. Bob non ha le braccia ed è triste perché non può giocare alle slot. Con l’aiuto di un medico Bob riacquista le braccia e inizia a giocare d’azzardo, ma perde. Per continuare a giocare chiede un prestito a Calogero il cravattaro, ma continua a perdere. Calogero, non ricevendo indietro i soldi, taglia le braccia a Bob, che si ritrova così nella situazione iniziale. Video molto ben realizzato e divertente, costruito sul format dei meme di Bob già presenti online."
+    "description": "BOB. Video realizzato da uno studente nell’ambito di un laboratorio del progetto “SteadyGAP” condotto dalla Prof.ssa Anna Zanaria dell’ITI OMAR di Novara. Un disegno animato molto semplice (realizzato con il programma Paint) ci mostra la storia di Bob, narrata dalla voce over. Bob non ha le braccia ed è triste perché non può giocare alle slot. Con l’aiuto di un medico Bob riacquista le braccia e inizia a giocare d’azzardo, ma perde. Per continuare a giocare chiede un prestito a Calogero il cravattaro, ma continua a perdere. Calogero, non ricevendo indietro i soldi, taglia le braccia a Bob, che si ritrova così nella situazione iniziale. Video molto ben realizzato e divertente, costruito sul format dei meme di Bob già presenti online.",
+    "dataInserimento": "2024-09-03"
   },
   {
     "id": "HD1922-49",
@@ -840,7 +899,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "SICURI. Video realizzato dalla classe 2a Meccanici dell’APRO di Alba nell’ambito di un laboratorio del progetto “SteadyGAP”. Vediamo la schermata di una sessione di Google Meet: il protagonista (Tu) sta continuando a giocare ad una slot online. Progressivamente gli altri partecipanti lasciano la riunione: “Tempo”, “Soldi”, “Reputazione”, “Amici”, “Famiglia” e infine “Salute”. Compare la scritta: “Sicuri che non ci sia niente da perdere?”. Il video è stato realizzato nel periodo della pandemia, trasformando il limite della lezione a distanza in un’opportunità creativa. Per comprendere il senso della comunicazione occorre poter leggere le scritte di chi lascia la riunione, pertanto una fruizione su schermo troppo piccolo rischia di non funzionare."
+    "description": "SICURI. Video realizzato dalla classe 2a Meccanici dell’APRO di Alba nell’ambito di un laboratorio del progetto “SteadyGAP”. Vediamo la schermata di una sessione di Google Meet: il protagonista (Tu) sta continuando a giocare ad una slot online. Progressivamente gli altri partecipanti lasciano la riunione: “Tempo”, “Soldi”, “Reputazione”, “Amici”, “Famiglia” e infine “Salute”. Compare la scritta: “Sicuri che non ci sia niente da perdere?”. Il video è stato realizzato nel periodo della pandemia, trasformando il limite della lezione a distanza in un’opportunità creativa. Per comprendere il senso della comunicazione occorre poter leggere le scritte di chi lascia la riunione, pertanto una fruizione su schermo troppo piccolo rischia di non funzionare.",
+    "dataInserimento": "2025-11-06"
   },
   {
     "id": "HD1922-50",
@@ -854,7 +914,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "NON BASTA UN CLICK. Video realizzato dalla classe 4A Artistico dell’IIS Lagrangia di Vercelli nell’ambito di un laboratorio del progetto “SteadyGAP”. Vediamo la schermata di una sessione di Google Meet a cui partecipano numerosi studenti. Ad un certo punto tutti salutano e lasciano la riunione, compreso il protagonista: vediamo infatti la schermata di fine riunione. La stessa scena si ripete diverse volte. Poi qualcosa cambia: le persone nei riquadri vengono una ad una sostituite da slot machine, mentre il protagonista tenta inutilmente di uscire dalla riunione. Compare lo slogan: “Azzardo. Non basta un click per uscire”.  Il video è stato realizzato nel periodo della pandemia, trasformando il limite della lezione a distanza in un’opportunità creativa. Idea e slogan sono frutto della discussione con i ragazzi sui rischi dell’azzardo e sui possibili messaggi di comunicazione sociale da produrre: si è scelto di sottolineare la difficoltà ad “uscire” da una situazione di azzardo problematico, anche alla luce delle informazioni ricevute dagli operatori del SerD sulla durata dei percorsi di cura."
+    "description": "NON BASTA UN CLICK. Video realizzato dalla classe 4A Artistico dell’IIS Lagrangia di Vercelli nell’ambito di un laboratorio del progetto “SteadyGAP”. Vediamo la schermata di una sessione di Google Meet a cui partecipano numerosi studenti. Ad un certo punto tutti salutano e lasciano la riunione, compreso il protagonista: vediamo infatti la schermata di fine riunione. La stessa scena si ripete diverse volte. Poi qualcosa cambia: le persone nei riquadri vengono una ad una sostituite da slot machine, mentre il protagonista tenta inutilmente di uscire dalla riunione. Compare lo slogan: “Azzardo. Non basta un click per uscire”.  Il video è stato realizzato nel periodo della pandemia, trasformando il limite della lezione a distanza in un’opportunità creativa. Idea e slogan sono frutto della discussione con i ragazzi sui rischi dell’azzardo e sui possibili messaggi di comunicazione sociale da produrre: si è scelto di sottolineare la difficoltà ad “uscire” da una situazione di azzardo problematico, anche alla luce delle informazioni ricevute dagli operatori del SerD sulla durata dei percorsi di cura.",
+    "dataInserimento": "2024-05-19"
   },
   {
     "id": "HD1922-51",
@@ -868,7 +929,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "I NUMERI DEL GAP. Video realizzato dalla classe 3B Scientifico del Liceo Vercelli di Asti (Ref.: Prof.ssa Cristina Giraudi) nell’ambito di un laboratorio del progetto “SteadyGAP”. Il video è un’animazione grafica che ci presenta una serie di dati sul fenomeno dell’azzardo in Italia, ciascuno con il riferimento alla fonte. Oltre 100 miliardi il giro d’affari annuo (dato aggiornato al 2019); 5,5 milioni di Gratta e Vinci venduti ogni giorno; il poker online cresciuto del 123% dal marzo 2019 al marzo 2020; 19 miliardi persi dagli italiani nel 2018; ecc… Alcune fonti riportate necessitano di ulteriore verifica. Il video si mantiene volutamente sul registro puramente informativo, come da mandato assegnato agli studenti durante il laboratorio: non vi sono slogan finali. Utilizzabile insieme a spot che utilizzano altri registri (comico, drammatico, allarmistico…) per riflettere sull’efficacia della comunicazione."
+    "description": "I NUMERI DEL GAP. Video realizzato dalla classe 3B Scientifico del Liceo Vercelli di Asti (Ref.: Prof.ssa Cristina Giraudi) nell’ambito di un laboratorio del progetto “SteadyGAP”. Il video è un’animazione grafica che ci presenta una serie di dati sul fenomeno dell’azzardo in Italia, ciascuno con il riferimento alla fonte. Oltre 100 miliardi il giro d’affari annuo (dato aggiornato al 2019); 5,5 milioni di Gratta e Vinci venduti ogni giorno; il poker online cresciuto del 123% dal marzo 2019 al marzo 2020; 19 miliardi persi dagli italiani nel 2018; ecc… Alcune fonti riportate necessitano di ulteriore verifica. Il video si mantiene volutamente sul registro puramente informativo, come da mandato assegnato agli studenti durante il laboratorio: non vi sono slogan finali. Utilizzabile insieme a spot che utilizzano altri registri (comico, drammatico, allarmistico…) per riflettere sull’efficacia della comunicazione.",
+    "dataInserimento": "2026-02-22"
   },
   {
     "id": "HD1922-52",
@@ -882,7 +944,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "PRONTI A PERDERE. Video realizzato dalla classe 3B Scientifico del Liceo Vercelli di Asti (Ref.: Prof.ssa Cristina Giraudi) nell’ambito di un laboratorio del progetto “SteadyGAP”. Un montaggio serrato di brevi video ci mostra situazioni in cui gli atleti sportivi commettono degli errori o sbagliano di poco, in discipline diverse come il basket, la pallavolo o l’ippica. Compaiono scritte che sottolineano l’imprevedibilità di quanto stiamo vedendo: “Era prevedibile?”, “Lo avresti detto?”. Nel finale compare lo slogan “Perdono loro, perdi anche tu”, seguito da un epilogo in cui una persona in uno studio televisivo urla il proprio disappunto: “Ma non è possibile!”. Lo spunto di partenza per il lavoro dei ragazzi è stato lo spot “Pronti a vincere?” di Betfair, presente in questo archivio. Gli studenti hanno selezionato le clip video e deciso le parti scritte: il tutto è stato montato utilizzando un template di Adobe Premiere. Il video lavora sul tema delle scommesse sportive per comunicare l’imprevedibilità dei risultati, contrapponendosi al discorso commerciale che mette falsamente in relazione la competenza sportiva con la probabilità di vittoria."
+    "description": "PRONTI A PERDERE. Video realizzato dalla classe 3B Scientifico del Liceo Vercelli di Asti (Ref.: Prof.ssa Cristina Giraudi) nell’ambito di un laboratorio del progetto “SteadyGAP”. Un montaggio serrato di brevi video ci mostra situazioni in cui gli atleti sportivi commettono degli errori o sbagliano di poco, in discipline diverse come il basket, la pallavolo o l’ippica. Compaiono scritte che sottolineano l’imprevedibilità di quanto stiamo vedendo: “Era prevedibile?”, “Lo avresti detto?”. Nel finale compare lo slogan “Perdono loro, perdi anche tu”, seguito da un epilogo in cui una persona in uno studio televisivo urla il proprio disappunto: “Ma non è possibile!”. Lo spunto di partenza per il lavoro dei ragazzi è stato lo spot “Pronti a vincere?” di Betfair, presente in questo archivio. Gli studenti hanno selezionato le clip video e deciso le parti scritte: il tutto è stato montato utilizzando un template di Adobe Premiere. Il video lavora sul tema delle scommesse sportive per comunicare l’imprevedibilità dei risultati, contrapponendosi al discorso commerciale che mette falsamente in relazione la competenza sportiva con la probabilità di vittoria.",
+    "dataInserimento": "2025-02-18"
   },
   {
     "id": "HD1922-53",
@@ -896,7 +959,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "STORIA DI UN GIOCATORE. Video realizzato dalla classe 3B Scientifico del Liceo Vercelli di Asti (Ref.: Prof.ssa Cristina Giraudi) nell’ambito di un laboratorio del progetto “SteadyGAP”. Lo spot ci racconta con un montaggio di fotografie e scritte la storia di Carlo. Affascinato fin da bambino dai giochi d’azzardo (amore ereditato dal padre), Carlo si sposa e si crea una famiglia, ma accompagnando la figlia all’asilo ricade nel gioco delle slot machines. A causa dell’azzardo l’uomo perde tutto: famiglia, lavoro, casa. L’ultima immagine ce lo mostra mentre chiede l’elemosina, perché da tre anni è un senzatetto. Lo slogan finale è una domanda: “E’ sempre la stessa storia?”. Soggetto, sceneggiatura e scelta delle immagini a cura degli studenti. Il lavoro di montaggio è stato eseguito utilizzando un template di Adobe Premiere. Lo slogan finale vuole far riflettere su una possibile strategia di contrasto per evitare il ripetersi della “stessa storia”: a quali servizi è possibile rivolgersi? Il video offre inoltre lo spunto per una riflessione rispetto alla cronologia dell’azzardo in Italia, che negli anni ‘90 ha visto una progressiva liberalizzazione."
+    "description": "STORIA DI UN GIOCATORE. Video realizzato dalla classe 3B Scientifico del Liceo Vercelli di Asti (Ref.: Prof.ssa Cristina Giraudi) nell’ambito di un laboratorio del progetto “SteadyGAP”. Lo spot ci racconta con un montaggio di fotografie e scritte la storia di Carlo. Affascinato fin da bambino dai giochi d’azzardo (amore ereditato dal padre), Carlo si sposa e si crea una famiglia, ma accompagnando la figlia all’asilo ricade nel gioco delle slot machines. A causa dell’azzardo l’uomo perde tutto: famiglia, lavoro, casa. L’ultima immagine ce lo mostra mentre chiede l’elemosina, perché da tre anni è un senzatetto. Lo slogan finale è una domanda: “E’ sempre la stessa storia?”. Soggetto, sceneggiatura e scelta delle immagini a cura degli studenti. Il lavoro di montaggio è stato eseguito utilizzando un template di Adobe Premiere. Lo slogan finale vuole far riflettere su una possibile strategia di contrasto per evitare il ripetersi della “stessa storia”: a quali servizi è possibile rivolgersi? Il video offre inoltre lo spunto per una riflessione rispetto alla cronologia dell’azzardo in Italia, che negli anni ‘90 ha visto una progressiva liberalizzazione.",
+    "dataInserimento": "2023-07-27"
   },
   {
     "id": "HD1922-54",
@@ -910,7 +974,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "FIGURA DI M. Video realizzato dalla classe 4D Scientifico del Copernico-Luxemburg di Torino (Ref.: Prof.ssa Maria Casirati) nell’ambito di un laboratorio del progetto “SteadyGAP”. Nello spot alcune immagini e meme sul gioco d’azzardo vengono commentati da una voce over, che ci spiega come ciò che viene rappresentato dell’azzardo è sempre la vincita, mentre i danni e le perdite non ci vengono mostrate. Il video procede in questo modo, con la sola voce over a commento delle immagini, senza musica. Ad un certo punto avviene l’imprevisto: in alto compare la notifica di un messaggio whatsapp, la voce legge quanto scritto e scopriamo così che chi ci sta spiegando i meccanismi dell’azzardo a sua volta fa scommesse sportive. La voce, imbarazzata, commenta: “Ecco, così non si fa”, per poi chiudere con un “Che figura di m…” tagliato sulla parola. Video ideato e realizzato interamente dagli studenti, che hanno scelto l’effetto sorpresa del messaggio per comunicare la pervasività dell’azzardo e il fatto che non basta conoscere le informazioni per esserne fuori."
+    "description": "FIGURA DI M. Video realizzato dalla classe 4D Scientifico del Copernico-Luxemburg di Torino (Ref.: Prof.ssa Maria Casirati) nell’ambito di un laboratorio del progetto “SteadyGAP”. Nello spot alcune immagini e meme sul gioco d’azzardo vengono commentati da una voce over, che ci spiega come ciò che viene rappresentato dell’azzardo è sempre la vincita, mentre i danni e le perdite non ci vengono mostrate. Il video procede in questo modo, con la sola voce over a commento delle immagini, senza musica. Ad un certo punto avviene l’imprevisto: in alto compare la notifica di un messaggio whatsapp, la voce legge quanto scritto e scopriamo così che chi ci sta spiegando i meccanismi dell’azzardo a sua volta fa scommesse sportive. La voce, imbarazzata, commenta: “Ecco, così non si fa”, per poi chiudere con un “Che figura di m…” tagliato sulla parola. Video ideato e realizzato interamente dagli studenti, che hanno scelto l’effetto sorpresa del messaggio per comunicare la pervasività dell’azzardo e il fatto che non basta conoscere le informazioni per esserne fuori.",
+    "dataInserimento": "2026-02-15"
   },
   {
     "id": "HD1922-55",
@@ -924,7 +989,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "STORIA DI MASSIMO. Video realizzato dalla classe 4D Scientifico del Copernico-Luxemburg di Torino (Ref.: Prof.ssa Maria Casirati) nell’ambito di un laboratorio del progetto “SteadyGAP”. Mentre scorrono immagini di persone che giocano d’azzardo, una voce over ci racconta in prima persona la storia di Massimo, una persona dipendente da gioco d’azzardo. Apprendiamo così che l’uomo ha iniziato scommettendo 70 euro, poi ha continuato a tornare ed è rimasto per cinque anni nella dipendenza, perdendo tutto. Ora ha trovato aiuto, ma esorta tutti ad aprire gli occhi sul problema, perché le persone affette da questa malattia sono numerose e devono essere aiutate. Come dice la scritta a fine video, “Il prossimo potresti essere tu”. Il tono di voce, le immagini e la musica scelta sono volutamente drammatici, secondo il mandato assegnato agli studenti nel corso del laboratorio. Il testo è l’adattamento di una testimonianza reperibile online a questo indirizzo: https://www.ilblogdellestelle.it/2017/10/gioco_dazzardo_la_tremenda_storia_di_massimo.html. Il testo originale presenta “l’amore per il figlio” come spinta che ha permesso l’uscita dalla dipendenza: il tema può diventare oggetto di discussione e approfondimento."
+    "description": "STORIA DI MASSIMO. Video realizzato dalla classe 4D Scientifico del Copernico-Luxemburg di Torino (Ref.: Prof.ssa Maria Casirati) nell’ambito di un laboratorio del progetto “SteadyGAP”. Mentre scorrono immagini di persone che giocano d’azzardo, una voce over ci racconta in prima persona la storia di Massimo, una persona dipendente da gioco d’azzardo. Apprendiamo così che l’uomo ha iniziato scommettendo 70 euro, poi ha continuato a tornare ed è rimasto per cinque anni nella dipendenza, perdendo tutto. Ora ha trovato aiuto, ma esorta tutti ad aprire gli occhi sul problema, perché le persone affette da questa malattia sono numerose e devono essere aiutate. Come dice la scritta a fine video, “Il prossimo potresti essere tu”. Il tono di voce, le immagini e la musica scelta sono volutamente drammatici, secondo il mandato assegnato agli studenti nel corso del laboratorio. Il testo è l’adattamento di una testimonianza reperibile online a questo indirizzo: https://www.ilblogdellestelle.it/2017/10/gioco_dazzardo_la_tremenda_storia_di_massimo.html. Il testo originale presenta “l’amore per il figlio” come spinta che ha permesso l’uscita dalla dipendenza: il tema può diventare oggetto di discussione e approfondimento.",
+    "dataInserimento": "2025-07-25"
   },
   {
     "id": "HD1922-56",
@@ -938,7 +1004,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "PROBABILITA’ DI VINCITA. Video realizzato dalla classe 4D Scientifico del Copernico-Luxemburg di Torino (Ref.: Prof.ssa Maria Casirati) nell’ambito di un laboratorio del progetto “SteadyGAP”. Il video si propone uno scopo informativo: su immagini relative al gioco d’azzardo ci vengono presentati i dati relativi alle probabilità di vincita di alcuni giochi, come il Superenalotto, il Gratta e Vinci e le slot. Le scommesse sportive vengono indicate come i giochi dove è più probabile vincere, in quanto “dietro c’è uno studio che può in parte ammortizzare le perdite date dal caso”. Quest’ultima affermazione non riporta fonti. Il video potrebbe essere utilizzato come stimolo per un lavoro di ricerca, finalizzato a verificare le informazioni trasmesse ed eventualmente a correggerle o metterle in discussione."
+    "description": "PROBABILITA’ DI VINCITA. Video realizzato dalla classe 4D Scientifico del Copernico-Luxemburg di Torino (Ref.: Prof.ssa Maria Casirati) nell’ambito di un laboratorio del progetto “SteadyGAP”. Il video si propone uno scopo informativo: su immagini relative al gioco d’azzardo ci vengono presentati i dati relativi alle probabilità di vincita di alcuni giochi, come il Superenalotto, il Gratta e Vinci e le slot. Le scommesse sportive vengono indicate come i giochi dove è più probabile vincere, in quanto “dietro c’è uno studio che può in parte ammortizzare le perdite date dal caso”. Quest’ultima affermazione non riporta fonti. Il video potrebbe essere utilizzato come stimolo per un lavoro di ricerca, finalizzato a verificare le informazioni trasmesse ed eventualmente a correggerle o metterle in discussione.",
+    "dataInserimento": "2023-11-15"
   },
   {
     "id": "HD1922-57",
@@ -952,7 +1019,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "TIK TOK. Video realizzato dalla classe 4F Scientifico del Copernico-Luxemburg di Torino (Ref.: Prof.ssa Maria Casirati) nell’ambito di un laboratorio del progetto “SteadyGAP”. Il video monta materiali eterogenei (meme, barzellette, una sequenza tratta dal film Una notte da leoni) che vengono commentati in maniera ironica con un effetto disponibile su Tik tok: compaiono occhi e bocca in sovrimpressione con l’audio un po’ distorto. L’intenzione comunicativa è quella di prendere in giro alcuni falsi miti del gioco d’azzardo, con un registro comico e un formato spendibile sui social."
+    "description": "TIK TOK. Video realizzato dalla classe 4F Scientifico del Copernico-Luxemburg di Torino (Ref.: Prof.ssa Maria Casirati) nell’ambito di un laboratorio del progetto “SteadyGAP”. Il video monta materiali eterogenei (meme, barzellette, una sequenza tratta dal film Una notte da leoni) che vengono commentati in maniera ironica con un effetto disponibile su Tik tok: compaiono occhi e bocca in sovrimpressione con l’audio un po’ distorto. L’intenzione comunicativa è quella di prendere in giro alcuni falsi miti del gioco d’azzardo, con un registro comico e un formato spendibile sui social.",
+    "dataInserimento": "2024-11-14"
   },
   {
     "id": "HD1922-58",
@@ -966,7 +1034,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "INSERT COIN. Video realizzato dalla classe 4F Scientifico del Copernico-Luxemburg di Torino (Ref.: Prof.ssa Maria Casirati) nell’ambito di un laboratorio del progetto “SteadyGAP”. Il video inizia con un montaggio di circa 30 secondi di locandine e vignette sull’azzardo, commentate dalla canzone “Changes” degli XXXTentacion. Le immagini cambiano e diventano le vignette di un fumetto in cui un personaggio si gioca tutto ad una “pesca miracolosa” da Luna park. Su queste immagini (trovate online su un profilo Instagram) la voce over di uno studente legge una testimonianza in prima persona, in cui una persona dipendente da azzardo confessa la propria impotenza e il proprio stare male. Il video è stato discusso con la classe, che ne ha sottolineato la potenza espressiva nella parte con la voce over, suggerendo una maggiore sintesi nella prima parte."
+    "description": "INSERT COIN. Video realizzato dalla classe 4F Scientifico del Copernico-Luxemburg di Torino (Ref.: Prof.ssa Maria Casirati) nell’ambito di un laboratorio del progetto “SteadyGAP”. Il video inizia con un montaggio di circa 30 secondi di locandine e vignette sull’azzardo, commentate dalla canzone “Changes” degli XXXTentacion. Le immagini cambiano e diventano le vignette di un fumetto in cui un personaggio si gioca tutto ad una “pesca miracolosa” da Luna park. Su queste immagini (trovate online su un profilo Instagram) la voce over di uno studente legge una testimonianza in prima persona, in cui una persona dipendente da azzardo confessa la propria impotenza e il proprio stare male. Il video è stato discusso con la classe, che ne ha sottolineato la potenza espressiva nella parte con la voce over, suggerendo una maggiore sintesi nella prima parte.",
+    "dataInserimento": "2025-05-10"
   },
   {
     "id": "HD1922-59",
@@ -980,7 +1049,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "INFORMAZIONI SULL’AZZARDO. Video realizzato dalla classe 4F Scientifico del Copernico-Luxemburg di Torino (Ref.: Prof.ssa Maria Casirati) nell’ambito di un laboratorio del progetto “SteadyGAP”. Il video espone dati e informazioni sul gioco d’azzardo in Italia e nel mondo, con grafici e tabelle che vengono commentate da più voci over. Il registro scelto è puramente informativo, come da mandato assegnato durante il laboratorio: non vi sono slogan o messaggi finali. Efficace l’idea di alternare una voce maschile con una femminile; necessaria però una maggiore sintesi, a partire da un lavoro di sceneggiatura che selezioni i dati e la modalità con cui esporli."
+    "description": "INFORMAZIONI SULL’AZZARDO. Video realizzato dalla classe 4F Scientifico del Copernico-Luxemburg di Torino (Ref.: Prof.ssa Maria Casirati) nell’ambito di un laboratorio del progetto “SteadyGAP”. Il video espone dati e informazioni sul gioco d’azzardo in Italia e nel mondo, con grafici e tabelle che vengono commentate da più voci over. Il registro scelto è puramente informativo, come da mandato assegnato durante il laboratorio: non vi sono slogan o messaggi finali. Efficace l’idea di alternare una voce maschile con una femminile; necessaria però una maggiore sintesi, a partire da un lavoro di sceneggiatura che selezioni i dati e la modalità con cui esporli.",
+    "dataInserimento": "2025-10-04"
   },
   {
     "id": "HD1922-61",
@@ -994,7 +1064,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "PROBABILITA’. Video realizzato dalla classe 4E del Liceo Antonelli di Novara (Ref.: Prof.ssa Federica Di Prospero) nell’ambito di un laboratorio del progetto “SteadyGAP”. Ci vengono mostrate le immagini di diversi mezzi di trasporto (aerei, treni e auto) abbinate alle probabilità di morire in un incidente utilizzando quel mezzo. L’automobile risulta il mezzo più rischioso, con una probabilità di 1 su 5000. Viene quindi mostrata la probabilità di vincere “primi oltre al milione”: 1 su 30 milioni, mentre compare la scritta “Game over”. Segue il claim: “Se sei ancora in vita non usare la tua fortuna nel gioco. Gioca per la vita, non d’azzardo!”. Il video, sintetico e con una buona idea di fondo, riporta le fonti delle immagini ma non quelle dei dati di probabilità rappresentati."
+    "description": "PROBABILITA’. Video realizzato dalla classe 4E del Liceo Antonelli di Novara (Ref.: Prof.ssa Federica Di Prospero) nell’ambito di un laboratorio del progetto “SteadyGAP”. Ci vengono mostrate le immagini di diversi mezzi di trasporto (aerei, treni e auto) abbinate alle probabilità di morire in un incidente utilizzando quel mezzo. L’automobile risulta il mezzo più rischioso, con una probabilità di 1 su 5000. Viene quindi mostrata la probabilità di vincere “primi oltre al milione”: 1 su 30 milioni, mentre compare la scritta “Game over”. Segue il claim: “Se sei ancora in vita non usare la tua fortuna nel gioco. Gioca per la vita, non d’azzardo!”. Il video, sintetico e con una buona idea di fondo, riporta le fonti delle immagini ma non quelle dei dati di probabilità rappresentati.",
+    "dataInserimento": "2025-05-19"
   },
   {
     "id": "HD1922-62",
@@ -1008,7 +1079,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "VINCERE FACILE. Video realizzato dalla classe 4E del Liceo Antonelli di Novara (Ref.: Prof.ssa Federica Di Prospero) nell’ambito di un laboratorio del progetto “SteadyGAP”. Il video utilizza il format del YTP (Youtube Poo), ovvero un montaggio che ricombina elementi di altri video per darne un nuovo significato, spesso parodistico e provocatorio. In questo caso un famoso spot dei Gratta e vinci, in cui un team di medici stanno operando sul gioco “Allegro Chirurgo”, viene montato nel finale con la domanda “Vincere facile?”, per metterne in discussione il messaggio."
+    "description": "VINCERE FACILE. Video realizzato dalla classe 4E del Liceo Antonelli di Novara (Ref.: Prof.ssa Federica Di Prospero) nell’ambito di un laboratorio del progetto “SteadyGAP”. Il video utilizza il format del YTP (Youtube Poo), ovvero un montaggio che ricombina elementi di altri video per darne un nuovo significato, spesso parodistico e provocatorio. In questo caso un famoso spot dei Gratta e vinci, in cui un team di medici stanno operando sul gioco “Allegro Chirurgo”, viene montato nel finale con la domanda “Vincere facile?”, per metterne in discussione il messaggio.",
+    "dataInserimento": "2023-08-20"
   },
   {
     "id": "HD1922-63",
@@ -1022,7 +1094,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "TELEGIORNALE. Video realizzato dalla classe 4E del Liceo Antonelli di Novara (Ref.: Prof.ssa Federica Di Prospero) nell’ambito di un laboratorio del progetto “SteadyGAP”. Siamo nello studio del Saglia TG: il conduttore annuncia che ci collegheremo subito con il corrispondente Amarino Mallo da Novara, “con la prima persona che è riuscita a guadagnare con il gioco d’azzardo”. Il collegamento parte, vediamo in split screen Amarino che saluta: la linea torna in studio, il conduttore saluta ed esce.  Il video si ispira alla serie youtube “Mario” di Maccio Capatonda e in particolare ai collegamenti con l’inviato Amarino Mallo, i cui sketch durano pochi secondi. La situazione comica viene qui utilizzata per trasmettere in modo sottile e spiazzante un messaggio preciso: una persona che guadagna con il gioco d’azzardo non esiste. Video costruito con molta cura (e divertimento) da parte degli studenti: non è semplice cogliere ad una prima visione il messaggio veicolato."
+    "description": "TELEGIORNALE. Video realizzato dalla classe 4E del Liceo Antonelli di Novara (Ref.: Prof.ssa Federica Di Prospero) nell’ambito di un laboratorio del progetto “SteadyGAP”. Siamo nello studio del Saglia TG: il conduttore annuncia che ci collegheremo subito con il corrispondente Amarino Mallo da Novara, “con la prima persona che è riuscita a guadagnare con il gioco d’azzardo”. Il collegamento parte, vediamo in split screen Amarino che saluta: la linea torna in studio, il conduttore saluta ed esce.  Il video si ispira alla serie youtube “Mario” di Maccio Capatonda e in particolare ai collegamenti con l’inviato Amarino Mallo, i cui sketch durano pochi secondi. La situazione comica viene qui utilizzata per trasmettere in modo sottile e spiazzante un messaggio preciso: una persona che guadagna con il gioco d’azzardo non esiste. Video costruito con molta cura (e divertimento) da parte degli studenti: non è semplice cogliere ad una prima visione il messaggio veicolato.",
+    "dataInserimento": "2024-09-05"
   },
   {
     "id": "HD1922-64",
@@ -1036,7 +1109,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "CORSA. Video realizzato dalla classe 4F del Liceo Antonelli di Novara (Ref.: Prof.ssa Federica Di Prospero) nell’ambito di un laboratorio del progetto “SteadyGAP”. Lo spot utilizza l’immagine di un ragazzo molto grasso che corre faticosamente su una strada deserta, ripresa mutuata da un famoso spot della Nike (visibile qui: https://youtu.be/A9pmgoETgQQ). Sulla figura del corridore appaiono in sovrimpressione immagini di azzardo. Ad un certo punto, quando l figura del ragazzo è più vicina alla telecamera, una dissolvenza visiva di porta sulle riprese di un atleta che corre in pista, mentre comprare scritto l’invito a non correre la vita appresso ai dadi, “non lasciare che taglino per primi il traguardo”. Il video si chiude in modo ironico con l’immagine del conduttore televisivo Enzo Miccio e la scritta “grazie per la visione”."
+    "description": "CORSA. Video realizzato dalla classe 4F del Liceo Antonelli di Novara (Ref.: Prof.ssa Federica Di Prospero) nell’ambito di un laboratorio del progetto “SteadyGAP”. Lo spot utilizza l’immagine di un ragazzo molto grasso che corre faticosamente su una strada deserta, ripresa mutuata da un famoso spot della Nike (visibile qui: https://youtu.be/A9pmgoETgQQ). Sulla figura del corridore appaiono in sovrimpressione immagini di azzardo. Ad un certo punto, quando l figura del ragazzo è più vicina alla telecamera, una dissolvenza visiva di porta sulle riprese di un atleta che corre in pista, mentre comprare scritto l’invito a non correre la vita appresso ai dadi, “non lasciare che taglino per primi il traguardo”. Il video si chiude in modo ironico con l’immagine del conduttore televisivo Enzo Miccio e la scritta “grazie per la visione”.",
+    "dataInserimento": "2025-05-09"
   },
   {
     "id": "HD1922-65",
@@ -1050,7 +1124,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "VEDO SOLO ROULETTE. Video realizzato dalla classe 4F del Liceo Antonelli di Novara (Ref.: Prof.ssa Federica Di Prospero) nell’ambito di un laboratorio del progetto “SteadyGAP”. Tramite una transizione di montaggio che simula un battito di ciglia vediamo alternate il video di una roulette che gira e immagini fisse che richiamano momenti di una giornata: una tavola imbandita per colazione, un ufficio, una squadra di calcio di bambini, un pranzo… Le immagini mostrano quindi situazioni di vittoria nell’azzardo: a seguito di questo le transizioni ci riportano sempre al video della roulette, mentre la musica cresce d’intensità. Il risultato è mostrato nelle immagini finali, che raccontano la rovina del giocatore, fino al suicidio.In chiusura lo slogan, che invita a non rovinarsi la vita e a farsi aiutare dal SerT. Il video usa in modo creativo una transizione di montaggio disponibile sull’app Capcut, con cui è stato montato. Il crescendo è volutamente drammatico, come da mandato assegnato agli studenti nel corso del laboratorio."
+    "description": "VEDO SOLO ROULETTE. Video realizzato dalla classe 4F del Liceo Antonelli di Novara (Ref.: Prof.ssa Federica Di Prospero) nell’ambito di un laboratorio del progetto “SteadyGAP”. Tramite una transizione di montaggio che simula un battito di ciglia vediamo alternate il video di una roulette che gira e immagini fisse che richiamano momenti di una giornata: una tavola imbandita per colazione, un ufficio, una squadra di calcio di bambini, un pranzo… Le immagini mostrano quindi situazioni di vittoria nell’azzardo: a seguito di questo le transizioni ci riportano sempre al video della roulette, mentre la musica cresce d’intensità. Il risultato è mostrato nelle immagini finali, che raccontano la rovina del giocatore, fino al suicidio.In chiusura lo slogan, che invita a non rovinarsi la vita e a farsi aiutare dal SerT. Il video usa in modo creativo una transizione di montaggio disponibile sull’app Capcut, con cui è stato montato. Il crescendo è volutamente drammatico, come da mandato assegnato agli studenti nel corso del laboratorio.",
+    "dataInserimento": "2024-01-15"
   },
   {
     "id": "HD1922-66",
@@ -1064,7 +1139,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "TU VUOI. Video realizzato dalla classe 4F del Liceo Antonelli di Novara (Ref.: Prof.ssa Federica Di Prospero) nell’ambito di un laboratorio del progetto “SteadyGAP”. Una voce over femminile, commentata da una musica allegra, spiega: “Io so che vorresti avere una villa, guadagnare tanti soldi…”. Ci vengono mostrate le cose desiderate, ma la voce continua a spiegarci che tutto questo non lo otterremo mai con il gioco d’azzardo, perché “più inconsapevolmente giocherai, più povero diventerai!”. L’invito è quindi a dire “No al gioco d’azzardo” e di rivolgersi al SerT. Bell’esempio di comunicazione semplice e ben costruita, con un buon mix di musica, voce, scritte, immagini fisse e gif animate. Utlizzabile insieme ad altri spot per ragionare sull’efficacia."
+    "description": "TU VUOI. Video realizzato dalla classe 4F del Liceo Antonelli di Novara (Ref.: Prof.ssa Federica Di Prospero) nell’ambito di un laboratorio del progetto “SteadyGAP”. Una voce over femminile, commentata da una musica allegra, spiega: “Io so che vorresti avere una villa, guadagnare tanti soldi…”. Ci vengono mostrate le cose desiderate, ma la voce continua a spiegarci che tutto questo non lo otterremo mai con il gioco d’azzardo, perché “più inconsapevolmente giocherai, più povero diventerai!”. L’invito è quindi a dire “No al gioco d’azzardo” e di rivolgersi al SerT. Bell’esempio di comunicazione semplice e ben costruita, con un buon mix di musica, voce, scritte, immagini fisse e gif animate. Utlizzabile insieme ad altri spot per ragionare sull’efficacia.",
+    "dataInserimento": "2023-04-24"
   },
   {
     "id": "HD1922-67",
@@ -1078,7 +1154,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "UMANITA’. Video realizzato dalla classe 4F del Liceo Antonelli di Novara (Ref.: Prof.ssa Federica Di Prospero) nell’ambito di un laboratorio del progetto “SteadyGAP”. Il video riutilizza in modo creativo sequenze tratte dal videoclip della canzone “BED” di Raye, Joel Corris e Davide Guetta (visibile qui: https://youtu.be/Q-mCsnhHQIk), utilizzando una musica differente. Vediamo due coppie di giovani, nelle quali uno dei due partner (lui in un caso, lei nell’altro) ha lo sguardo perso, indipendentemente dalla situazione che sta vivendo. Le immagini in sovraimpressione di slot che girano ci fanno capire che quelle persone (che nel videoclip originale erano automi) hanno un problema legato all’azzardo. Lo spot ci invita a “non scommettere mai la tua umanità”. Dopo questo slogan la musica cambia in un reggae scanzonato, mentre vediamo che le due persone senza problemi sono finite a letto insieme e sorridono felici."
+    "description": "UMANITA’. Video realizzato dalla classe 4F del Liceo Antonelli di Novara (Ref.: Prof.ssa Federica Di Prospero) nell’ambito di un laboratorio del progetto “SteadyGAP”. Il video riutilizza in modo creativo sequenze tratte dal videoclip della canzone “BED” di Raye, Joel Corris e Davide Guetta (visibile qui: https://youtu.be/Q-mCsnhHQIk), utilizzando una musica differente. Vediamo due coppie di giovani, nelle quali uno dei due partner (lui in un caso, lei nell’altro) ha lo sguardo perso, indipendentemente dalla situazione che sta vivendo. Le immagini in sovraimpressione di slot che girano ci fanno capire che quelle persone (che nel videoclip originale erano automi) hanno un problema legato all’azzardo. Lo spot ci invita a “non scommettere mai la tua umanità”. Dopo questo slogan la musica cambia in un reggae scanzonato, mentre vediamo che le due persone senza problemi sono finite a letto insieme e sorridono felici.",
+    "dataInserimento": "2023-05-28"
   },
   {
     "id": "HD1922-68",
@@ -1092,7 +1169,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "PROTECT YOUR LOVE. Video realizzato da studenti del Liceo Da Vinci di Alba nell’ambito del progetto di Alternanza Scuola Lavoro presso il Centro Steadycam dell’ASL CN2. Quattro persone giocano a poker su un tavolo verde. Vediamo alcuni dettagli dei loro volti, il tavolo da gioco su cui sono presenti anche un coltellino e un bicchiere di whisky. Uno dei giocatori perde tutto e si ritira dal gioco, un’altra persona prende il suo posto. La tensione sale, sul tavolo compare anche una pistola. L’ultima arrivata punta un orsacchiotto, sentiamo un colpo di pistola e vediamo l’orsacchiotto coricato, come se fosse stato colpito. La scena cambia: il tavolo da gioco si rivela essere un sito di poker online, a cui sta giocando una giovane ragazza. La ragazza decide di smettere e abbassa lo schermo: dietro di esso è appoggiato l’orsacchiotto. Compare lo slogan “Protect your love”. Video molto elaborato nella realizzazione. L’intento comunicativo è quello di sottolineare il rischio di “giocarsi gli affetti”; interessante la scelta dei ragazzi di mettere in scena il gioco online, ma la rappresentazione del poker risente di un immaginario datato."
+    "description": "PROTECT YOUR LOVE. Video realizzato da studenti del Liceo Da Vinci di Alba nell’ambito del progetto di Alternanza Scuola Lavoro presso il Centro Steadycam dell’ASL CN2. Quattro persone giocano a poker su un tavolo verde. Vediamo alcuni dettagli dei loro volti, il tavolo da gioco su cui sono presenti anche un coltellino e un bicchiere di whisky. Uno dei giocatori perde tutto e si ritira dal gioco, un’altra persona prende il suo posto. La tensione sale, sul tavolo compare anche una pistola. L’ultima arrivata punta un orsacchiotto, sentiamo un colpo di pistola e vediamo l’orsacchiotto coricato, come se fosse stato colpito. La scena cambia: il tavolo da gioco si rivela essere un sito di poker online, a cui sta giocando una giovane ragazza. La ragazza decide di smettere e abbassa lo schermo: dietro di esso è appoggiato l’orsacchiotto. Compare lo slogan “Protect your love”. Video molto elaborato nella realizzazione. L’intento comunicativo è quello di sottolineare il rischio di “giocarsi gli affetti”; interessante la scelta dei ragazzi di mettere in scena il gioco online, ma la rappresentazione del poker risente di un immaginario datato.",
+    "dataInserimento": "2025-01-14"
   },
   {
     "id": "HD1922-69",
@@ -1106,7 +1184,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "THE GAP. Video realizzato da studenti del Liceo Da Vinci di Alba nell’ambito del progetto di Alternanza Scuola Lavoro presso il Centro Steadycam dell’ASL CN2. Il video si apre con scritte bianche su sfondo nero, che ragionano sulla percezione che abbiamo dell’azzardo: noi pensiamo alle dipendenze da gioco come qualcosa di lontano, ma in realtà queste nascono da piccoli comportamenti quotidiani. Parte una ripresa senza stacchi in cui la videocamera si muove tra i ragazzi immobili, come “congelati” mentre giocano a diversi tipi di azzardo (gratta e vinci, poker online, poker dal vivo, scommesse sportive). Su dei post it compaiono le cose che perdiamo a causa dell’azzardo: famiglia, amici, soldi, dignità… I post it vengono appiccicati sul muro e insieme ad altri, vuoti, formano la scritta GAP. L’invito finale è a informarsi sul sito “puntasuditeduepuntozero.it”. Il video utilizza una scelta visiva originale e si chiude con un invito positivo, quello di cercare informazioni per conoscere meglio il fenomeno dell’azzardo e superare le rappresentazioni comuni."
+    "description": "THE GAP. Video realizzato da studenti del Liceo Da Vinci di Alba nell’ambito del progetto di Alternanza Scuola Lavoro presso il Centro Steadycam dell’ASL CN2. Il video si apre con scritte bianche su sfondo nero, che ragionano sulla percezione che abbiamo dell’azzardo: noi pensiamo alle dipendenze da gioco come qualcosa di lontano, ma in realtà queste nascono da piccoli comportamenti quotidiani. Parte una ripresa senza stacchi in cui la videocamera si muove tra i ragazzi immobili, come “congelati” mentre giocano a diversi tipi di azzardo (gratta e vinci, poker online, poker dal vivo, scommesse sportive). Su dei post it compaiono le cose che perdiamo a causa dell’azzardo: famiglia, amici, soldi, dignità… I post it vengono appiccicati sul muro e insieme ad altri, vuoti, formano la scritta GAP. L’invito finale è a informarsi sul sito “puntasuditeduepuntozero.it”. Il video utilizza una scelta visiva originale e si chiude con un invito positivo, quello di cercare informazioni per conoscere meglio il fenomeno dell’azzardo e superare le rappresentazioni comuni.",
+    "dataInserimento": "2025-08-18"
   },
   {
     "id": "HD1922-70",
@@ -1120,7 +1199,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "#STOPGAMBLING SUPERMERCATO. Seguiamo in soggettiva una spesa al supermercato: l’acquisto di pasta, biscotti, pannolini, crocchette. Arriviamo alla cassa… (VIDEO INTERROTTO, FILE DANNEGGIATO)"
+    "description": "#STOPGAMBLING SUPERMERCATO. Seguiamo in soggettiva una spesa al supermercato: l’acquisto di pasta, biscotti, pannolini, crocchette. Arriviamo alla cassa… (VIDEO INTERROTTO, FILE DANNEGGIATO)",
+    "dataInserimento": "2024-01-29"
   },
   {
     "id": "HD1922-71",
@@ -1134,7 +1214,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "GIOCA LA TUA PARTITA. Video realizzato dalla classe 2B del For.AL “Canefri” di Novi Ligure, nell’ambito del progetto “ALL IN” promosso dal SerD dell’ASL di Alessandria. Un ragazzo è a bordo campo, in attesa di giocare a calcio. Arriva un amico, che gli racconta di aver vinto alle scommesse sportive (“Bollette, non schedine!”). Invogliato dai possibili guadagni, il ragazzo segue l’amico fino alla sala scommesse, dove inizia a giocare una partita dietro l’altra. Alla fine, però, tutte le sue scommesse sono perdenti. Il ragazzo appallottola e butta via l’ultima schedina, poi, inquadrato in primo piano, enuncia lo slogan: “Gioca la tua partita. Non scommettere su quelle degli altri”. Con uno stacco di montaggio il ragazzo indossa la divisa da calcio del For.AL, dà un calcio al pallone ed entra in campo con gli amici. Il video si concentra sul tema delle scommesse sportive, molto sentito tra i ragazzi, contrapponendo lo sport giocato a quello delle scommesse. Utilizzabile singolarmente per ragionare sugli elementi del racconto: quale ti ha colpito di più? Perchè?"
+    "description": "GIOCA LA TUA PARTITA. Video realizzato dalla classe 2B del For.AL “Canefri” di Novi Ligure, nell’ambito del progetto “ALL IN” promosso dal SerD dell’ASL di Alessandria. Un ragazzo è a bordo campo, in attesa di giocare a calcio. Arriva un amico, che gli racconta di aver vinto alle scommesse sportive (“Bollette, non schedine!”). Invogliato dai possibili guadagni, il ragazzo segue l’amico fino alla sala scommesse, dove inizia a giocare una partita dietro l’altra. Alla fine, però, tutte le sue scommesse sono perdenti. Il ragazzo appallottola e butta via l’ultima schedina, poi, inquadrato in primo piano, enuncia lo slogan: “Gioca la tua partita. Non scommettere su quelle degli altri”. Con uno stacco di montaggio il ragazzo indossa la divisa da calcio del For.AL, dà un calcio al pallone ed entra in campo con gli amici. Il video si concentra sul tema delle scommesse sportive, molto sentito tra i ragazzi, contrapponendo lo sport giocato a quello delle scommesse. Utilizzabile singolarmente per ragionare sugli elementi del racconto: quale ti ha colpito di più? Perchè?",
+    "dataInserimento": "2023-06-19"
   },
   {
     "id": "HD1922-72",
@@ -1148,7 +1229,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "SMETTI E VINCI. Video realizzato dalla classe 3A del For.AL “Canefri” di Novi Ligure, nell’ambito del progetto “ALL IN” promosso dal SerD dell’ASL di Alessandria. Le immagini di un ragazzo a mezza figura si alternano a quelle di una slot che gira. Ad ogni stacco di montaggio il ragazzo perde un capo di abbigliamento: il cappellino, le collane, gli occhiali, la maglietta. Intuiamo che potrebbe andare avanti così, ma al successivo stacco di montaggio rivediamo il ragazzo vestito come all’inizio, che ci punta il dito ed esclama: “Smetti e vinci”. Spot dall’idea semplice ma ben costruita, comunica in modo efficace il concetto di perdita economica legato all’azzardo, concretizzandolo nell’abbigliamento di un adolescente. Utilizzabile insieme ad altri spot per ragionare sull’efficacia e anche come esempio di produzione mediale tecnicamente fattibile."
+    "description": "SMETTI E VINCI. Video realizzato dalla classe 3A del For.AL “Canefri” di Novi Ligure, nell’ambito del progetto “ALL IN” promosso dal SerD dell’ASL di Alessandria. Le immagini di un ragazzo a mezza figura si alternano a quelle di una slot che gira. Ad ogni stacco di montaggio il ragazzo perde un capo di abbigliamento: il cappellino, le collane, gli occhiali, la maglietta. Intuiamo che potrebbe andare avanti così, ma al successivo stacco di montaggio rivediamo il ragazzo vestito come all’inizio, che ci punta il dito ed esclama: “Smetti e vinci”. Spot dall’idea semplice ma ben costruita, comunica in modo efficace il concetto di perdita economica legato all’azzardo, concretizzandolo nell’abbigliamento di un adolescente. Utilizzabile insieme ad altri spot per ragionare sull’efficacia e anche come esempio di produzione mediale tecnicamente fattibile.",
+    "dataInserimento": "2023-12-15"
   },
   {
     "id": "HD1922-73",
@@ -1162,7 +1244,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "THE MORE YOU PLAY. Video in inglese senza sottotitoli, realizzato da una scuola superiore canadere nell’ambito del contest “Youth Gambling Facts” sul gioco d’azzardo giovanile. Il video ha vinto il premo nella categoria “Scuole”. Siamo all’interno di un’abitazione: un’adolescente, pronta per andare a scuola, ruba dei soldi da un salvadanaio. La sorella la vede e le chiede a che cosa le servono: la ragazza le risponde che sono per un “gioco a scuola” e le dice che i genitori non devono saperlo. Una voce fuori campo maschile ci ribadisce lo slogan: “The more you play, the more you pay” (più giochi, più paghi). L’invito è quello di chiedere aiuto, informandosi sul sito http://youthgamblingfacts.ca/ o chiamando un numero telefonico (come vediamo fare dalla sorella al termine del video). Il sito del progetto contiene gli altri video partecipanti al contest."
+    "description": "THE MORE YOU PLAY. Video in inglese senza sottotitoli, realizzato da una scuola superiore canadere nell’ambito del contest “Youth Gambling Facts” sul gioco d’azzardo giovanile. Il video ha vinto il premo nella categoria “Scuole”. Siamo all’interno di un’abitazione: un’adolescente, pronta per andare a scuola, ruba dei soldi da un salvadanaio. La sorella la vede e le chiede a che cosa le servono: la ragazza le risponde che sono per un “gioco a scuola” e le dice che i genitori non devono saperlo. Una voce fuori campo maschile ci ribadisce lo slogan: “The more you play, the more you pay” (più giochi, più paghi). L’invito è quello di chiedere aiuto, informandosi sul sito http://youthgamblingfacts.ca/ o chiamando un numero telefonico (come vediamo fare dalla sorella al termine del video). Il sito del progetto contiene gli altri video partecipanti al contest.",
+    "dataInserimento": "2025-01-07"
   },
   {
     "id": "HD1922-74",
@@ -1176,7 +1259,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "NOT CHILDS PLAY. Video in inglese senza sottotitoli, realizzato dallo studente canadese Solmund McPherson nell’ambito del contest “Youth Gambling Facts” sul gioco d’azzardo giovanile. Il video ha vinto il premo del pubblico. Una scritta iniziale ci avvisa che il gambling non è “childs play” (un gioco per bambini). Vediamo un personaggio, animato in stop motion, che si muove saltando ostacoli e raccogliendo monete come in un videogioco platform, con effetti sonori a tema. Quando però arriva contro un ostacolo troppo alto, inevitabilmente cade giù. L’inquadratura si sposta e vediamo che l’ostacolo alto è la parola “Lotto”. Un’altra scritta, sempre in inglese, ci informa che le probabilità di vittoria sono una su 13 milioni. L’invito, quindi, è “Go Ahead”, “vai avanti”, “passa oltre”. Rivediamo il personaggio cadere per l’ennesima volta, poi compare la scritta in rosso “Game Over” e l’invito a informarsi sul sito http://youthgamblingfacts.ca/. Il sito del progetto contiene gli altri video partecipanti al contest."
+    "description": "NOT CHILDS PLAY. Video in inglese senza sottotitoli, realizzato dallo studente canadese Solmund McPherson nell’ambito del contest “Youth Gambling Facts” sul gioco d’azzardo giovanile. Il video ha vinto il premo del pubblico. Una scritta iniziale ci avvisa che il gambling non è “childs play” (un gioco per bambini). Vediamo un personaggio, animato in stop motion, che si muove saltando ostacoli e raccogliendo monete come in un videogioco platform, con effetti sonori a tema. Quando però arriva contro un ostacolo troppo alto, inevitabilmente cade giù. L’inquadratura si sposta e vediamo che l’ostacolo alto è la parola “Lotto”. Un’altra scritta, sempre in inglese, ci informa che le probabilità di vittoria sono una su 13 milioni. L’invito, quindi, è “Go Ahead”, “vai avanti”, “passa oltre”. Rivediamo il personaggio cadere per l’ennesima volta, poi compare la scritta in rosso “Game Over” e l’invito a informarsi sul sito http://youthgamblingfacts.ca/. Il sito del progetto contiene gli altri video partecipanti al contest.",
+    "dataInserimento": "2025-11-03"
   },
   {
     "id": "HD1922-76",
@@ -1190,7 +1274,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "INFORMAZIONI SULL’AZZARDO. Video realizzato dalla classe 2A dell’IIS Magnaghi di Salsomaggiore nell'ambito del progetto Fair Play 2021-2022, promosso dall'AUSL Parma - Distretto di Fidenza e gestito dagli operatori di SteadycamOFF snc. Il video, di breve durata, monta alcune immagini di gioco d’azzardo con scritte sintetiche che offrono alcune informazioni sul fenomeno e le probabilità di vincita. In chiusura lo slogan: “Il gioco d’azzardo è un suicidio senza morte”. Il registro scelto è informativo, come da mandato esplicitato nel laboratorio. Buona la sintesi; occorrerebbe citare le fonti informative. Utlizzabile insieme ad altri di formati analoghi per ragionare su quali informazioni restano impresse e sull’utilità delle stesse nel modificare percezioni e comportamenti."
+    "description": "INFORMAZIONI SULL’AZZARDO. Video realizzato dalla classe 2A dell’IIS Magnaghi di Salsomaggiore nell'ambito del progetto Fair Play 2021-2022, promosso dall'AUSL Parma - Distretto di Fidenza e gestito dagli operatori di SteadycamOFF snc. Il video, di breve durata, monta alcune immagini di gioco d’azzardo con scritte sintetiche che offrono alcune informazioni sul fenomeno e le probabilità di vincita. In chiusura lo slogan: “Il gioco d’azzardo è un suicidio senza morte”. Il registro scelto è informativo, come da mandato esplicitato nel laboratorio. Buona la sintesi; occorrerebbe citare le fonti informative. Utlizzabile insieme ad altri di formati analoghi per ragionare su quali informazioni restano impresse e sull’utilità delle stesse nel modificare percezioni e comportamenti.",
+    "dataInserimento": "2023-05-23"
   },
   {
     "id": "HD1922-77",
@@ -1204,7 +1289,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "SE TI BUTTI. Video realizzato dalla classe 2A dell’IIS Magnaghi di Salsomaggiore nell'ambito del progetto Fair Play 2021-2022, promosso dall'AUSL Parma - Distretto di Fidenza e gestito dagli operatori di SteadycamOFF snc. Una ripresa dall’alto ci mostra una ragazza che gioca ad una slot sul proprio smartphone. Progressivamente perde tutti i soldi. Sullo smartphone, rimasto sul tavolo, iniziano ad arrivare messaggi di parenti e amici; la videocamera si muove a va ad inquadrare una finestra aperta, facendoci immaginare un possibile suicidio. In chiusura, su sfondo nero, la scritta: “Se ti butti nel gioco d’azzardo significa che hai già buttato la tua vita”. Video realizzato ottimamente con pochi mezzi e tempo a disposizione (meno di un’ora, all’interno di una classe). Utilizzabile insieme ad altri per ragionare sull’efficacia. Da discutere il messaggio: quando l’azzardo porta ad un esito estremo come il suicidio (qui in realtà solo evocato)?"
+    "description": "SE TI BUTTI. Video realizzato dalla classe 2A dell’IIS Magnaghi di Salsomaggiore nell'ambito del progetto Fair Play 2021-2022, promosso dall'AUSL Parma - Distretto di Fidenza e gestito dagli operatori di SteadycamOFF snc. Una ripresa dall’alto ci mostra una ragazza che gioca ad una slot sul proprio smartphone. Progressivamente perde tutti i soldi. Sullo smartphone, rimasto sul tavolo, iniziano ad arrivare messaggi di parenti e amici; la videocamera si muove a va ad inquadrare una finestra aperta, facendoci immaginare un possibile suicidio. In chiusura, su sfondo nero, la scritta: “Se ti butti nel gioco d’azzardo significa che hai già buttato la tua vita”. Video realizzato ottimamente con pochi mezzi e tempo a disposizione (meno di un’ora, all’interno di una classe). Utilizzabile insieme ad altri per ragionare sull’efficacia. Da discutere il messaggio: quando l’azzardo porta ad un esito estremo come il suicidio (qui in realtà solo evocato)?",
+    "dataInserimento": "2025-08-15"
   },
   {
     "id": "HD1922-78",
@@ -1218,7 +1304,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "RALLENTA. Video realizzato dalla classe 2TT dell’IIS Magnaghi di Salsomaggiore nell'ambito del progetto Fair Play 2021-2022, promosso dall'AUSL Parma - Distretto di Fidenza e gestito dagli operatori di SteadycamOFF snc. Vediamo in successione acquisti online, su siti di shopping e all’interno di videogiochi, montati con l’immagine di una roulete e dell’inserimento di una monetina in una slot. Il montaggio diventa sempre più veloce, mentre la musica crea un crescendo di tensione. In chiusura compare lo slogan: “Rallenta, sono più forti di te”. Video realizzato ottimamente nell’ambito del laboratorio Fair Play: il gruppo ha lavorato sia in classe che a casa. Il modello è un altro video realizzato da studenti, “Restart” (presente in questo archivio), che qui viene ampliato inserendo efficacemente nel montaggio elementi riconducibili allo “shoppare” nel gaming e allo shopping online. Utilizzabile in classe insieme ad altri spot sociali per ragionare sull’efficacia e sul target: in che misura accostare loot box, shopping e azzardo? A chi può essere rivolto questo messaggio?"
+    "description": "RALLENTA. Video realizzato dalla classe 2TT dell’IIS Magnaghi di Salsomaggiore nell'ambito del progetto Fair Play 2021-2022, promosso dall'AUSL Parma - Distretto di Fidenza e gestito dagli operatori di SteadycamOFF snc. Vediamo in successione acquisti online, su siti di shopping e all’interno di videogiochi, montati con l’immagine di una roulete e dell’inserimento di una monetina in una slot. Il montaggio diventa sempre più veloce, mentre la musica crea un crescendo di tensione. In chiusura compare lo slogan: “Rallenta, sono più forti di te”. Video realizzato ottimamente nell’ambito del laboratorio Fair Play: il gruppo ha lavorato sia in classe che a casa. Il modello è un altro video realizzato da studenti, “Restart” (presente in questo archivio), che qui viene ampliato inserendo efficacemente nel montaggio elementi riconducibili allo “shoppare” nel gaming e allo shopping online. Utilizzabile in classe insieme ad altri spot sociali per ragionare sull’efficacia e sul target: in che misura accostare loot box, shopping e azzardo? A chi può essere rivolto questo messaggio?",
+    "dataInserimento": "2025-02-08"
   },
   {
     "id": "HD1922-79",
@@ -1232,7 +1319,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "TOFU E OJI-SAN. Video realizzato dalla classe 2TT dell’IIS Magnaghi di Salsomaggiore nell'ambito del progetto Fair Play 2021-2022, promosso dall'AUSL Parma - Distretto di Fidenza e gestito dagli operatori di SteadycamOFF snc. Un porcellino d’india di nome Tofu viene prelevato e finisce una scatola, dove trova il suo amico Oji-San che gioca alle slot. Oji-San rivela che sta facendo after sulle slot da cinque giorni: Tofu gli suggerisce di “andare a toccare l’erba”, ma l’amico risponde di no. Compaiono alcune righe che definiscono la dipendenza da gioco d’azzardo, con slogan finale: “Le slot machine ti ingannano sulla realtà”. Video realizzato ottimamente e con grande creatività nell’ambito del laboratorio Fair Play: il gruppo ha lavorato sia in classe che a casa. Utlizzabile insieme ad altri spot sociali realizzati dagli studenti per ragionare su efficacia comunicativa."
+    "description": "TOFU E OJI-SAN. Video realizzato dalla classe 2TT dell’IIS Magnaghi di Salsomaggiore nell'ambito del progetto Fair Play 2021-2022, promosso dall'AUSL Parma - Distretto di Fidenza e gestito dagli operatori di SteadycamOFF snc. Un porcellino d’india di nome Tofu viene prelevato e finisce una scatola, dove trova il suo amico Oji-San che gioca alle slot. Oji-San rivela che sta facendo after sulle slot da cinque giorni: Tofu gli suggerisce di “andare a toccare l’erba”, ma l’amico risponde di no. Compaiono alcune righe che definiscono la dipendenza da gioco d’azzardo, con slogan finale: “Le slot machine ti ingannano sulla realtà”. Video realizzato ottimamente e con grande creatività nell’ambito del laboratorio Fair Play: il gruppo ha lavorato sia in classe che a casa. Utlizzabile insieme ad altri spot sociali realizzati dagli studenti per ragionare su efficacia comunicativa.",
+    "dataInserimento": "2026-01-16"
   },
   {
     "id": "HD1922-80",
@@ -1246,7 +1334,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "STOPPA IL GIRO. Video realizzato dalla classe 4B TGC dell’IIS Cravetta Marconi di Savigliano (CN) nell'ambito del contest “Restart” del progetto SteadyGAP promosso dalla Regione Piemonte. Insegnante referente: Prof.ssa Raffaella Gaidano. Un ragazzo si siede davanti al pc e inizia a giocare d’azzardo online, mentre la ripresa continua a girare intorno a lui. Passano le ore e la notte, il ragazzo continua a giocare e il giro sembra non interrompersi più. Compare però una ragazza, che senza paura convince il ragazzo ad uscire di casa e a smettere di giocare. Il video si chiude con la coppia che si allontana sorridente. Video premiato al Contest Restart come migliore regia. Utlizzabile insieme ad altri spot sociali realizzati dagli studenti per ragionare su efficacia comunicativa."
+    "description": "STOPPA IL GIRO. Video realizzato dalla classe 4B TGC dell’IIS Cravetta Marconi di Savigliano (CN) nell'ambito del contest “Restart” del progetto SteadyGAP promosso dalla Regione Piemonte. Insegnante referente: Prof.ssa Raffaella Gaidano. Un ragazzo si siede davanti al pc e inizia a giocare d’azzardo online, mentre la ripresa continua a girare intorno a lui. Passano le ore e la notte, il ragazzo continua a giocare e il giro sembra non interrompersi più. Compare però una ragazza, che senza paura convince il ragazzo ad uscire di casa e a smettere di giocare. Il video si chiude con la coppia che si allontana sorridente. Video premiato al Contest Restart come migliore regia. Utlizzabile insieme ad altri spot sociali realizzati dagli studenti per ragionare su efficacia comunicativa.",
+    "dataInserimento": "2024-07-30"
   },
   {
     "id": "HD1922-81",
@@ -1260,7 +1349,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "JACKPOT! L’INDIPENDENZA VINCE. Video realizzato dalla classe 4A TGC dell’IIS Cravetta Marconi di Savigliano (CN) nell'ambito del contest “Restart” del progetto SteadyGAP promosso dalla Regione Piemonte. Insegnante referente: Prof.ssa Raffaella Gaidano. Un gruppo di ragazzi giocano a poker; uno di loro racconta che suo cugino ha vinto 1000 euro al poker online. La ragazza presente nel gruppo decide di provarci, ma perde tutto lo stipendio. Il giorno dopo la vediamo seduta alla panchina con uno dei ragazzi del poker, che la invita a giocare: lei rifiuta. Si divertiranno in un altro modo. Spot migliorabile dal punto di vista della realizzazione; interessante però la dinamica di “passaparola” che viene rappresentata e che può essere discussa in classe: funziona così? Da dove arrivano gli “inviti” a giocare?"
+    "description": "JACKPOT! L’INDIPENDENZA VINCE. Video realizzato dalla classe 4A TGC dell’IIS Cravetta Marconi di Savigliano (CN) nell'ambito del contest “Restart” del progetto SteadyGAP promosso dalla Regione Piemonte. Insegnante referente: Prof.ssa Raffaella Gaidano. Un gruppo di ragazzi giocano a poker; uno di loro racconta che suo cugino ha vinto 1000 euro al poker online. La ragazza presente nel gruppo decide di provarci, ma perde tutto lo stipendio. Il giorno dopo la vediamo seduta alla panchina con uno dei ragazzi del poker, che la invita a giocare: lei rifiuta. Si divertiranno in un altro modo. Spot migliorabile dal punto di vista della realizzazione; interessante però la dinamica di “passaparola” che viene rappresentata e che può essere discussa in classe: funziona così? Da dove arrivano gli “inviti” a giocare?",
+    "dataInserimento": "2025-04-04"
   },
   {
     "id": "HD1922-82",
@@ -1274,7 +1364,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "BLACKJACK GIOCHIAMO A NON GIOCARE. Video realizzato dalla classe 4CAT dell’IT Leardi di Casale Monferrato (AL) nell'ambito del contest “Restart” del progetto SteadyGAP promosso dalla Regione Piemonte. Insegnante referente: Prof.ssa Laura Catalano. Il video si apre con una spiegazione scritta delle regole del blackjack. Vediamo quindi un tavolo dove quattro persone sfidano il dealer. Una di loro, un ragazzo biondo, alla fine si gioca tutto sperando che il banco “sballi”: questo non accade e il ragazzo perde. Alcune scritte finali spiegano di come il dealer segue uno schema fisso di gioco (non chiama mai oltre il 17) e in questo modo sul lungo periodo vince sempre, a differenza dei giocatori che sono preda delle emozioni. Video informativo: interessante la scelta di concentrarsi su un gioco specifico e di spiegarne le dinamiche. Migliorabile la scelta dei tempi: alcune scritte scorrono troppo velocemente, mentre l parte recitata può essere accorciata. Possibile utilizzo come spunto per una serie di filmati con lo stesso “format”: spiegare con grafica e recitazione il funzionamento dei diversi giochi d’azzardo."
+    "description": "BLACKJACK GIOCHIAMO A NON GIOCARE. Video realizzato dalla classe 4CAT dell’IT Leardi di Casale Monferrato (AL) nell'ambito del contest “Restart” del progetto SteadyGAP promosso dalla Regione Piemonte. Insegnante referente: Prof.ssa Laura Catalano. Il video si apre con una spiegazione scritta delle regole del blackjack. Vediamo quindi un tavolo dove quattro persone sfidano il dealer. Una di loro, un ragazzo biondo, alla fine si gioca tutto sperando che il banco “sballi”: questo non accade e il ragazzo perde. Alcune scritte finali spiegano di come il dealer segue uno schema fisso di gioco (non chiama mai oltre il 17) e in questo modo sul lungo periodo vince sempre, a differenza dei giocatori che sono preda delle emozioni. Video informativo: interessante la scelta di concentrarsi su un gioco specifico e di spiegarne le dinamiche. Migliorabile la scelta dei tempi: alcune scritte scorrono troppo velocemente, mentre l parte recitata può essere accorciata. Possibile utilizzo come spunto per una serie di filmati con lo stesso “format”: spiegare con grafica e recitazione il funzionamento dei diversi giochi d’azzardo.",
+    "dataInserimento": "2024-04-27"
   },
   {
     "id": "HD1922-83",
@@ -1288,7 +1379,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "LA 2H Q SELLA E IL GIOCO. Video realizzato dalla classe 2H dell’ITIS Quintino Sella di Biella nell'ambito del contest “Restart” del progetto SteadyGAP promosso dalla Regione Piemonte. Insegnante referente: Prof.ssa Rita Repetto. Dopo la scritta “quando il gioco si fa pericoloso” le riprese dall’alto ci mostrano alcuni giochi d’azzardo (blackjack, roulette, poker); una seconda didascalia, “questo è il gioco che ci piace”, introduce invece riprese di scacchi, calcio e basket, dove si vince grazie alle proprie abilità. Lo slogan finale è “Vinci solo quando smetti”. Lodevole il lavoro corale di tutta la classe per creare il video."
+    "description": "LA 2H Q SELLA E IL GIOCO. Video realizzato dalla classe 2H dell’ITIS Quintino Sella di Biella nell'ambito del contest “Restart” del progetto SteadyGAP promosso dalla Regione Piemonte. Insegnante referente: Prof.ssa Rita Repetto. Dopo la scritta “quando il gioco si fa pericoloso” le riprese dall’alto ci mostrano alcuni giochi d’azzardo (blackjack, roulette, poker); una seconda didascalia, “questo è il gioco che ci piace”, introduce invece riprese di scacchi, calcio e basket, dove si vince grazie alle proprie abilità. Lo slogan finale è “Vinci solo quando smetti”. Lodevole il lavoro corale di tutta la classe per creare il video.",
+    "dataInserimento": "2025-05-10"
   },
   {
     "id": "HD1922-84",
@@ -1302,7 +1394,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "SCOMMETTI NELLE TUE PASSIONI. Video realizzato dalla classe 1SD del Liceo Scientifico Vercelli di Asti nell'ambito del contest “Restart” del progetto SteadyGAP promosso dalla Regione Piemonte. Insegnante referente: Prof.ssa Cristina Giraudi. Il video è a tutti gli effetti un cortometraggio, molto ben realizzato. Il protagonista è uno studente che gioca d’azzardo online: lo vediamo giocare in classe con lo smartphone e poi a casa, da pc. Gli amici disapprovano questo comportamento e gli mandano messaggi sempre più insistenti, finché il ragazzo spegne il gioco ed esce a giocare a basket. Il video si chiude con l’immagine del gruppo di amici e la scritta: “Non credere di poter vincere d’azzardo, credi in te stesso e nelle tue passioni e avrai già vinto la felicità”. La struttura narrativa ricorda quella di “Stoppa il giro” degli studenti del Cravetta di Savigliano: la “salvezza” arriva dai coetanei, fidanzata e amici. Può essere utile mettere in discussione questo assunto, ragionando sul perché esistano servizi sanitari che prendono in carico la dipendenza e sui modi in cui gli amici possono essere di aiuto."
+    "description": "SCOMMETTI NELLE TUE PASSIONI. Video realizzato dalla classe 1SD del Liceo Scientifico Vercelli di Asti nell'ambito del contest “Restart” del progetto SteadyGAP promosso dalla Regione Piemonte. Insegnante referente: Prof.ssa Cristina Giraudi. Il video è a tutti gli effetti un cortometraggio, molto ben realizzato. Il protagonista è uno studente che gioca d’azzardo online: lo vediamo giocare in classe con lo smartphone e poi a casa, da pc. Gli amici disapprovano questo comportamento e gli mandano messaggi sempre più insistenti, finché il ragazzo spegne il gioco ed esce a giocare a basket. Il video si chiude con l’immagine del gruppo di amici e la scritta: “Non credere di poter vincere d’azzardo, credi in te stesso e nelle tue passioni e avrai già vinto la felicità”. La struttura narrativa ricorda quella di “Stoppa il giro” degli studenti del Cravetta di Savigliano: la “salvezza” arriva dai coetanei, fidanzata e amici. Può essere utile mettere in discussione questo assunto, ragionando sul perché esistano servizi sanitari che prendono in carico la dipendenza e sui modi in cui gli amici possono essere di aiuto.",
+    "dataInserimento": "2025-06-06"
   },
   {
     "id": "HD1922-85",
@@ -1316,7 +1409,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "APPENDI IL DITO AL CHIODO. Spot realizzato da un gruppo di studentesse del Liceo Da Vinci di Alba durante il percorso di PCTO con il Serd di Alba e il Centro Steadycam (giugno 2022). Un montaggio serrato ci mostra diverse operazioni fatte con il dito sugli schermi: scrollare pagine di social e messaggi, videogiocare, fare shopping, giocare d’azzardo. La musica incalza, fino ad un’immagine di interruzione del segnale; subito dopo vediamo un chiodo che viene piantato nel muro, su cui il dito viene appeso con un filo. Segue il claim: “Appendi il dito al chiodo, fai una pausa”. Idea molto originale sviluppata nel corso del laboratorio e declinata anche in un poster grafico. Interessante il parallelo con tutti gli aspetti del digitale, per cui il messaggio può valere in un ambito più ampio del gioco d’azzardo: si veda anche lo spot “Rallenta” della 2TT Magnaghi di Salsomaggiore, presente in questo archivio. Utilizzabile insieme ad altri spot sociali per ragionare sull’efficacia."
+    "description": "APPENDI IL DITO AL CHIODO. Spot realizzato da un gruppo di studentesse del Liceo Da Vinci di Alba durante il percorso di PCTO con il Serd di Alba e il Centro Steadycam (giugno 2022). Un montaggio serrato ci mostra diverse operazioni fatte con il dito sugli schermi: scrollare pagine di social e messaggi, videogiocare, fare shopping, giocare d’azzardo. La musica incalza, fino ad un’immagine di interruzione del segnale; subito dopo vediamo un chiodo che viene piantato nel muro, su cui il dito viene appeso con un filo. Segue il claim: “Appendi il dito al chiodo, fai una pausa”. Idea molto originale sviluppata nel corso del laboratorio e declinata anche in un poster grafico. Interessante il parallelo con tutti gli aspetti del digitale, per cui il messaggio può valere in un ambito più ampio del gioco d’azzardo: si veda anche lo spot “Rallenta” della 2TT Magnaghi di Salsomaggiore, presente in questo archivio. Utilizzabile insieme ad altri spot sociali per ragionare sull’efficacia.",
+    "dataInserimento": "2026-02-04"
   },
   {
     "id": "HD1922-86",
@@ -1330,7 +1424,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "INFORMAZIONI SULL’AZZARDO. Video realizzato dalla classe 2OPS dell’ENAC di Fidenza nell'ambito del progetto Fair Play 2021-2022, promosso dall'AUSL Parma - Distretto di Fidenza e gestito dagli operatori di SteadycamOFF snc. Il montaggio mette insieme interviste e video informativi sul gioco d’azzardo e su come questo può tramutarsi in dipendenza. Nella parte finale è presente un’intervista a Roberta Pacifici dell’Istituto Superiore di Sanità."
+    "description": "INFORMAZIONI SULL’AZZARDO. Video realizzato dalla classe 2OPS dell’ENAC di Fidenza nell'ambito del progetto Fair Play 2021-2022, promosso dall'AUSL Parma - Distretto di Fidenza e gestito dagli operatori di SteadycamOFF snc. Il montaggio mette insieme interviste e video informativi sul gioco d’azzardo e su come questo può tramutarsi in dipendenza. Nella parte finale è presente un’intervista a Roberta Pacifici dell’Istituto Superiore di Sanità.",
+    "dataInserimento": "2024-03-09"
   },
   {
     "id": "HD1922-87",
@@ -1344,7 +1439,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "WHATSAPP. Video realizzato dalla classe 2OPS dell’ENAC di Fidenza nell'ambito del progetto Fair Play 2021-2022, promosso dall'AUSL Parma - Distretto di Fidenza e gestito dagli operatori di SteadycamOFF snc. Vediamo una catch di gruppo su whatsapp, dove alcuni amici si stanno dando appuntamento per un’uscita. Uno di loro dice a “Darius” di averla vista giocare alle macchinette. Lei risponde di non dirlo in giro, ma le altre persone del gruppo le suggeriscono di smettere. Una di loro scrive: “ti aiutiamo noi”. A quest’ultima affermazione Darius risponde con la gif di un bambino che ride. Il video si chiude così, senza claim. Prodotto utilizzabile sia insieme ad altri video di studenti per ragionare sull’efficacia, sia da solo chiedendo alla classe che cosa modificherebbero (ad esempio: occorre uno slogan finale? Un’informazione?). Ritorna il tema dell’aiuto “salvifico” dei pari, già presente in altri video come “Stoppa il giro” e “Scommetti nelle tue passioni” (presenti in questo archivio)."
+    "description": "WHATSAPP. Video realizzato dalla classe 2OPS dell’ENAC di Fidenza nell'ambito del progetto Fair Play 2021-2022, promosso dall'AUSL Parma - Distretto di Fidenza e gestito dagli operatori di SteadycamOFF snc. Vediamo una catch di gruppo su whatsapp, dove alcuni amici si stanno dando appuntamento per un’uscita. Uno di loro dice a “Darius” di averla vista giocare alle macchinette. Lei risponde di non dirlo in giro, ma le altre persone del gruppo le suggeriscono di smettere. Una di loro scrive: “ti aiutiamo noi”. A quest’ultima affermazione Darius risponde con la gif di un bambino che ride. Il video si chiude così, senza claim. Prodotto utilizzabile sia insieme ad altri video di studenti per ragionare sull’efficacia, sia da solo chiedendo alla classe che cosa modificherebbero (ad esempio: occorre uno slogan finale? Un’informazione?). Ritorna il tema dell’aiuto “salvifico” dei pari, già presente in altri video come “Stoppa il giro” e “Scommetti nelle tue passioni” (presenti in questo archivio).",
+    "dataInserimento": "2026-01-26"
   },
   {
     "id": "HD1922-01",
@@ -1358,7 +1454,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "PAPA' LADRO. Lo spot è costruito come un breve cortometraggio. In una casa ben arredata, un uomo elegante ma trascurato si aggira di notte, visibilmente preoccupato. Lo vediamo trafugare alcuni gioielli e poi anche un Nintendo DS. Mentre sta per uscire si sente chiamare: \"Papà?\". Il figlio lo sta guardando, sopreso e triste, vicino al ripiano dove c'era il Nintendo. L'uomo esce lo stesso. Sull'inquadratura del figlio compare la scritta: \"La ludopatia gioca con la tua vita. E con il loro futuro\". Seguono alcuni dati sull'azzardo problematico e sul fatturato derivante dal gioco, relativi al 2011. Il video è molto ben realizzato dal punto di vista tecnico. Toni cupi, musica e situazione triste. Dati da aggiornare; non ci sono riferimenti ai servizi di cura. Per la sua natura narrativa, il video si presta anche ad essere utilizzato da solo, con il possibile mandato di proseguire la storia (anche dal punto di vista di diversi personaggi: il giocatore, il figlio, la moglie...)."
+    "description": "PAPA' LADRO. Lo spot è costruito come un breve cortometraggio. In una casa ben arredata, un uomo elegante ma trascurato si aggira di notte, visibilmente preoccupato. Lo vediamo trafugare alcuni gioielli e poi anche un Nintendo DS. Mentre sta per uscire si sente chiamare: \"Papà?\". Il figlio lo sta guardando, sopreso e triste, vicino al ripiano dove c'era il Nintendo. L'uomo esce lo stesso. Sull'inquadratura del figlio compare la scritta: \"La ludopatia gioca con la tua vita. E con il loro futuro\". Seguono alcuni dati sull'azzardo problematico e sul fatturato derivante dal gioco, relativi al 2011. Il video è molto ben realizzato dal punto di vista tecnico. Toni cupi, musica e situazione triste. Dati da aggiornare; non ci sono riferimenti ai servizi di cura. Per la sua natura narrativa, il video si presta anche ad essere utilizzato da solo, con il possibile mandato di proseguire la storia (anche dal punto di vista di diversi personaggi: il giocatore, il figlio, la moglie...).",
+    "dataInserimento": "2025-02-19"
   },
   {
     "id": "HD1922-02",
@@ -1372,7 +1469,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "L'AZZARDO E' UN GIOCO A PERDERE - LA SORTE. Un uomo di mezz'età siede al tavolo con una donna giovane, vestita di bianco. L'uomo cerca di convincere la donna che farà bene a scommettere, potrebbe vincere 30 mila euro. Certo, ne ha già giocati oltre 60 mila, la moglie lo ha lasciato: ma la fortuna gira, sono attimi. La donna accetta di firmare un foglio sulla possibile vincita: sulla firma leggiamo \"La Sorte\". Segue una parte in cui La sorte si rivolge allo spettatore, spiegando che \"L'azzardo è un gioco a perdere\". Cortometraggio ben recitato, che mette in scena le scuse e i comportamenti del giocatore che non vede il problema. Utilizzabile anche tagliando la parte finale recitata da La Sorte, molto didascalica. Spot realizzato dal progetto \"Gioco a Perdere\" realizzato da diversi Comuni, scuole e associazioni del milanese: il capofila è il Comune di Cesano Boscone."
+    "description": "L'AZZARDO E' UN GIOCO A PERDERE - LA SORTE. Un uomo di mezz'età siede al tavolo con una donna giovane, vestita di bianco. L'uomo cerca di convincere la donna che farà bene a scommettere, potrebbe vincere 30 mila euro. Certo, ne ha già giocati oltre 60 mila, la moglie lo ha lasciato: ma la fortuna gira, sono attimi. La donna accetta di firmare un foglio sulla possibile vincita: sulla firma leggiamo \"La Sorte\". Segue una parte in cui La sorte si rivolge allo spettatore, spiegando che \"L'azzardo è un gioco a perdere\". Cortometraggio ben recitato, che mette in scena le scuse e i comportamenti del giocatore che non vede il problema. Utilizzabile anche tagliando la parte finale recitata da La Sorte, molto didascalica. Spot realizzato dal progetto \"Gioco a Perdere\" realizzato da diversi Comuni, scuole e associazioni del milanese: il capofila è il Comune di Cesano Boscone.",
+    "dataInserimento": "2025-04-12"
   },
   {
     "id": "HD1922-03",
@@ -1386,7 +1484,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "PERDERE TUTTO. Una fotografia ci mostra un uomo in tenuta da lavoro, con moglie, figlia neonata, un cane e sullo sfondo una bella casa con l'auto parcheggiata. Progressivamente i vari elementi della fotografia vengono cancellati, mentre la voce over ci spiega che chi ha una dipendenza da gioco d'azzardo all'inizio perde la propria sicurezza economica, poi perde amici e affetti familiari, infine perde se stesso. L'invito finale è a chiedere aiuto, con il telefono dell'AND. Spot molto semplice e di bassa qualità video; utilizzato insieme ad altri spot sociali perchè, a differenza di altri prodotti, qui viene dato un riferimento concreto per chiedere aiuto."
+    "description": "PERDERE TUTTO. Una fotografia ci mostra un uomo in tenuta da lavoro, con moglie, figlia neonata, un cane e sullo sfondo una bella casa con l'auto parcheggiata. Progressivamente i vari elementi della fotografia vengono cancellati, mentre la voce over ci spiega che chi ha una dipendenza da gioco d'azzardo all'inizio perde la propria sicurezza economica, poi perde amici e affetti familiari, infine perde se stesso. L'invito finale è a chiedere aiuto, con il telefono dell'AND. Spot molto semplice e di bassa qualità video; utilizzato insieme ad altri spot sociali perchè, a differenza di altri prodotti, qui viene dato un riferimento concreto per chiedere aiuto.",
+    "dataInserimento": "2023-11-03"
   },
   {
     "id": "HD1922-04",
@@ -1400,7 +1499,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "GRATTA E VINCI WOODSTOCK.  Una serie di scritte montate su una musica ci interpellano: sappiamo quante sono le probabilità di vincita al Gratta e Vinci? Una su 930.00: più delle persone presente a Woodstock nel 1969. Spot autoprodotto trovato in rete e rilanciato sul canale di AND. Bassa qualità video e montaggio poco ritmato. Può essere utilizzato come esempio di una produzione semplice e facilmente replicabile anche con un'app di montaggio (scritte e una foto), dove la comunicazione è giocata su un solo messaggio. Modello da rifare migliorandolo."
+    "description": "GRATTA E VINCI WOODSTOCK.  Una serie di scritte montate su una musica ci interpellano: sappiamo quante sono le probabilità di vincita al Gratta e Vinci? Una su 930.00: più delle persone presente a Woodstock nel 1969. Spot autoprodotto trovato in rete e rilanciato sul canale di AND. Bassa qualità video e montaggio poco ritmato. Può essere utilizzato come esempio di una produzione semplice e facilmente replicabile anche con un'app di montaggio (scritte e una foto), dove la comunicazione è giocata su un solo messaggio. Modello da rifare migliorandolo.",
+    "dataInserimento": "2025-11-15"
   },
   {
     "id": "HD1922-05",
@@ -1414,7 +1514,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "PADRE E FIGLIO. Un ragazzo biondo gioca a calcio nella squadra locale. Il padre, a bordo campo, anziché guardarlo gioca ad un casinò online su un computer portatile. Un amico gli suggerisce di andare a vedere il figlio, ma l'uomo cambia solo dispositivo, continuando a scommettere sullo smartphone. Il figlio sta per battere un rigore decisivo per la squadra: vedendo il padre distratto, gli va incontro e gli dice: \"Papà, scommetti su di me!\". Poi tira il rigore e segna. Nel finale padre e figlio si allontanano a braccetto, mentre viene inquadrato il cartello con la scritta \"Questa ASD dice no al gioco d'azzardo\" e lo slogan \"#iogiocodavvero (concorso nazionale della Chiesa Avventista, di cui questo spot ha vinto il primo premio). Video con alcune parti meno convincenti (il portatile a bordo campo), ma interessante per il coinvolgimento di un'associazione sportiva. Il tema dei rapporti familiari messi a rischio dal gioco è presente anche in altri video, come lo spot di Risvegli o quello di AND (presenti in questo archivio). Utilizzabile interrompendolo e facendo costruire il finale."
+    "description": "PADRE E FIGLIO. Un ragazzo biondo gioca a calcio nella squadra locale. Il padre, a bordo campo, anziché guardarlo gioca ad un casinò online su un computer portatile. Un amico gli suggerisce di andare a vedere il figlio, ma l'uomo cambia solo dispositivo, continuando a scommettere sullo smartphone. Il figlio sta per battere un rigore decisivo per la squadra: vedendo il padre distratto, gli va incontro e gli dice: \"Papà, scommetti su di me!\". Poi tira il rigore e segna. Nel finale padre e figlio si allontanano a braccetto, mentre viene inquadrato il cartello con la scritta \"Questa ASD dice no al gioco d'azzardo\" e lo slogan \"#iogiocodavvero (concorso nazionale della Chiesa Avventista, di cui questo spot ha vinto il primo premio). Video con alcune parti meno convincenti (il portatile a bordo campo), ma interessante per il coinvolgimento di un'associazione sportiva. Il tema dei rapporti familiari messi a rischio dal gioco è presente anche in altri video, come lo spot di Risvegli o quello di AND (presenti in questo archivio). Utilizzabile interrompendolo e facendo costruire il finale.",
+    "dataInserimento": "2023-03-27"
   },
   {
     "id": "HD1922-06",
@@ -1428,7 +1529,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "GIOCA CON NOI. Un gruppo di ragazzi con la maglietta della squadra di calcio ASD Edelweiis gira per la città e quando vede dei coetanei impegnati a giocare d'azzardo sullo smartphone, li invita ad andare a giocare con loro. I ragazzi diventano tanti e tutti insieme, sul campo da calcio, compongono la scritta \"Non ti azzardare\". Spot arrivato secondo al concorso nazionale \"Io gioco davvero\" della Chiesa Avventista."
+    "description": "GIOCA CON NOI. Un gruppo di ragazzi con la maglietta della squadra di calcio ASD Edelweiis gira per la città e quando vede dei coetanei impegnati a giocare d'azzardo sullo smartphone, li invita ad andare a giocare con loro. I ragazzi diventano tanti e tutti insieme, sul campo da calcio, compongono la scritta \"Non ti azzardare\". Spot arrivato secondo al concorso nazionale \"Io gioco davvero\" della Chiesa Avventista.",
+    "dataInserimento": "2025-05-06"
   },
   {
     "id": "HD1922-07",
@@ -1442,7 +1544,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "PAPA' GRATTA E VINCI. Sfondo nero, una sola luce. Un ragazzo chiama: \"Papà!\". La ripresa ci mostra il papà intento a grattare un Gratta e vinci dietro l'altro. Arriva anche la mamma, che abbraccia il figlio. Il padre li guarda, poi continua a grattare. La voce over ammonisce: \"Il gioco d'azzardo ti allontana da chi ti vuole bene\". Il video mette in scena la perdita degli affetti: il giocatore è il padre, come già nel video di Risvegli e in quello di ASD Edelweiss. Non vengono fornite informazioni su come richiedere aiuto: questo può diventare il tema di un'attività in classe, dando per esempio il mandato di inventare uno sviluppo della storia a partire da questa situazione, dal punto di vista del padre, della mamma e del figlio. A chi possono rivolgersi? Che cosa è possibile fare?"
+    "description": "PAPA' GRATTA E VINCI. Sfondo nero, una sola luce. Un ragazzo chiama: \"Papà!\". La ripresa ci mostra il papà intento a grattare un Gratta e vinci dietro l'altro. Arriva anche la mamma, che abbraccia il figlio. Il padre li guarda, poi continua a grattare. La voce over ammonisce: \"Il gioco d'azzardo ti allontana da chi ti vuole bene\". Il video mette in scena la perdita degli affetti: il giocatore è il padre, come già nel video di Risvegli e in quello di ASD Edelweiss. Non vengono fornite informazioni su come richiedere aiuto: questo può diventare il tema di un'attività in classe, dando per esempio il mandato di inventare uno sviluppo della storia a partire da questa situazione, dal punto di vista del padre, della mamma e del figlio. A chi possono rivolgersi? Che cosa è possibile fare?",
+    "dataInserimento": "2025-09-26"
   },
   {
     "id": "HD1922-08",
@@ -1456,7 +1559,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "L'AZZARDO TI AZZANNA. Vengono messi in scena diversi tipi di gioco e di giocatori, mentre compaiono scritte sui motivi per cui si ama giocare: dalla curiosità al senso di sfida. La musica cambia e vediamo un uomo giocare alle vlt, al gratta e vinci e ad un computer portatile: le scritte ci informano che a volte il gioco può trasformarsi in incubo. In chiusura lo slogan: \"L'azzardo ti azzanna\". Il video lavora bene sul concetto generale di gioco e può essere usato per un lavoro iniziale sulle caratteristiche che leghiamo al gioco e quelle che riteniamo specifiche dell'azzardo (prevedendo anche spazi di intersezione). Quando il gioco \"si trasforma in incubo\"? L'azzardo azzanna sempre?"
+    "description": "L'AZZARDO TI AZZANNA. Vengono messi in scena diversi tipi di gioco e di giocatori, mentre compaiono scritte sui motivi per cui si ama giocare: dalla curiosità al senso di sfida. La musica cambia e vediamo un uomo giocare alle vlt, al gratta e vinci e ad un computer portatile: le scritte ci informano che a volte il gioco può trasformarsi in incubo. In chiusura lo slogan: \"L'azzardo ti azzanna\". Il video lavora bene sul concetto generale di gioco e può essere usato per un lavoro iniziale sulle caratteristiche che leghiamo al gioco e quelle che riteniamo specifiche dell'azzardo (prevedendo anche spazi di intersezione). Quando il gioco \"si trasforma in incubo\"? L'azzardo azzanna sempre?",
+    "dataInserimento": "2023-10-15"
   },
   {
     "id": "HD1922-12",
@@ -1470,7 +1574,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "NON FAR ENTRARE L’ILLEGALITA’ IN CASA. Due adolescenti sono nella loro camera davanti al pc e stanno per giocare su un sito di poker online. Di colpo si ritrovano ad un vero tavolo verde, con avversari poco raccomandabili. I due ragazzi sembrano spaventati, ma interviene la mamma: quando apre la porta gli adulti cambiano atteggiamento, fingono di giocare al Gioco dell’Oca e poi escono dalla stanza, sotto lo sguardo soddisfatto della madre. Compare la scritta “Non fare entrare l’illegalità dentro casa. Il gioco minorile è reato, anche quello online”. Seguono i loghi di AAMS e Polizia di Stato. Esempio di spot istituzionale che si concentra sul comunicare che il gioco è vietato ai minori. La parola “azzardo” non viene utilizzata. Il video sembra rivolgersi soprattutto ai genitori, invitandoli al controllo. Realizzato nel 2012, non considera ancora l’accesso al web da dispositivi mobile."
+    "description": "NON FAR ENTRARE L’ILLEGALITA’ IN CASA. Due adolescenti sono nella loro camera davanti al pc e stanno per giocare su un sito di poker online. Di colpo si ritrovano ad un vero tavolo verde, con avversari poco raccomandabili. I due ragazzi sembrano spaventati, ma interviene la mamma: quando apre la porta gli adulti cambiano atteggiamento, fingono di giocare al Gioco dell’Oca e poi escono dalla stanza, sotto lo sguardo soddisfatto della madre. Compare la scritta “Non fare entrare l’illegalità dentro casa. Il gioco minorile è reato, anche quello online”. Seguono i loghi di AAMS e Polizia di Stato. Esempio di spot istituzionale che si concentra sul comunicare che il gioco è vietato ai minori. La parola “azzardo” non viene utilizzata. Il video sembra rivolgersi soprattutto ai genitori, invitandoli al controllo. Realizzato nel 2012, non considera ancora l’accesso al web da dispositivi mobile.",
+    "dataInserimento": "2023-03-17"
   },
   {
     "id": "HD1922-14",
@@ -1484,7 +1589,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "NON FULMINARTI LA VITA. Video di Federico Favilli, vincitore del primo premio del concorso \"Toscana in spot 2017: contrasto al gioco d'azzardo patologico\" del Corecom Toscana. . Un giovane gratta ossessivamente dei Gratta e Vinci, con sguardo spiritato. Finalmente ne trova uno vincente. Esce sul balcone urlando “Sono miliardario!” ma viene colpito da un fulmine. Compare lo slogan “Non fulminarti la vita”, seguito dall’informazione sulle probabilità di diventare ricco con il gioco d’azzardo. Esempio di comunicazione che si concentra su un’informazione, utilizzando un registro surreale e un colpo di scena che fa rimanere impresso il messaggio."
+    "description": "NON FULMINARTI LA VITA. Video di Federico Favilli, vincitore del primo premio del concorso \"Toscana in spot 2017: contrasto al gioco d'azzardo patologico\" del Corecom Toscana. . Un giovane gratta ossessivamente dei Gratta e Vinci, con sguardo spiritato. Finalmente ne trova uno vincente. Esce sul balcone urlando “Sono miliardario!” ma viene colpito da un fulmine. Compare lo slogan “Non fulminarti la vita”, seguito dall’informazione sulle probabilità di diventare ricco con il gioco d’azzardo. Esempio di comunicazione che si concentra su un’informazione, utilizzando un registro surreale e un colpo di scena che fa rimanere impresso il messaggio.",
+    "dataInserimento": "2024-10-24"
   },
   {
     "id": "HD1922-15",
@@ -1498,7 +1604,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "GRATTA FOTO. Regia di Valerio Cicco; macchina e fotografia di Emanuele Princi. Un uomo seduto al buio gratta le foto della propria famiglia (moglie e figlio) come se fossero dei Gratta e Vinci. Sotto le immagini compare la scritta, che è anche il claim dello spot: “Non giocare con la tua vita”. Lo spot informa che il gioco d’azzardo è stato inserito nei LEA e che in Italia ci sono 700 mila ludopatici, di cui 300 mila patologici. Esempio di comunicazione drammatica, che comunica un messaggio generico contro la “ludopatia” sottolineandone i danni che provoca nel contesto famigliare. Non vengono date indicazioni rispetto ai servizi di cura."
+    "description": "GRATTA FOTO. Regia di Valerio Cicco; macchina e fotografia di Emanuele Princi. Un uomo seduto al buio gratta le foto della propria famiglia (moglie e figlio) come se fossero dei Gratta e Vinci. Sotto le immagini compare la scritta, che è anche il claim dello spot: “Non giocare con la tua vita”. Lo spot informa che il gioco d’azzardo è stato inserito nei LEA e che in Italia ci sono 700 mila ludopatici, di cui 300 mila patologici. Esempio di comunicazione drammatica, che comunica un messaggio generico contro la “ludopatia” sottolineandone i danni che provoca nel contesto famigliare. Non vengono date indicazioni rispetto ai servizi di cura.",
+    "dataInserimento": "2025-12-09"
   },
   {
     "id": "HD1922-16",
@@ -1512,7 +1619,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "LUDO(A)PATIA SPOT. Ludo(A)patia è una campagna promossa da Consorzio Progetto Solidarietà - Distretto di Mantova per aiutare a prevenire la dipendenza da Gioco d'Azzardo Patologico e per offrire un servizio di supporto a chi ne soffre. Il video mostra volti in primo piano di persone diverse (un ragazzo, una donna giovane, un uomo) mentre le scritte spiegano che il gioco deve rimanere divertimento e non diventare un problema. In chiusura lo spot invita a chiamare il numero del servizio, perché “anche noi scommettiamo su di te”. La campagna ha visto la realizzazione di cinque pillole informative di circa due minuti ciascuno, presenti online e anche su questo archivio."
+    "description": "LUDO(A)PATIA SPOT. Ludo(A)patia è una campagna promossa da Consorzio Progetto Solidarietà - Distretto di Mantova per aiutare a prevenire la dipendenza da Gioco d'Azzardo Patologico e per offrire un servizio di supporto a chi ne soffre. Il video mostra volti in primo piano di persone diverse (un ragazzo, una donna giovane, un uomo) mentre le scritte spiegano che il gioco deve rimanere divertimento e non diventare un problema. In chiusura lo spot invita a chiamare il numero del servizio, perché “anche noi scommettiamo su di te”. La campagna ha visto la realizzazione di cinque pillole informative di circa due minuti ciascuno, presenti online e anche su questo archivio.",
+    "dataInserimento": "2026-02-26"
   },
   {
     "id": "HD1922-18",
@@ -1526,7 +1634,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "L’AZZARDO TI CONSUMA – TUTTI GRATTANO. Un uomo entra in un bar, chiede un Gratta e Vinci e inizia a grattarlo. L’inquadratura indugia sul dettaglio delle mani dell’uomo, mentre il rumore della grattata sembra amplificarsi. L’uomo alza la testa e si accorge che tutti gli altri avventori e il barista stanno facendo il movimento della “grattata” con ciò che hanno in mano in quel momento: un quotidiano, le tazzine del caffè, una biro sullo scontrino. L’inquadratura stacca sullo slogan “l’azzardo ti consuma”, mentre continuiamo a sentire il rumore degli oggetti mossi dalle grattate. Spot che mette in scena l’aspetto “totalizzante” dell’azzardo, che sembra far scomparire il mondo intorno: si veda in analogia, sul mondo delle slot, lo spot  “Restart” del Liceo Da Vinci di Alba, presente in questo archivio. Utilizzabile per ragionare sull’efficacia: può essere utile per chi ha già un problema legato all’azzardo? Oppure funziona solo come prevenzione?"
+    "description": "L’AZZARDO TI CONSUMA – TUTTI GRATTANO. Un uomo entra in un bar, chiede un Gratta e Vinci e inizia a grattarlo. L’inquadratura indugia sul dettaglio delle mani dell’uomo, mentre il rumore della grattata sembra amplificarsi. L’uomo alza la testa e si accorge che tutti gli altri avventori e il barista stanno facendo il movimento della “grattata” con ciò che hanno in mano in quel momento: un quotidiano, le tazzine del caffè, una biro sullo scontrino. L’inquadratura stacca sullo slogan “l’azzardo ti consuma”, mentre continuiamo a sentire il rumore degli oggetti mossi dalle grattate. Spot che mette in scena l’aspetto “totalizzante” dell’azzardo, che sembra far scomparire il mondo intorno: si veda in analogia, sul mondo delle slot, lo spot  “Restart” del Liceo Da Vinci di Alba, presente in questo archivio. Utilizzabile per ragionare sull’efficacia: può essere utile per chi ha già un problema legato all’azzardo? Oppure funziona solo come prevenzione?",
+    "dataInserimento": "2025-02-03"
   },
   {
     "id": "HD1922-19",
@@ -1540,7 +1649,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "L’AZZARDO TI CONSUMA – FAMIGLIA GRATTATA. Seconda versione dello spot della campagna “L’azzardo ti consuma”. Come nella versione precedente, un uomo entra in un bar, chiede un Gratta e Vinci e lo gratta. L’inquadratura ci mostra il biglietto, su cui è presente la foto di una famiglia le cui facce sono state grattate via. Compare lo slogan “L’azzardo ti consuma”. Rispetto all’altra versione, questo video si concentra sulle conseguenze negative dell’azzardo rispetto ai rapporti famigliari. Anche in questo caso non vengono proposti consigli o riferimenti rispetto alla cura (lo spot è stato realizzato nel 2013, quindi prima dell’inserimento dell’azzardo nei LEA. Idea analoga, ma con messa in scena più drammatica, nello spot “Gratta foto” della Città di Nettuno, presente in questo archivio."
+    "description": "L’AZZARDO TI CONSUMA – FAMIGLIA GRATTATA. Seconda versione dello spot della campagna “L’azzardo ti consuma”. Come nella versione precedente, un uomo entra in un bar, chiede un Gratta e Vinci e lo gratta. L’inquadratura ci mostra il biglietto, su cui è presente la foto di una famiglia le cui facce sono state grattate via. Compare lo slogan “L’azzardo ti consuma”. Rispetto all’altra versione, questo video si concentra sulle conseguenze negative dell’azzardo rispetto ai rapporti famigliari. Anche in questo caso non vengono proposti consigli o riferimenti rispetto alla cura (lo spot è stato realizzato nel 2013, quindi prima dell’inserimento dell’azzardo nei LEA. Idea analoga, ma con messa in scena più drammatica, nello spot “Gratta foto” della Città di Nettuno, presente in questo archivio.",
+    "dataInserimento": "2025-12-17"
   },
   {
     "id": "HD1922-20",
@@ -1554,7 +1664,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "IL GIOCO D’AZZARDO LOGORA – INTERVISTA DOPPIA. La stessa attrice viene intervistata in parallelo, con lo split screen tipico delle interviste doppie. Quella a sinistra dello spettatore è vestita di bianco e descrive una vita “normale”, con famiglia, lavoro e la prospettiva di una promozione e di una vacanza alle Maldive. Quella a destra, vestita di nero, ha un problema legato all’azzardo: la sua vita è incentrata su questo e non vede nessun futuro. Alla fine la donna in bianco si rivolge al suo doppio con un paternalistico: “La vita è bella ma passa in fretta. Stai azzardando con la tua vita”. E poi, rivolta alla telecamera: “Attenti al gioco”, che compare scritto come slogan finale. Lo spot sconta un’eccessiva lunghezza e la poca naturalezza dell’attrice, risultando poco efficace nel confronto tutto a sfavore della donna in nero. Interessante leggere le reazioni degli utenti nei commenti sotto il video in Youtube: uno di essi sceglierebbe la donna in nero “tutta la vita”, perché l’altra è noiosa e banale. Il messaggio, quindi, rischia un effetto controproducente, stigmatizzando chi gioca d’azzardo."
+    "description": "IL GIOCO D’AZZARDO LOGORA – INTERVISTA DOPPIA. La stessa attrice viene intervistata in parallelo, con lo split screen tipico delle interviste doppie. Quella a sinistra dello spettatore è vestita di bianco e descrive una vita “normale”, con famiglia, lavoro e la prospettiva di una promozione e di una vacanza alle Maldive. Quella a destra, vestita di nero, ha un problema legato all’azzardo: la sua vita è incentrata su questo e non vede nessun futuro. Alla fine la donna in bianco si rivolge al suo doppio con un paternalistico: “La vita è bella ma passa in fretta. Stai azzardando con la tua vita”. E poi, rivolta alla telecamera: “Attenti al gioco”, che compare scritto come slogan finale. Lo spot sconta un’eccessiva lunghezza e la poca naturalezza dell’attrice, risultando poco efficace nel confronto tutto a sfavore della donna in nero. Interessante leggere le reazioni degli utenti nei commenti sotto il video in Youtube: uno di essi sceglierebbe la donna in nero “tutta la vita”, perché l’altra è noiosa e banale. Il messaggio, quindi, rischia un effetto controproducente, stigmatizzando chi gioca d’azzardo.",
+    "dataInserimento": "2025-01-05"
   },
   {
     "id": "HD1922-21",
@@ -1568,7 +1679,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "IL PIFFERAIO MAGICO. Video di Graziano Staino, vincitore del terzo premio del concorso \"Toscana in spot 2017: contrasto al gioco d'azzardo patologico\" del Corecom Toscana. Lo spot è in animazione: una carrellata laterale ci svela persone di età diverse che giocano d’azzardo (slot, gratta e vinci, scommesse sportive). Compare un pifferaio, che suonando fa scomparire progressivamente tutti i giochi. Le persone si ritrovano all’aria aperta: c’è chi si abbraccia, chi conversa, chi gioca con il cane. All’orizzonte sorge il sole. Non ci sono slogan, il video si chiude con il logo del Corecom. Il messaggio sotteso è quello per cui un intervento “magico” farebbe scomparire i problemi dell’azzardo eliminando l’apparato tecnico del gioco (slot, vendita di gratta e vinci, sale scommesse...). E’ davvero così? Come funzionano i percorsi terapeutici? Che cosa possono fare i cittadini, che non hanno il potere del pifferaio?"
+    "description": "IL PIFFERAIO MAGICO. Video di Graziano Staino, vincitore del terzo premio del concorso \"Toscana in spot 2017: contrasto al gioco d'azzardo patologico\" del Corecom Toscana. Lo spot è in animazione: una carrellata laterale ci svela persone di età diverse che giocano d’azzardo (slot, gratta e vinci, scommesse sportive). Compare un pifferaio, che suonando fa scomparire progressivamente tutti i giochi. Le persone si ritrovano all’aria aperta: c’è chi si abbraccia, chi conversa, chi gioca con il cane. All’orizzonte sorge il sole. Non ci sono slogan, il video si chiude con il logo del Corecom. Il messaggio sotteso è quello per cui un intervento “magico” farebbe scomparire i problemi dell’azzardo eliminando l’apparato tecnico del gioco (slot, vendita di gratta e vinci, sale scommesse...). E’ davvero così? Come funzionano i percorsi terapeutici? Che cosa possono fare i cittadini, che non hanno il potere del pifferaio?",
+    "dataInserimento": "2024-12-05"
   },
   {
     "id": "HD1922-22",
@@ -1582,7 +1694,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "KNOW WHEN TO STOP – PUGILE. Spot in inglese senza sottotitoli realizzato dall’agenzia Red Lion per il Responsible Gambling Council, organizzazione canadese attiva dal 1983 per il contrasto al gioco d’azzardo (https://www.responsiblegambling.org/). Siamo su un ring di un incontro di boxe. Uno dei due contendenti ha il volto tumefatto e insanguinato; l’avversario, invece, è perfettamente in forma. L’allenatore del pugile in difficoltà, anziché buttare la spugna, esorta il ragazzo a continuare, usando tipiche espressioni legate all’azzardo (ad esempio: “your luck is going to change”, la fortuna sta cambiando). Suona la campana: il pugile, nonostante la sicura sconfitta, si alza per combattere. Compare la scitta: “Perserverance doesn’t always pay. Especially when it comes to gambling” (La perseveranza non paga sempre. Soprattutto nel gioco d’azzardo). Video professionale, volutamente crudo per trasmettere l’idea dei danni dell’azzardo e dell’irrazionalità dei comportamenti di chi gioca."
+    "description": "KNOW WHEN TO STOP – PUGILE. Spot in inglese senza sottotitoli realizzato dall’agenzia Red Lion per il Responsible Gambling Council, organizzazione canadese attiva dal 1983 per il contrasto al gioco d’azzardo (https://www.responsiblegambling.org/). Siamo su un ring di un incontro di boxe. Uno dei due contendenti ha il volto tumefatto e insanguinato; l’avversario, invece, è perfettamente in forma. L’allenatore del pugile in difficoltà, anziché buttare la spugna, esorta il ragazzo a continuare, usando tipiche espressioni legate all’azzardo (ad esempio: “your luck is going to change”, la fortuna sta cambiando). Suona la campana: il pugile, nonostante la sicura sconfitta, si alza per combattere. Compare la scitta: “Perserverance doesn’t always pay. Especially when it comes to gambling” (La perseveranza non paga sempre. Soprattutto nel gioco d’azzardo). Video professionale, volutamente crudo per trasmettere l’idea dei danni dell’azzardo e dell’irrazionalità dei comportamenti di chi gioca.",
+    "dataInserimento": "2023-05-23"
   },
   {
     "id": "HD1922-23",
@@ -1596,7 +1709,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "LA POSTA IN GIOCO SEI TU. Video di Daniele Bonarini, vincitore del secondo premio del concorso \"Toscana in spot 2017: contrasto al gioco d'azzardo patologico\" del Corecom Toscana. Un uomo compie una serie di gesti strani nella sua vita quotidiana, legati alla sua dipendenza dall’azzardo: dispone la frutta per il figlio come su una slot machine, continua a premere il mouse, rimane a fissare il display di un distributore di caffè dove ha infilato una monetina. Il culmine lo raggiunge alla festa di compleanno del figlio, dove aggiunge altri due “7” a quello già presente sulla torta per poi esultare come se avesse vinto alla slot. Tutti i presenti (il figlio, gli amici, la moglie) lo guardano, consapevoli del suo problema. Compare lo slogan: “Non c’è più tempo da perdere. Solo insieme si vince”, mentre i simboli di una slot compongono la scritta “STOP”. Lo spot lavora bene su un registro comico/surreale, anche grazie ad una musica giocosa che contrasta con la situazione messa in scena. Lo slogan richiama all’idea dell’aiuto (“insieme si vince”), ma non viene specificato come. Basta l’aiuto dei famigliari?"
+    "description": "LA POSTA IN GIOCO SEI TU. Video di Daniele Bonarini, vincitore del secondo premio del concorso \"Toscana in spot 2017: contrasto al gioco d'azzardo patologico\" del Corecom Toscana. Un uomo compie una serie di gesti strani nella sua vita quotidiana, legati alla sua dipendenza dall’azzardo: dispone la frutta per il figlio come su una slot machine, continua a premere il mouse, rimane a fissare il display di un distributore di caffè dove ha infilato una monetina. Il culmine lo raggiunge alla festa di compleanno del figlio, dove aggiunge altri due “7” a quello già presente sulla torta per poi esultare come se avesse vinto alla slot. Tutti i presenti (il figlio, gli amici, la moglie) lo guardano, consapevoli del suo problema. Compare lo slogan: “Non c’è più tempo da perdere. Solo insieme si vince”, mentre i simboli di una slot compongono la scritta “STOP”. Lo spot lavora bene su un registro comico/surreale, anche grazie ad una musica giocosa che contrasta con la situazione messa in scena. Lo slogan richiama all’idea dell’aiuto (“insieme si vince”), ma non viene specificato come. Basta l’aiuto dei famigliari?",
+    "dataInserimento": "2023-07-28"
   },
   {
     "id": "HD1922-24",
@@ -1610,7 +1724,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "BASTA CON LE SLOT. Una serie di sindaci di città italiane in carica nel 2013 (Fassino, Pisapia, De Magistris, …) esprimono la loro condanna al crescente proliferare di sale slot nelle loro città. “E se mi giocassi il Duomo? E se mi giocassi la Mole Antonelliana?” Le slot spingono a giocarsi ciò che abbiamo di più prezioso. L’invito finale è di dire basta alle slot e riprendersi le nostre città. Significativo esempio di spot che vede protagonisti gli amministratori. Non è chiaro a chi si rivolgano: ai cittadini? Ai governanti?"
+    "description": "BASTA CON LE SLOT. Una serie di sindaci di città italiane in carica nel 2013 (Fassino, Pisapia, De Magistris, …) esprimono la loro condanna al crescente proliferare di sale slot nelle loro città. “E se mi giocassi il Duomo? E se mi giocassi la Mole Antonelliana?” Le slot spingono a giocarsi ciò che abbiamo di più prezioso. L’invito finale è di dire basta alle slot e riprendersi le nostre città. Significativo esempio di spot che vede protagonisti gli amministratori. Non è chiaro a chi si rivolgano: ai cittadini? Ai governanti?",
+    "dataInserimento": "2025-08-29"
   },
   {
     "id": "HD1922-25",
@@ -1624,7 +1739,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "PIU’ GIOCHI PIU’ PERDI – DONNA UOMO. Il video contiene lo spot ripetuto due volte. Nel primo vediamo il primo piano di una donna alternato a immagini di gioco d’azzardo (slot e Gratta e vinci): ad ogni stacco di montaggio il volto si fa più serio, fino a diventare disperato. Lo slogan finale, scritto a video, è “Più giochi, più perdi”, mentre la voce over ne enuncia un altro: “E alla fine perdi ancora”. Il secondo spot è identico, ma il soggetto è un uomo. Il video sconta un accumulo di slogan e loghi, mentre il messaggio e la messa in scena giocano sull’estrema semplificazione: il gioco ti fa cambiare espressione facciale, ti fa passare dalla serenità alla preoccupazione fino alla disperazione. Non vengono date né informazioni, né riferimenti a servizi di cura."
+    "description": "PIU’ GIOCHI PIU’ PERDI – DONNA UOMO. Il video contiene lo spot ripetuto due volte. Nel primo vediamo il primo piano di una donna alternato a immagini di gioco d’azzardo (slot e Gratta e vinci): ad ogni stacco di montaggio il volto si fa più serio, fino a diventare disperato. Lo slogan finale, scritto a video, è “Più giochi, più perdi”, mentre la voce over ne enuncia un altro: “E alla fine perdi ancora”. Il secondo spot è identico, ma il soggetto è un uomo. Il video sconta un accumulo di slogan e loghi, mentre il messaggio e la messa in scena giocano sull’estrema semplificazione: il gioco ti fa cambiare espressione facciale, ti fa passare dalla serenità alla preoccupazione fino alla disperazione. Non vengono date né informazioni, né riferimenti a servizi di cura.",
+    "dataInserimento": "2023-09-14"
   },
   {
     "id": "HD1922-26",
@@ -1638,7 +1754,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "DON’T LET GAMBLING BECOME A PROBLEM. TAKE ACTION NOW. Il video, in inglese, è stato realizzato dal National Council on Problem Gambling di Singapore (http://knowtheline.sg/). L’NCPG è un’organizzazione internazionale con sede negli Stati Uniti, attiva dagli anni ‘70 contro l’azzardo (https://www.ncpgambling.org/). Il video si apre all’interno di un appartamento: un gruppo di giovani sta guardando una partita e uno di loro, Ben, tiene in mano la schedina di una scommessa. L’amico Kelvin si chiede se dovrebbe fare qualcosa sul problema legato all’azzardo dell’amico, poi si immagina una serie di conseguenze sempre più gravi: Ben sfrattato da casa che si trasferisce a casa sua, gli ruba i soldi per giocare online e alla fine viene rintracciato dalla polizia, che però arresta Kelvin. Ripresosi da questi pensieri, Kelvin si alza dal divano e intima a Ben di smetterla con le scommesse. Lo slogan finale recita: “Don’t let gambling become a problem. Take action now!” (Non lasciare che l’azzardo diventi un problema. Agisci ora!)."
+    "description": "DON’T LET GAMBLING BECOME A PROBLEM. TAKE ACTION NOW. Il video, in inglese, è stato realizzato dal National Council on Problem Gambling di Singapore (http://knowtheline.sg/). L’NCPG è un’organizzazione internazionale con sede negli Stati Uniti, attiva dagli anni ‘70 contro l’azzardo (https://www.ncpgambling.org/). Il video si apre all’interno di un appartamento: un gruppo di giovani sta guardando una partita e uno di loro, Ben, tiene in mano la schedina di una scommessa. L’amico Kelvin si chiede se dovrebbe fare qualcosa sul problema legato all’azzardo dell’amico, poi si immagina una serie di conseguenze sempre più gravi: Ben sfrattato da casa che si trasferisce a casa sua, gli ruba i soldi per giocare online e alla fine viene rintracciato dalla polizia, che però arresta Kelvin. Ripresosi da questi pensieri, Kelvin si alza dal divano e intima a Ben di smetterla con le scommesse. Lo slogan finale recita: “Don’t let gambling become a problem. Take action now!” (Non lasciare che l’azzardo diventi un problema. Agisci ora!).",
+    "dataInserimento": "2025-03-18"
   },
   {
     "id": "HD1922-27",
@@ -1652,7 +1769,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "SALVADANAIO. Il video, in inglese sottotitolato in italiano da AND, è stato realizzato dal National Council on Problem Gambling di Singapore (http://knowtheline.sg/). L’NCPG è un’organizzazione internazionale con sede negli Stati Uniti, attiva dagli anni ‘70 contro l’azzardo (https://www.ncpgambling.org/). Un uomo parla rivolto alla telecamera, chiedendo che gli venga dato qualcosa e promettendo che restituirà tutto, gli basta provarci ancora una volta, oggi è la sua giornata fortunata. Lo stacco di montaggio ci mostra in controcampo una bambina che stringe il suo salvadanaio: quelli sono i soldi che l’uomo sta chiedendo per giocarli d’azzardo. La versione in italiano si chiude con la scritta “Spesso a soffrire per il gioco d’azzardo non sono i giocatori”. La versione originale, intitolata “Excuses” (https://youtu.be/aU0kJYDd464) si chiude con lo slogan “Protect your family. Stop problem gambling”. Il video, di registro drammatico, è stato utilizzato in numerosi laboratori insieme ad altri video, con il mandato di scegliere il più efficace. L’impatto emotivo che suscita è molto potente. Attenzione però all’effetto stigma, che rischia di allontanare dal messaggio."
+    "description": "SALVADANAIO. Il video, in inglese sottotitolato in italiano da AND, è stato realizzato dal National Council on Problem Gambling di Singapore (http://knowtheline.sg/). L’NCPG è un’organizzazione internazionale con sede negli Stati Uniti, attiva dagli anni ‘70 contro l’azzardo (https://www.ncpgambling.org/). Un uomo parla rivolto alla telecamera, chiedendo che gli venga dato qualcosa e promettendo che restituirà tutto, gli basta provarci ancora una volta, oggi è la sua giornata fortunata. Lo stacco di montaggio ci mostra in controcampo una bambina che stringe il suo salvadanaio: quelli sono i soldi che l’uomo sta chiedendo per giocarli d’azzardo. La versione in italiano si chiude con la scritta “Spesso a soffrire per il gioco d’azzardo non sono i giocatori”. La versione originale, intitolata “Excuses” (https://youtu.be/aU0kJYDd464) si chiude con lo slogan “Protect your family. Stop problem gambling”. Il video, di registro drammatico, è stato utilizzato in numerosi laboratori insieme ad altri video, con il mandato di scegliere il più efficace. L’impatto emotivo che suscita è molto potente. Attenzione però all’effetto stigma, che rischia di allontanare dal messaggio.",
+    "dataInserimento": "2023-12-19"
   },
   {
     "id": "HD1922-28",
@@ -1666,7 +1784,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "WORLD CUP 2014 KICK THE HABIT. Il video, in inglese, è stato realizzato dal National Council on Problem Gambling di Singapore (http://knowtheline.sg/). L’NCPG è un’organizzazione internazionale con sede negli Stati Uniti, attiva dagli anni ‘70 contro l’azzardo (https://www.ncpgambling.org/). Un gruppo di bambini al parco discute su chi vincerà il campionato del mondo di calcio del 2014. Uno dice il Brasile, uno l’Argentina. Uno dei bambini dice di sperare nella vittoria della Germania perché, spiega con sguardo triste, suo padre ha scommesso i suoi risparmi su quella squadra. Compare scritto in inglese che spesso chi soffre per il gioco d’azzardo non è il giocatore. In chiusura lo slogan: “Kick the habit. Stop problem gambling” (Calcia via la dipendenza. Stop all’azzardo problematico”). Dopo la vittoria della Germania nel campionato del 2014 questo spot è stato oggetto di parodie e meme, per cui può essere utilizzato come esempio di discussione rispetto alla gestione dei feedback in una campagna sociale. L’NCPG ha risposto con quest’immagine, linkata direttamente sotto il video di Youtube: https://www.ncpg.org.sg/en/PublishingImages/1000x311_homebanner_new.jpg"
+    "description": "WORLD CUP 2014 KICK THE HABIT. Il video, in inglese, è stato realizzato dal National Council on Problem Gambling di Singapore (http://knowtheline.sg/). L’NCPG è un’organizzazione internazionale con sede negli Stati Uniti, attiva dagli anni ‘70 contro l’azzardo (https://www.ncpgambling.org/). Un gruppo di bambini al parco discute su chi vincerà il campionato del mondo di calcio del 2014. Uno dice il Brasile, uno l’Argentina. Uno dei bambini dice di sperare nella vittoria della Germania perché, spiega con sguardo triste, suo padre ha scommesso i suoi risparmi su quella squadra. Compare scritto in inglese che spesso chi soffre per il gioco d’azzardo non è il giocatore. In chiusura lo slogan: “Kick the habit. Stop problem gambling” (Calcia via la dipendenza. Stop all’azzardo problematico”). Dopo la vittoria della Germania nel campionato del 2014 questo spot è stato oggetto di parodie e meme, per cui può essere utilizzato come esempio di discussione rispetto alla gestione dei feedback in una campagna sociale. L’NCPG ha risposto con quest’immagine, linkata direttamente sotto il video di Youtube: https://www.ncpg.org.sg/en/PublishingImages/1000x311_homebanner_new.jpg",
+    "dataInserimento": "2023-11-08"
   },
   {
     "id": "HD1922-29",
@@ -1680,7 +1799,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "THE STORYTELLER. Il video, in inglese, è stato realizzato dal National Council on Problem Gambling di Singapore (http://knowtheline.sg/). L’NCPG è un’organizzazione internazionale con sede negli Stati Uniti, attiva dagli anni ‘70 contro l’azzardo (https://www.ncpgambling.org/). Una giovane tiene in mano il suo smartphone e, arrabbiata, straccia le schedine: ha appena perso una scommessa online. Inizia allora un giro di telefonate raccontando ad amiche e parenti di avere gravi malattie, per ottenere soldi in prestito. Infine chiama il datore di lavoro per avvisare che il giorno dopo sarebbe restata a casa: così facendo viene licenziata. Compare lo slogan: “Don’t let gambling become a problem. Take action now!” (Non lasciare che l’azzardo diventi un problema. Agisci ora!). Il video affronta il tema delle scommesse sportive online, poco trattato in Italia, mettendo in scena una ragazza come vittima del problema. Nei commenti su Youtube lo spot è stato criticato per la messa in scena stereotipata e poco rispettosa del datore di lavoro indiano."
+    "description": "THE STORYTELLER. Il video, in inglese, è stato realizzato dal National Council on Problem Gambling di Singapore (http://knowtheline.sg/). L’NCPG è un’organizzazione internazionale con sede negli Stati Uniti, attiva dagli anni ‘70 contro l’azzardo (https://www.ncpgambling.org/). Una giovane tiene in mano il suo smartphone e, arrabbiata, straccia le schedine: ha appena perso una scommessa online. Inizia allora un giro di telefonate raccontando ad amiche e parenti di avere gravi malattie, per ottenere soldi in prestito. Infine chiama il datore di lavoro per avvisare che il giorno dopo sarebbe restata a casa: così facendo viene licenziata. Compare lo slogan: “Don’t let gambling become a problem. Take action now!” (Non lasciare che l’azzardo diventi un problema. Agisci ora!). Il video affronta il tema delle scommesse sportive online, poco trattato in Italia, mettendo in scena una ragazza come vittima del problema. Nei commenti su Youtube lo spot è stato criticato per la messa in scena stereotipata e poco rispettosa del datore di lavoro indiano.",
+    "dataInserimento": "2026-01-26"
   },
   {
     "id": "HD1922-30",
@@ -1694,7 +1814,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "IL GIOCO RENDE SCHIAVI – NONNA. Vediamo il volto in primo piano di una signora; lo sfondo è scuro e la voce fuori campo ci riporta i pensieri della donna. A breve dovrà andare a prendere la sua nipotina da scuola; è felice della bimba, che la riempie di domande. Sentiamo una voce di bimba: “nonna, nonna!”. Il flusso di pensieri si interrompe, la donna si alza ma ha la gamba bloccata da una catena. Stacco: l’inquadratura più larga ci svela che la donna è incatenata ad una slot. Una voce over maschile scandisce lo slogan finale: “Il gioco rende schiavi”. Lo spot è parte di un ciclo di tre video, tutti con il medesimo format. Viene illustrato il tema della dipendenza da azzardo nei termini di ciò che di positivo si perde, con un peso minore rispetto alla stigmatizzazione del giocatore (più presente in altri spot, come “Il gioco d’azzardo logora” della Codacons, presente in questo archivio). Utilizzabile per ragionare sull’efficacia di un messaggio sociale."
+    "description": "IL GIOCO RENDE SCHIAVI – NONNA. Vediamo il volto in primo piano di una signora; lo sfondo è scuro e la voce fuori campo ci riporta i pensieri della donna. A breve dovrà andare a prendere la sua nipotina da scuola; è felice della bimba, che la riempie di domande. Sentiamo una voce di bimba: “nonna, nonna!”. Il flusso di pensieri si interrompe, la donna si alza ma ha la gamba bloccata da una catena. Stacco: l’inquadratura più larga ci svela che la donna è incatenata ad una slot. Una voce over maschile scandisce lo slogan finale: “Il gioco rende schiavi”. Lo spot è parte di un ciclo di tre video, tutti con il medesimo format. Viene illustrato il tema della dipendenza da azzardo nei termini di ciò che di positivo si perde, con un peso minore rispetto alla stigmatizzazione del giocatore (più presente in altri spot, come “Il gioco d’azzardo logora” della Codacons, presente in questo archivio). Utilizzabile per ragionare sull’efficacia di un messaggio sociale.",
+    "dataInserimento": "2023-04-06"
   },
   {
     "id": "HD1922-31",
@@ -1708,7 +1829,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "IL GIOCO RENDE SCHIAVI – RAGAZZO. Vediamo un giovane, sta pensando alla sua ragazza. La voce fuori campo ci riporta i suoi pensieri: lei è quella giusta, sarebbe bello andare a vivere insieme in un piccolo appartamento. Quella sera li aspetta una cena romantica. Sentiamo la voce della ragazza: “Amore!”. Il flusso di pensieri si interrompe, il ragazzo fa per incamminarsi ma ha la gamba bloccata da una catena. Stacco: l’inquadratura più larga ci svela che il giovane è incatenato ad una slot. Una voce over maschile scandisce lo slogan finale: “Il gioco rende schiavi”. Lo spot è parte di un ciclo di tre video, tutti con il medesimo format. Viene illustrato il tema della dipendenza da azzardo nei termini di ciò che di positivo si perde, con un peso minore rispetto alla stigmatizzazione del giocatore (più presente in altri spot, come “Il gioco d’azzardo logora” della Codacons, presente in questo archivio). Utilizzabile per ragionare sull’efficacia di un messaggio sociale."
+    "description": "IL GIOCO RENDE SCHIAVI – RAGAZZO. Vediamo un giovane, sta pensando alla sua ragazza. La voce fuori campo ci riporta i suoi pensieri: lei è quella giusta, sarebbe bello andare a vivere insieme in un piccolo appartamento. Quella sera li aspetta una cena romantica. Sentiamo la voce della ragazza: “Amore!”. Il flusso di pensieri si interrompe, il ragazzo fa per incamminarsi ma ha la gamba bloccata da una catena. Stacco: l’inquadratura più larga ci svela che il giovane è incatenato ad una slot. Una voce over maschile scandisce lo slogan finale: “Il gioco rende schiavi”. Lo spot è parte di un ciclo di tre video, tutti con il medesimo format. Viene illustrato il tema della dipendenza da azzardo nei termini di ciò che di positivo si perde, con un peso minore rispetto alla stigmatizzazione del giocatore (più presente in altri spot, come “Il gioco d’azzardo logora” della Codacons, presente in questo archivio). Utilizzabile per ragionare sull’efficacia di un messaggio sociale.",
+    "dataInserimento": "2023-10-28"
   },
   {
     "id": "HD1922-32",
@@ -1722,7 +1844,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "IL GIOCO RENDE SCHIAVI – PAPA’. Un papà sta pensando alla sua giornata, la voce fuori campo ci restituisce i suoi pensieri: ha portato a scuola la figlia piccola, è andato in ufficio, al pomeriggio invece si dedicherà al figlio grande che ha la partita. Sentiamo la voce del figlio: “Papà!”. Il flusso di pensieri si interrompe, l’uomo fa per incamminarsi ma si inciampa, ha la gamba bloccata da una catena. Stacco: l’inquadratura più larga ci svela che l’uomo è incatenato ad una slot. Una voce over maschile scandisce lo slogan finale: “Il gioco rende schiavi”. Lo spot è parte di un ciclo di tre video, tutti con il medesimo format. Viene illustrato il tema della dipendenza da azzardo nei termini di ciò che di positivo si perde, con un peso minore rispetto alla stigmatizzazione del giocatore (più presente in altri spot, come “Il gioco d’azzardo logora” della Codacons, presente in questo archivio). Utilizzabile per ragionare sull’efficacia di un messaggio sociale."
+    "description": "IL GIOCO RENDE SCHIAVI – PAPA’. Un papà sta pensando alla sua giornata, la voce fuori campo ci restituisce i suoi pensieri: ha portato a scuola la figlia piccola, è andato in ufficio, al pomeriggio invece si dedicherà al figlio grande che ha la partita. Sentiamo la voce del figlio: “Papà!”. Il flusso di pensieri si interrompe, l’uomo fa per incamminarsi ma si inciampa, ha la gamba bloccata da una catena. Stacco: l’inquadratura più larga ci svela che l’uomo è incatenato ad una slot. Una voce over maschile scandisce lo slogan finale: “Il gioco rende schiavi”. Lo spot è parte di un ciclo di tre video, tutti con il medesimo format. Viene illustrato il tema della dipendenza da azzardo nei termini di ciò che di positivo si perde, con un peso minore rispetto alla stigmatizzazione del giocatore (più presente in altri spot, come “Il gioco d’azzardo logora” della Codacons, presente in questo archivio). Utilizzabile per ragionare sull’efficacia di un messaggio sociale.",
+    "dataInserimento": "2024-04-27"
   },
   {
     "id": "HD1922-33",
@@ -1736,7 +1859,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "NON E’ UN GIOCO – EQUILIBRIO SULLA CORDA. Il montaggio alternato ci mostra un giovane che entra in una sala slot e inizia a giocare e, in parallelo, lo stesso giovane che cammina in equilibrio sulla corda. Man mano che il gioco alle slot procede l’equilibrio si fa più precario, finché il giovane cade. L’inquadratura stacca sul nero, su cui compare lo slogan: “Non rompere l’equilibrio. L’azzardo non è un gioco”. Video realizzato dal regista Filippo Giampaolo per sensibilizzare al tema. La durata superiore ai due minuti lo rende di difficile utilizzo nel confronto con altri spot: è possibile lavorarci singolarmente, immaginando finali alternativi oppure una continuazione al di là della metafora (“che cosa capita dopo che sono caduto nella dipendenza da azzardo?”)."
+    "description": "NON E’ UN GIOCO – EQUILIBRIO SULLA CORDA. Il montaggio alternato ci mostra un giovane che entra in una sala slot e inizia a giocare e, in parallelo, lo stesso giovane che cammina in equilibrio sulla corda. Man mano che il gioco alle slot procede l’equilibrio si fa più precario, finché il giovane cade. L’inquadratura stacca sul nero, su cui compare lo slogan: “Non rompere l’equilibrio. L’azzardo non è un gioco”. Video realizzato dal regista Filippo Giampaolo per sensibilizzare al tema. La durata superiore ai due minuti lo rende di difficile utilizzo nel confronto con altri spot: è possibile lavorarci singolarmente, immaginando finali alternativi oppure una continuazione al di là della metafora (“che cosa capita dopo che sono caduto nella dipendenza da azzardo?”).",
+    "dataInserimento": "2025-04-01"
   },
   {
     "id": "HD1922-34",
@@ -1750,7 +1874,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "NON GIOCARTI GLI AFFETTI. Spot animato in computer grafica. Vediamo delle immagini di carte da gioco e il profilo della Regione Lombardia, mentre una voce fuori campo ci informa che il gioco d’azzardo può sfociare nella ludopatia. L’invito è a non giocarsi gli affetti, perché, recita lo slogan finale, “Vinci solo quando smetti”. Comunicazione generica, più attenta a sottolineare l’impegno della Regione Lombardia nel contrasto all’azzardo patologico che a dare informazioni sul tema. Utilizzabile in un contesto di produzione mediale come esempio di format grafico, replicabile in forme più semplici usando app e programmi gratuiti."
+    "description": "NON GIOCARTI GLI AFFETTI. Spot animato in computer grafica. Vediamo delle immagini di carte da gioco e il profilo della Regione Lombardia, mentre una voce fuori campo ci informa che il gioco d’azzardo può sfociare nella ludopatia. L’invito è a non giocarsi gli affetti, perché, recita lo slogan finale, “Vinci solo quando smetti”. Comunicazione generica, più attenta a sottolineare l’impegno della Regione Lombardia nel contrasto all’azzardo patologico che a dare informazioni sul tema. Utilizzabile in un contesto di produzione mediale come esempio di format grafico, replicabile in forme più semplici usando app e programmi gratuiti.",
+    "dataInserimento": "2023-09-20"
   },
   {
     "id": "HD1922-35",
@@ -1764,7 +1889,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "WE CAN HELP. Spot animato in computer grafica, con testo e voce in inglese, prodotto dal Problem Gambling Institute on Ontario. Le immagini in bianco e nero ci mostrano un uomo, stilizzato come un manichino, che viene fatto a pezzi dai problemi legati all’azzardo. Una voce over femminile ci spiega che “We can help” (“Noi possiamo aiutare”). Le immagini tornano a colori, l’uomo viene “ricucito” da nastri che riportano le parole chiave della terapia, mentre la voce over spiega che l’Istiituto offre colloqui anonimi, anche online, che permettono di uscire dal problema legato all’azzardo. Il video si chiude con i riferimenti (telefono e sito web) per avere maggiori informazioni. Utilizzabile in un contesto di produzione mediale come esempio di format grafico, replicabile in forme più semplici usando app e programmi gratuiti. Esempio di comunicazione focalizzata sulle informazioni rispetto ai servizi: a chi posso chiedere aiuto? Che cosa succede dopo aver chiesto aiuto? Le animazioni mettono in scena il recupero, trasmettendo il messaggio che “guarire si può”."
+    "description": "WE CAN HELP. Spot animato in computer grafica, con testo e voce in inglese, prodotto dal Problem Gambling Institute on Ontario. Le immagini in bianco e nero ci mostrano un uomo, stilizzato come un manichino, che viene fatto a pezzi dai problemi legati all’azzardo. Una voce over femminile ci spiega che “We can help” (“Noi possiamo aiutare”). Le immagini tornano a colori, l’uomo viene “ricucito” da nastri che riportano le parole chiave della terapia, mentre la voce over spiega che l’Istiituto offre colloqui anonimi, anche online, che permettono di uscire dal problema legato all’azzardo. Il video si chiude con i riferimenti (telefono e sito web) per avere maggiori informazioni. Utilizzabile in un contesto di produzione mediale come esempio di format grafico, replicabile in forme più semplici usando app e programmi gratuiti. Esempio di comunicazione focalizzata sulle informazioni rispetto ai servizi: a chi posso chiedere aiuto? Che cosa succede dopo aver chiesto aiuto? Le animazioni mettono in scena il recupero, trasmettendo il messaggio che “guarire si può”.",
+    "dataInserimento": "2025-11-25"
   },
   {
     "id": "HD1922-37",
@@ -1778,7 +1904,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "IL GIOCO E’ UNA COSA SERIA. Con il commento di una musica ritmata e solare lo spot ci mostra con immagini e scritte una serie di caratteristiche positive del gioco: scoperta, intesa, strategia, condivisione. “Nel gioco la felicità non costa nulla”: dopo questa frase la musica subisce un effetto che ricorda un disco rotto, mentre scorrono veloci immagini sfocate dell’azzardo. Compare un uomo che, rivolto in macchina, ci ricorda che “Smettere è l’unica scommessa vincente”. La musica riparta mentre compare il claim “Il gioco è #unacosaseria”. Il video si concentra sugli aspetti positivi del gioco, marcando la differenza con l’azzardo in termini economici (“non costa nulla”). Lo spot può essere inserito in un blocco di spot sociali per ragionare sull’efficacia. Possibili spunti di discussione: che cosa differenzia il gioco dall’azzardo? Quali caratteristiche positive elencate dallo spot si ritrovano anche nell’azzardo? Quando questo diventa problematico?"
+    "description": "IL GIOCO E’ UNA COSA SERIA. Con il commento di una musica ritmata e solare lo spot ci mostra con immagini e scritte una serie di caratteristiche positive del gioco: scoperta, intesa, strategia, condivisione. “Nel gioco la felicità non costa nulla”: dopo questa frase la musica subisce un effetto che ricorda un disco rotto, mentre scorrono veloci immagini sfocate dell’azzardo. Compare un uomo che, rivolto in macchina, ci ricorda che “Smettere è l’unica scommessa vincente”. La musica riparta mentre compare il claim “Il gioco è #unacosaseria”. Il video si concentra sugli aspetti positivi del gioco, marcando la differenza con l’azzardo in termini economici (“non costa nulla”). Lo spot può essere inserito in un blocco di spot sociali per ragionare sull’efficacia. Possibili spunti di discussione: che cosa differenzia il gioco dall’azzardo? Quali caratteristiche positive elencate dallo spot si ritrovano anche nell’azzardo? Quando questo diventa problematico?",
+    "dataInserimento": "2023-04-19"
   },
   {
     "id": "HD1922-60",
@@ -1792,7 +1919,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "HAI PERSO LA TESTA. Spot realizzato interamente con animazione grafica. Un uomo gioca d’azzardo e si ritrova con la testa al posto dei simboli delle carte e delle slot. La voce over, femminile, commenta: “Per il gioco d’azzardo hai perso la testa?” L’invito è a non giocarsi la vita, ma a cercare aiuto chiamando un numero verde. A differenza dello spot della Regione Lombardia “Non giocarti gli affetti”, presente in questo archivio, questo video si focalizza sul comunicare una possibile soluzione (il numero verde), rivolgendosi a chi ha o conosce persone con un problema legato all’azzardo. Utilizzabile insieme ad altri spot sociali per ragionare sull’efficacia, anche rispetto al formato animato."
+    "description": "HAI PERSO LA TESTA. Spot realizzato interamente con animazione grafica. Un uomo gioca d’azzardo e si ritrova con la testa al posto dei simboli delle carte e delle slot. La voce over, femminile, commenta: “Per il gioco d’azzardo hai perso la testa?” L’invito è a non giocarsi la vita, ma a cercare aiuto chiamando un numero verde. A differenza dello spot della Regione Lombardia “Non giocarti gli affetti”, presente in questo archivio, questo video si focalizza sul comunicare una possibile soluzione (il numero verde), rivolgendosi a chi ha o conosce persone con un problema legato all’azzardo. Utilizzabile insieme ad altri spot sociali per ragionare sull’efficacia, anche rispetto al formato animato.",
+    "dataInserimento": "2024-11-17"
   },
   {
     "id": "HD1922-75",
@@ -1806,7 +1934,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "NEON. Testo in inglese senza sottotitoli. Un’animazione grafica costruita benissimo, con una serie di scritte incorniciate come se fossero insegne al neon. La domanda iniziale, da cui si parte come in un flow chart, è: “Gambling. Che cos’hai da perdere?”. Seguono le risposte (la macchina, la salute, ecc…) e una serie di consigli pratici (fissa dei limiti, gioca con gli amici, ..) per poi chiudere a cerchio: “Chiediti sempre: che cos’hai da perdere?”. In questo modo il video potrebbe essere visto in loop. La musica è “Kid Velo” dei Rival Console: un remix del brano è stato utilizzato da William Hill Vegas per uno spot del 2011 (visibile qui: https://youtu.be/B9nE7MC_NTg), del quale questo video è chiaramente una risposta."
+    "description": "NEON. Testo in inglese senza sottotitoli. Un’animazione grafica costruita benissimo, con una serie di scritte incorniciate come se fossero insegne al neon. La domanda iniziale, da cui si parte come in un flow chart, è: “Gambling. Che cos’hai da perdere?”. Seguono le risposte (la macchina, la salute, ecc…) e una serie di consigli pratici (fissa dei limiti, gioca con gli amici, ..) per poi chiudere a cerchio: “Chiediti sempre: che cos’hai da perdere?”. In questo modo il video potrebbe essere visto in loop. La musica è “Kid Velo” dei Rival Console: un remix del brano è stato utilizzato da William Hill Vegas per uno spot del 2011 (visibile qui: https://youtu.be/B9nE7MC_NTg), del quale questo video è chiaramente una risposta.",
+    "dataInserimento": "2025-05-09"
   },
   {
     "id": "HD1922-88",
@@ -1820,7 +1949,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "NON PERDERTI NEL GIOCO - LABIRINTO. Il video parte con alcuni secondi di nero, mentre sentiamo un vociare indistinto e i rumori di slot. L’immagine passa a mostrarci il primo piano di un giovane, che si aggira spaesato in uno spazio grigio, dove si riconoscono slot e tavoli verdi. Sentiamo crescere di intensità il battito del suo cuore. Il ragazzo si accovaccia scoraggiato, mentre l’immagine si allarga, mostrandocelo prigioniero di un labirinto popolato di giochi d’azzardo. L’audio cambia, sentiamo il cinguettare degli uccellini e vediamo altre figure di ragazzi fuori dal labirinto. In alto compare lo slogan “Non perderti nel gioco” e il logo della Provincia Autonoma di Trento. Il video è realizzato mescolando riprese live del ragazzo protagonista e computer grafica per la raffigurazione del labirinto. Non ci sono parole, l’audio è protagonista nel sottolineare il senso di chiusura e di trappola dell’azzardo. Messaggio (troppo) semplice? Utilizzabile insieme ad altri spot sociali per ragionare sull’efficacia e suscitare dibattito: l’azzardo è davvero un labirinto? Quali aiuti esistono per uscirne?"
+    "description": "NON PERDERTI NEL GIOCO - LABIRINTO. Il video parte con alcuni secondi di nero, mentre sentiamo un vociare indistinto e i rumori di slot. L’immagine passa a mostrarci il primo piano di un giovane, che si aggira spaesato in uno spazio grigio, dove si riconoscono slot e tavoli verdi. Sentiamo crescere di intensità il battito del suo cuore. Il ragazzo si accovaccia scoraggiato, mentre l’immagine si allarga, mostrandocelo prigioniero di un labirinto popolato di giochi d’azzardo. L’audio cambia, sentiamo il cinguettare degli uccellini e vediamo altre figure di ragazzi fuori dal labirinto. In alto compare lo slogan “Non perderti nel gioco” e il logo della Provincia Autonoma di Trento. Il video è realizzato mescolando riprese live del ragazzo protagonista e computer grafica per la raffigurazione del labirinto. Non ci sono parole, l’audio è protagonista nel sottolineare il senso di chiusura e di trappola dell’azzardo. Messaggio (troppo) semplice? Utilizzabile insieme ad altri spot sociali per ragionare sull’efficacia e suscitare dibattito: l’azzardo è davvero un labirinto? Quali aiuti esistono per uscirne?",
+    "dataInserimento": "2023-04-20"
   },
   {
     "id": "HD1923-01",
@@ -1834,7 +1964,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "PRESADIRETTA Puntata del 30/09/2020 dal titolo “Vizio di stato”. La clip inizia con l’intervista a Bruno Trentin, un ex giocatore che a causa dei debiti di gioco ha compiuto una rapina e che oggi dirige l’associazione “Mi Ripiglio” a sostegno dei giocatori patologici. Trentin spiega alcuni meccanismi del gioco: si parla anche dei “ticket revolver”, gioco d’azzardo per bambini. Sul tema viene intervistato anche Matteo Iori della Cooperativa Papa Giovanni XXIII di Reggio Emilia."
+    "description": "PRESADIRETTA Puntata del 30/09/2020 dal titolo “Vizio di stato”. La clip inizia con l’intervista a Bruno Trentin, un ex giocatore che a causa dei debiti di gioco ha compiuto una rapina e che oggi dirige l’associazione “Mi Ripiglio” a sostegno dei giocatori patologici. Trentin spiega alcuni meccanismi del gioco: si parla anche dei “ticket revolver”, gioco d’azzardo per bambini. Sul tema viene intervistato anche Matteo Iori della Cooperativa Papa Giovanni XXIII di Reggio Emilia.",
+    "dataInserimento": "2024-06-27"
   },
   {
     "id": "HD1923-02",
@@ -1848,7 +1979,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Video realizzato dalla classe IIIA Grafico dell’IIS Natta di Rivoli, nell’ambito del progetto “Ambasciatori e ambasciatrici del Consiglio regionale Piemonte” per l'anno scolastico 2017/2018. Il video spiega che cosa intendiamo per gioco d’azzardo e mostra con animazioni grafiche i dati di spesa riferiti alla regione Piemonte e al Comune di Rivoli."
+    "description": "Video realizzato dalla classe IIIA Grafico dell’IIS Natta di Rivoli, nell’ambito del progetto “Ambasciatori e ambasciatrici del Consiglio regionale Piemonte” per l'anno scolastico 2017/2018. Il video spiega che cosa intendiamo per gioco d’azzardo e mostra con animazioni grafiche i dati di spesa riferiti alla regione Piemonte e al Comune di Rivoli.",
+    "dataInserimento": "2025-10-14"
   },
   {
     "id": "HD1923-03",
@@ -1862,7 +1994,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "ATTENTI AL LUPO Puntata intera del 24/04/2019. In studio Federico Tonioni (Resp. Ambulatorio Dipendenze Policlinico Agostino Gemelli) e Gabriele Mandolesi (Coordinatore Naz. Slotmob) rispondono alle domande poste dal pubblico da casa. Si parla di come l’azzardo diventa dipendenza. Tonioni specifica che l’azzardo è eccitante, funzione come un antidepressivo: è un effetto biologico. Si ragiona anche su come è possibile aiutare le persone con un problema legato all’azzardo. Viene intervistata Marinella Amoroso del Moica di Roma, associazione impegnata in azioni di contrasto all’azzardo. Tra le tipologie di gioco, le più pericolose sono le slot machine."
+    "description": "ATTENTI AL LUPO Puntata intera del 24/04/2019. In studio Federico Tonioni (Resp. Ambulatorio Dipendenze Policlinico Agostino Gemelli) e Gabriele Mandolesi (Coordinatore Naz. Slotmob) rispondono alle domande poste dal pubblico da casa. Si parla di come l’azzardo diventa dipendenza. Tonioni specifica che l’azzardo è eccitante, funzione come un antidepressivo: è un effetto biologico. Si ragiona anche su come è possibile aiutare le persone con un problema legato all’azzardo. Viene intervistata Marinella Amoroso del Moica di Roma, associazione impegnata in azioni di contrasto all’azzardo. Tra le tipologie di gioco, le più pericolose sono le slot machine.",
+    "dataInserimento": "2024-07-08"
   },
   {
     "id": "HD1923-04",
@@ -1876,7 +2009,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Natalino Balasso ci fa riflettere sul fatto che, se incontriamo qualcuno per strada che ci chiede 100 euro, non glieli diamo, perché non fa lo spot con Amendola e non ha il logo di una casa scommesse. Invece a quelli là i soldi li diamo e siamo coglioni uguale. Breve video utilizzabile anche come spot sociale, con un possibile ragionamento rispetto all’efficacia. Altra traccia di lavoro: inventa uno slogan da inserire al fondo del video."
+    "description": "Natalino Balasso ci fa riflettere sul fatto che, se incontriamo qualcuno per strada che ci chiede 100 euro, non glieli diamo, perché non fa lo spot con Amendola e non ha il logo di una casa scommesse. Invece a quelli là i soldi li diamo e siamo coglioni uguale. Breve video utilizzabile anche come spot sociale, con un possibile ragionamento rispetto all’efficacia. Altra traccia di lavoro: inventa uno slogan da inserire al fondo del video.",
+    "dataInserimento": "2023-08-23"
   },
   {
     "id": "HD1923-05",
@@ -1890,7 +2024,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "BLITZ TV. Il video è un montaggio di fotografie e scritte che ci informa su cinque personaggi famosi (italiani) con problemi legati all’azzardo: Marco Baldini (forse quello che ha perso più di tutti), Katia Ricciarelli, Emilo Fede, Pupo e Mara Maionchi."
+    "description": "BLITZ TV. Il video è un montaggio di fotografie e scritte che ci informa su cinque personaggi famosi (italiani) con problemi legati all’azzardo: Marco Baldini (forse quello che ha perso più di tutti), Katia Ricciarelli, Emilo Fede, Pupo e Mara Maionchi.",
+    "dataInserimento": "2024-03-26"
   },
   {
     "id": "HD1923-06",
@@ -1904,7 +2039,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "TAGADA’ LA7. La storia di Stefano, un ex giocatore uscito dalla dipendenza da gioco d’azzardo dopo una terapia durata due anni. Utilizzabile come “testimonianza” su cui ragionare, isolando alcuni aspetti dell’azzardo e ponendosi domande rispetto a quanto non viene raccontato nel servizio."
+    "description": "TAGADA’ LA7. La storia di Stefano, un ex giocatore uscito dalla dipendenza da gioco d’azzardo dopo una terapia durata due anni. Utilizzabile come “testimonianza” su cui ragionare, isolando alcuni aspetti dell’azzardo e ponendosi domande rispetto a quanto non viene raccontato nel servizio.",
+    "dataInserimento": "2024-09-24"
   },
   {
     "id": "HD1923-07",
@@ -1918,7 +2054,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Canale Youtube di Casinò Top10. Video prodotto da un sito che promuove il gioco d’azzardo. Vengono dati alcuni consigli per “aumentare le vostre probabilità di vincere giocando alla roulette”. Il video suggerisce di giocare a roulette europee (con un solo zero, quelle americane ne hanno due) e con la regola della prigione. Se ci si vuole divertire a lungo bisogna puntare poco su tanti numeri; se si vuole guadagnare occorre rischiare somme maggiori su puntate come rosso o nero."
+    "description": "Canale Youtube di Casinò Top10. Video prodotto da un sito che promuove il gioco d’azzardo. Vengono dati alcuni consigli per “aumentare le vostre probabilità di vincere giocando alla roulette”. Il video suggerisce di giocare a roulette europee (con un solo zero, quelle americane ne hanno due) e con la regola della prigione. Se ci si vuole divertire a lungo bisogna puntare poco su tanti numeri; se si vuole guadagnare occorre rischiare somme maggiori su puntate come rosso o nero.",
+    "dataInserimento": "2025-11-14"
   },
   {
     "id": "HD1923-08",
@@ -1932,7 +2069,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Tratto da La vita in diretta (RAI1) del 18/04/2018. Servizio all’interno dell’edicola di Caltanissetta dove sono stati vinti 130 milioni di euro al Superenalotto. Vengono intervistati i gestori dell’edicola e alcune persone che si sono radunate lì “per giocare le schedine, perché qua è dove si vince”. Ci si chiede chi sarà il misterioso vincitore. Il servizio è un buon esempio di promozione del gioco d’azzardo, analogo ai cartelli che pubblicizzano le vincite (“Qui vinti…”). Nel 2019 il nuovo record è stata una vincita da 209 milioni avvenuta a Lodi: si veda il servizio di RepubblicaTV presente in questo archivio."
+    "description": "Tratto da La vita in diretta (RAI1) del 18/04/2018. Servizio all’interno dell’edicola di Caltanissetta dove sono stati vinti 130 milioni di euro al Superenalotto. Vengono intervistati i gestori dell’edicola e alcune persone che si sono radunate lì “per giocare le schedine, perché qua è dove si vince”. Ci si chiede chi sarà il misterioso vincitore. Il servizio è un buon esempio di promozione del gioco d’azzardo, analogo ai cartelli che pubblicizzano le vincite (“Qui vinti…”). Nel 2019 il nuovo record è stata una vincita da 209 milioni avvenuta a Lodi: si veda il servizio di RepubblicaTV presente in questo archivio.",
+    "dataInserimento": "2024-06-01"
   },
   {
     "id": "HD1923-09",
@@ -1946,7 +2084,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Tratto da Otto e mezzo (LA7). Lilli Gruber intervista il noto conduttore radiofonico Marco Baldini, famoso per i suoi problemi legati all’azzardo. “Un giocatore diventa bugiardo senza accorgersene. Le due cose che ti fregano sono la vergogna e la paura”. Invece, spiega Baldini, uno dovrebbe subito farsi aiutare. Utilizzabile come “testimonianza”, magari insieme ad altre presenti in questo archivio (si veda ad esempio “Come perdere 500 euro al giorno alle slot”): possibile mandato “Quali faresti vedere ad un tuo coetaneo? Perchè?”."
+    "description": "Tratto da Otto e mezzo (LA7). Lilli Gruber intervista il noto conduttore radiofonico Marco Baldini, famoso per i suoi problemi legati all’azzardo. “Un giocatore diventa bugiardo senza accorgersene. Le due cose che ti fregano sono la vergogna e la paura”. Invece, spiega Baldini, uno dovrebbe subito farsi aiutare. Utilizzabile come “testimonianza”, magari insieme ad altre presenti in questo archivio (si veda ad esempio “Come perdere 500 euro al giorno alle slot”): possibile mandato “Quali faresti vedere ad un tuo coetaneo? Perchè?”.",
+    "dataInserimento": "2025-04-29"
   },
   {
     "id": "HD1923-10",
@@ -1960,7 +2099,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "TAGADA’ LA7. Un servizio girato nel quartiere Barriera di Milano a Torino, tra persone che giocano alle slot in un bar (50, 100 euro al giorno, “non si lavora”) alle attività di un centro di scommesse sportive. Un signore di mezz’età dichiara di aver vinto 49mila euro, ma i soldi gli sono serviti per pagare i debiti."
+    "description": "TAGADA’ LA7. Un servizio girato nel quartiere Barriera di Milano a Torino, tra persone che giocano alle slot in un bar (50, 100 euro al giorno, “non si lavora”) alle attività di un centro di scommesse sportive. Un signore di mezz’età dichiara di aver vinto 49mila euro, ma i soldi gli sono serviti per pagare i debiti.",
+    "dataInserimento": "2025-08-15"
   },
   {
     "id": "HD1923-11",
@@ -1974,7 +2114,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Tratto da La vita in diretta (RAI1) del 23/01/2019. In studio viene intervistata Rebecca, una croupier che lavora nei casinò in Svizzera. Rebecca sostiene di essere stata formata per riconoscere nei casinò i giocatori patologici, ai quali viene offerto anche un supporto psicologico. Interviene in collegamento Raffaele Morelli, che paragona il gioco d’azzardo ad un “accecamento”. Secondo Rebecca non bisogna demonizzare il gioco, ma regolamentarlo meglio."
+    "description": "Tratto da La vita in diretta (RAI1) del 23/01/2019. In studio viene intervistata Rebecca, una croupier che lavora nei casinò in Svizzera. Rebecca sostiene di essere stata formata per riconoscere nei casinò i giocatori patologici, ai quali viene offerto anche un supporto psicologico. Interviene in collegamento Raffaele Morelli, che paragona il gioco d’azzardo ad un “accecamento”. Secondo Rebecca non bisogna demonizzare il gioco, ma regolamentarlo meglio.",
+    "dataInserimento": "2025-04-24"
   },
   {
     "id": "HD1923-12",
@@ -1988,7 +2129,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Sevizio a cura della testata giornalistica www.laredazione.eu. Viene intervistato il medico Giovanni Truono del SerD di Cava dei Tirreni (provincia di Salerno), che spiega come il CoVID abbia provocato un incremento del tempo passato dagli adolescenti nei giochi online. Ci si aspetta in futuro un aumento delle richieste di accesso al servizio da parte dei ragazzi, sia per il gioco d’azzardo che per il gaming. Tutto il servizio mescola in modo raffazzonato e superficiale il mondo del gaming con quello dell’azzardo online; le immagini di repertorio mostrano soprattutto videogiochi online (Fotnite, Call of Duty…) con giocatori bambini o preadolescenti, mentre l’intervento dell’operatore mischia gaming e azzardo e fa riferimento agli adolescenti. Proprio per questi difetti il servizio si presta ad un lavoro di approfondimento:  quali sono le differenze tra gaming e gambling? Quali i punti di contatto? A quali fattori occorre prestare attenzione rispetto ad un rischio di dipendenza?"
+    "description": "Sevizio a cura della testata giornalistica www.laredazione.eu. Viene intervistato il medico Giovanni Truono del SerD di Cava dei Tirreni (provincia di Salerno), che spiega come il CoVID abbia provocato un incremento del tempo passato dagli adolescenti nei giochi online. Ci si aspetta in futuro un aumento delle richieste di accesso al servizio da parte dei ragazzi, sia per il gioco d’azzardo che per il gaming. Tutto il servizio mescola in modo raffazzonato e superficiale il mondo del gaming con quello dell’azzardo online; le immagini di repertorio mostrano soprattutto videogiochi online (Fotnite, Call of Duty…) con giocatori bambini o preadolescenti, mentre l’intervento dell’operatore mischia gaming e azzardo e fa riferimento agli adolescenti. Proprio per questi difetti il servizio si presta ad un lavoro di approfondimento:  quali sono le differenze tra gaming e gambling? Quali i punti di contatto? A quali fattori occorre prestare attenzione rispetto ad un rischio di dipendenza?",
+    "dataInserimento": "2024-01-06"
   },
   {
     "id": "HD1923-13",
@@ -2002,7 +2144,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Tratto dalla puntata di Presadiretta del novembre 2013. Il servizio inizia spiegandoci come il giro d’affari delle sale slot sia cresciuto in Lombardia negli ultimi anni, accompagnandosi ad una crescita dei Compro Oro, spesso aperti in prossimità delle sale da gioco. La giornalista Eva Giovannini entra in una di queste sale con una telecamera nascosta. Incontra Pino, un pensionato che le racconta di essersi giocato tutto: appartamenti, negozio, anche la salute. L’uomo, mentre gioca alle slot, ha un malore. Viene chiamata l’ambulanza, ma quando Pino si riprende ricomincia a giocare."
+    "description": "Tratto dalla puntata di Presadiretta del novembre 2013. Il servizio inizia spiegandoci come il giro d’affari delle sale slot sia cresciuto in Lombardia negli ultimi anni, accompagnandosi ad una crescita dei Compro Oro, spesso aperti in prossimità delle sale da gioco. La giornalista Eva Giovannini entra in una di queste sale con una telecamera nascosta. Incontra Pino, un pensionato che le racconta di essersi giocato tutto: appartamenti, negozio, anche la salute. L’uomo, mentre gioca alle slot, ha un malore. Viene chiamata l’ambulanza, ma quando Pino si riprende ricomincia a giocare.",
+    "dataInserimento": "2025-08-18"
   },
   {
     "id": "HD1923-14",
@@ -2016,7 +2159,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "PRESADIRETTA Puntata del 30/09/2020 dal titolo “Vizio di stato”. Il servizio inizia mostrandoci le immagini di repertorio del lancio in Italia del primo Gratta e Vinci nel 1994. Oggi i Gratta e vinci sono un mercato fondamentale, come ci spiega l’educatore Fabio Pellerano, autore del libro Azzardopatia. Le persone si ammalano a causa di questo gioco. Sul tema viene intervistato anche Matteo Iori della Cooperativa Papa Giovanni XXIII di Reggio Emilia, che spiega alcuni dei meccanismi di aggancio delle lotterie istantanee, come la quasi vincita. Il servizio prosegue spiegando come funzionano le concessioni, rinnovate dallo stato a Lottomatica nel 2017 con un provvedimento “ex lege” allo stesso prezzo del 2009. E’ la concessione più redditizia al mondo. Su questo aspetto vengono intervistati la senatrice LeU Lucrezia Ricchiuti, che ha denunciato il fatto, e il sottosegretario all’economia PD Pierpaolo Baretta, che spiega che si è proceduto al rinnovo senza gara per “fare cassa subito”."
+    "description": "PRESADIRETTA Puntata del 30/09/2020 dal titolo “Vizio di stato”. Il servizio inizia mostrandoci le immagini di repertorio del lancio in Italia del primo Gratta e Vinci nel 1994. Oggi i Gratta e vinci sono un mercato fondamentale, come ci spiega l’educatore Fabio Pellerano, autore del libro Azzardopatia. Le persone si ammalano a causa di questo gioco. Sul tema viene intervistato anche Matteo Iori della Cooperativa Papa Giovanni XXIII di Reggio Emilia, che spiega alcuni dei meccanismi di aggancio delle lotterie istantanee, come la quasi vincita. Il servizio prosegue spiegando come funzionano le concessioni, rinnovate dallo stato a Lottomatica nel 2017 con un provvedimento “ex lege” allo stesso prezzo del 2009. E’ la concessione più redditizia al mondo. Su questo aspetto vengono intervistati la senatrice LeU Lucrezia Ricchiuti, che ha denunciato il fatto, e il sottosegretario all’economia PD Pierpaolo Baretta, che spiega che si è proceduto al rinnovo senza gara per “fare cassa subito”.",
+    "dataInserimento": "2024-02-01"
   },
   {
     "id": "HD1923-15",
@@ -2030,7 +2174,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "PRESADIRETTA Puntata del 30/09/2020 dal titolo “Vizio di stato”. Il servizio spiega il funzionamento logistico ed economico delle sale scommesse gestite dalla ‘Ndrangheta a Crotone, tramite le società CenturionBet e Croton Games. Un giro d’affari che nel 2012-2013 è stato di oltre 152 milioni di euro. Viene intervistato Emilio Fiora, Colonnello della Guardia di Finanza di Crotone. La Centurion Bet, come altre società, aveva sede a Malta."
+    "description": "PRESADIRETTA Puntata del 30/09/2020 dal titolo “Vizio di stato”. Il servizio spiega il funzionamento logistico ed economico delle sale scommesse gestite dalla ‘Ndrangheta a Crotone, tramite le società CenturionBet e Croton Games. Un giro d’affari che nel 2012-2013 è stato di oltre 152 milioni di euro. Viene intervistato Emilio Fiora, Colonnello della Guardia di Finanza di Crotone. La Centurion Bet, come altre società, aveva sede a Malta.",
+    "dataInserimento": "2026-02-15"
   },
   {
     "id": "HD1923-16",
@@ -2044,7 +2189,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "PRESADIRETTA Puntata del 30/09/2020 dal titolo “Vizio di stato”. L’Aquila e in generale l’intero Abruzzo sono stati invasi dalle slot e dal mercato del gioco d’azzardo: l’Abruzzo ha la maggior spesa pro-capite per il gioco d’azzardo, oltre 2000 euro l’anno. A Pescara non esiste alcun rispetto della distanza tra le sale gioco e i punti sensibili, la città è “tappezzata”. Daniela Spaziani del Serd dell’Area L’Aquila parla di un grande aumento di utenti con dipendenza da slot. Ci sono sale enormi con macchinette di ultima generazione, che accettano banconote da 5 a 500 euro: un giocatore spiega che queste slot hanno dei suoni e dei colori “che io lo preferisco che stare con una donna”. Maurizio Fiasco, sociologo, parla di una patologia di massa: un milione e mezzo di giocatori problematici in Italia, con i nuovi casi che sono due volte quelli delle “vecchie” dipendenze."
+    "description": "PRESADIRETTA Puntata del 30/09/2020 dal titolo “Vizio di stato”. L’Aquila e in generale l’intero Abruzzo sono stati invasi dalle slot e dal mercato del gioco d’azzardo: l’Abruzzo ha la maggior spesa pro-capite per il gioco d’azzardo, oltre 2000 euro l’anno. A Pescara non esiste alcun rispetto della distanza tra le sale gioco e i punti sensibili, la città è “tappezzata”. Daniela Spaziani del Serd dell’Area L’Aquila parla di un grande aumento di utenti con dipendenza da slot. Ci sono sale enormi con macchinette di ultima generazione, che accettano banconote da 5 a 500 euro: un giocatore spiega che queste slot hanno dei suoni e dei colori “che io lo preferisco che stare con una donna”. Maurizio Fiasco, sociologo, parla di una patologia di massa: un milione e mezzo di giocatori problematici in Italia, con i nuovi casi che sono due volte quelli delle “vecchie” dipendenze.",
+    "dataInserimento": "2024-07-24"
   },
   {
     "id": "HD1923-17",
@@ -2058,7 +2204,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "PRESADIRETTA Puntata del 30/09/2020 dal titolo “Vizio di stato”.  Digitalizzazione, incremento delle licenze e boom delle offerte hanno fatto crescere il settore dell’azzardo online. Diego Rizzuto e Paolo Canova della società torinese TAXI 1729 spiegano che l’azzardo online è un mondo, che amplia l’offerta di ciò che trovi “offline” in tabaccheria. Gratta e vinci, Lotto, sale bingo, slot: esistono dei Gratta e vinci che si trovano solo online o delle roulette live, con un croupier reale in streaming. Poi ci sono i siti di scommesse, che permettono di scommettere su qualunque partita di qualunque sport, ma anche sulle previsioni del tempo. In Italia ci sono oltre 400 siti legali di scommesse, accessibili ovviamente anche tramite smartphone."
+    "description": "PRESADIRETTA Puntata del 30/09/2020 dal titolo “Vizio di stato”.  Digitalizzazione, incremento delle licenze e boom delle offerte hanno fatto crescere il settore dell’azzardo online. Diego Rizzuto e Paolo Canova della società torinese TAXI 1729 spiegano che l’azzardo online è un mondo, che amplia l’offerta di ciò che trovi “offline” in tabaccheria. Gratta e vinci, Lotto, sale bingo, slot: esistono dei Gratta e vinci che si trovano solo online o delle roulette live, con un croupier reale in streaming. Poi ci sono i siti di scommesse, che permettono di scommettere su qualunque partita di qualunque sport, ma anche sulle previsioni del tempo. In Italia ci sono oltre 400 siti legali di scommesse, accessibili ovviamente anche tramite smartphone.",
+    "dataInserimento": "2025-09-12"
   },
   {
     "id": "HD1923-18",
@@ -2072,7 +2219,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "LE IENE puntata del 05/04/2012. La dipendenza da gioco d'azzardo in America è considerata una malattia, in Italia ancora no (il servizio è del 2012), ma il Ministro della Salute Balduzzi ne ha proposto l'inserimento tra le malattie. Il giro d'affari di slot machine e altri giochi è di 55 miliardi di euro l'anno e coinvolge un milione e mezzo di persone. Nadia Toffa intervista un ragazzo di 19 anni, malato di gioco da quando ne aveva 14. Racconta di aver giocato circa 25 mila euro, cioè tutti i suoi stipendi da operaio, e di non riuscire a smettere. Spiega di aver provato tutti i tipi di gioco d'azzardo, ma le slot machine sono quelle che gli danno maggiori problemi: \"E’ come un'ipnosi, non riesci a smettere. In quel momento non sei più te stesso\". Il servizio prosegue in una di queste sale da gioco, dove la gente perde in pochi minuti il proprio stipendio. La Toffa propone poi al ragazzo di farsi aiutare a uscire da questa dipendenza, attraverso la terapia di gruppo, ma la sua risposta è evasiva, perchè dice di non sentirsi pronto, di voler provare a uscirne da solo."
+    "description": "LE IENE puntata del 05/04/2012. La dipendenza da gioco d'azzardo in America è considerata una malattia, in Italia ancora no (il servizio è del 2012), ma il Ministro della Salute Balduzzi ne ha proposto l'inserimento tra le malattie. Il giro d'affari di slot machine e altri giochi è di 55 miliardi di euro l'anno e coinvolge un milione e mezzo di persone. Nadia Toffa intervista un ragazzo di 19 anni, malato di gioco da quando ne aveva 14. Racconta di aver giocato circa 25 mila euro, cioè tutti i suoi stipendi da operaio, e di non riuscire a smettere. Spiega di aver provato tutti i tipi di gioco d'azzardo, ma le slot machine sono quelle che gli danno maggiori problemi: \"E’ come un'ipnosi, non riesci a smettere. In quel momento non sei più te stesso\". Il servizio prosegue in una di queste sale da gioco, dove la gente perde in pochi minuti il proprio stipendio. La Toffa propone poi al ragazzo di farsi aiutare a uscire da questa dipendenza, attraverso la terapia di gruppo, ma la sua risposta è evasiva, perchè dice di non sentirsi pronto, di voler provare a uscirne da solo.",
+    "dataInserimento": "2023-04-18"
   },
   {
     "id": "HD1923-19",
@@ -2086,7 +2234,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Il video fa parte di PROMETEO, programma di informazione pubblicato sul canale Youtube di Class TV. Dopo una breve sequenza tratta da un film di Fantozzi, in cui il protagonista vede in tv lo spot del Superenalotto, il video esamina le reali probabilità di vittoria a questo gioco (1 su oltre 622 milioni), confrontandole con altri eventi altamente improbabili come chiamare Buffon facendo un numero di Torino a caso. La clip, della durata di poco più di un minuto, può essere utilizzata per visualizzare velocemente le bassissime probabilità di vittoria di alcuni giochi."
+    "description": "Il video fa parte di PROMETEO, programma di informazione pubblicato sul canale Youtube di Class TV. Dopo una breve sequenza tratta da un film di Fantozzi, in cui il protagonista vede in tv lo spot del Superenalotto, il video esamina le reali probabilità di vittoria a questo gioco (1 su oltre 622 milioni), confrontandole con altri eventi altamente improbabili come chiamare Buffon facendo un numero di Torino a caso. La clip, della durata di poco più di un minuto, può essere utilizzata per visualizzare velocemente le bassissime probabilità di vittoria di alcuni giochi.",
+    "dataInserimento": "2024-09-20"
   },
   {
     "id": "HD1923-20",
@@ -2100,7 +2249,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Il video è stato pubblicato sul canale Youtube Confronti Grafici. Vengono visualizzate le probabilità di vittoria a diversi giochi d’azzardo, dai dadi al poker, dal gratta e vinci al superenalotto. In mezzo sono state inserite le probabilità di realizzazione di alcuni eventi, come essere colpiti da un fulmine, da un meteorite o sopravvivere dopo un colpo di pistola alla testa. Tutte le probabilità sono in ordine decrescente, dalla più probabile (come testa o croce) ai più improbabili. Il video dura circa 4 minuti: potrebbe essere interessante estrapolare e verificare alcune dei dati proposti per poi realizzarne un’altro più breve, adatto alla diffusione su altri canali."
+    "description": "Il video è stato pubblicato sul canale Youtube Confronti Grafici. Vengono visualizzate le probabilità di vittoria a diversi giochi d’azzardo, dai dadi al poker, dal gratta e vinci al superenalotto. In mezzo sono state inserite le probabilità di realizzazione di alcuni eventi, come essere colpiti da un fulmine, da un meteorite o sopravvivere dopo un colpo di pistola alla testa. Tutte le probabilità sono in ordine decrescente, dalla più probabile (come testa o croce) ai più improbabili. Il video dura circa 4 minuti: potrebbe essere interessante estrapolare e verificare alcune dei dati proposti per poi realizzarne un’altro più breve, adatto alla diffusione su altri canali.",
+    "dataInserimento": "2024-07-21"
   },
   {
     "id": "HD1923-21",
@@ -2114,7 +2264,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Video realizzato da FANPAGE.IT. Diego Rizzuto e Paolo Canova della società torinese TAXI 1729 ci spiegano i meccanismi che ci invogliano a giocare al Gratta e Vinci, prendendo come esempio “Il nuovo miliardario” che, per 5 euro, promette di farne vincere 500.000. In realtà le percentuali di vittoria (e non dunque di semplici “rimborsi”) sono basse: si vince 1 volta su 4, ma, per quella volta che vinciamo, 8 casi su 10 ci aggiudichiamo un premio di 5 o 10 euro (dopo averne spesi 5). Premi sopra i 10.000 euro si vincono una volta ogni 1.760.000, ossia per quasi 9 milioni (8,8 milioni) di euro incassati da Lottomatica, la società di scommesse potrebbe restituire ai giocatori 10,000 euro.\nLa voglia di giocare viene alimentata ad arte da meccanismi come le “quasi vincite”, le piccole vincite da 5 o 10 euro che in realtà restituiscono l’importo giocato, la sovraesposizione mediatica delle vincite “importanti”, le informazioni selettive sul retro del biglietto (la dicitura “premi fino a 500 euro” non esplicita quanti, di questi, sono da 5 euro)"
+    "description": "Video realizzato da FANPAGE.IT. Diego Rizzuto e Paolo Canova della società torinese TAXI 1729 ci spiegano i meccanismi che ci invogliano a giocare al Gratta e Vinci, prendendo come esempio “Il nuovo miliardario” che, per 5 euro, promette di farne vincere 500.000. In realtà le percentuali di vittoria (e non dunque di semplici “rimborsi”) sono basse: si vince 1 volta su 4, ma, per quella volta che vinciamo, 8 casi su 10 ci aggiudichiamo un premio di 5 o 10 euro (dopo averne spesi 5). Premi sopra i 10.000 euro si vincono una volta ogni 1.760.000, ossia per quasi 9 milioni (8,8 milioni) di euro incassati da Lottomatica, la società di scommesse potrebbe restituire ai giocatori 10,000 euro.\nLa voglia di giocare viene alimentata ad arte da meccanismi come le “quasi vincite”, le piccole vincite da 5 o 10 euro che in realtà restituiscono l’importo giocato, la sovraesposizione mediatica delle vincite “importanti”, le informazioni selettive sul retro del biglietto (la dicitura “premi fino a 500 euro” non esplicita quanti, di questi, sono da 5 euro)",
+    "dataInserimento": "2025-09-15"
   },
   {
     "id": "HD1923-22",
@@ -2128,7 +2279,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Video pubblicato sul canale di RepubblicaTV. \"Quando siamo stati avvisati dai nostri amici credevamo fosse uno scherzo. Abbiamo riaperto il locale per festeggiare e siamo andati a dormire tardissimo\". Commentano così i titolari del bar Marino di Lodi dove è stata registrata la vincita record al Superenalotto di oltre 209 milioni di euro. Come spiegato dai gestori, la schedina vincente è stata generata tramite Quick Pick, un sistema Sisal che crea casualmente la giocata, ma l'identità del proprietario del 6 fortunato rimane un mistero: \"Negli ultimi tre giorni sono venute tantissime persone, ci auguriamo che con la vincita facciano anche del bene attraverso la beneficienza\"."
+    "description": "Video pubblicato sul canale di RepubblicaTV. \"Quando siamo stati avvisati dai nostri amici credevamo fosse uno scherzo. Abbiamo riaperto il locale per festeggiare e siamo andati a dormire tardissimo\". Commentano così i titolari del bar Marino di Lodi dove è stata registrata la vincita record al Superenalotto di oltre 209 milioni di euro. Come spiegato dai gestori, la schedina vincente è stata generata tramite Quick Pick, un sistema Sisal che crea casualmente la giocata, ma l'identità del proprietario del 6 fortunato rimane un mistero: \"Negli ultimi tre giorni sono venute tantissime persone, ci auguriamo che con la vincita facciano anche del bene attraverso la beneficienza\".",
+    "dataInserimento": "2024-12-15"
   },
   {
     "id": "HD1923-23",
@@ -2142,7 +2294,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Video pubblicato sul canale di CremonaTV; servizio di Giovanni Palisto. In un centro commerciale una signora cremonese ha vinto ben 5 milioni di euro con un gratta e vinci da 20 euro. “Acconsentitecelo: è il caso di mettere da parte i tanti timori legati alla ludopatia e godersi la festa”. Vengono intervistati il gestore della ricevitoria e poi alcuni passanti, che saputa la notizia tentano anche loro la fortuna nella stessa ricevitoria. Servizio utilizzabile insieme ad altri presenti in questo archivio come esempi di promozione mediatica delle vincite al gioco d’azzardo."
+    "description": "Video pubblicato sul canale di CremonaTV; servizio di Giovanni Palisto. In un centro commerciale una signora cremonese ha vinto ben 5 milioni di euro con un gratta e vinci da 20 euro. “Acconsentitecelo: è il caso di mettere da parte i tanti timori legati alla ludopatia e godersi la festa”. Vengono intervistati il gestore della ricevitoria e poi alcuni passanti, che saputa la notizia tentano anche loro la fortuna nella stessa ricevitoria. Servizio utilizzabile insieme ad altri presenti in questo archivio come esempi di promozione mediatica delle vincite al gioco d’azzardo.",
+    "dataInserimento": "2025-05-10"
   },
   {
     "id": "HD1923-24",
@@ -2156,7 +2309,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Video pubblicato sul canale di TG2000; servizio di Silvia Sacchi. Il jackpot del Superenalotto è arrivato alla cifra record di 209 milioni, ma occorre stare attenti alle dipendenze da gioco d’azzardo. Lo psichiatra e psicoterapeuta Davide Martinelli spiega che il gioco d’azzardo può portare alla compulsione, ovvere l’incapacità di controllare il desiderio di giocare. Viene quindi illustrata la terapia utilizzata con chi manifesta una dipendenza da azzardo."
+    "description": "Video pubblicato sul canale di TG2000; servizio di Silvia Sacchi. Il jackpot del Superenalotto è arrivato alla cifra record di 209 milioni, ma occorre stare attenti alle dipendenze da gioco d’azzardo. Lo psichiatra e psicoterapeuta Davide Martinelli spiega che il gioco d’azzardo può portare alla compulsione, ovvere l’incapacità di controllare il desiderio di giocare. Viene quindi illustrata la terapia utilizzata con chi manifesta una dipendenza da azzardo.",
+    "dataInserimento": "2025-06-19"
   },
   {
     "id": "HD1923-25",
@@ -2170,7 +2324,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Video realizzato da Emanuel Pellegrini (Centro Steadycam – SteadycamOFF) per TAXI 1729. Diego Rizzuto e Paolo Canova della società torinese TAXI 1729 ci spiegano il funzionamento dei Gratta e Vinci. In Italia ne vengono venduti 60 al secondo. Il Miliardario promette un premio di 500 mila euro, ma solo 27 biglietti su oltre 142 milioni offrono questo premio. Eppure continuiamo a giocare: perché? A tenerci incollati, come previsto da chi crea questi giochi, intervengono alcuni meccanismi, come le piccole vincite e le quasi vincite."
+    "description": "Video realizzato da Emanuel Pellegrini (Centro Steadycam – SteadycamOFF) per TAXI 1729. Diego Rizzuto e Paolo Canova della società torinese TAXI 1729 ci spiegano il funzionamento dei Gratta e Vinci. In Italia ne vengono venduti 60 al secondo. Il Miliardario promette un premio di 500 mila euro, ma solo 27 biglietti su oltre 142 milioni offrono questo premio. Eppure continuiamo a giocare: perché? A tenerci incollati, come previsto da chi crea questi giochi, intervengono alcuni meccanismi, come le piccole vincite e le quasi vincite.",
+    "dataInserimento": "2025-05-09"
   },
   {
     "id": "HD1923-26",
@@ -2184,7 +2339,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Video realizzato da Emanuel Pellegrini (Centro Steadycam – SteadycamOFF) per TAXI 1729. Diego Rizzuto e Paolo Canova della società torinese TAXI 1729 ci spiegano come fanno le slot machine a tenere agganciati i giocatori. Esistono slot su tantissimi temi narrativi, dalle serie tv alla Savana. Il giocatore perde al ritmo di 15 centesimi per ogni euro giocato. Più si gioca, più si perde. Le slot fanno vincere spesso premi di basso importo: in questo modo si aumenta la voglia di giocare, grazie al rinforzo positivo intermittente. La sensazione di aver sfiorato la vincita fa venire voglia di provare di nuovo. Il ritmo frenetico rischia di far perdere grosse somme di denaro, soprattutto su slot dove si possono puntare banconote. Infine, chi passa tanto tempo davanti alle slot le “antropomorfizza”, ovvero attribuisce alle macchine caratteristiche umane: questo a sua volta fa aumentare il tempo davanti alla slot e fa giocare più soldi."
+    "description": "Video realizzato da Emanuel Pellegrini (Centro Steadycam – SteadycamOFF) per TAXI 1729. Diego Rizzuto e Paolo Canova della società torinese TAXI 1729 ci spiegano come fanno le slot machine a tenere agganciati i giocatori. Esistono slot su tantissimi temi narrativi, dalle serie tv alla Savana. Il giocatore perde al ritmo di 15 centesimi per ogni euro giocato. Più si gioca, più si perde. Le slot fanno vincere spesso premi di basso importo: in questo modo si aumenta la voglia di giocare, grazie al rinforzo positivo intermittente. La sensazione di aver sfiorato la vincita fa venire voglia di provare di nuovo. Il ritmo frenetico rischia di far perdere grosse somme di denaro, soprattutto su slot dove si possono puntare banconote. Infine, chi passa tanto tempo davanti alle slot le “antropomorfizza”, ovvero attribuisce alle macchine caratteristiche umane: questo a sua volta fa aumentare il tempo davanti alla slot e fa giocare più soldi.",
+    "dataInserimento": "2024-12-20"
   },
   {
     "id": "HD1923-27",
@@ -2198,7 +2354,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Video realizzato da Dario Migliardi per La Stampa. Diego Rizzuto e Paolo Canova della società torinese TAXI 1729 ci spiegano i meccanismi che ci tengono agganciati al gioco d’azzardo online, usando come esempio una slot online a tema horror. Grafica e suoni estremamente curati sottolineano ogni fase del gioco; i meccanismi della quasi vincita invogliano a riprovare, mentre la possibilità di scommettere su più linee aumenta la posta in gioco facendo perdere più soldi in breve tempo."
+    "description": "Video realizzato da Dario Migliardi per La Stampa. Diego Rizzuto e Paolo Canova della società torinese TAXI 1729 ci spiegano i meccanismi che ci tengono agganciati al gioco d’azzardo online, usando come esempio una slot online a tema horror. Grafica e suoni estremamente curati sottolineano ogni fase del gioco; i meccanismi della quasi vincita invogliano a riprovare, mentre la possibilità di scommettere su più linee aumenta la posta in gioco facendo perdere più soldi in breve tempo.",
+    "dataInserimento": "2025-03-21"
   },
   {
     "id": "HD1923-28",
@@ -2212,7 +2369,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Video realizzato da Screamedia e Taxi1729: è la puntata iniziale di quella che doveva essere una web serie, poi non proseguita. Diego Rizzuto e Paolo Canova della società torinese TAXI 1729 ci spiegano i meccanismi matematici alla base del gioco della roulette: dopo un certo numero di giocate il ritmo di perdita del giocatore è di euro 2,70 per ciascuna giocata. Questo è verificabile sperimentalmente e calcolabile matematicamente. I giochi d’azzardo sono costruiti in questo modo."
+    "description": "Video realizzato da Screamedia e Taxi1729: è la puntata iniziale di quella che doveva essere una web serie, poi non proseguita. Diego Rizzuto e Paolo Canova della società torinese TAXI 1729 ci spiegano i meccanismi matematici alla base del gioco della roulette: dopo un certo numero di giocate il ritmo di perdita del giocatore è di euro 2,70 per ciascuna giocata. Questo è verificabile sperimentalmente e calcolabile matematicamente. I giochi d’azzardo sono costruiti in questo modo.",
+    "dataInserimento": "2024-08-26"
   },
   {
     "id": "HD1923-29",
@@ -2226,7 +2384,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Diego Rizzuto e Paolo Canova della società torinese TAXI 1729 ci spiegano perché non funziona il metodo del raddoppio alla roulette. Questo sistema, pubblicizzato come vincente, consiste nel continuare a puntare sempre su rosso o nero raddoppiando la posta ogni volta che si perde, in modo da recuperare le eventuali sconfitte. In realtà si tratta di un sistema in cui vinciamo spesso ma poco, e più raramente perdiamo molto: nel lungo periodo perdiamo, a vincere è il banco."
+    "description": "Diego Rizzuto e Paolo Canova della società torinese TAXI 1729 ci spiegano perché non funziona il metodo del raddoppio alla roulette. Questo sistema, pubblicizzato come vincente, consiste nel continuare a puntare sempre su rosso o nero raddoppiando la posta ogni volta che si perde, in modo da recuperare le eventuali sconfitte. In realtà si tratta di un sistema in cui vinciamo spesso ma poco, e più raramente perdiamo molto: nel lungo periodo perdiamo, a vincere è il banco.",
+    "dataInserimento": "2024-01-15"
   },
   {
     "id": "HD1923-30",
@@ -2240,7 +2399,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Ludo(A)patia è una campagna promossa da Consorzio Progetto Solidarietà - Distretto di Mantova. Lo psicologo del Serd di Mantova Michele Zagni spiega che il giocatore patologico non si diverte mentre gioca: tutto il resto del mondo non esiste, il focus diventa andare a giocare trovando soldi e tempi. La compulsione a tornare a giocare è più forte di tutto. E’ una persona che sta male."
+    "description": "Ludo(A)patia è una campagna promossa da Consorzio Progetto Solidarietà - Distretto di Mantova. Lo psicologo del Serd di Mantova Michele Zagni spiega che il giocatore patologico non si diverte mentre gioca: tutto il resto del mondo non esiste, il focus diventa andare a giocare trovando soldi e tempi. La compulsione a tornare a giocare è più forte di tutto. E’ una persona che sta male.",
+    "dataInserimento": "2023-06-06"
   },
   {
     "id": "HD1923-31",
@@ -2254,7 +2414,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Ludo(A)patia è una campagna promossa da Consorzio Progetto Solidarietà - Distretto di Mantova. La psicologa del SerD di Mantova Lara Masotto spiega come il gioco diventa una patologia: è quando il giocatore inizia a perdere il controllo. Quando la perdita di controllo è totale si parla di dipendenza: la razionalità c’è ma prevale l’impulso di giocare. Per questo occorre affidarsi a chi si occupa di queste patologie."
+    "description": "Ludo(A)patia è una campagna promossa da Consorzio Progetto Solidarietà - Distretto di Mantova. La psicologa del SerD di Mantova Lara Masotto spiega come il gioco diventa una patologia: è quando il giocatore inizia a perdere il controllo. Quando la perdita di controllo è totale si parla di dipendenza: la razionalità c’è ma prevale l’impulso di giocare. Per questo occorre affidarsi a chi si occupa di queste patologie.",
+    "dataInserimento": "2024-09-27"
   },
   {
     "id": "HD1923-32",
@@ -2268,7 +2429,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Ludo(A)patia è una campagna promossa da Consorzio Progetto Solidarietà - Distretto di Mantova. La psicologa del SerD di Mantova Lara Masotto spiega che il giocatore problematico è quello che inizia a sentire il bisogno di tornare a giocare per recuperare la cifra persa. Lo step successivo è quando la persona perde totalmente il controllo e non può più decidere quando iniziare e quando smettere. Viene persa totalmente la dimensione di socialità, il giocatore patologico è solo e isolato. E’ impossibile o molto difficile uscire da questa dipendenza in maniera autonoma, occorre l’aiuto di specialisti."
+    "description": "Ludo(A)patia è una campagna promossa da Consorzio Progetto Solidarietà - Distretto di Mantova. La psicologa del SerD di Mantova Lara Masotto spiega che il giocatore problematico è quello che inizia a sentire il bisogno di tornare a giocare per recuperare la cifra persa. Lo step successivo è quando la persona perde totalmente il controllo e non può più decidere quando iniziare e quando smettere. Viene persa totalmente la dimensione di socialità, il giocatore patologico è solo e isolato. E’ impossibile o molto difficile uscire da questa dipendenza in maniera autonoma, occorre l’aiuto di specialisti.",
+    "dataInserimento": "2023-12-18"
   },
   {
     "id": "HD1923-33",
@@ -2282,7 +2444,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Ludo(A)patia è una campagna promossa da Consorzio Progetto Solidarietà - Distretto di Mantova. Lo psicologo del Serd di Mantova Michele Zagni spiega alcuni dei pensieri errati del giocatore patologico. Ad esempio: devo continuare a giocare per recuperare le perdite (distorsione cognitiva). Altri sono pensieri magici, come il grattare i Gratta e Vinci sempre con la stessa moneta o la stessa chiave. Il giocatore si rende conto che dovrebbe smettere, ma non ce la fa."
+    "description": "Ludo(A)patia è una campagna promossa da Consorzio Progetto Solidarietà - Distretto di Mantova. Lo psicologo del Serd di Mantova Michele Zagni spiega alcuni dei pensieri errati del giocatore patologico. Ad esempio: devo continuare a giocare per recuperare le perdite (distorsione cognitiva). Altri sono pensieri magici, come il grattare i Gratta e Vinci sempre con la stessa moneta o la stessa chiave. Il giocatore si rende conto che dovrebbe smettere, ma non ce la fa.",
+    "dataInserimento": "2024-11-28"
   },
   {
     "id": "HD1923-34",
@@ -2296,7 +2459,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Ludo(A)patia è una campagna promossa da Consorzio Progetto Solidarietà - Distretto di Mantova. La psicologa del SerD di Mantova Lara Masotto spiega che a Mantova si sono giocati circa 500 milioni di euro nel 2018, con circa 7800 giocatori patologici in tutta la provincia. Lo psicologo Michele Zagni sottolinea come spesso i giocatori pensino che non ci sono vie d’uscita: invece, riprende Lara Masotto, il progetto “Mantova in gioco” offre supporto ai giocatori patologici, attraverso il SerD e Libra Onlus."
+    "description": "Ludo(A)patia è una campagna promossa da Consorzio Progetto Solidarietà - Distretto di Mantova. La psicologa del SerD di Mantova Lara Masotto spiega che a Mantova si sono giocati circa 500 milioni di euro nel 2018, con circa 7800 giocatori patologici in tutta la provincia. Lo psicologo Michele Zagni sottolinea come spesso i giocatori pensino che non ci sono vie d’uscita: invece, riprende Lara Masotto, il progetto “Mantova in gioco” offre supporto ai giocatori patologici, attraverso il SerD e Libra Onlus.",
+    "dataInserimento": "2023-12-21"
   },
   {
     "id": "HD1923-35",
@@ -2310,7 +2474,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "TV2000 Servizio di Daniele Morini. Azzurra Cerri, titolare del bar “Why not?” di Viareggio, racconta la sua vicenda. Due anni fa ha deciso di togliere le slot dal suo locale, scoprendo che per farlo avrebbe dovuto pagare una penale. Per due anni il Comune si è rifiutato di revocarle la licenza, finché si sono arresi “dopo cinque minuti di insulti”. Azzurra ha messo libri dove prima vi erano le slot; è contenta della sua scelta, ora viene chiamata a raccontare la sua vicenda in tutta Italia."
+    "description": "TV2000 Servizio di Daniele Morini. Azzurra Cerri, titolare del bar “Why not?” di Viareggio, racconta la sua vicenda. Due anni fa ha deciso di togliere le slot dal suo locale, scoprendo che per farlo avrebbe dovuto pagare una penale. Per due anni il Comune si è rifiutato di revocarle la licenza, finché si sono arresi “dopo cinque minuti di insulti”. Azzurra ha messo libri dove prima vi erano le slot; è contenta della sua scelta, ora viene chiamata a raccontare la sua vicenda in tutta Italia.",
+    "dataInserimento": "2025-06-12"
   },
   {
     "id": "HD1923-36",
@@ -2324,7 +2489,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Dalla puntata di ZETA, in onda su LA7. Durata: 18 minuti. \"Il gioco d'azzardo, in Italia, è diventato la terza impresa italiana per fatturato\": ospite di Gad Lerner, Roberto Saviano racconta come le mafie hanno approfittato della liberalizzazione del gioco d'azzardo per diventare più potenti, utilizzando \"gli strumenti legali per riciclare denaro\". Fino al 1992 gli unici posti dove giocare legalmente d’azzardo erano i quattro casino di Sanremo, Saint Vincent, Campione d’Italia e Venezia. All’epoca le mafie controllavano il gioco d’azzardo clandestino, come le bische e il Totonero. Poi nel 1992 lo stato decide di liberalizzare il gioco e lo scenario cambia: le mafie passano al gioco legale. L’Italia è al terzo posto nel mondo per azzardo: la spesa per le scommesse aumenta. Sale Bingo, casinò, gratta e vinci, lotto e gioco online funzionano tutti come meccanismi per ripulire il denaro sporco. In più c’è la presenza della mafia nell’usura e le schede di slot e videopoker clonate. Perchè in Italia si gioca così tanto? Perchè i talenti e il merito non sono premiati: meglio tentare la fortuna con l’azzardo."
+    "description": "Dalla puntata di ZETA, in onda su LA7. Durata: 18 minuti. \"Il gioco d'azzardo, in Italia, è diventato la terza impresa italiana per fatturato\": ospite di Gad Lerner, Roberto Saviano racconta come le mafie hanno approfittato della liberalizzazione del gioco d'azzardo per diventare più potenti, utilizzando \"gli strumenti legali per riciclare denaro\". Fino al 1992 gli unici posti dove giocare legalmente d’azzardo erano i quattro casino di Sanremo, Saint Vincent, Campione d’Italia e Venezia. All’epoca le mafie controllavano il gioco d’azzardo clandestino, come le bische e il Totonero. Poi nel 1992 lo stato decide di liberalizzare il gioco e lo scenario cambia: le mafie passano al gioco legale. L’Italia è al terzo posto nel mondo per azzardo: la spesa per le scommesse aumenta. Sale Bingo, casinò, gratta e vinci, lotto e gioco online funzionano tutti come meccanismi per ripulire il denaro sporco. In più c’è la presenza della mafia nell’usura e le schede di slot e videopoker clonate. Perchè in Italia si gioca così tanto? Perchè i talenti e il merito non sono premiati: meglio tentare la fortuna con l’azzardo.",
+    "dataInserimento": "2025-08-09"
   },
   {
     "id": "HD1923-37",
@@ -2338,7 +2504,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Lo youtuber Dadobax esprime la sua opinione sulle lootbox, accusate di incentivare il gioco d’azzardo tra i videogiocatori. Chi difende le lootbox dice che in realtà è un meccanismo in cui si vince sempre, quindi non è azzardo. Dadobax le paragona alla “pesca fortunata” delle fiere di paese, dove è vero che si vince sempre, ma spesso si tratta di premi che non ci interessano o di scarso valore. Nelle lootbox capita di trovare oggetti che non ti serviranno mai: se nel gioco di ruolo sei un guerriero e trovi la bacchetta magica di un mago, quell’arma non verrà mai usata. La clip è stata utilizzata, in versione ridotta, all’interno di un corso di formazione sui videogiochi per insegnanti. Interessanti i commenti al video, con distinzioni tra videogiochi diversi e differenze con i giochi di carte collezionabili."
+    "description": "Lo youtuber Dadobax esprime la sua opinione sulle lootbox, accusate di incentivare il gioco d’azzardo tra i videogiocatori. Chi difende le lootbox dice che in realtà è un meccanismo in cui si vince sempre, quindi non è azzardo. Dadobax le paragona alla “pesca fortunata” delle fiere di paese, dove è vero che si vince sempre, ma spesso si tratta di premi che non ci interessano o di scarso valore. Nelle lootbox capita di trovare oggetti che non ti serviranno mai: se nel gioco di ruolo sei un guerriero e trovi la bacchetta magica di un mago, quell’arma non verrà mai usata. La clip è stata utilizzata, in versione ridotta, all’interno di un corso di formazione sui videogiochi per insegnanti. Interessanti i commenti al video, con distinzioni tra videogiochi diversi e differenze con i giochi di carte collezionabili.",
+    "dataInserimento": "2023-06-06"
   },
   {
     "id": "HD1923-38",
@@ -2352,7 +2519,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Servizio TG1 del 3 novembre 2010. Il gioco d'azzardo si sta diffondendo sempre di più tra le donne: a Milano sono il 33% dei giocatori che soffrono di dipendenza. Impiegate, casalinghe, pensionate, tentano la fortuna con il Bingo, i gratta e vinci, le macchinette nei bar, giocano per non pensare, per dimenticare i problemi della vita. Aumentano anche le richieste d'aiuto, quest'anno (2010) nella sola Lombardia le telefonate supereranno il milione."
+    "description": "Servizio TG1 del 3 novembre 2010. Il gioco d'azzardo si sta diffondendo sempre di più tra le donne: a Milano sono il 33% dei giocatori che soffrono di dipendenza. Impiegate, casalinghe, pensionate, tentano la fortuna con il Bingo, i gratta e vinci, le macchinette nei bar, giocano per non pensare, per dimenticare i problemi della vita. Aumentano anche le richieste d'aiuto, quest'anno (2010) nella sola Lombardia le telefonate supereranno il milione.",
+    "dataInserimento": "2026-02-04"
   },
   {
     "id": "HD1923-39",
@@ -2366,7 +2534,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Servizio TG1 del 15 febbraio 2011. La lotteria della spesa: si gioca alla cassa usando il resto della spesa e lo scontrino. Si potrà decidere di non ricevere il resto ma di giocarselo. Per chi ci sta avrà la puntata minima di un centesimo, mentre l'esercente dovrà solo aderire all'iniziativa oppure no. I pareri di alcuni clienti e di invece sta dall'altra parte del bancone. Servizio del 2011 ma ancora attuale, se si pensa alla “lotteria degli scontrini” proposta nel 2020. Utilizzabile in confronto con il servizio TG1 “Gioco d’azzardo al femminile” (presente in questo archivio) per ragionare su come la stessa testata giornalistica utilizzi registri diversi per trattare del medesimo fenomeno."
+    "description": "Servizio TG1 del 15 febbraio 2011. La lotteria della spesa: si gioca alla cassa usando il resto della spesa e lo scontrino. Si potrà decidere di non ricevere il resto ma di giocarselo. Per chi ci sta avrà la puntata minima di un centesimo, mentre l'esercente dovrà solo aderire all'iniziativa oppure no. I pareri di alcuni clienti e di invece sta dall'altra parte del bancone. Servizio del 2011 ma ancora attuale, se si pensa alla “lotteria degli scontrini” proposta nel 2020. Utilizzabile in confronto con il servizio TG1 “Gioco d’azzardo al femminile” (presente in questo archivio) per ragionare su come la stessa testata giornalistica utilizzi registri diversi per trattare del medesimo fenomeno.",
+    "dataInserimento": "2026-01-20"
   },
   {
     "id": "HD1923-40",
@@ -2380,7 +2549,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Servizio TG2 del 4 marzo 2010. Sballa quanto l'alcool, intossica quanto la droga: il gioco d'azzardo si sta imponendo tra i giovanissimi come l'evasione del nuovo millennio. Un allarme lanciato dagli esperti all'avvio della campagna di sensibilizzazione sul gioco responsabile sostenuta dal Monopolio di Stato. Una incapacità di fermarsi che diventa patologia e le tentazioni sono molto presenti, anche per i giovani: i poker online dove i tavoli verdi sono virtuali ma i soldi no."
+    "description": "Servizio TG2 del 4 marzo 2010. Sballa quanto l'alcool, intossica quanto la droga: il gioco d'azzardo si sta imponendo tra i giovanissimi come l'evasione del nuovo millennio. Un allarme lanciato dagli esperti all'avvio della campagna di sensibilizzazione sul gioco responsabile sostenuta dal Monopolio di Stato. Una incapacità di fermarsi che diventa patologia e le tentazioni sono molto presenti, anche per i giovani: i poker online dove i tavoli verdi sono virtuali ma i soldi no.",
+    "dataInserimento": "2024-01-24"
   },
   {
     "id": "HD1923-41",
@@ -2394,7 +2564,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Servizio TG2 del 26 aprile 2011. Dedicato ai giocatori di Superenalotto più sfortunati: da domani c'è qualche possibilità in più di vincere perchè arriva il \"Si vince tutto\", una schedina da 5 euro che premia anche le combinazioni minori. Nasce da una costola del Superenalotto e fa vincere anche chi non azzecca il 6. Se non ci saranno sestine vincenti, infatti, il 50% del jackpot verrà distribuito tra i 5, i 4 e i 3. Una estrazione straordinaria che avverrà ogni tanto. Utilizzabile in confronto con il servizio TG2 “Il gioco come l’alcool e la droga” (presente in questo archivio) per ragionare su come la stessa testata giornalistica utilizzi registri diversi per trattare del medesimo fenomeno."
+    "description": "Servizio TG2 del 26 aprile 2011. Dedicato ai giocatori di Superenalotto più sfortunati: da domani c'è qualche possibilità in più di vincere perchè arriva il \"Si vince tutto\", una schedina da 5 euro che premia anche le combinazioni minori. Nasce da una costola del Superenalotto e fa vincere anche chi non azzecca il 6. Se non ci saranno sestine vincenti, infatti, il 50% del jackpot verrà distribuito tra i 5, i 4 e i 3. Una estrazione straordinaria che avverrà ogni tanto. Utilizzabile in confronto con il servizio TG2 “Il gioco come l’alcool e la droga” (presente in questo archivio) per ragionare su come la stessa testata giornalistica utilizzi registri diversi per trattare del medesimo fenomeno.",
+    "dataInserimento": "2024-03-14"
   },
   {
     "id": "HD1923-42",
@@ -2408,7 +2579,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Un cortometraggio di cinque minuti realizzato dal cabarettista Daniele Raco, in collaborazione con il Sert di Asl3 e il Ceis di Genova. In maniera scherzosa, attraverso una serie di sketch comici, Daniele Raco presenta il problema dell’azzardo e soprattutto illustra le strutture presso cui è possibile rivolgersi per ricevere aiuto: SerD e comunità. Il corto è stato proiettato nelle 17 sale cinematografiche ACEC, 6 nella provincia di Genova e 11 nel territorio ligure."
+    "description": "Un cortometraggio di cinque minuti realizzato dal cabarettista Daniele Raco, in collaborazione con il Sert di Asl3 e il Ceis di Genova. In maniera scherzosa, attraverso una serie di sketch comici, Daniele Raco presenta il problema dell’azzardo e soprattutto illustra le strutture presso cui è possibile rivolgersi per ricevere aiuto: SerD e comunità. Il corto è stato proiettato nelle 17 sale cinematografiche ACEC, 6 nella provincia di Genova e 11 nel territorio ligure.",
+    "dataInserimento": "2025-06-17"
   },
   {
     "id": "HD1923-43",
@@ -2422,7 +2594,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Paolo e Olmo della società torinese TAXI 1729 ci spiegano il funzionamento di alcuni meccanismi di azzardo utilizzati all’interno dei videogiochi. Gli acquisti in-game, in gergo “shoppare”, vengono favoriti ad esempio dalle loot box o dall’utilizzo di una valuta interna al gioco. Azzardo e gaming sono due mondi distinti: l’importante è accorgersi quando i videogiochi ci occupano troppo tempo, denaro ed energie. Video utilizzato a scopo informativo all’interno di interventi su scuole primarie e secondarie di primo grado, per far emergere esperienze e conoscenze sul tema da parte dei ragazzi."
+    "description": "Paolo e Olmo della società torinese TAXI 1729 ci spiegano il funzionamento di alcuni meccanismi di azzardo utilizzati all’interno dei videogiochi. Gli acquisti in-game, in gergo “shoppare”, vengono favoriti ad esempio dalle loot box o dall’utilizzo di una valuta interna al gioco. Azzardo e gaming sono due mondi distinti: l’importante è accorgersi quando i videogiochi ci occupano troppo tempo, denaro ed energie. Video utilizzato a scopo informativo all’interno di interventi su scuole primarie e secondarie di primo grado, per far emergere esperienze e conoscenze sul tema da parte dei ragazzi.",
+    "dataInserimento": "2023-08-05"
   },
   {
     "id": "HD1923-44",
@@ -2436,7 +2609,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Diego e Paolo della società torinese TAXI 1729 usano il paragone con il sistema di valutazione dei giocatori usato nei videogiochi calcistici, come FIFA e PES, per spiegare i diagrammi Astrig creati dal Prof. Peren e da un team di studiosi internazionali (tra cui l’italiana Sabrina Molinaro) per valutare la pericolosità dei giochi d’azzardo. Attraverso i voti di fattori come frequenza delle partite, meccanismi di quasi vincita, frequenza delle vincite e continuità di gioco è possibile confrontare tra loro i diversi giochi, evidenziando quali sono più “pericolosi” per generare dipendenza. Perchè non utilizzare uno studio come questo per porre dei limiti legislativi in grado di rendere i giochi meno pericolosi?"
+    "description": "Diego e Paolo della società torinese TAXI 1729 usano il paragone con il sistema di valutazione dei giocatori usato nei videogiochi calcistici, come FIFA e PES, per spiegare i diagrammi Astrig creati dal Prof. Peren e da un team di studiosi internazionali (tra cui l’italiana Sabrina Molinaro) per valutare la pericolosità dei giochi d’azzardo. Attraverso i voti di fattori come frequenza delle partite, meccanismi di quasi vincita, frequenza delle vincite e continuità di gioco è possibile confrontare tra loro i diversi giochi, evidenziando quali sono più “pericolosi” per generare dipendenza. Perchè non utilizzare uno studio come questo per porre dei limiti legislativi in grado di rendere i giochi meno pericolosi?",
+    "dataInserimento": "2023-09-03"
   },
   {
     "id": "HD1923-45",
@@ -2450,7 +2624,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Nel servizio della trasmissione di Rai 1 “Via delle storie” viene intervistato Diego Rizzuto della società torinese TAXI 1729. Diego spiega alcuni dei meccanismi che ci invogliano a giocare d’azzardo e come tutti i giochi sono studiati matematicamente per farci perdere nel lungo periodo. Vengono anche spiegati i numeri degli incassi dell’azzardo in Italia nel 2020: su 88 miliardi 75 tornano in vincite (per far continuare a giocare), mentre i restanti 13 sono di guadagno (7 miliardi allo stato e 6 ai privati). Il servizio può essere utiizzato al posto dei video di Taxi su Gratta e Vinci e Slot, perché in 6 minuti riporta informazioni su entrambi i giochi."
+    "description": "Nel servizio della trasmissione di Rai 1 “Via delle storie” viene intervistato Diego Rizzuto della società torinese TAXI 1729. Diego spiega alcuni dei meccanismi che ci invogliano a giocare d’azzardo e come tutti i giochi sono studiati matematicamente per farci perdere nel lungo periodo. Vengono anche spiegati i numeri degli incassi dell’azzardo in Italia nel 2020: su 88 miliardi 75 tornano in vincite (per far continuare a giocare), mentre i restanti 13 sono di guadagno (7 miliardi allo stato e 6 ai privati). Il servizio può essere utiizzato al posto dei video di Taxi su Gratta e Vinci e Slot, perché in 6 minuti riporta informazioni su entrambi i giochi.",
+    "dataInserimento": "2023-05-01"
   },
   {
     "id": "HD1923-46",
@@ -2464,7 +2639,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Video di circa 8 minuti che monta le interviste che Fanpage.it ha realizzato - con garanzia di anonimato - a Napoli con persone affette da disturbo di gioco d’azzardo patologico. Un gratta e vinci dopo l'altro, un gettone dopo l'altro in una slot machine o in un videopoker, l'attesa di una corsa di cavalli, di una partita di calcio: senza nemmeno accorgersene si finisce in un vicolo senza uscita fatto di debiti, di segreti, di usura, nei casi peggiori anche di violenza. Giocatori Anonimi lavora operosamente in silenzio per aiutare chi lo vuole a cambiare strada. Il video si chiude con alcuni dati relativi al disturbo del gioco d’azzardo in Italia, aggiornati al 2019."
+    "description": "Video di circa 8 minuti che monta le interviste che Fanpage.it ha realizzato - con garanzia di anonimato - a Napoli con persone affette da disturbo di gioco d’azzardo patologico. Un gratta e vinci dopo l'altro, un gettone dopo l'altro in una slot machine o in un videopoker, l'attesa di una corsa di cavalli, di una partita di calcio: senza nemmeno accorgersene si finisce in un vicolo senza uscita fatto di debiti, di segreti, di usura, nei casi peggiori anche di violenza. Giocatori Anonimi lavora operosamente in silenzio per aiutare chi lo vuole a cambiare strada. Il video si chiude con alcuni dati relativi al disturbo del gioco d’azzardo in Italia, aggiornati al 2019.",
+    "dataInserimento": "2025-08-31"
   },
   {
     "id": "HD1923-47",
@@ -2478,7 +2654,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "In un servizio video di poco più di 8 minuti Fanpage.it intervista persone con problemi di dipendenza da VLT e azzardo. \"A volte ci parlavo con le slot, vedi a che livello ero arrivato\" comincia così la testimonianza di Antonio, giocatore d'azzardo patologico che ha perso tutti i suoi averi alle slot e videolottery. Slot machines, vlt, Gratta&Vinci, poker online e lotterie istantanee. Sono centinaia le forme di gioco d'azzardo legalizzato in Italia, nel 2011 la raccolta di questo mercato ha raggiunto gli 80 miliardi. Vengono intervistati anche operatori che lavorano con associazioni di aiuto ai giocatori patologici e alle loro famiglie."
+    "description": "In un servizio video di poco più di 8 minuti Fanpage.it intervista persone con problemi di dipendenza da VLT e azzardo. \"A volte ci parlavo con le slot, vedi a che livello ero arrivato\" comincia così la testimonianza di Antonio, giocatore d'azzardo patologico che ha perso tutti i suoi averi alle slot e videolottery. Slot machines, vlt, Gratta&Vinci, poker online e lotterie istantanee. Sono centinaia le forme di gioco d'azzardo legalizzato in Italia, nel 2011 la raccolta di questo mercato ha raggiunto gli 80 miliardi. Vengono intervistati anche operatori che lavorano con associazioni di aiuto ai giocatori patologici e alle loro famiglie.",
+    "dataInserimento": "2024-04-12"
   },
   {
     "id": "HD1923-48",
@@ -2492,7 +2669,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Servizio TGLa7 del 25 maggio 2013. Il servizio spiega come fanno le VLT italiane ha far guadagnare lo stato e i privati. L’imprenditore Eugenio Bernardi, costruttore di VLT a Parma, racconta di come la percentuale di vincita sia impostata al 74%: un algoritmo “addomestica” le partite, nulla è lasciato al caso. Le slot dei casino funzionano diversamente. L’Italia è il paese con il più alto numero di “macchinette” al mondo, l’installazione delle quali è stato anche giustificato dal decreto per la ricostruzione de L’Aquila. Inoltre sempre l’Italia è lo stato dove le slot sono più “tirchie”, negli altri paesi la percentuale di vincita è più alta. Questa percentuale può essere variata dallo stato per fare più soldi senza che i giocatori ne siano informati. Servizio utilizzabile, anche se datato, per spiegare con maggiore dettaglio il funzionamento software delle VLT."
+    "description": "Servizio TGLa7 del 25 maggio 2013. Il servizio spiega come fanno le VLT italiane ha far guadagnare lo stato e i privati. L’imprenditore Eugenio Bernardi, costruttore di VLT a Parma, racconta di come la percentuale di vincita sia impostata al 74%: un algoritmo “addomestica” le partite, nulla è lasciato al caso. Le slot dei casino funzionano diversamente. L’Italia è il paese con il più alto numero di “macchinette” al mondo, l’installazione delle quali è stato anche giustificato dal decreto per la ricostruzione de L’Aquila. Inoltre sempre l’Italia è lo stato dove le slot sono più “tirchie”, negli altri paesi la percentuale di vincita è più alta. Questa percentuale può essere variata dallo stato per fare più soldi senza che i giocatori ne siano informati. Servizio utilizzabile, anche se datato, per spiegare con maggiore dettaglio il funzionamento software delle VLT.",
+    "dataInserimento": "2025-06-02"
   },
   {
     "id": "HD1923-49",
@@ -2506,7 +2684,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Tratto da LA GABBIA (La7). Il gioco d'azzardo è una malattia per molti italiani. Un'entrata fiscale per lo Stato. Un grande affare per le aziende concessionarie, tra cui Gtech, l'ex Lottomatica, forte di mezzo miliardo di utili all'anno. Ora l'azienda ha deciso di trasferire la sede fiscale a Londra, proprio come Fiat. Ma il Governo non muove un dito. Anche perché nelle istituzioni Gtech gode di ottime amicizie. Manuele Bonaccorsi ci racconta quali. Servizio molto interessante ma purtroppo datato: è del 2014, a capo del governo c’è Renzi, il ministro dell’economia inseguito dal giornalista è Padoan. Può essere utile per far ragionare su alcune dinamiche del mercato dell’azzardo in Italia, chiedendo successivamente ai ragazzi di fare ricerche per “aggiornare” i dati visti nel servizio."
+    "description": "Tratto da LA GABBIA (La7). Il gioco d'azzardo è una malattia per molti italiani. Un'entrata fiscale per lo Stato. Un grande affare per le aziende concessionarie, tra cui Gtech, l'ex Lottomatica, forte di mezzo miliardo di utili all'anno. Ora l'azienda ha deciso di trasferire la sede fiscale a Londra, proprio come Fiat. Ma il Governo non muove un dito. Anche perché nelle istituzioni Gtech gode di ottime amicizie. Manuele Bonaccorsi ci racconta quali. Servizio molto interessante ma purtroppo datato: è del 2014, a capo del governo c’è Renzi, il ministro dell’economia inseguito dal giornalista è Padoan. Può essere utile per far ragionare su alcune dinamiche del mercato dell’azzardo in Italia, chiedendo successivamente ai ragazzi di fare ricerche per “aggiornare” i dati visti nel servizio.",
+    "dataInserimento": "2023-07-09"
   },
   {
     "id": "HD1923-50",
@@ -2520,7 +2699,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Tratto da PIAZZAPULITA del maggio 2016. La puntata si apre con una lunga e interessante intervista a Marco Baldini, di circa 5 minuti. Baldini spiega di aver perso negli anni circa 5 milioni di euro al gioco e che negli ultimi tre anni, dopo aver smesso di giocare, riceve oltre cento telefonate al giorno di persone che gli chiedono indietro i soldi. Ha anche provato il suicidio. In studio il Ministro della Salute del 2016 Beatrice Lorenzin, che spiega che la dipendenza da azzardo è come una droga e per questo è stata inserita nei LEA dalla Sanità italiana."
+    "description": "Tratto da PIAZZAPULITA del maggio 2016. La puntata si apre con una lunga e interessante intervista a Marco Baldini, di circa 5 minuti. Baldini spiega di aver perso negli anni circa 5 milioni di euro al gioco e che negli ultimi tre anni, dopo aver smesso di giocare, riceve oltre cento telefonate al giorno di persone che gli chiedono indietro i soldi. Ha anche provato il suicidio. In studio il Ministro della Salute del 2016 Beatrice Lorenzin, che spiega che la dipendenza da azzardo è come una droga e per questo è stata inserita nei LEA dalla Sanità italiana.",
+    "dataInserimento": "2024-07-17"
   },
   {
     "id": "HD1923-51",
@@ -2534,7 +2714,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "La testimonianza di Stefano, titolare del bar Zanzibar di Bologna, che alcuni anni fa ha fatto una scelta importante: ha sostituito le due slot che aveva nel bar con dei ripiani per lo scambio libri. Così facendo ha perso degli incassi importanti, ma la sera va a dormire sereno e l’ambiente del bar è “più tranquillo e salutare”. Video realizzato da Comune di Bologna per sensibilizzare al contrasto al gioco d’azzardo."
+    "description": "La testimonianza di Stefano, titolare del bar Zanzibar di Bologna, che alcuni anni fa ha fatto una scelta importante: ha sostituito le due slot che aveva nel bar con dei ripiani per lo scambio libri. Così facendo ha perso degli incassi importanti, ma la sera va a dormire sereno e l’ambiente del bar è “più tranquillo e salutare”. Video realizzato da Comune di Bologna per sensibilizzare al contrasto al gioco d’azzardo.",
+    "dataInserimento": "2024-10-08"
   },
   {
     "id": "HD1923-52",
@@ -2548,7 +2729,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Video in inglese con sottotitoli in italiano. Si tratta una TED Education, ovvero una lezione online. Immaginate di vincere domani una lotteria multimilionaria. Se siete come molti di noi, sareste in estasi, incapaci di credere alla vostra fortuna. Ma questa gioia sarebbe sempre lì qualche anno dopo? Raj Raghunathan descrive un fenomeno chiamato adattamento edonico, che può fare luce sulla risposta."
+    "description": "Video in inglese con sottotitoli in italiano. Si tratta una TED Education, ovvero una lezione online. Immaginate di vincere domani una lotteria multimilionaria. Se siete come molti di noi, sareste in estasi, incapaci di credere alla vostra fortuna. Ma questa gioia sarebbe sempre lì qualche anno dopo? Raj Raghunathan descrive un fenomeno chiamato adattamento edonico, che può fare luce sulla risposta.",
+    "dataInserimento": "2025-01-18"
   },
   {
     "id": "HD1923-53",
@@ -2562,7 +2744,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Un operatore dell'Associazione Ricominciamo Insieme intervista un giocatore d'azzardo in recupero. L’uomo viene inquadrato di spalle, incappucciato e con la voce distorta. Ci racconta di essersi giocato in una notte l’intera tredicesima. Il gioco d’azzardo non lo lasciava dormire, non era mai tranquillo: il gioco ritornava anche nei sogni, molto tristi. Ha provato a smettere tante volte, ma dopo un mese ricominciava. Alla fine un amico lo ha aiutato indirizzandolo all’associazione di Giocatori Anonimi, che però non è riuscita ad aiutarla; al momento ha trovato aiuto presso l’associazione Ricominciamo insieme. Il gioco rende soli, non c’è vera amicizia tra i giocatori."
+    "description": "Un operatore dell'Associazione Ricominciamo Insieme intervista un giocatore d'azzardo in recupero. L’uomo viene inquadrato di spalle, incappucciato e con la voce distorta. Ci racconta di essersi giocato in una notte l’intera tredicesima. Il gioco d’azzardo non lo lasciava dormire, non era mai tranquillo: il gioco ritornava anche nei sogni, molto tristi. Ha provato a smettere tante volte, ma dopo un mese ricominciava. Alla fine un amico lo ha aiutato indirizzandolo all’associazione di Giocatori Anonimi, che però non è riuscita ad aiutarla; al momento ha trovato aiuto presso l’associazione Ricominciamo insieme. Il gioco rende soli, non c’è vera amicizia tra i giocatori.",
+    "dataInserimento": "2024-09-03"
   },
   {
     "id": "HD1923-54",
@@ -2576,7 +2759,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Tratto da LA GABBIA (La7) del marzo 2015. Un direttore di banca affetto da Disturbo da Gioco d’Azzardo ha utilizzato per anni i soldi investiti dai correntisti per tentare la fortuna al gioco, dilapidando quasi 3 milioni di euro. Ora l’uomo, che viene intervistato nel servizio, è in cura: riconosce la sua responsabilità ma chiama in causa la banca, che avrebbe dovuto controllare. A distanza di quattro anni, i truffati sono ancora in attesa di un risarcimento."
+    "description": "Tratto da LA GABBIA (La7) del marzo 2015. Un direttore di banca affetto da Disturbo da Gioco d’Azzardo ha utilizzato per anni i soldi investiti dai correntisti per tentare la fortuna al gioco, dilapidando quasi 3 milioni di euro. Ora l’uomo, che viene intervistato nel servizio, è in cura: riconosce la sua responsabilità ma chiama in causa la banca, che avrebbe dovuto controllare. A distanza di quattro anni, i truffati sono ancora in attesa di un risarcimento.",
+    "dataInserimento": "2023-06-27"
   },
   {
     "id": "HD1923-55",
@@ -2590,7 +2774,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Video realizzato all’interno del progetto nazionale “Se questo è un gioco” di Avviso Pubblico e Adventum. Fabio Pellerano, educatore professionale presso il Servizio per le Dipendenze dell’ASL TO3 e autore del libro Azzardopatia, spiega in modo chiaro come funzionano le VLT (Video Lottery Terminal): sono apparecchi più sofisticati delle slot, con schermo touch dove è possibile scegliere tra più giochi e dove si punta utilizzando le banconote. Come le slot sono dotate di un programma che determina i risultati delle giocate: in più sono collegate ad un sistema centrale e possono erogare un jackpot, che è molto attraente per i giocatori. Occorerebbe evitarle perché hanno frequenza di gioco molto alta e permettono di giocare somme più alte delle slot. Avvertenze per chi gioca: portare pochi contanti, lasciare a casa bancomat e carta di credito, non bere, non prendersela con le altre persone se si perde, mettere un timer e fare delle pause. Video informativo con taglio molto spartano (nessun montaggio, né commenti sonori, poca grafica), chiaro e sintetico nei contenuti. Utilizzabile insieme ad altri prodotti informativi per poi ragionare su: quali informazioni ricordi? Che cosa ha funzionato meglio?"
+    "description": "Video realizzato all’interno del progetto nazionale “Se questo è un gioco” di Avviso Pubblico e Adventum. Fabio Pellerano, educatore professionale presso il Servizio per le Dipendenze dell’ASL TO3 e autore del libro Azzardopatia, spiega in modo chiaro come funzionano le VLT (Video Lottery Terminal): sono apparecchi più sofisticati delle slot, con schermo touch dove è possibile scegliere tra più giochi e dove si punta utilizzando le banconote. Come le slot sono dotate di un programma che determina i risultati delle giocate: in più sono collegate ad un sistema centrale e possono erogare un jackpot, che è molto attraente per i giocatori. Occorerebbe evitarle perché hanno frequenza di gioco molto alta e permettono di giocare somme più alte delle slot. Avvertenze per chi gioca: portare pochi contanti, lasciare a casa bancomat e carta di credito, non bere, non prendersela con le altre persone se si perde, mettere un timer e fare delle pause. Video informativo con taglio molto spartano (nessun montaggio, né commenti sonori, poca grafica), chiaro e sintetico nei contenuti. Utilizzabile insieme ad altri prodotti informativi per poi ragionare su: quali informazioni ricordi? Che cosa ha funzionato meglio?",
+    "dataInserimento": "2023-08-17"
   },
   {
     "id": "HD1923-56",
@@ -2604,7 +2789,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Video realizzato all’interno del progetto nazionale “Se questo è un gioco” di Avviso Pubblico e Adventum. Fabio Pellerano, educatore professionale presso il Servizio per le Dipendenze dell’ASL TO3 e autore del libro Azzardopatia, spiega in modo chiaro come funzionano le slot machine. Grazie alla loro programmazione, le “macchinette” fanno finta di emettere numeri, simboli, combinazioni come se fosse il fortuna a guidarle, invece sono programmate per connettere tra loro e quindi emettere combinazioni … perdenti. Nella seconda parte l’educatore fornisce consigli ai giocatori: evitare di bere e fumare, non pensare che basti cambiare macchinetta per vincere, ecc… Video informativo con taglio molto spartano (nessun montaggio, né commenti sonori, poca grafica), chiaro e sintetico nei contenuti. Utilizzabile insieme ad altri prodotti informativi per poi ragionare su: quali informazioni ricordi? Che cosa ha funzionato meglio?"
+    "description": "Video realizzato all’interno del progetto nazionale “Se questo è un gioco” di Avviso Pubblico e Adventum. Fabio Pellerano, educatore professionale presso il Servizio per le Dipendenze dell’ASL TO3 e autore del libro Azzardopatia, spiega in modo chiaro come funzionano le slot machine. Grazie alla loro programmazione, le “macchinette” fanno finta di emettere numeri, simboli, combinazioni come se fosse il fortuna a guidarle, invece sono programmate per connettere tra loro e quindi emettere combinazioni … perdenti. Nella seconda parte l’educatore fornisce consigli ai giocatori: evitare di bere e fumare, non pensare che basti cambiare macchinetta per vincere, ecc… Video informativo con taglio molto spartano (nessun montaggio, né commenti sonori, poca grafica), chiaro e sintetico nei contenuti. Utilizzabile insieme ad altri prodotti informativi per poi ragionare su: quali informazioni ricordi? Che cosa ha funzionato meglio?",
+    "dataInserimento": "2025-07-20"
   },
   {
     "id": "HD1923-57",
@@ -2618,7 +2804,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Video realizzato all’interno del progetto nazionale “Se questo è un gioco” di Avviso Pubblico e Adventum. Fabio Pellerano, educatore professionale presso il Servizio per le Dipendenze dell’ASL TO3 e autore del libro Azzardopatia, spiega in modo chiaro come funziona il Bingo di sala. La struttura ricorda quello della “tombolata” in famiglia, ma in realtà il ritmo di gioco è molto più alto (5-6 minuti per partita) e questo impedisce tutta la possibile socialità: non si riesce a chiacchierare con i vicini, si pensa di andare per socializzare ma si resta soli. E’ un gioco la cui pericolosità viene sottovalutata perché ricorda qualcosa di famigliare, ma a causa dell’alta frequenza di gioco si possono spendere cifre importanti in una sola serata. Occorre evitare pensieri magici, come il venditore di cartelle “portafortuna”; anche comprare più cartelle aumenta in modo poco significativo le probabilità di vincita, che dipendono dalle cartelle vendute. Video informativo con taglio molto spartano (nessun montaggio, né commenti sonori, poca grafica), chiaro e sintetico nei contenuti. Utilizzabile insieme ad altri prodotti informativi per poi ragionare su: quali informazioni ricordi? Che cosa ha funzionato meglio?"
+    "description": "Video realizzato all’interno del progetto nazionale “Se questo è un gioco” di Avviso Pubblico e Adventum. Fabio Pellerano, educatore professionale presso il Servizio per le Dipendenze dell’ASL TO3 e autore del libro Azzardopatia, spiega in modo chiaro come funziona il Bingo di sala. La struttura ricorda quello della “tombolata” in famiglia, ma in realtà il ritmo di gioco è molto più alto (5-6 minuti per partita) e questo impedisce tutta la possibile socialità: non si riesce a chiacchierare con i vicini, si pensa di andare per socializzare ma si resta soli. E’ un gioco la cui pericolosità viene sottovalutata perché ricorda qualcosa di famigliare, ma a causa dell’alta frequenza di gioco si possono spendere cifre importanti in una sola serata. Occorre evitare pensieri magici, come il venditore di cartelle “portafortuna”; anche comprare più cartelle aumenta in modo poco significativo le probabilità di vincita, che dipendono dalle cartelle vendute. Video informativo con taglio molto spartano (nessun montaggio, né commenti sonori, poca grafica), chiaro e sintetico nei contenuti. Utilizzabile insieme ad altri prodotti informativi per poi ragionare su: quali informazioni ricordi? Che cosa ha funzionato meglio?",
+    "dataInserimento": "2025-06-30"
   },
   {
     "id": "HD1923-58",
@@ -2632,7 +2819,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Video realizzato all’interno del progetto nazionale “Se questo è un gioco” di Avviso Pubblico e Adventum. La psicoterapeuta Fulvia Prever, responsabile nazionale del progetto Azzardo e Donne, spiega che quando si lavora sul Disturbo da Gioco d’Azzardo al femminile occorre tenere conto di fattori che lo differenziano dal problema al maschile. Il problema nelle donne nasce quasi sempre da problemi relazionali in famiglia: si gioca per evadere, ma poi il gioco diventa un problema più grande. La donna ha poco tempo per curarsi e si sente molto in colpa nell’avere questo problema: occorre fornirle un supporto al femminile e strutturare spazi di accoglienza che offrano, ad esempio, il babysitting dei bambini. Video informativo con taglio molto spartano (nessun montaggio, né commenti sonori, poca grafica), chiaro e sintetico nei contenuti. Utilizzabile insieme ad altri prodotti informativi per poi ragionare su: quali informazioni ricordi? Che cosa ha funzionato meglio?"
+    "description": "Video realizzato all’interno del progetto nazionale “Se questo è un gioco” di Avviso Pubblico e Adventum. La psicoterapeuta Fulvia Prever, responsabile nazionale del progetto Azzardo e Donne, spiega che quando si lavora sul Disturbo da Gioco d’Azzardo al femminile occorre tenere conto di fattori che lo differenziano dal problema al maschile. Il problema nelle donne nasce quasi sempre da problemi relazionali in famiglia: si gioca per evadere, ma poi il gioco diventa un problema più grande. La donna ha poco tempo per curarsi e si sente molto in colpa nell’avere questo problema: occorre fornirle un supporto al femminile e strutturare spazi di accoglienza che offrano, ad esempio, il babysitting dei bambini. Video informativo con taglio molto spartano (nessun montaggio, né commenti sonori, poca grafica), chiaro e sintetico nei contenuti. Utilizzabile insieme ad altri prodotti informativi per poi ragionare su: quali informazioni ricordi? Che cosa ha funzionato meglio?",
+    "dataInserimento": "2025-03-18"
   },
   {
     "id": "HD1923-59",
@@ -2646,7 +2834,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Lo youtuber italiano Ciancianguilla (Matteo Francavilla) spiega in un video ben costruito il fenomeno dei casinò online sponsorizzati dagli streamer, fenomeno su cui lui non è per nulla d’accordo. Questi siti hanno spesso sede in paradisi fiscali come l’isola di Curacao; gli streamer che giocano in live ricevono grosse somme di denaro (per alcuni di parla di milioni di dollari) e in più resta il dubbio che i soldi che giocano siano “fake”, ovvero non reali, forniti dal casinò stesso. Inoltre chi gioca dall’Italia rischia, perché se usa una VPN per accedere al sito poi potrebbe non riuscire a ritirare le vincite. Video lungo (16 minuti) ma molto istruttivo: potrebbe essere utile estrapolare alcune sequenze. Viene citato anche lo sfogo del Gabbrone sul disturbo da Azzardo, presente anche in questo archivio."
+    "description": "Lo youtuber italiano Ciancianguilla (Matteo Francavilla) spiega in un video ben costruito il fenomeno dei casinò online sponsorizzati dagli streamer, fenomeno su cui lui non è per nulla d’accordo. Questi siti hanno spesso sede in paradisi fiscali come l’isola di Curacao; gli streamer che giocano in live ricevono grosse somme di denaro (per alcuni di parla di milioni di dollari) e in più resta il dubbio che i soldi che giocano siano “fake”, ovvero non reali, forniti dal casinò stesso. Inoltre chi gioca dall’Italia rischia, perché se usa una VPN per accedere al sito poi potrebbe non riuscire a ritirare le vincite. Video lungo (16 minuti) ma molto istruttivo: potrebbe essere utile estrapolare alcune sequenze. Viene citato anche lo sfogo del Gabbrone sul disturbo da Azzardo, presente anche in questo archivio.",
+    "dataInserimento": "2025-11-22"
   },
   {
     "id": "HD1923-60",
@@ -2660,7 +2849,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Come il suo collega Dadobax, il cui video è presente in questo archivio, anche lo youtuber e streamer Wesa esprime la sua opinione sulle lootbox, accusate di incentivare il gioco d’azzardo tra i videogiocatori. Overwatch e Clash Royale sono solo esempi di un modello di business in costante espansione nel mercato videoludico, quello delle loot box, ovvero pacchi premio randomici. Potenzialmente a pagamento, talvolta determinanti per il gameplay (pay to win) sono comparabili al gioco d'azzardo? C'è un problema più grande alla base della struttura di alcuni videogiochi multiplayer online? Wesa prende posizione rispetto al tema: ad esempio si dice “terrorizzato” dai videogiochi infiniti, perché anche se non ci hai speso soldi ha speso un mucchio di tempo. Anche la competizione agonistica, la cui espressione più visibile sono gli esports, è un’esca, perché invoglia a stare dentro un’arena “senza fine”, in un “gioco senza fondo”. Il fatto che sui giochi si possa shoppare colpisce le fasce più deboli (dai bambini ai pensionati), che già hanno pochi soldi, generando disagio sociale. Video molto lungo (17 minuti) ma dal quale è possibile estrapolare parti più brevi per stimolare il dibattito sui legami tra gaming e gambling."
+    "description": "Come il suo collega Dadobax, il cui video è presente in questo archivio, anche lo youtuber e streamer Wesa esprime la sua opinione sulle lootbox, accusate di incentivare il gioco d’azzardo tra i videogiocatori. Overwatch e Clash Royale sono solo esempi di un modello di business in costante espansione nel mercato videoludico, quello delle loot box, ovvero pacchi premio randomici. Potenzialmente a pagamento, talvolta determinanti per il gameplay (pay to win) sono comparabili al gioco d'azzardo? C'è un problema più grande alla base della struttura di alcuni videogiochi multiplayer online? Wesa prende posizione rispetto al tema: ad esempio si dice “terrorizzato” dai videogiochi infiniti, perché anche se non ci hai speso soldi ha speso un mucchio di tempo. Anche la competizione agonistica, la cui espressione più visibile sono gli esports, è un’esca, perché invoglia a stare dentro un’arena “senza fine”, in un “gioco senza fondo”. Il fatto che sui giochi si possa shoppare colpisce le fasce più deboli (dai bambini ai pensionati), che già hanno pochi soldi, generando disagio sociale. Video molto lungo (17 minuti) ma dal quale è possibile estrapolare parti più brevi per stimolare il dibattito sui legami tra gaming e gambling.",
+    "dataInserimento": "2025-12-23"
   },
   {
     "id": "HD1923-61",
@@ -2674,7 +2864,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Diego e Paolo della società torinese TAXI 1729 commentano in questo breve short di Youtube l’episodio, rilanciato dai media, della perdita di 1 milione di euro ad un casino online da parte del noto calciatore Neymar, avvenuta in diretta Twitch. Le reazioni sul web sono state diverse, ma Diego e Paolo sottolineano un’informazione importante della vicenda: il casino online dove Neymar ha perso è “Blaze”, di cui il calciatore è testimonial: i soldi che ha perso ha favore di telecamera, quindi, fanno parte della promozione per cui è pagato. Quindi “non un folle azzardo, ma pubblicità”: quella stessa pubblicità vietata da qualche anno su giornali e tv e che “ha cambiato forma, diventando più subdola e pervasiva”. Video utilizzato nei laboratori in classe svolti a maggio 2023 (a ridosso dell’episodio), per ragionare anche sul fenomeno della gamblification, che normalizza l’azzardo attraverso testimonial famosi e presenza costante su diverse piattaforme social (Twitch, Tik Tok, Instagram ecc…)"
+    "description": "Diego e Paolo della società torinese TAXI 1729 commentano in questo breve short di Youtube l’episodio, rilanciato dai media, della perdita di 1 milione di euro ad un casino online da parte del noto calciatore Neymar, avvenuta in diretta Twitch. Le reazioni sul web sono state diverse, ma Diego e Paolo sottolineano un’informazione importante della vicenda: il casino online dove Neymar ha perso è “Blaze”, di cui il calciatore è testimonial: i soldi che ha perso ha favore di telecamera, quindi, fanno parte della promozione per cui è pagato. Quindi “non un folle azzardo, ma pubblicità”: quella stessa pubblicità vietata da qualche anno su giornali e tv e che “ha cambiato forma, diventando più subdola e pervasiva”. Video utilizzato nei laboratori in classe svolti a maggio 2023 (a ridosso dell’episodio), per ragionare anche sul fenomeno della gamblification, che normalizza l’azzardo attraverso testimonial famosi e presenza costante su diverse piattaforme social (Twitch, Tik Tok, Instagram ecc…)",
+    "dataInserimento": "2025-10-24"
   },
   {
     "id": "HD1923-62",
@@ -2688,7 +2879,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Diego e Paolo della società torinese TAXI 1729 raccontano in questo Tik Tok una vicenda del 2010, legata al gioco Win For Life. Il gioco prometteva ai vincitori una rendita di 4000 euro al mese per 20 anni. A marzo 2010 59 persone vinsero, ma – come previsto in realtà dal regolamento del gioco – il premio venne diviso e a ciascuno tocco una rendita di 67,80 euro al mese. La vicenda è esemplificativa dello scarto tra come l’azzardo viene venduto negli spot e ciò che realmente si ottiene, a volte anche vincendo."
+    "description": "Diego e Paolo della società torinese TAXI 1729 raccontano in questo Tik Tok una vicenda del 2010, legata al gioco Win For Life. Il gioco prometteva ai vincitori una rendita di 4000 euro al mese per 20 anni. A marzo 2010 59 persone vinsero, ma – come previsto in realtà dal regolamento del gioco – il premio venne diviso e a ciascuno tocco una rendita di 67,80 euro al mese. La vicenda è esemplificativa dello scarto tra come l’azzardo viene venduto negli spot e ciò che realmente si ottiene, a volte anche vincendo.",
+    "dataInserimento": "2023-11-27"
   },
   {
     "id": "HD1923-63",
@@ -2702,7 +2894,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Video in animazione grafica del canale Youtube Telospiego, che conta oltre 200.000 iscritti. In quattro minuti vengono spiegati i meccanismi della dipendenza da gioco d’azzardo: il rinforzo della dopamina, le possibili cause, gli effetti, i percorsi di cura. Alla fine viene promosso il numero verde nazionale attivato dal Ministero della Salute e dall’Istiuto Superiore di Sanità: il video è stato realizzato in collaborazione con loro."
+    "description": "Video in animazione grafica del canale Youtube Telospiego, che conta oltre 200.000 iscritti. In quattro minuti vengono spiegati i meccanismi della dipendenza da gioco d’azzardo: il rinforzo della dopamina, le possibili cause, gli effetti, i percorsi di cura. Alla fine viene promosso il numero verde nazionale attivato dal Ministero della Salute e dall’Istiuto Superiore di Sanità: il video è stato realizzato in collaborazione con loro.",
+    "dataInserimento": "2025-06-17"
   },
   {
     "id": "HD1924-01",
@@ -2716,7 +2909,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "La sequenza monta insieme i passaggi della puntata “$pringfield” (stagione 5 episodio 10) in cui Marge, all’interno del casinò creato da Mr Burns, diventa schiava delle slot machines, rischiando anche la vita della piccola Maggie. Alla fine Homer riesce a farla smettere, ricordandole una promessa non mantenuta con Lisa. Sequenza utilizzata dagli operatori del SerD di Vercelli all’interno del laboratorio SteadyGAP. In pochi minuti il video riassume diverse caratteristiche dell’azzardo e della dipendenza."
+    "description": "La sequenza monta insieme i passaggi della puntata “$pringfield” (stagione 5 episodio 10) in cui Marge, all’interno del casinò creato da Mr Burns, diventa schiava delle slot machines, rischiando anche la vita della piccola Maggie. Alla fine Homer riesce a farla smettere, ricordandole una promessa non mantenuta con Lisa. Sequenza utilizzata dagli operatori del SerD di Vercelli all’interno del laboratorio SteadyGAP. In pochi minuti il video riassume diverse caratteristiche dell’azzardo e della dipendenza.",
+    "dataInserimento": "2025-01-13"
   },
   {
     "id": "HD1924-02",
@@ -2730,7 +2924,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Walter (Al Pacino) descrive a parole che cos’è per lui uno scommettitore: una persona che non cerca di vincere, ma di perdere, perché quando il croupier gli porta via le fiches lui si rende conto di essere ancora vivo. E’ il desiderio di sentirsi vivo che porta il giocatore a continuare a scommettere."
+    "description": "Walter (Al Pacino) descrive a parole che cos’è per lui uno scommettitore: una persona che non cerca di vincere, ma di perdere, perché quando il croupier gli porta via le fiches lui si rende conto di essere ancora vivo. E’ il desiderio di sentirsi vivo che porta il giocatore a continuare a scommettere.",
+    "dataInserimento": "2025-02-15"
   },
   {
     "id": "HD1924-03",
@@ -2744,7 +2939,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Una donna (Jessica Lange) è nell’ufficio di una banca con un uomo che lei dice essere suo figlio (Mark Wahlberg). La donna chiede di prelevare 260 mila dollari in contanti: l’impiegata esita, chiede un’ulteriore documento d’identità a tutela della cliente. La scena si sposta fuori dalla banca: la donna dà i soldi al figlio, dicendogli che sono gli ultimi e che deve liberarsi del suo problema. Lui risponde che vuole semplicemente prendere i soldi e andare: in questo modo tronca ogni relazione con la donna, che si allontana asciugandosi le lacrime. Non viene mai nominato il gioco d’azzardo, che nel film è il motivo per cui l’uomo chiede i soldi alla madre. Per questo motivo la sequenza si presta bene ad un utilizzo insieme ad altre che mettono in scena dipendenze diverse, per ragionare su “chi è più a rischio e perché” e quindi introdurre il discorso del gioco d’azzardo problematico."
+    "description": "Una donna (Jessica Lange) è nell’ufficio di una banca con un uomo che lei dice essere suo figlio (Mark Wahlberg). La donna chiede di prelevare 260 mila dollari in contanti: l’impiegata esita, chiede un’ulteriore documento d’identità a tutela della cliente. La scena si sposta fuori dalla banca: la donna dà i soldi al figlio, dicendogli che sono gli ultimi e che deve liberarsi del suo problema. Lui risponde che vuole semplicemente prendere i soldi e andare: in questo modo tronca ogni relazione con la donna, che si allontana asciugandosi le lacrime. Non viene mai nominato il gioco d’azzardo, che nel film è il motivo per cui l’uomo chiede i soldi alla madre. Per questo motivo la sequenza si presta bene ad un utilizzo insieme ad altre che mettono in scena dipendenze diverse, per ragionare su “chi è più a rischio e perché” e quindi introdurre il discorso del gioco d’azzardo problematico.",
+    "dataInserimento": "2024-08-28"
   },
   {
     "id": "HD1924-04",
@@ -2758,7 +2954,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Jim (Mark Wahlberg), professore universitario e giocatore problematico, entra con la sua ragazza (Brie Larson) in una sala gioco. Inizia a giocare a blackjack: dopo una vincita iniziale, gioca tutta la notte, perdendo. La ragazza rimane sola e poi torna in hotel. Il mattino dopo ritrova l’uomo fuori dalla stanza e le chiede quanto ha perso: “Tutto”. La ragazza tende la mano e spinge Jim dentro la stanza. Sequenza utilizzabile chiedendo di immaginare come continua, anche assegnando ruoli diversi: in che modo reagirà la ragazza? Come si comporterà Jim? Che cosa è possibile fare?"
+    "description": "Jim (Mark Wahlberg), professore universitario e giocatore problematico, entra con la sua ragazza (Brie Larson) in una sala gioco. Inizia a giocare a blackjack: dopo una vincita iniziale, gioca tutta la notte, perdendo. La ragazza rimane sola e poi torna in hotel. Il mattino dopo ritrova l’uomo fuori dalla stanza e le chiede quanto ha perso: “Tutto”. La ragazza tende la mano e spinge Jim dentro la stanza. Sequenza utilizzabile chiedendo di immaginare come continua, anche assegnando ruoli diversi: in che modo reagirà la ragazza? Come si comporterà Jim? Che cosa è possibile fare?",
+    "dataInserimento": "2023-07-30"
   },
   {
     "id": "HD1924-05",
@@ -2772,7 +2969,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Jim (Mark Wahlberg), giocatore problematico, spiega alla sua ragazza (Brie Larson) un aspetto della sua indole: per lui non esistono mezze misure, è tutto “vittoria o morte”. “L’impossibile è l’unica cosa che valga la pena di fare”, perché altrimenti l’esistenza non ha senso. “Io non voglio alcun limite, io voglio tutto”. Alla fine del monologo la ragazza bacia Jim. La sequenza non nomina mai il gioco d’azzardo, per cui può essere utilizzata per un discorso più ampio: siamo d’accordo con il discorso di Jim? Che cosa ci convince, che cosa invece non ci piace?"
+    "description": "Jim (Mark Wahlberg), giocatore problematico, spiega alla sua ragazza (Brie Larson) un aspetto della sua indole: per lui non esistono mezze misure, è tutto “vittoria o morte”. “L’impossibile è l’unica cosa che valga la pena di fare”, perché altrimenti l’esistenza non ha senso. “Io non voglio alcun limite, io voglio tutto”. Alla fine del monologo la ragazza bacia Jim. La sequenza non nomina mai il gioco d’azzardo, per cui può essere utilizzata per un discorso più ampio: siamo d’accordo con il discorso di Jim? Che cosa ci convince, che cosa invece non ci piace?",
+    "dataInserimento": "2025-01-03"
   },
   {
     "id": "HD1924-06",
@@ -2786,7 +2984,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Dan Mahowny (Philip Seymour Hoffman) sta giocando grosse somme ai dadi in un casinò di Atlantic City. Gli altri clienti sono intorno a lui; i gestori del casinò sono preoccupati perché sta vincendo 9 milioni di dollari. Il suo assistente personale gli consiglia di smettere di giocare e andarsene, ma Dan risponde: “Non posso”. Iniziano i lanci sfortunati e l’uomo perde i suoi soldi."
+    "description": "Dan Mahowny (Philip Seymour Hoffman) sta giocando grosse somme ai dadi in un casinò di Atlantic City. Gli altri clienti sono intorno a lui; i gestori del casinò sono preoccupati perché sta vincendo 9 milioni di dollari. Il suo assistente personale gli consiglia di smettere di giocare e andarsene, ma Dan risponde: “Non posso”. Iniziano i lanci sfortunati e l’uomo perde i suoi soldi.",
+    "dataInserimento": "2025-09-23"
   },
   {
     "id": "HD1924-07",
@@ -2800,7 +2999,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Arlan, esperto giocatore di poker, subisce un bluff da un principiante. Questo evento lo destabilizza: Arlan inizia a perdere e a chiedere soldi a Molly (Jessica Chastain) per rifarsi delle perdite. La donna lo invita a smettere, ma lui ribatte chiedendo 500 mila dollari. Nel giro di una notte di rovina: la moglie chiederà il divorzio due giorni dopo."
+    "description": "Arlan, esperto giocatore di poker, subisce un bluff da un principiante. Questo evento lo destabilizza: Arlan inizia a perdere e a chiedere soldi a Molly (Jessica Chastain) per rifarsi delle perdite. La donna lo invita a smettere, ma lui ribatte chiedendo 500 mila dollari. Nel giro di una notte di rovina: la moglie chiederà il divorzio due giorni dopo.",
+    "dataInserimento": "2026-01-22"
   },
   {
     "id": "HD1924-08",
@@ -2814,7 +3014,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Molly (Jessica Chastain), organizzatrice di un giro di poker ad alte puntate, riceve nel suo ufficio un giovane giocatore d’azzardo. Il ragazzo vuole ritirare un assegno, ma la donna gli mostra un video dove risulta evidente che ha truffato, portando sul tavole fiches false. Il ragazzo racconta di avere dei debiti in giro, ma Molly è inflessibile: se lui non le restituirà 57 mila dollari non potrà più giocare ai suoi tavoli."
+    "description": "Molly (Jessica Chastain), organizzatrice di un giro di poker ad alte puntate, riceve nel suo ufficio un giovane giocatore d’azzardo. Il ragazzo vuole ritirare un assegno, ma la donna gli mostra un video dove risulta evidente che ha truffato, portando sul tavole fiches false. Il ragazzo racconta di avere dei debiti in giro, ma Molly è inflessibile: se lui non le restituirà 57 mila dollari non potrà più giocare ai suoi tavoli.",
+    "dataInserimento": "2025-02-10"
   },
   {
     "id": "HD1924-09",
@@ -2828,7 +3029,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Molly (Jessica Chastain), organizzatrice di partite di poker, racconta che aver creato il “giro” le aveva dato identità, rispetto e un posto in un mondo altrimenti inaccessibile. Ora però tutto questo era finito: l’umiliazione ha lasciato posto alla rabbia. Per reagire, decide di andare a New York."
+    "description": "Molly (Jessica Chastain), organizzatrice di partite di poker, racconta che aver creato il “giro” le aveva dato identità, rispetto e un posto in un mondo altrimenti inaccessibile. Ora però tutto questo era finito: l’umiliazione ha lasciato posto alla rabbia. Per reagire, decide di andare a New York.",
+    "dataInserimento": "2025-09-25"
   },
   {
     "id": "HD1924-10",
@@ -2842,7 +3044,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Howard (Adam Sandler), giocatore d’azzardo compulsivo, viene sgridato dalla moglie: deve mettere a nanna il figlio più piccolo. Si accovaccia sul tappeto vicino al suo letto e continua a seguire sul telefonino una partita su cui ha scommesso. Quando il bambino è addormentato, Howard va nella stanza del figlio maggiore, preadolescente. Anche il ragazzo sta guardando la partita e spiega al papà di aver scommesso 25 dollari con un amico; Howard gli risponde di averci scommesso “molti più soldi”. Quanti? “Meglio che non lo sai”. La sequenza mette in scena l’impatto del gioco d’azzardo sulle dinamiche famigliari. Utilizzabile insieme ad altre sequenze per ragionare su chi è più a rischio."
+    "description": "Howard (Adam Sandler), giocatore d’azzardo compulsivo, viene sgridato dalla moglie: deve mettere a nanna il figlio più piccolo. Si accovaccia sul tappeto vicino al suo letto e continua a seguire sul telefonino una partita su cui ha scommesso. Quando il bambino è addormentato, Howard va nella stanza del figlio maggiore, preadolescente. Anche il ragazzo sta guardando la partita e spiega al papà di aver scommesso 25 dollari con un amico; Howard gli risponde di averci scommesso “molti più soldi”. Quanti? “Meglio che non lo sai”. La sequenza mette in scena l’impatto del gioco d’azzardo sulle dinamiche famigliari. Utilizzabile insieme ad altre sequenze per ragionare su chi è più a rischio.",
+    "dataInserimento": "2024-06-24"
   },
   {
     "id": "HD1924-11",
@@ -2856,7 +3059,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "James Bond (Daniel Craig) siede ad un tavolo di poker dove si punta altissimo. L’avversario più temibile è Le Chiffre (Mads Mikkelsen). Nella mano finale sul piatto di sono 115 milioni di dollari. Le Chiffre ha un full agli assi, ma Bond vince con una scala colore."
+    "description": "James Bond (Daniel Craig) siede ad un tavolo di poker dove si punta altissimo. L’avversario più temibile è Le Chiffre (Mads Mikkelsen). Nella mano finale sul piatto di sono 115 milioni di dollari. Le Chiffre ha un full agli assi, ma Bond vince con una scala colore.",
+    "dataInserimento": "2023-08-28"
   },
   {
     "id": "HD1924-12",
@@ -2870,7 +3074,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Sequenza tratta dalla prima puntata della prima stagione della serie anime “Kakegurui”, ambientata in una scuola dove tutti gli studenti giocano d’azzardo. Due studentesse stanno giocando a “Carta forbice sasso”. Una delle due vuole puntare dieci milioni di euro. E’ una follia, ma non è forse folle tutto il gioco d’azzardo, in cui si affida la vita al caso?"
+    "description": "Sequenza tratta dalla prima puntata della prima stagione della serie anime “Kakegurui”, ambientata in una scuola dove tutti gli studenti giocano d’azzardo. Due studentesse stanno giocando a “Carta forbice sasso”. Una delle due vuole puntare dieci milioni di euro. E’ una follia, ma non è forse folle tutto il gioco d’azzardo, in cui si affida la vita al caso?",
+    "dataInserimento": "2024-11-04"
   },
   {
     "id": "HD1924-13",
@@ -2884,7 +3089,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Sequenza tratta dalla prima puntata della prima stagione della serie anime “Kakegurui”, ambientata in una scuola dove tutti gli studenti giocano d’azzardo. Due studentesse giocano alla roulette russa. Una delle due spiega che gioca per provare un brivido: i soldi non possono bastare, vuole mettere in palio la vita."
+    "description": "Sequenza tratta dalla prima puntata della prima stagione della serie anime “Kakegurui”, ambientata in una scuola dove tutti gli studenti giocano d’azzardo. Due studentesse giocano alla roulette russa. Una delle due spiega che gioca per provare un brivido: i soldi non possono bastare, vuole mettere in palio la vita.",
+    "dataInserimento": "2023-03-03"
   },
   {
     "id": "HD1924-14",
@@ -2898,7 +3104,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Giorgio (Elio Germano) e Francesco (David Riondino) sono due giocatori di poker che vincono barando. Giorgio confessa di non riuscire più a guardare in faccia la gente, ma David lo esorta a fregarsene. “Noi siamo come Dio”: sconfiggiamo il caso e dobbiamo avere il controllo su tutto."
+    "description": "Giorgio (Elio Germano) e Francesco (David Riondino) sono due giocatori di poker che vincono barando. Giorgio confessa di non riuscire più a guardare in faccia la gente, ma David lo esorta a fregarsene. “Noi siamo come Dio”: sconfiggiamo il caso e dobbiamo avere il controllo su tutto.",
+    "dataInserimento": "2023-05-23"
   },
   {
     "id": "HD1924-15",
@@ -2912,7 +3119,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Huck (Eric Bana) siede al tavolo di un diner con suo padre (Robert Duvall). Questi propone una partita a Guts (una variante veloce del poker), con puntate di mille dollari: il figlio accetta. In poche mani Huck perde tutti i suoi soldi. Il padre vuole restituirglieli, ma lui non accetta."
+    "description": "Huck (Eric Bana) siede al tavolo di un diner con suo padre (Robert Duvall). Questi propone una partita a Guts (una variante veloce del poker), con puntate di mille dollari: il figlio accetta. In poche mani Huck perde tutti i suoi soldi. Il padre vuole restituirglieli, ma lui non accetta.",
+    "dataInserimento": "2025-01-27"
   },
   {
     "id": "HD1924-16",
@@ -2926,7 +3134,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Gerry, in viaggio insieme all’amico Curtis verso New Orleans (dove giocheranno a poker), si ferma a Little Rock a casa della ex moglie. La donna lo invita a entrare e gli offre un tè. Gerry finge di andare in bagno, fruga in camera e trova una mazzetta di soldi: l’ex moglie lo sorprende e lo sbatte fuori di casa. Sequenza in cui non viene mai nominato il gioco d’azzardo: ad una visione esterna il comportamento di Jerry può essere legato a problematiche diverse. Utilizzabile con altre sequenze per ragionare su chi è più a rischio e perché."
+    "description": "Gerry, in viaggio insieme all’amico Curtis verso New Orleans (dove giocheranno a poker), si ferma a Little Rock a casa della ex moglie. La donna lo invita a entrare e gli offre un tè. Gerry finge di andare in bagno, fruga in camera e trova una mazzetta di soldi: l’ex moglie lo sorprende e lo sbatte fuori di casa. Sequenza in cui non viene mai nominato il gioco d’azzardo: ad una visione esterna il comportamento di Jerry può essere legato a problematiche diverse. Utilizzabile con altre sequenze per ragionare su chi è più a rischio e perché.",
+    "dataInserimento": "2025-09-15"
   },
   {
     "id": "HD1924-17",
@@ -2940,7 +3149,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Beth (Rebecca Hall) è nell’ufficio di Dink (Bruce Willis) che gestisce scommesse sportive per conto terzi. Dink spiega alla ragazza le regole del lavoro; nel frattempo il cavallo su cui ha scommesso vince la gara, tra l’esultanza di tutti nell’ufficio."
+    "description": "Beth (Rebecca Hall) è nell’ufficio di Dink (Bruce Willis) che gestisce scommesse sportive per conto terzi. Dink spiega alla ragazza le regole del lavoro; nel frattempo il cavallo su cui ha scommesso vince la gara, tra l’esultanza di tutti nell’ufficio.",
+    "dataInserimento": "2024-02-18"
   },
   {
     "id": "HD1924-18",
@@ -2954,7 +3164,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Scena molto famosa. Charlie (Tom Cruise) è con il fratello autistico Raymond (Dustin Hoffman) in un casinò di Las Vegas. I due giocano a blackjack: sfruttando le abilità di Raymond, Charlie riesce a vincere decine di migliaia di dollari, attirando le attenzioni della sorveglianza del casinò."
+    "description": "Scena molto famosa. Charlie (Tom Cruise) è con il fratello autistico Raymond (Dustin Hoffman) in un casinò di Las Vegas. I due giocano a blackjack: sfruttando le abilità di Raymond, Charlie riesce a vincere decine di migliaia di dollari, attirando le attenzioni della sorveglianza del casinò.",
+    "dataInserimento": "2026-01-24"
   },
   {
     "id": "HD1924-19",
@@ -2968,7 +3179,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Una breve clip tratta da un video dello youtuber GiGi. Lo youtuber ricorda il suo codice creator e spiega che ogni giorno, tra chi lo inserisce nei suoi acquisti, vengono estratti dei premi. La breve sequenza mostra un meccanismo di azzardo promosso per un pubblico presumibilmente molto giovane: il premio, assegnato a caso, incentiva l’utilizzo del codice creator che porta vantaggi allo youtuber."
+    "description": "Una breve clip tratta da un video dello youtuber GiGi. Lo youtuber ricorda il suo codice creator e spiega che ogni giorno, tra chi lo inserisce nei suoi acquisti, vengono estratti dei premi. La breve sequenza mostra un meccanismo di azzardo promosso per un pubblico presumibilmente molto giovane: il premio, assegnato a caso, incentiva l’utilizzo del codice creator che porta vantaggi allo youtuber.",
+    "dataInserimento": "2023-06-10"
   },
   {
     "id": "HD1924-20",
@@ -2982,7 +3194,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Lo streamer Il Gabbrone racconta della sua dipendenza da gioco d’azzardo: a casa della sua fidanzata Dalila gli capitava di chiudersi di nascosto in bagno e giocarsi in pochi minuti 500 o 1000 euro, senza avere il controllo delle sue azioni. Mentre lo streamer parla, i suoi follower lo supportano con messaggi scritti e vocali. Clip tratta da un video più lungo, di circa 6 minuti, presente in archivio."
+    "description": "Lo streamer Il Gabbrone racconta della sua dipendenza da gioco d’azzardo: a casa della sua fidanzata Dalila gli capitava di chiudersi di nascosto in bagno e giocarsi in pochi minuti 500 o 1000 euro, senza avere il controllo delle sue azioni. Mentre lo streamer parla, i suoi follower lo supportano con messaggi scritti e vocali. Clip tratta da un video più lungo, di circa 6 minuti, presente in archivio.",
+    "dataInserimento": "2025-11-02"
   },
   {
     "id": "HD1924-21",
@@ -2996,7 +3209,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Ben (Jim Sturgess) sta giocando al tavolo da blackjack di un casinò. Perde una grossa somma. Una ragazza bionda (nel film è sua complice) gli si avvicina invitandolo ad andarsene. Ben invece la allontana e continua a giocare, scommettendo altre pile di fiches. Le carte di nuovo sono sfavorevoli: Ben perde, si alza dal tavolo e se ne va. Anche senza conoscere la trama della pellicola (basata su una storia vera), la sequenza mette in scena una situazione in cui il giocatore non riesce a fermarsi e gioca per rincorrere le perdite."
+    "description": "Ben (Jim Sturgess) sta giocando al tavolo da blackjack di un casinò. Perde una grossa somma. Una ragazza bionda (nel film è sua complice) gli si avvicina invitandolo ad andarsene. Ben invece la allontana e continua a giocare, scommettendo altre pile di fiches. Le carte di nuovo sono sfavorevoli: Ben perde, si alza dal tavolo e se ne va. Anche senza conoscere la trama della pellicola (basata su una storia vera), la sequenza mette in scena una situazione in cui il giocatore non riesce a fermarsi e gioca per rincorrere le perdite.",
+    "dataInserimento": "2024-10-28"
   },
   {
     "id": "HD1924-22",
@@ -3010,7 +3224,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Nick (Jason Statham) spiega ad un giovane che mezzo milione di dollari, ovvero la cifra che ha vinto finora, \"è niente\". Gli servono più soldi per avere la libertà. Decide quindi di tornare al tavolo di blackjack dove punta tutti i 500 mila dollari che aveva vinto in precedenza. Nick ha 17 in mano, ma chiede comunque carta, sperando in un quattro: riceve un sei di quadri e sballa la mano, perdendo tutto. Quando la croupier gira le carte del banco, si scopre che Nick avrebbe vinto se fosse restato senza chiedere un'altra carta. La sequenza è utilizzabile, anche tagliata, per ragionare sulla difficoltà a mantenere il controllo quando si gioca d'azzardo: più si vince, più si gioca. E' stata inserita nel montaggio \"Siamo giocatori\" (presente in archivio) realizzato per l'ASL TO5 da utilizzare in laboratori con studenti degli Istituti Superiori."
+    "description": "Nick (Jason Statham) spiega ad un giovane che mezzo milione di dollari, ovvero la cifra che ha vinto finora, \"è niente\". Gli servono più soldi per avere la libertà. Decide quindi di tornare al tavolo di blackjack dove punta tutti i 500 mila dollari che aveva vinto in precedenza. Nick ha 17 in mano, ma chiede comunque carta, sperando in un quattro: riceve un sei di quadri e sballa la mano, perdendo tutto. Quando la croupier gira le carte del banco, si scopre che Nick avrebbe vinto se fosse restato senza chiedere un'altra carta. La sequenza è utilizzabile, anche tagliata, per ragionare sulla difficoltà a mantenere il controllo quando si gioca d'azzardo: più si vince, più si gioca. E' stata inserita nel montaggio \"Siamo giocatori\" (presente in archivio) realizzato per l'ASL TO5 da utilizzare in laboratori con studenti degli Istituti Superiori.",
+    "dataInserimento": "2024-04-06"
   },
   {
     "id": "HD1925-01",
@@ -3024,7 +3239,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: D.J. Caruso. Durante gli anni del college Brandon Lang (Matthew McConaughey) è una stella in ascesa del football. Un grave infortunio al ginocchio lo costringe a interrompere la sua carriera di quarterback alle soglie del professionismo. Grazie alla sua profonda conoscenza del football, Brandon trova lavoro in un call center che fornisce pronostici per le scommesse sportive.\nSei anni dopo, la sua capacità di saper azzeccare le squadre vincenti nelle partite di football attira l'attenzione di Walter Abrams (Al Pacino), il proprietario di una società di consulenza per scommesse sportive. Walter è un imprenditore senza scrupoli abituato a ottenere tutto ciò che vuole e, avendo fiutato il talento di Brandon, gli offre un considerevole stipendio e un lussuoso appartamento se accetterà di lavorare per lui a Manhattan.\nTrasferitosi a New York, Brandon finisce sotto l’ala protettiva di Walter, che instaura con il ragazzo una relazione padre-figlio. Nel passato di Walter c’è la dipendenza dal gioco d’azzardo e dalla droga, e ciò rappresenta ancora una grossa preoccupazione per la moglie Toni (Rene Russo), proprietaria di un salone di parrucchiere.\nWalter inventa per Brandon lo pseudonimo di “John Anthony” e lo introduce nella squadra dei dipendenti che forniscono suggerimenti agli scommettitori e poi prendono una percentuale delle loro vincite come pagamento. In breve tempo Brandon ottiene un grosso successo, attirando presso la società di Walter clienti sempre più facoltosi. Inizia così per lui una nuova vita, fatta di lusso, belle donne e macchine sportive.\nQuando il tocco magico di Brandon inizia a vacillare e Walter vede diminuire i suoi guadagni, il rapporto tra i due comincia a incrinarsi. E tra i motivi di discussione c'è anche Toni, la moglie di Walter..."
+    "description": "Regia: D.J. Caruso. Durante gli anni del college Brandon Lang (Matthew McConaughey) è una stella in ascesa del football. Un grave infortunio al ginocchio lo costringe a interrompere la sua carriera di quarterback alle soglie del professionismo. Grazie alla sua profonda conoscenza del football, Brandon trova lavoro in un call center che fornisce pronostici per le scommesse sportive.\nSei anni dopo, la sua capacità di saper azzeccare le squadre vincenti nelle partite di football attira l'attenzione di Walter Abrams (Al Pacino), il proprietario di una società di consulenza per scommesse sportive. Walter è un imprenditore senza scrupoli abituato a ottenere tutto ciò che vuole e, avendo fiutato il talento di Brandon, gli offre un considerevole stipendio e un lussuoso appartamento se accetterà di lavorare per lui a Manhattan.\nTrasferitosi a New York, Brandon finisce sotto l’ala protettiva di Walter, che instaura con il ragazzo una relazione padre-figlio. Nel passato di Walter c’è la dipendenza dal gioco d’azzardo e dalla droga, e ciò rappresenta ancora una grossa preoccupazione per la moglie Toni (Rene Russo), proprietaria di un salone di parrucchiere.\nWalter inventa per Brandon lo pseudonimo di “John Anthony” e lo introduce nella squadra dei dipendenti che forniscono suggerimenti agli scommettitori e poi prendono una percentuale delle loro vincite come pagamento. In breve tempo Brandon ottiene un grosso successo, attirando presso la società di Walter clienti sempre più facoltosi. Inizia così per lui una nuova vita, fatta di lusso, belle donne e macchine sportive.\nQuando il tocco magico di Brandon inizia a vacillare e Walter vede diminuire i suoi guadagni, il rapporto tra i due comincia a incrinarsi. E tra i motivi di discussione c'è anche Toni, la moglie di Walter...",
+    "dataInserimento": "2023-11-30"
   },
   {
     "id": "HD1925-02",
@@ -3038,7 +3254,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Rupert Wyatt. Jim Bennet (Mark Wahlberg) è un professore universitario, frustrato e scontento. Di giorno è un professore spietato, dotato di opinioni molto forti rispetto al talento, odiato dagli studenti. Di notte è segretamente schiavo del gioco d’azzardo. L’unica studentessa che apprezza (Brie Larson) lavora proprio in un club per scommettitori che il professore frequenta. Qui Bennet scommette alla grande indebitandosi fortemente con dei gangster e ritrovandosi a dover saldare i debiti in soli sette giorni per potersi lasciare alle spalle quel genere di vita. Il film è il remake di “40000 dollari per non morire” del 1975. Il protagonista è uno che all’apparenza ha tutto. Viene da una famiglia ricca, ha scritto un grande romanzo, ha un ottimo lavoro in un’università prestigiosa, guida una bella auto e nonostante tutto ciò cerca una distruzione nel gioco. L’azzardo viene percepito dal protagonista come unica dimensione che lo mette realmente in sintonia con la propria identità più profonda, ma presto si trasforma in una vera dipendenza incontrollata, prima per motivi psicologici e poi per l’innesto sulla dimensione criminale e sociale."
+    "description": "Regia: Rupert Wyatt. Jim Bennet (Mark Wahlberg) è un professore universitario, frustrato e scontento. Di giorno è un professore spietato, dotato di opinioni molto forti rispetto al talento, odiato dagli studenti. Di notte è segretamente schiavo del gioco d’azzardo. L’unica studentessa che apprezza (Brie Larson) lavora proprio in un club per scommettitori che il professore frequenta. Qui Bennet scommette alla grande indebitandosi fortemente con dei gangster e ritrovandosi a dover saldare i debiti in soli sette giorni per potersi lasciare alle spalle quel genere di vita. Il film è il remake di “40000 dollari per non morire” del 1975. Il protagonista è uno che all’apparenza ha tutto. Viene da una famiglia ricca, ha scritto un grande romanzo, ha un ottimo lavoro in un’università prestigiosa, guida una bella auto e nonostante tutto ciò cerca una distruzione nel gioco. L’azzardo viene percepito dal protagonista come unica dimensione che lo mette realmente in sintonia con la propria identità più profonda, ma presto si trasforma in una vera dipendenza incontrollata, prima per motivi psicologici e poi per l’innesto sulla dimensione criminale e sociale.",
+    "dataInserimento": "2025-06-15"
   },
   {
     "id": "HD1925-03",
@@ -3052,7 +3269,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Benny e Josh Safdie. Howard Ratner (Adam Sandler) è un gioielliere che gestisce un negozio nel Diamond District di Manhattan. Incallito giocatore d'azzardo, marito e padre di famiglia con villa nei sobborghi, adultero con l'amante in città, Howard vive perennemente braccato dai debitori, in particolare dal cognato affiliato alla mafia italoamericana. Maneggione e bugiardo, ripone le sue speranze in un opale proveniente dall'Etiopia: ma qualche giorno prima dell'asta che dovrebbe fruttargli una somma milionaria, si fa convincere dal giocatore di basket Kevin Garnett, venuto in visita al suo negozio, a scambiare la pietra con un anello, dando così inizio a una serie infinita di traffici che segneranno il suo destino. Film claustrofobico, incalzante, riesce a restituire in modo eccezionale il senso di prigionia derivante dalla dipendenza da azzardo del protagonista: riprese mosse, inquadrature in campo lungo in cui il personaggio è schiacciato o nascosto dagli elementi in scena, un missaggio sonoro di voci, musica e rumori che costruisce una continua confusione e instabilità. Adam Sandler eccezionale. Ottimo riscontro della critica, il film è stato anche distribuito da Netflix."
+    "description": "Regia: Benny e Josh Safdie. Howard Ratner (Adam Sandler) è un gioielliere che gestisce un negozio nel Diamond District di Manhattan. Incallito giocatore d'azzardo, marito e padre di famiglia con villa nei sobborghi, adultero con l'amante in città, Howard vive perennemente braccato dai debitori, in particolare dal cognato affiliato alla mafia italoamericana. Maneggione e bugiardo, ripone le sue speranze in un opale proveniente dall'Etiopia: ma qualche giorno prima dell'asta che dovrebbe fruttargli una somma milionaria, si fa convincere dal giocatore di basket Kevin Garnett, venuto in visita al suo negozio, a scambiare la pietra con un anello, dando così inizio a una serie infinita di traffici che segneranno il suo destino. Film claustrofobico, incalzante, riesce a restituire in modo eccezionale il senso di prigionia derivante dalla dipendenza da azzardo del protagonista: riprese mosse, inquadrature in campo lungo in cui il personaggio è schiacciato o nascosto dagli elementi in scena, un missaggio sonoro di voci, musica e rumori che costruisce una continua confusione e instabilità. Adam Sandler eccezionale. Ottimo riscontro della critica, il film è stato anche distribuito da Netflix.",
+    "dataInserimento": "2025-05-24"
   },
   {
     "id": "HD1925-04",
@@ -3066,7 +3284,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Mark Rydell. Le conseguenze devastanti delle droghe e del gioco d'azzardo sulle vite di tre persone, dalla dipendenza all'autodistruzione. (da Filmtv.it) Una madre che ha sperperato tutti i risparmi di famiglia, un idraulico che tenta di farsi un nome lanciando la carriera sportiva del fratello, un investigatore con un particolare handicap fisico e un boss della mala che, dietro le quinte, tesse i fili del gioco (!): gli ingredienti per una storia coinvolgente ci sono tutti ma Rydell punta al rialzo, esagera i toni e la scollatura evidente tra realtà e finzione inficia irreversibilmente la qualità rappresentativa della seconda. E nonostante il cast professionale di alto livello, resta un'occasione mancata."
+    "description": "Regia: Mark Rydell. Le conseguenze devastanti delle droghe e del gioco d'azzardo sulle vite di tre persone, dalla dipendenza all'autodistruzione. (da Filmtv.it) Una madre che ha sperperato tutti i risparmi di famiglia, un idraulico che tenta di farsi un nome lanciando la carriera sportiva del fratello, un investigatore con un particolare handicap fisico e un boss della mala che, dietro le quinte, tesse i fili del gioco (!): gli ingredienti per una storia coinvolgente ci sono tutti ma Rydell punta al rialzo, esagera i toni e la scollatura evidente tra realtà e finzione inficia irreversibilmente la qualità rappresentativa della seconda. E nonostante il cast professionale di alto livello, resta un'occasione mancata.",
+    "dataInserimento": "2025-11-26"
   },
   {
     "id": "HD1925-05",
@@ -3080,7 +3299,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Daniele Vicari. Studente modello, figlio di intellettuali borghesi, Giorgio (Elio Germano) conduce la vita normale e ordinaria di un ragazzo di ventidue anni. Una vita senza crepe, almeno in apparenza, fino a quando una sera incontra Francesco (David Riondino). Bello ed elegante, Francesco esercita su uomini e donne un fascino misterioso e oscuro. Per vivere gioca a carte, sa vincere, ma più che fortunato è un abile baro e sembra avere in mano le chiavi per il successo. I tavoli da gioco si spostano da ville sontuose a bettole senza nome e i suoi avversari possono essere ricchi industriali o miserie umane: il risultato non cambia. In una Bari dai contorni sfocati, in cui ambienti segreti e torbidi fanno da sfondo a una quotidianità tranquilla e rassicurante, Giorgio diventa amico di Francesco e complice. Passando da partite truccate a viaggi reali e immaginari, attraversando letti senza amore con donne di lusso annoiate, imparando a muoversi nei luoghi dove la buona e la cattiva società sembrano confondersi, Giorgio vede l'immagine di se stesso sgretolarsi per lasciare posto a qualcosa di sconosciuto. Qualcosa che fa paura, ma al tempo stesso lo attrae. E' inarrestabile la discesa agli inferi che lo trasporta in un luogo dell'anima fino a quel momento ignoto. L'amicizia di Francesco e Giorgio procede verso un finale sorprendente."
+    "description": "Regia: Daniele Vicari. Studente modello, figlio di intellettuali borghesi, Giorgio (Elio Germano) conduce la vita normale e ordinaria di un ragazzo di ventidue anni. Una vita senza crepe, almeno in apparenza, fino a quando una sera incontra Francesco (David Riondino). Bello ed elegante, Francesco esercita su uomini e donne un fascino misterioso e oscuro. Per vivere gioca a carte, sa vincere, ma più che fortunato è un abile baro e sembra avere in mano le chiavi per il successo. I tavoli da gioco si spostano da ville sontuose a bettole senza nome e i suoi avversari possono essere ricchi industriali o miserie umane: il risultato non cambia. In una Bari dai contorni sfocati, in cui ambienti segreti e torbidi fanno da sfondo a una quotidianità tranquilla e rassicurante, Giorgio diventa amico di Francesco e complice. Passando da partite truccate a viaggi reali e immaginari, attraversando letti senza amore con donne di lusso annoiate, imparando a muoversi nei luoghi dove la buona e la cattiva società sembrano confondersi, Giorgio vede l'immagine di se stesso sgretolarsi per lasciare posto a qualcosa di sconosciuto. Qualcosa che fa paura, ma al tempo stesso lo attrae. E' inarrestabile la discesa agli inferi che lo trasporta in un luogo dell'anima fino a quel momento ignoto. L'amicizia di Francesco e Giorgio procede verso un finale sorprendente.",
+    "dataInserimento": "2025-11-03"
   },
   {
     "id": "HD1925-06",
@@ -3094,7 +3314,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Richard Kwietniowski. Da un romanzo di Stung di G.S. Ross. Canada, primi anni Ottanta. Dan Mahowny (Philip Seymour Hoffman) lavora in una banca come semplice commesso, ma fa presto carriera, diventando assistente del direttore, cosa che gli permette di accedere senza problemi alla gestione dei conti bancari della filiale. Nessuno, però, sembra essere a conoscenza di un suo vizio segreto, quello del gioco d'azzardo. Il film ha ottenuto recensioni discordanti sulla stampa, anche se quasi sempre è stata elogiata la performance di Philip Seymour Hoffman nel ruolo del protagonista. Il critico Roger Ebert l'ha definita «un capolavoro di disciplina e di precisione. Ci sono stati molti buoni film sul gioco d'azzardo, ma mai uno che mostrasse in modo così onesto il giocatore all'opera»"
+    "description": "Regia: Richard Kwietniowski. Da un romanzo di Stung di G.S. Ross. Canada, primi anni Ottanta. Dan Mahowny (Philip Seymour Hoffman) lavora in una banca come semplice commesso, ma fa presto carriera, diventando assistente del direttore, cosa che gli permette di accedere senza problemi alla gestione dei conti bancari della filiale. Nessuno, però, sembra essere a conoscenza di un suo vizio segreto, quello del gioco d'azzardo. Il film ha ottenuto recensioni discordanti sulla stampa, anche se quasi sempre è stata elogiata la performance di Philip Seymour Hoffman nel ruolo del protagonista. Il critico Roger Ebert l'ha definita «un capolavoro di disciplina e di precisione. Ci sono stati molti buoni film sul gioco d'azzardo, ma mai uno che mostrasse in modo così onesto il giocatore all'opera»",
+    "dataInserimento": "2023-07-23"
   },
   {
     "id": "HD1925-07",
@@ -3108,7 +3329,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Curtis Hanson. La storia di un giocatore professionista di poker Huck Cheever (Eric Bana) e dell'incontro con suo padre (Robert Duvall), fino a quel momento sconosciuto al Campionato Mondiale di Poker di Las Vegas. Sullo sfondo una Las Vegas sfavillante ma torbida e il rapporto turbolento di Huck con una giovane cantante alla ricerca del successo, presenta decine di vere icone del poker, insieme alle star del film, in sequenze che catturano l'eccitazione e il dramma di questo gioco d'azzardo. Il risultato è una pellicola che celebra il poker, con lieto fine hollywoodiano e nessun approfondimento ai temi della dipendenza."
+    "description": "Regia: Curtis Hanson. La storia di un giocatore professionista di poker Huck Cheever (Eric Bana) e dell'incontro con suo padre (Robert Duvall), fino a quel momento sconosciuto al Campionato Mondiale di Poker di Las Vegas. Sullo sfondo una Las Vegas sfavillante ma torbida e il rapporto turbolento di Huck con una giovane cantante alla ricerca del successo, presenta decine di vere icone del poker, insieme alle star del film, in sequenze che catturano l'eccitazione e il dramma di questo gioco d'azzardo. Il risultato è una pellicola che celebra il poker, con lieto fine hollywoodiano e nessun approfondimento ai temi della dipendenza.",
+    "dataInserimento": "2023-05-06"
   },
   {
     "id": "HD1925-08",
@@ -3122,7 +3344,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Anna Boden, Ryan Fleck. Gerry (Ben Mendelsohn) è un giocatore di poker talentuoso ma sfortunato e con grandi difficoltà economiche. Convince un giocatore più giovane, Curtis (Ryan Reynolds), a unirsi a lui in un viaggio attraverso il sud, con l'intenzione di recuperare ciò che ha perso. Coinvolti in una sequela di eventi legati al mondo sfrenato dei casinò, degli ippodromi e dei cinodromi, i due protagonisti mettono alla prova la reciproca fiducia. Il gioco d’azzardo rappresenta la tematica principale del film, attraverso le proprie sfumature soprattutto negative. La dipendenza che genera e le conseguenze che comporta (vedesi la mancanza di fiducia tra i due protagonisti) vengono trattati con un orginale registro umoristico."
+    "description": "Regia: Anna Boden, Ryan Fleck. Gerry (Ben Mendelsohn) è un giocatore di poker talentuoso ma sfortunato e con grandi difficoltà economiche. Convince un giocatore più giovane, Curtis (Ryan Reynolds), a unirsi a lui in un viaggio attraverso il sud, con l'intenzione di recuperare ciò che ha perso. Coinvolti in una sequela di eventi legati al mondo sfrenato dei casinò, degli ippodromi e dei cinodromi, i due protagonisti mettono alla prova la reciproca fiducia. Il gioco d’azzardo rappresenta la tematica principale del film, attraverso le proprie sfumature soprattutto negative. La dipendenza che genera e le conseguenze che comporta (vedesi la mancanza di fiducia tra i due protagonisti) vengono trattati con un orginale registro umoristico.",
+    "dataInserimento": "2024-10-14"
   },
   {
     "id": "HD1925-09",
@@ -3136,7 +3359,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Aaron Sorkin. Molly's Game è la trasposizione cinematografica della vera storia di Molly Bloom, già raccontata nell’omonimo libro autobiografico pubblicato nel 2014. \nMolly Bloom (Jessica Chastain) è un'ex sciatrice del Colorado di fama mondiale. Nell'estate del 2004, dopo aver fallito l'obiettivo delle Olimpiadi a causa di un infortunio e prima di proseguire gli studi di giurisprudenza a Harvard, decide di trasferirsi a Los Angeles per dare una svolta alla propria vita. Per sbarcare il lunario inizia a lavorare come cameriera e in seguito come assistente di un organizzatore di partite di poker, che la licenza senza motivo. Decide allora di organizzare il suo giro di poker clandestino, che ben presto diventa il più esclusivo e ambito della città. Il buy-in è di 250.000 dollari. Il giro muove centinaia di milioni di dollari e viene frequentato dai più celebri nomi di Hollywood: campioni dello sport, uomini d'affari, imprenditori, attori, produttori, miliardari, magnati e, a sua insaputa e suo malgrado, esponenti della mafia russa.\nLa Bloom gestisce il giro per 8 anni, incassando circa 4 milioni di dollari l'anno. La sua tenacia e la sua energia le permettono una scalata sociale sorprendente: è lei a decidere chi avrebbe fatto parte del giro e chi no, rendendola ambita come amica e amante, richiestissima negli ambienti più esclusivi e glamour della città. Ma improvvisamente l'FBI scopre tutto, irrompe armata nel pieno della notte in casa sua e la arresta, smantellando lo sfavillante giro di poker clandestino. Minacciata su più fronti (l'FBI decisa a fermarla, la mafia russa interessata a sottrarle la sua attività e i clienti preoccupati di venire traditi), la Bloom inizia una dura battaglia legale e trova un unico alleato nel suo difensore, Charley Jaffey: inizialmente titubante, l'avvocato conoscerà il passato della Bloom, in particolare il suo complicato rapporto con il padre Larry, e scoprirà che la ragazza cela un vissuto molto più profondo di ciò che dicono di lei la stampa, i tabloid e i gossip scandalistici."
+    "description": "Regia: Aaron Sorkin. Molly's Game è la trasposizione cinematografica della vera storia di Molly Bloom, già raccontata nell’omonimo libro autobiografico pubblicato nel 2014. \nMolly Bloom (Jessica Chastain) è un'ex sciatrice del Colorado di fama mondiale. Nell'estate del 2004, dopo aver fallito l'obiettivo delle Olimpiadi a causa di un infortunio e prima di proseguire gli studi di giurisprudenza a Harvard, decide di trasferirsi a Los Angeles per dare una svolta alla propria vita. Per sbarcare il lunario inizia a lavorare come cameriera e in seguito come assistente di un organizzatore di partite di poker, che la licenza senza motivo. Decide allora di organizzare il suo giro di poker clandestino, che ben presto diventa il più esclusivo e ambito della città. Il buy-in è di 250.000 dollari. Il giro muove centinaia di milioni di dollari e viene frequentato dai più celebri nomi di Hollywood: campioni dello sport, uomini d'affari, imprenditori, attori, produttori, miliardari, magnati e, a sua insaputa e suo malgrado, esponenti della mafia russa.\nLa Bloom gestisce il giro per 8 anni, incassando circa 4 milioni di dollari l'anno. La sua tenacia e la sua energia le permettono una scalata sociale sorprendente: è lei a decidere chi avrebbe fatto parte del giro e chi no, rendendola ambita come amica e amante, richiestissima negli ambienti più esclusivi e glamour della città. Ma improvvisamente l'FBI scopre tutto, irrompe armata nel pieno della notte in casa sua e la arresta, smantellando lo sfavillante giro di poker clandestino. Minacciata su più fronti (l'FBI decisa a fermarla, la mafia russa interessata a sottrarle la sua attività e i clienti preoccupati di venire traditi), la Bloom inizia una dura battaglia legale e trova un unico alleato nel suo difensore, Charley Jaffey: inizialmente titubante, l'avvocato conoscerà il passato della Bloom, in particolare il suo complicato rapporto con il padre Larry, e scoprirà che la ragazza cela un vissuto molto più profondo di ciò che dicono di lei la stampa, i tabloid e i gossip scandalistici.",
+    "dataInserimento": "2024-06-05"
   },
   {
     "id": "HD1925-10",
@@ -3150,7 +3374,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Davide Marengo. Leila (Giovanna Mezzogiorno) è una ragazza senza radici che vive di espedienti e piccole truffe, una splendida solitaria, in perenne lotta per la vita e in fuga dalle emozioni sincere, che rendono fragili. Franz (Valerio Mastrandrea) è uno che pensa molto e agisce poco. Ha lasciato l’università ad un passo dalla laurea, fa l’autista di autobus, chiuso in una vita sonnacchiosa. Le uniche emozioni le prova al tavolo da poker, dove perde regolarmente. La misteriosa geometria del caso spinge Leila e Franz al centro di una lotta spietata per un microchip che può rovinare la carriera di un personaggio molto potente. Un giorno Leila ruba senza saperlo il microchip, sfugge alla morte per un soffio e si ritrova su un autobus notturno... Passo dopo passo, la ladra bugiarda e il timido autista si trovano così, inseguiti da uomini senza scrupoli, agenti dei servizi segreti deviati e non ..."
+    "description": "Regia: Davide Marengo. Leila (Giovanna Mezzogiorno) è una ragazza senza radici che vive di espedienti e piccole truffe, una splendida solitaria, in perenne lotta per la vita e in fuga dalle emozioni sincere, che rendono fragili. Franz (Valerio Mastrandrea) è uno che pensa molto e agisce poco. Ha lasciato l’università ad un passo dalla laurea, fa l’autista di autobus, chiuso in una vita sonnacchiosa. Le uniche emozioni le prova al tavolo da poker, dove perde regolarmente. La misteriosa geometria del caso spinge Leila e Franz al centro di una lotta spietata per un microchip che può rovinare la carriera di un personaggio molto potente. Un giorno Leila ruba senza saperlo il microchip, sfugge alla morte per un soffio e si ritrova su un autobus notturno... Passo dopo passo, la ladra bugiarda e il timido autista si trovano così, inseguiti da uomini senza scrupoli, agenti dei servizi segreti deviati e non ...",
+    "dataInserimento": "2026-01-04"
   },
   {
     "id": "HD1925-11",
@@ -3164,7 +3389,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: David Koepp. Wilee, un bike-messenger, si reca presso la Columbia University dove la giovane Nima gli affida il compito di consegnare entro 90 minuti una busta ad un preciso indirizzo di Chinatown. Wilee utilizza una bici con telaio in acciaio, a scatto fisso e senza freni, senza paura di affrontare il traffico. Quella che sembrava una consegna come tante, si rivela per il messaggero una vera corsa contro il tempo, quando scopre che un poliziotto corrotto, coinvolto nel gioco d’azzardo clandestino nel quartiere cinese, vuole impossessarsi della misteriosa busta. Il giovane messaggero e il poliziotto danno vita ad una serie di inseguimenti mozzafiato per le strade di New York City. Film incentrato sulle scene d’azione; il gioco d’azzardo compare unicamente come movente narrativo."
+    "description": "Regia: David Koepp. Wilee, un bike-messenger, si reca presso la Columbia University dove la giovane Nima gli affida il compito di consegnare entro 90 minuti una busta ad un preciso indirizzo di Chinatown. Wilee utilizza una bici con telaio in acciaio, a scatto fisso e senza freni, senza paura di affrontare il traffico. Quella che sembrava una consegna come tante, si rivela per il messaggero una vera corsa contro il tempo, quando scopre che un poliziotto corrotto, coinvolto nel gioco d’azzardo clandestino nel quartiere cinese, vuole impossessarsi della misteriosa busta. Il giovane messaggero e il poliziotto danno vita ad una serie di inseguimenti mozzafiato per le strade di New York City. Film incentrato sulle scene d’azione; il gioco d’azzardo compare unicamente come movente narrativo.",
+    "dataInserimento": "2023-04-27"
   },
   {
     "id": "HD1925-12",
@@ -3178,7 +3404,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: John Dahl. Mike McDermott (Matt Damon), pokerista di talento, frequenta la facoltà di legge, vive con una compagna di studi, ma la sua grande e vera passione è il poker. Il suo obiettivo è quello di partecipare al Main Event Wsop (torneo mondiale di poker) a Las Vegas e di sedere al tavolo verde con i più grandi campioni. Per questo motivo si gioca tutti i risparmi (circa 30.000 $) con Teddy KGB (John Malkovich), uno strozzino di origine russa che gestisce un club privato. Perde tutto. Ciò lo porta ad allontanarsi dal gioco e a dedicarsi alla professione di fattorino per potersi pagare gli studi. Conduce questa vita per circa nove mesi fino a quando va ad accogliere l’amico Verme (Edward Norton) che esce dal carcere dopo aver scontato una condanna per truffa. L’amico vuole riprendere subito a giocare perché è sotto ricatto per i debiti lasciati in sospeso prima della carcerazione. Dapprima Mike si tiene lontano dai tavoli verdi, ma poi Verme si indebita ancora di più e quindi decide di aiutare l’amico a togliersi dai pasticci. La fidanzata intanto l’ha lasciato e Mike, preso nella spirale del gioco, smette di frequentare la facoltà di legge. Si susseguono una serie di scontri di poker in cui dapprima vincono, poi perdono tutto e vengono picchiati a sangue dai poliziotti con cui stavano giocando perché Verme barava. Verme, preoccupato per la sua vita, scappa e lascia Mike da solo con tutti i debiti di gioco da pagare. E’ senza un soldo, la sua unica speranza è chiedere soldi in prestito per tentare ancora una volta la fortuna e cercare di pagare tutti i debiti con gli strozzini. Un suo professore gli presta 10.000 $ e Mike ritorna da Teddy KGB per sfidarlo. Questa volta in un adrenalinico testa a testa riesce a vincere e a pagare tutti i debiti e i prestiti accumulati. Riesce a tenere per sé 30.000 $ e decide di partecipare al Main Event delle WSOP a Las Vegas."
+    "description": "Regia: John Dahl. Mike McDermott (Matt Damon), pokerista di talento, frequenta la facoltà di legge, vive con una compagna di studi, ma la sua grande e vera passione è il poker. Il suo obiettivo è quello di partecipare al Main Event Wsop (torneo mondiale di poker) a Las Vegas e di sedere al tavolo verde con i più grandi campioni. Per questo motivo si gioca tutti i risparmi (circa 30.000 $) con Teddy KGB (John Malkovich), uno strozzino di origine russa che gestisce un club privato. Perde tutto. Ciò lo porta ad allontanarsi dal gioco e a dedicarsi alla professione di fattorino per potersi pagare gli studi. Conduce questa vita per circa nove mesi fino a quando va ad accogliere l’amico Verme (Edward Norton) che esce dal carcere dopo aver scontato una condanna per truffa. L’amico vuole riprendere subito a giocare perché è sotto ricatto per i debiti lasciati in sospeso prima della carcerazione. Dapprima Mike si tiene lontano dai tavoli verdi, ma poi Verme si indebita ancora di più e quindi decide di aiutare l’amico a togliersi dai pasticci. La fidanzata intanto l’ha lasciato e Mike, preso nella spirale del gioco, smette di frequentare la facoltà di legge. Si susseguono una serie di scontri di poker in cui dapprima vincono, poi perdono tutto e vengono picchiati a sangue dai poliziotti con cui stavano giocando perché Verme barava. Verme, preoccupato per la sua vita, scappa e lascia Mike da solo con tutti i debiti di gioco da pagare. E’ senza un soldo, la sua unica speranza è chiedere soldi in prestito per tentare ancora una volta la fortuna e cercare di pagare tutti i debiti con gli strozzini. Un suo professore gli presta 10.000 $ e Mike ritorna da Teddy KGB per sfidarlo. Questa volta in un adrenalinico testa a testa riesce a vincere e a pagare tutti i debiti e i prestiti accumulati. Riesce a tenere per sé 30.000 $ e decide di partecipare al Main Event delle WSOP a Las Vegas.",
+    "dataInserimento": "2023-10-30"
   },
   {
     "id": "HD1925-13",
@@ -3192,7 +3419,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Brad Furman. Lo studente universitario Richie (Justin Timberlake), convinto di essere stato imbrogliato, parte per il Costa Rica per regolare i conti con il magnate del gioco d'azzardo Ivan Block (Ben Affleck). Ma Block lo seduce pospettandogli facili guadagni, e Richie è allettato dalle sue promesse fino a quando non apprende l'inquietante verità che riguarda il suo \"benefattore\". Quando l'FBI lo costringe a collaborare per scovare Block, Richie dovrà affrontare la sua partita più rischiosa e riuscire a manipolare i due opposti poteri che lo stanno accerchiando."
+    "description": "Regia: Brad Furman. Lo studente universitario Richie (Justin Timberlake), convinto di essere stato imbrogliato, parte per il Costa Rica per regolare i conti con il magnate del gioco d'azzardo Ivan Block (Ben Affleck). Ma Block lo seduce pospettandogli facili guadagni, e Richie è allettato dalle sue promesse fino a quando non apprende l'inquietante verità che riguarda il suo \"benefattore\". Quando l'FBI lo costringe a collaborare per scovare Block, Richie dovrà affrontare la sua partita più rischiosa e riuscire a manipolare i due opposti poteri che lo stanno accerchiando.",
+    "dataInserimento": "2024-04-09"
   },
   {
     "id": "HD1925-14",
@@ -3206,7 +3434,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Theodore Melfi. Vincent (Bill Murray) è un misantropo col vizio della bottiglia, delle scommesse ai cavalli e delle cattive maniere. Ruvido e scostante, Vincent non piace alla gente e a Vincent non piace la gente. Fanno eccezione Daka (Naomi Watts), una prostituta russa incinta con cui intrattiene una relazione economico-affettiva e Oliver, un ragazzino di pochi anni che si è appena trasferito con la madre nella casa adiacente alla sua. Maggie, separata e in affanno col lavoro, chiede a Vincent di occuparsi di Oliver in sua assenza. Prima riluttante e poi convinto dal compenso, Vincent accetta di dedicarsi al ragazzo, a cui rivelerà suo malgrado il suo cuore grande. Perché Vincent da molti anni ormai si prende cura della moglie, colpita da demenza senile, e di Daka, a cui paga gli esami per la gravidanza. Chiamato dal suo insegnante a raccontare la storia di una persona conosciuta e in odore di santità, Oliver sceglierà proprio Vincent, contribuendo col suo amore ad addomesticarne il cattivo umore."
+    "description": "Regia: Theodore Melfi. Vincent (Bill Murray) è un misantropo col vizio della bottiglia, delle scommesse ai cavalli e delle cattive maniere. Ruvido e scostante, Vincent non piace alla gente e a Vincent non piace la gente. Fanno eccezione Daka (Naomi Watts), una prostituta russa incinta con cui intrattiene una relazione economico-affettiva e Oliver, un ragazzino di pochi anni che si è appena trasferito con la madre nella casa adiacente alla sua. Maggie, separata e in affanno col lavoro, chiede a Vincent di occuparsi di Oliver in sua assenza. Prima riluttante e poi convinto dal compenso, Vincent accetta di dedicarsi al ragazzo, a cui rivelerà suo malgrado il suo cuore grande. Perché Vincent da molti anni ormai si prende cura della moglie, colpita da demenza senile, e di Daka, a cui paga gli esami per la gravidanza. Chiamato dal suo insegnante a raccontare la storia di una persona conosciuta e in odore di santità, Oliver sceglierà proprio Vincent, contribuendo col suo amore ad addomesticarne il cattivo umore.",
+    "dataInserimento": "2024-11-23"
   },
   {
     "id": "HD1925-15",
@@ -3220,7 +3449,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Stephen Frears. Beth (Rebecca Hall) si guadagna da vivere facendo lo striptease a domicilio a Tallassee, cittadina di provincia. In seguito a un'esperienza non proprio tranquillizzante decide di raggiungere Las Vegas, disposta anche a fare la cameriera in un bar. Troverà invece lavoro, grazie alle sue doti di memorizzazione dei numeri, presso Dink (Bruce Willis) che è proprietario di una società che si occupa di scommesse legali. Dovrà però vedersela con la gelosia della di lui moglie Tulip (Catherina Zeta-Jones)."
+    "description": "Regia: Stephen Frears. Beth (Rebecca Hall) si guadagna da vivere facendo lo striptease a domicilio a Tallassee, cittadina di provincia. In seguito a un'esperienza non proprio tranquillizzante decide di raggiungere Las Vegas, disposta anche a fare la cameriera in un bar. Troverà invece lavoro, grazie alle sue doti di memorizzazione dei numeri, presso Dink (Bruce Willis) che è proprietario di una società che si occupa di scommesse legali. Dovrà però vedersela con la gelosia della di lui moglie Tulip (Catherina Zeta-Jones).",
+    "dataInserimento": "2024-11-05"
   },
   {
     "id": "HD1925-16",
@@ -3234,7 +3464,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Karel Reisz. Professore di lettere presso un college, Axel Freed (James Caan) è posseduto dal vizio del gioco d'azzardo e si trova nella necessità di restituire 44.000 dollari all'intermediario che s'è fatto garante per lui. Ottenuta a fatica la grossa somma dalla madre dottoressa Naomi dopo che il ricchissimo nonno Aram Loenthal l'ha rifiutata, l'impenitente professore si reca a Las Vegas con la propria ragazza, Billie, e gioca nuovamente. Avendo raddoppiato la somma che ha in mano, anziché fermarsi e restituire, la impegna nuovamente e perde. Questa volta, abbandonato da Billie, rimproverato dal nonno, nell'impossibilità di ricorrere ancora alla madre, pressato dai creditori, accetta la sporca proposta degli stessi: corrompe un suo alunno negro, Spencer, campione di pallacanestro, affinché limiti la vittoria della propria squadra entro un modesto scarto di punteggio. L'adesione del ragazzo introduce lo stesso nel mondo del professionismo corrotto e mafioso; ma libera il professore da ogni obbligo. Tuttavia, finalmente conscio della propria abiezione, Axel si reca nel quartiere negro per provocare un protettore ed essere ucciso. Il film ha avuto un remake nel 2014 (The gambler, presente in questo archivio) con Mark Wahlberg come protagonista."
+    "description": "Regia: Karel Reisz. Professore di lettere presso un college, Axel Freed (James Caan) è posseduto dal vizio del gioco d'azzardo e si trova nella necessità di restituire 44.000 dollari all'intermediario che s'è fatto garante per lui. Ottenuta a fatica la grossa somma dalla madre dottoressa Naomi dopo che il ricchissimo nonno Aram Loenthal l'ha rifiutata, l'impenitente professore si reca a Las Vegas con la propria ragazza, Billie, e gioca nuovamente. Avendo raddoppiato la somma che ha in mano, anziché fermarsi e restituire, la impegna nuovamente e perde. Questa volta, abbandonato da Billie, rimproverato dal nonno, nell'impossibilità di ricorrere ancora alla madre, pressato dai creditori, accetta la sporca proposta degli stessi: corrompe un suo alunno negro, Spencer, campione di pallacanestro, affinché limiti la vittoria della propria squadra entro un modesto scarto di punteggio. L'adesione del ragazzo introduce lo stesso nel mondo del professionismo corrotto e mafioso; ma libera il professore da ogni obbligo. Tuttavia, finalmente conscio della propria abiezione, Axel si reca nel quartiere negro per provocare un protettore ed essere ucciso. Il film ha avuto un remake nel 2014 (The gambler, presente in questo archivio) con Mark Wahlberg come protagonista.",
+    "dataInserimento": "2024-06-10"
   },
   {
     "id": "HD1925-17",
@@ -3248,7 +3479,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Graeme Campbell. Discreto film per la tv che ha come oggetto la febbre del gioco e in particolare quello delle slot machines nei casinò. Ms Meyers (Delta Burke), una donna in carriera single con due figli, si sposa e si trasferisce a Reno, in Nevada. Qui si appassiona al gioco d'azzardo, fino a perdere non solo tutti i suoi soldi, ma arrivando a sottrarli ai figli e compiere un furto. Tratto da una storia vera. Delta Burke si cala comepletamente nella parte della donna insoddisfatta che cerca di risollevarsi con il gioco e il resto del cast se la cava bene a cominciare da Elliot (allora Ellen) Page nella parte della figlia. Una buona regia e una piacevole sceneggiatura completano questo tv movie. Su Youtube è presente a oggi (agosto 2022) il film completo in inglese, linkato in questa scheda."
+    "description": "Regia: Graeme Campbell. Discreto film per la tv che ha come oggetto la febbre del gioco e in particolare quello delle slot machines nei casinò. Ms Meyers (Delta Burke), una donna in carriera single con due figli, si sposa e si trasferisce a Reno, in Nevada. Qui si appassiona al gioco d'azzardo, fino a perdere non solo tutti i suoi soldi, ma arrivando a sottrarli ai figli e compiere un furto. Tratto da una storia vera. Delta Burke si cala comepletamente nella parte della donna insoddisfatta che cerca di risollevarsi con il gioco e il resto del cast se la cava bene a cominciare da Elliot (allora Ellen) Page nella parte della figlia. Una buona regia e una piacevole sceneggiatura completano questo tv movie. Su Youtube è presente a oggi (agosto 2022) il film completo in inglese, linkato in questa scheda.",
+    "dataInserimento": "2023-08-28"
   },
   {
     "id": "HD1925-18",
@@ -3262,7 +3494,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Abel Ferrara. l protagonista è un corrotto tenente della polizia di New York (Harvey Keitel), dedito a tutti i tipi di droga, alcool, prostituzione, scommesse e mazzette. Tutto cambia quando nel quartiere accade un crimine gravissimo: una suora viene violentata in chiesa da due giovani, che vandalizzano e derubano l'altare. Il giorno dopo il tenente scopre che ha perso una scommessa nel campionato nazionale di baseball ma, invece di fermarsi, cerca di recuperare i soldi rilanciando il doppio sulla successiva partita. Nel frattempo iniziano le indagini sul crimine commesso in chiesa: il tenente rimane scioccato sia da ciò che la suora ha dovuto subire, sia dal fatto che lei conosce gli autori del crimine ma non vuole farne i nomi. Drogato, sconvolto, ma anche attratto sessualmente dalla giovane suora, il poliziotto sfoga la sua frustrazione su due ragazze fermate in strada senza patente. La discesa del tenente nella follia appare ormai inarrestabile: drogato sempre più pesantemente, perde una scommessa dopo l'altra, ma continua a raddoppiare la posta senza avere realmente i soldi. Il suo amico gli rifiuta l'ennesimo raddoppio e lo invita a saldare il debito, perché a rischiare le conseguenze non è più solo lui ma tutta la sua famiglia. Avuto il numero degli strozzini, il tenente decide di puntare comunque l'ultima folle scommessa contro tutto e tutti. Ora, anche se finalmente vincesse, l'unica speranza rimasta per pagare il debito sarebbe riscuotere l'ingente taglia messa sulla testa dei ragazzi che hanno aggredito la suora… Eccessivo e potente, il film di Ferrara venne presentato a Cannes nel 1992. In Francia ebbe un enorme successo nelle sale. In Italia circolano due versioni, una integrale e una censurata. L’azzardo è una delle dipendenze del protagonista, funzionando però come motore narrativo della vicenda, parallelo a quello delle indagini."
+    "description": "Regia: Abel Ferrara. l protagonista è un corrotto tenente della polizia di New York (Harvey Keitel), dedito a tutti i tipi di droga, alcool, prostituzione, scommesse e mazzette. Tutto cambia quando nel quartiere accade un crimine gravissimo: una suora viene violentata in chiesa da due giovani, che vandalizzano e derubano l'altare. Il giorno dopo il tenente scopre che ha perso una scommessa nel campionato nazionale di baseball ma, invece di fermarsi, cerca di recuperare i soldi rilanciando il doppio sulla successiva partita. Nel frattempo iniziano le indagini sul crimine commesso in chiesa: il tenente rimane scioccato sia da ciò che la suora ha dovuto subire, sia dal fatto che lei conosce gli autori del crimine ma non vuole farne i nomi. Drogato, sconvolto, ma anche attratto sessualmente dalla giovane suora, il poliziotto sfoga la sua frustrazione su due ragazze fermate in strada senza patente. La discesa del tenente nella follia appare ormai inarrestabile: drogato sempre più pesantemente, perde una scommessa dopo l'altra, ma continua a raddoppiare la posta senza avere realmente i soldi. Il suo amico gli rifiuta l'ennesimo raddoppio e lo invita a saldare il debito, perché a rischiare le conseguenze non è più solo lui ma tutta la sua famiglia. Avuto il numero degli strozzini, il tenente decide di puntare comunque l'ultima folle scommessa contro tutto e tutti. Ora, anche se finalmente vincesse, l'unica speranza rimasta per pagare il debito sarebbe riscuotere l'ingente taglia messa sulla testa dei ragazzi che hanno aggredito la suora… Eccessivo e potente, il film di Ferrara venne presentato a Cannes nel 1992. In Francia ebbe un enorme successo nelle sale. In Italia circolano due versioni, una integrale e una censurata. L’azzardo è una delle dipendenze del protagonista, funzionando però come motore narrativo della vicenda, parallelo a quello delle indagini.",
+    "dataInserimento": "2023-05-13"
   },
   {
     "id": "HD1925-19",
@@ -3276,7 +3509,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Hue Rhodes. John (Steve Buscemi) è un giocatore compulsivo che ha deciso di farla finita con la mania e di cambiare vita. Torna a sedersi al tavolo verde quando un investigatore gli chiede di smascherare alcune frodi assicurative."
+    "description": "Regia: Hue Rhodes. John (Steve Buscemi) è un giocatore compulsivo che ha deciso di farla finita con la mania e di cambiare vita. Torna a sedersi al tavolo verde quando un investigatore gli chiede di smascherare alcune frodi assicurative.",
+    "dataInserimento": "2025-11-06"
   },
   {
     "id": "HD1925-20",
@@ -3290,7 +3524,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Simon West. Nick Wild (Jason Statham) è un ex marine con la passione per il gioco d'azzardo. Si dedica alla protezione di ricchi desiderosi di provare i brividi che può offrire Las Vegas, città che lui spera di lasciare al più presto. Quando una sua ex, la giovane Holly, viene massacrata di botte, Nick accetta di sostenerla nel suo desiderio di vendetta nei confronti del boss Danny DeMarco. Film trascurabile: scritto male, con poca azione e Statham fuori parte. Interessante però la sequenza finale (presente in questo archivio), dove il protagonista, dopo una serie di vittorie a Black Jack, non si controlla e sceglie di giocarsi tutto in un'ultima puntata."
+    "description": "Regia: Simon West. Nick Wild (Jason Statham) è un ex marine con la passione per il gioco d'azzardo. Si dedica alla protezione di ricchi desiderosi di provare i brividi che può offrire Las Vegas, città che lui spera di lasciare al più presto. Quando una sua ex, la giovane Holly, viene massacrata di botte, Nick accetta di sostenerla nel suo desiderio di vendetta nei confronti del boss Danny DeMarco. Film trascurabile: scritto male, con poca azione e Statham fuori parte. Interessante però la sequenza finale (presente in questo archivio), dove il protagonista, dopo una serie di vittorie a Black Jack, non si controlla e sceglie di giocarsi tutto in un'ultima puntata.",
+    "dataInserimento": "2025-06-20"
   },
   {
     "id": "HD1926-01",
@@ -3304,7 +3539,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Cortometraggio",
     "prodottoScuola": false,
-    "description": "Un uomo, dopo aver vinto ad una slot machines, si ritrova ad essere inseguito e derubato dagli altri giocatori della sala. Cortometraggio realizzato un modo professionale. Le atmosfere notturne in strade deserte e la scelta di non far parlare i personaggi contribuiscono a costruire un'atmosfera claustrofobica, come se la dipendenza del protagonista ne decretasse l'isolamento. Utilizzabile interrompendolo e chiedendo di costruire un finale."
+    "description": "Un uomo, dopo aver vinto ad una slot machines, si ritrova ad essere inseguito e derubato dagli altri giocatori della sala. Cortometraggio realizzato un modo professionale. Le atmosfere notturne in strade deserte e la scelta di non far parlare i personaggi contribuiscono a costruire un'atmosfera claustrofobica, come se la dipendenza del protagonista ne decretasse l'isolamento. Utilizzabile interrompendolo e chiedendo di costruire un finale.",
+    "dataInserimento": "2023-08-30"
   },
   {
     "id": "HD1926-02",
@@ -3318,7 +3554,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Cortometraggio",
     "prodottoScuola": false,
-    "description": "Montaggio realizzato dal Centro Steadycam in collaborazione con l’EP Roberto Fiorini dell’ASL Città di Torino. Si tratta di un “blob” di materiali eterogenei: servizi tg, una sequenza dal film “Non è un paese per vecchi”, una clip dal film “Il mattino ha l’oro in bocca”, una sequenza dalla puntata dei Simpson “$pringfield” (s5e10), una puntata delle Iene sul gioco d’azzardo. L’episodio dei Simpson funziona da traino narrativo, mostrando il percorso del giocatore dalla prima vincita alla dipendenza, fino alla consapevolezza finale."
+    "description": "Montaggio realizzato dal Centro Steadycam in collaborazione con l’EP Roberto Fiorini dell’ASL Città di Torino. Si tratta di un “blob” di materiali eterogenei: servizi tg, una sequenza dal film “Non è un paese per vecchi”, una clip dal film “Il mattino ha l’oro in bocca”, una sequenza dalla puntata dei Simpson “$pringfield” (s5e10), una puntata delle Iene sul gioco d’azzardo. L’episodio dei Simpson funziona da traino narrativo, mostrando il percorso del giocatore dalla prima vincita alla dipendenza, fino alla consapevolezza finale.",
+    "dataInserimento": "2024-05-13"
   },
   {
     "id": "HD1926-03",
@@ -3332,7 +3569,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Cortometraggio",
     "prodottoScuola": false,
-    "description": "Montaggio realizzato dal Centro Steadycam in collaborazione con l’EP Roberto Fiorini dell’ASL Città di Torino. Si tratta di un “blob” di servizi e programmi informativi che forniscono dati sul consumo di gioco d’azzardo (relativi agli anni 2006-2007), montati a ritmo del brano dei Pink Floyd “Money”. E’ possibile pensare ad un aggiornamento, utilizzando lo stesso formato ed eventualmente riducendone la durata."
+    "description": "Montaggio realizzato dal Centro Steadycam in collaborazione con l’EP Roberto Fiorini dell’ASL Città di Torino. Si tratta di un “blob” di servizi e programmi informativi che forniscono dati sul consumo di gioco d’azzardo (relativi agli anni 2006-2007), montati a ritmo del brano dei Pink Floyd “Money”. E’ possibile pensare ad un aggiornamento, utilizzando lo stesso formato ed eventualmente riducendone la durata.",
+    "dataInserimento": "2023-05-30"
   },
   {
     "id": "HD1926-04",
@@ -3346,7 +3584,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Cortometraggio",
     "prodottoScuola": false,
-    "description": "Un giovane di nome Paolo ci racconta la sua storia. E’ un ragazzo come tanti, che sogna di fare qualcosa nella vita. Ha una ragazza, degli amici con cui gioca a calcio e una famiglia che gli vuole bene, ma non è soddisfatto. Per cercare di diventare qualcuno inizia a giocare alle slot: il gioco lo porta prima a chiedere soldi in prestito, poi a rubare i soldi dei suoi genitori. Il cortometraggio, realizzato dai volontari della Compagnia del Piffero già esperta in rappresentazioni teatrali ma alle prime armi con il cinema, con l'ausilio di Vignola Web, ha ottenuto il patrocinio del Comune di Vignola ed è stato presentato al premio \"Nickelodeon\" di Spoleto. Tutti gli attori sono non professionisti; la troupe era composta da volontari."
+    "description": "Un giovane di nome Paolo ci racconta la sua storia. E’ un ragazzo come tanti, che sogna di fare qualcosa nella vita. Ha una ragazza, degli amici con cui gioca a calcio e una famiglia che gli vuole bene, ma non è soddisfatto. Per cercare di diventare qualcuno inizia a giocare alle slot: il gioco lo porta prima a chiedere soldi in prestito, poi a rubare i soldi dei suoi genitori. Il cortometraggio, realizzato dai volontari della Compagnia del Piffero già esperta in rappresentazioni teatrali ma alle prime armi con il cinema, con l'ausilio di Vignola Web, ha ottenuto il patrocinio del Comune di Vignola ed è stato presentato al premio \"Nickelodeon\" di Spoleto. Tutti gli attori sono non professionisti; la troupe era composta da volontari.",
+    "dataInserimento": "2024-02-24"
   },
   {
     "id": "HD1926-05",
@@ -3360,7 +3599,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Cortometraggio",
     "prodottoScuola": false,
-    "description": "Kevin è un giovane che sta per iniziare l’università. Un amico lo invita a prendere un caffè e gli dice che in quel bar qualcuno ha vinto 1000 euro ad una slot. Kevin inizia a giocare, utilizzando di nascosto i soldi che i genitori gli danno per l’università. Dopo un po’ di tempo mamma e papà scoprono tutto e sbattono Kevin fuori di casa. Il ragazzo capisce che l’azzardo è diventato un problema e chiede aiuto, facendosi a sua volta promotore delle iniziative a contrasto del gioco d’azzardo. Il video è stato ideato all'interno del Centro Giovani di Chivasso, in seguito ad un percorso formativo che ha affrontato il tema della legalità nel quotidiano ed ha approfondito la conoscenza del fenomeno del Gioco d’azzardo patologico. I ragazzi e le ragazze hanno scelto la tematica (gioco d’azzardo),  ideato la storia, e partecipato come attori alle riprese. \nIniziativa promossa nell'ambito del Piano Locale Giovani di Chivasso."
+    "description": "Kevin è un giovane che sta per iniziare l’università. Un amico lo invita a prendere un caffè e gli dice che in quel bar qualcuno ha vinto 1000 euro ad una slot. Kevin inizia a giocare, utilizzando di nascosto i soldi che i genitori gli danno per l’università. Dopo un po’ di tempo mamma e papà scoprono tutto e sbattono Kevin fuori di casa. Il ragazzo capisce che l’azzardo è diventato un problema e chiede aiuto, facendosi a sua volta promotore delle iniziative a contrasto del gioco d’azzardo. Il video è stato ideato all'interno del Centro Giovani di Chivasso, in seguito ad un percorso formativo che ha affrontato il tema della legalità nel quotidiano ed ha approfondito la conoscenza del fenomeno del Gioco d’azzardo patologico. I ragazzi e le ragazze hanno scelto la tematica (gioco d’azzardo),  ideato la storia, e partecipato come attori alle riprese. \nIniziativa promossa nell'ambito del Piano Locale Giovani di Chivasso.",
+    "dataInserimento": "2025-01-10"
   },
   {
     "id": "HD1926-06",
@@ -3374,7 +3614,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Cortometraggio",
     "prodottoScuola": false,
-    "description": "Un giovane odontoiatra va a pranzo dai suoi genitori. In casa c’è anche il loro cane, Zardo. Il figlio racconta di aver avuto un colpo di fortuna al Gratta e Vinci e che nel weekend vuole provare qualche puntata al casinò. I genitori si fanno seri. Il papà racconta che cosa era successo anni prima: per permettere al figlio di aprire uno studio in proprio, l’uomo aveva chiesto un prestito in banca, che però gli era stato rifiutato. Amareggiato, il padre aveva iniziato a giocare d’azzardo per cercare di guadagnare la somma necessaria: era così finito nella dipendenza da Gratta e Vinci. Per fortuna si era rivolto ai professionisti del Serd di Vasto: grazie al loro aiuto era uscito dalla dipendenza e ha “rimesso ordine nella sua vita”, ottenendo alla fine il prestito in banca. Il cortometraggio si conclude con l’immagine del cane Zardo e lo slogan “L’azzardo non è un compagno fedele”. Cortometraggio realizzato nell'ambito del Piano Gioco D’Azzardo della ASL 02 Lanciano – Vasto - Chieti\nIn collaborazione con Regione Abruzzo, Servizio per le Dipendenze Asl 02 Lanciano – Vasto – Chieti, Cooperativa La Rondine, Consorzio SGS, ANCI Abruzzo. Produzione Cortò Factory Image. Regia di Simone D'Angelo."
+    "description": "Un giovane odontoiatra va a pranzo dai suoi genitori. In casa c’è anche il loro cane, Zardo. Il figlio racconta di aver avuto un colpo di fortuna al Gratta e Vinci e che nel weekend vuole provare qualche puntata al casinò. I genitori si fanno seri. Il papà racconta che cosa era successo anni prima: per permettere al figlio di aprire uno studio in proprio, l’uomo aveva chiesto un prestito in banca, che però gli era stato rifiutato. Amareggiato, il padre aveva iniziato a giocare d’azzardo per cercare di guadagnare la somma necessaria: era così finito nella dipendenza da Gratta e Vinci. Per fortuna si era rivolto ai professionisti del Serd di Vasto: grazie al loro aiuto era uscito dalla dipendenza e ha “rimesso ordine nella sua vita”, ottenendo alla fine il prestito in banca. Il cortometraggio si conclude con l’immagine del cane Zardo e lo slogan “L’azzardo non è un compagno fedele”. Cortometraggio realizzato nell'ambito del Piano Gioco D’Azzardo della ASL 02 Lanciano – Vasto - Chieti\nIn collaborazione con Regione Abruzzo, Servizio per le Dipendenze Asl 02 Lanciano – Vasto – Chieti, Cooperativa La Rondine, Consorzio SGS, ANCI Abruzzo. Produzione Cortò Factory Image. Regia di Simone D'Angelo.",
+    "dataInserimento": "2025-04-27"
   },
   {
     "id": "HD1926-07",
@@ -3388,7 +3629,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Cortometraggio",
     "prodottoScuola": false,
-    "description": "Cortometraggio girato senza dialoghi, con il solo commento di un brano musicale “El Zogadur”. Un uomo al bar prova a giocare ad una slot e vince una piccola somma. Incuriosito, continua a giocare e vince nuovamente. Il montaggio ci mostra flash della sua vita: la casa, il lavoro, una famiglia felice con due figli. La vicenda prosegue e iniziamo a vedere gli effetti del gioco d’azzardo: l’uomo arriva in ritardo a prendere la figlia a scuola, non gioca più con il figlio, viene rimproverato sul lavoro. Alla fine la moglie e i figli se ne vanno di casa. L’uomo finisce i soldi e passeggia lungo il lago: i suoi vestiti sono rovinati, la barba è lunga. Trova un euro e tenendolo in mano ripercorre all’indietro tutta la sua vicenda, fino alla prima giocata: qui la storia cambia, l’uomo rinuncia a giocare e se ne va con gli amici. Compare lo slogan: Gioco a perdere. Chi gioca ipoteca il futuro. Il video è stato realizzato con il contributo di Comunità montana del Piambello, Piano di Zona Valceresio, Distretto di Tradate e Regione Lombardia. Progetto realizzato da Intrecciteatrali per la Regia di Leopoldo Pescatore. La prima parte è molto ben costruita e rende bene la situazione di avvicinamento al gioco, con le vincite iniziali che invogliano a continuare: è possibile utilizzare il corto interrompendolo dopo circa un minuto e chiedendo di immaginarne la continuazione."
+    "description": "Cortometraggio girato senza dialoghi, con il solo commento di un brano musicale “El Zogadur”. Un uomo al bar prova a giocare ad una slot e vince una piccola somma. Incuriosito, continua a giocare e vince nuovamente. Il montaggio ci mostra flash della sua vita: la casa, il lavoro, una famiglia felice con due figli. La vicenda prosegue e iniziamo a vedere gli effetti del gioco d’azzardo: l’uomo arriva in ritardo a prendere la figlia a scuola, non gioca più con il figlio, viene rimproverato sul lavoro. Alla fine la moglie e i figli se ne vanno di casa. L’uomo finisce i soldi e passeggia lungo il lago: i suoi vestiti sono rovinati, la barba è lunga. Trova un euro e tenendolo in mano ripercorre all’indietro tutta la sua vicenda, fino alla prima giocata: qui la storia cambia, l’uomo rinuncia a giocare e se ne va con gli amici. Compare lo slogan: Gioco a perdere. Chi gioca ipoteca il futuro. Il video è stato realizzato con il contributo di Comunità montana del Piambello, Piano di Zona Valceresio, Distretto di Tradate e Regione Lombardia. Progetto realizzato da Intrecciteatrali per la Regia di Leopoldo Pescatore. La prima parte è molto ben costruita e rende bene la situazione di avvicinamento al gioco, con le vincite iniziali che invogliano a continuare: è possibile utilizzare il corto interrompendolo dopo circa un minuto e chiedendo di immaginarne la continuazione.",
+    "dataInserimento": "2024-02-12"
   },
   {
     "id": "HD1926-08",
@@ -3402,7 +3644,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Cortometraggio",
     "prodottoScuola": false,
-    "description": "Su richiesta della cooperativa Parsec e della Regione Lazio, il regista Emiliano Mancuso ha deciso di raccontare il gioco dal punto di vista dei non giocatori. Conosciamo quindi un programmatore di poker online, la tabaccaia obbligata ogni giorno a vedere vite che si consumano appese alle slot machine, un’abitante della Tiburtina che assiste alla trasformazione del suo quartiere in una Las Vegas decadente. L’unico giocatore è in realtà un ex giocatore di cavalli, testimone di un altro tempo, forse più affascinante in cui anche le scommesse avevano delle regole di decenza. Testi di Andrea Tarquini; riprese e color di Roberto Nieddu; montaggio di Andrea Tarquini; regia di Emiliano Mancuso. Prodotto da Pcm Studio per Parsec. Primo classificato al Controvento Corto Film Festival 2018."
+    "description": "Su richiesta della cooperativa Parsec e della Regione Lazio, il regista Emiliano Mancuso ha deciso di raccontare il gioco dal punto di vista dei non giocatori. Conosciamo quindi un programmatore di poker online, la tabaccaia obbligata ogni giorno a vedere vite che si consumano appese alle slot machine, un’abitante della Tiburtina che assiste alla trasformazione del suo quartiere in una Las Vegas decadente. L’unico giocatore è in realtà un ex giocatore di cavalli, testimone di un altro tempo, forse più affascinante in cui anche le scommesse avevano delle regole di decenza. Testi di Andrea Tarquini; riprese e color di Roberto Nieddu; montaggio di Andrea Tarquini; regia di Emiliano Mancuso. Prodotto da Pcm Studio per Parsec. Primo classificato al Controvento Corto Film Festival 2018.",
+    "dataInserimento": "2025-09-11"
   },
   {
     "id": "HD1927-01",
@@ -3416,7 +3659,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Videoclip",
     "prodottoScuola": false,
-    "description": "Testo e immagini ci raccontano la storia di “Luigi delle Bicocche”, lavoratore che fatica ad arrivare a fine mese, tentato dalle macchinette e che devolve “L’otto per mille a SNAI”."
+    "description": "Testo e immagini ci raccontano la storia di “Luigi delle Bicocche”, lavoratore che fatica ad arrivare a fine mese, tentato dalle macchinette e che devolve “L’otto per mille a SNAI”.",
+    "dataInserimento": "2026-01-23"
   },
   {
     "id": "HD1927-02",
@@ -3430,7 +3674,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Videoclip",
     "prodottoScuola": false,
-    "description": "Il video è ambientato in una piccola sala slot di un bar, dove le persone continuano a tentare la sorte. Il testo della canzone tratta esplicitamente il tema: a parlare sembra essere l’azzardo stesso (o lo stato che amministra i giochi). Questa la prima strofa: “Io vendo promesse di ogni sorta / Qualcuna la mantengo /Di tutte le altre invece non mi importa/Io smisto monetine da gettare in fondo a un pozzo / O da grattare sulla patina dorata di un concorso a premi multimiliardari / Diffidate dei falsari / E non incolpate me se ci gettate dei danari / Non ho colpa / Se siete schiavi di una tombola / Stracolma di tesori che distribuisce a vanvera / E vi coccola l'idea di impadronirvi della vincita / Vivere di rendita/ Capita / Ogni domenica / E se non hai mai vinto fino ad ora / Sei stato sfortunato, amico/ Tenta ancora. . .”"
+    "description": "Il video è ambientato in una piccola sala slot di un bar, dove le persone continuano a tentare la sorte. Il testo della canzone tratta esplicitamente il tema: a parlare sembra essere l’azzardo stesso (o lo stato che amministra i giochi). Questa la prima strofa: “Io vendo promesse di ogni sorta / Qualcuna la mantengo /Di tutte le altre invece non mi importa/Io smisto monetine da gettare in fondo a un pozzo / O da grattare sulla patina dorata di un concorso a premi multimiliardari / Diffidate dei falsari / E non incolpate me se ci gettate dei danari / Non ho colpa / Se siete schiavi di una tombola / Stracolma di tesori che distribuisce a vanvera / E vi coccola l'idea di impadronirvi della vincita / Vivere di rendita/ Capita / Ogni domenica / E se non hai mai vinto fino ad ora / Sei stato sfortunato, amico/ Tenta ancora. . .”",
+    "dataInserimento": "2025-09-25"
   },
   {
     "id": "HD1927-03",
@@ -3444,7 +3689,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Videoclip",
     "prodottoScuola": false,
-    "description": "Il video ci mostra il rapper cagliaritano Vacca e la sua crew in diverse situazioni (in bici su un molo, in un prato, in un’area industriale…). Il testo è incentrato sull’orgoglio del rapper di essere rimasto solo, fuori dalla scena commerciale. Il gioco d’azzardo viene usate come riferimento: “Tu pensa al Gratta e Vinci / ma qui solo se non ti gratti vinci”. Viene cantata una voglia di riscatto, di vincere: quanto tutto ciò può offrire la base per iniziare a giocare d’azzardo?"
+    "description": "Il video ci mostra il rapper cagliaritano Vacca e la sua crew in diverse situazioni (in bici su un molo, in un prato, in un’area industriale…). Il testo è incentrato sull’orgoglio del rapper di essere rimasto solo, fuori dalla scena commerciale. Il gioco d’azzardo viene usate come riferimento: “Tu pensa al Gratta e Vinci / ma qui solo se non ti gratti vinci”. Viene cantata una voglia di riscatto, di vincere: quanto tutto ciò può offrire la base per iniziare a giocare d’azzardo?",
+    "dataInserimento": "2025-11-10"
   },
   {
     "id": "HD1927-04",
@@ -3458,7 +3704,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Videoclip",
     "prodottoScuola": false,
-    "description": "Il video è ambientato in un ippodromo. Un gruppo di giovani vestiti elegantemente piazza una scommessa; con loro c’è una ragazza, a cui fa riferimento il testo della canzone. Dopo di loro il rapper Gue Pequeno e la sua crew fanno a loro volta una scommessa (il logo SNAI è ben visibile sulla schedina e anche in altri passaggi del video). I cavalli corrono. I ragazzi vincono la scommessa e per festeggiare bagnano di champagne la ragazza, che se ne va. Nel finale vediamo Gue Pequeno che, a bordo di una Ferrari, passa a prendere a casa la ragazza. Come evidenziato anche nei commenti su Youtube, il videoclip sembra un grande spot della SNAI. Il nome del cavallo su cui punta Gue Pequeno, “Gentleman”, è il titolo dell’album da cui è tratto il brano."
+    "description": "Il video è ambientato in un ippodromo. Un gruppo di giovani vestiti elegantemente piazza una scommessa; con loro c’è una ragazza, a cui fa riferimento il testo della canzone. Dopo di loro il rapper Gue Pequeno e la sua crew fanno a loro volta una scommessa (il logo SNAI è ben visibile sulla schedina e anche in altri passaggi del video). I cavalli corrono. I ragazzi vincono la scommessa e per festeggiare bagnano di champagne la ragazza, che se ne va. Nel finale vediamo Gue Pequeno che, a bordo di una Ferrari, passa a prendere a casa la ragazza. Come evidenziato anche nei commenti su Youtube, il videoclip sembra un grande spot della SNAI. Il nome del cavallo su cui punta Gue Pequeno, “Gentleman”, è il titolo dell’album da cui è tratto il brano.",
+    "dataInserimento": "2025-09-24"
   },
   {
     "id": "HD1927-05",
@@ -3472,7 +3719,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Videoclip",
     "prodottoScuola": false,
-    "description": "Tyler Strike è il nome d’arte del musicista veneto Manuel Tyler Gastaldo. Dopo un’animazione che mostra una ruota della fortuna fermarsi sul jackpot vediamo Tyler risvegliarsi davanti al computer. Il testo parla di un’attrazione / dipendenza verso una ragazza, ma può essere letto come la descrizione di una dipendenza da gioco. A circa un minuto c’è uno stacco in cui Tyler ha un veloce dialogo con il Gabbrone, streamer famoso per le sue live sul gioco d’azzardo, che lo esorta a “non finire nel baratro”; Tyler però risponde “questa volta no” ed esce di campo. Nella restante parte del video vediamo la ragazza bionda, con cui Tyler trascorre il tempo tra giochi in scatola, carte, roulette giocattolo e ammiccamenti sensuali. Il video si chiude sull’animazione della ruota della fortuna vista all’inizio. Video utilizzabile per ragionare sul concetto di dipendenza: perché ludopatia associato ad una ragazza? Quali sono i meccanismi che ci permettono di parlare di dipendenza?"
+    "description": "Tyler Strike è il nome d’arte del musicista veneto Manuel Tyler Gastaldo. Dopo un’animazione che mostra una ruota della fortuna fermarsi sul jackpot vediamo Tyler risvegliarsi davanti al computer. Il testo parla di un’attrazione / dipendenza verso una ragazza, ma può essere letto come la descrizione di una dipendenza da gioco. A circa un minuto c’è uno stacco in cui Tyler ha un veloce dialogo con il Gabbrone, streamer famoso per le sue live sul gioco d’azzardo, che lo esorta a “non finire nel baratro”; Tyler però risponde “questa volta no” ed esce di campo. Nella restante parte del video vediamo la ragazza bionda, con cui Tyler trascorre il tempo tra giochi in scatola, carte, roulette giocattolo e ammiccamenti sensuali. Il video si chiude sull’animazione della ruota della fortuna vista all’inizio. Video utilizzabile per ragionare sul concetto di dipendenza: perché ludopatia associato ad una ragazza? Quali sono i meccanismi che ci permettono di parlare di dipendenza?",
+    "dataInserimento": "2023-08-16"
   },
   {
     "id": "HD1927-06",
@@ -3486,7 +3734,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Videoclip",
     "prodottoScuola": false,
-    "description": "Videoclip che è un messaggio sociale per dire no alle slot machine, realizzato su un progetto di Giorgio Magarò e Simone Feder. Un gruppo di cantanti hip hop si alterna sulle strofe il cui testo denuncia gli effetti della dipendenza da gioco d’azzardo e l’ipocrisia dello Stato, che ci guadagna e non ferma questo problema. Vediamo immagini di persone che giocano alle slot, anche prese da Youtube con casinò americani. L’ultima strofa propone come soluzione di supportare il movimento No Slot. I chiusura compaiono i numeri dell’azzardo in Italia, riferiti al 2012."
+    "description": "Videoclip che è un messaggio sociale per dire no alle slot machine, realizzato su un progetto di Giorgio Magarò e Simone Feder. Un gruppo di cantanti hip hop si alterna sulle strofe il cui testo denuncia gli effetti della dipendenza da gioco d’azzardo e l’ipocrisia dello Stato, che ci guadagna e non ferma questo problema. Vediamo immagini di persone che giocano alle slot, anche prese da Youtube con casinò americani. L’ultima strofa propone come soluzione di supportare il movimento No Slot. I chiusura compaiono i numeri dell’azzardo in Italia, riferiti al 2012.",
+    "dataInserimento": "2023-12-16"
   },
   {
     "id": "HD1927-07",
@@ -3500,7 +3749,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Videoclip",
     "prodottoScuola": false,
-    "description": "Videoclip del gruppo Deception Store, realizzato con il patrocinio del Comune di Merano per sensibilizzare al fenomeno del gioco d’azzardo. Vediamo il protagonista del video, il cantante Marco Pantozzi, davanti ad un muro, mentre fuma l’ultima sigaretta prima di entrare in una sala slot. Il testo della canzone (in inglese con sottotitoli in italiano) di rivolge alla madre, chiedendole di “non chiamare” perché si sta perdendo nel “negozio delle illusioni”. Musica pop/rock, fotografia con toni cupi all’interno della sala slot, prevalenza dei primi piani del cantante. Gli altri giocatori alle slot indossano maschere bianche per simboleggiare “la perdita di identità del giocatore compulsivo”, come spiega l’autore in un’intervista sul sito di Se questo è un gioco."
+    "description": "Videoclip del gruppo Deception Store, realizzato con il patrocinio del Comune di Merano per sensibilizzare al fenomeno del gioco d’azzardo. Vediamo il protagonista del video, il cantante Marco Pantozzi, davanti ad un muro, mentre fuma l’ultima sigaretta prima di entrare in una sala slot. Il testo della canzone (in inglese con sottotitoli in italiano) di rivolge alla madre, chiedendole di “non chiamare” perché si sta perdendo nel “negozio delle illusioni”. Musica pop/rock, fotografia con toni cupi all’interno della sala slot, prevalenza dei primi piani del cantante. Gli altri giocatori alle slot indossano maschere bianche per simboleggiare “la perdita di identità del giocatore compulsivo”, come spiega l’autore in un’intervista sul sito di Se questo è un gioco.",
+    "dataInserimento": "2025-04-26"
   },
   {
     "id": "HD1927-08",
@@ -3514,7 +3764,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Videoclip",
     "prodottoScuola": false,
-    "description": "Videoclip costruito come un video promozionale di StarCasinò Sport, la sezione di scommesse sportive di StarCasino.it. Il nome e il logo del sito compaiono all’inizio, alla fine e molte volte durante tutto il video. In uno spazio al chiuso vediamo i tre trapper cantare il pezzo, alternate ad immagini di un calciatore e una calciatrice che si esibiscono in virtuosismi di palleggio, entrambi con indosso una maglia azzurra con il nome del sito. Il testo della canzone riprende i topoi della trap: la provenienza dal quartiere, l’accento sull’avercela fatta quando nessuno credeva in te. Non si parla esplicitamente di scommesse, ma il sottotesto è evidente: l’invito è a essere un vincente, a “provarci” (“Fra', capisco non riuscirci, non capisco non provarci”), il riferimento esplicito alle vittorie sportive (“Festeggio in campo con i miei, quando vinciamo gli Europei” – poi vinti davvero dall’Italia nel 2021) e al calcio. L’azzardo diventa quindi una delle strade che “devi provare” per farti strada nella vita, per non restare tra chi “sta ancora aspettando”."
+    "description": "Videoclip costruito come un video promozionale di StarCasinò Sport, la sezione di scommesse sportive di StarCasino.it. Il nome e il logo del sito compaiono all’inizio, alla fine e molte volte durante tutto il video. In uno spazio al chiuso vediamo i tre trapper cantare il pezzo, alternate ad immagini di un calciatore e una calciatrice che si esibiscono in virtuosismi di palleggio, entrambi con indosso una maglia azzurra con il nome del sito. Il testo della canzone riprende i topoi della trap: la provenienza dal quartiere, l’accento sull’avercela fatta quando nessuno credeva in te. Non si parla esplicitamente di scommesse, ma il sottotesto è evidente: l’invito è a essere un vincente, a “provarci” (“Fra', capisco non riuscirci, non capisco non provarci”), il riferimento esplicito alle vittorie sportive (“Festeggio in campo con i miei, quando vinciamo gli Europei” – poi vinti davvero dall’Italia nel 2021) e al calcio. L’azzardo diventa quindi una delle strade che “devi provare” per farti strada nella vita, per non restare tra chi “sta ancora aspettando”.",
+    "dataInserimento": "2024-05-16"
   },
   {
     "id": "HD1928-01",
@@ -3528,7 +3779,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Web e social",
     "prodottoScuola": false,
-    "description": "Lo streamer Twitch Il Gabbrone, famoso anche per le sue partite al gioco d’azzardo in diretta, racconta nella live di soffrire di problemi legati al gioco d’azzardo: tra bestemmie e lacrime lo streamer rivela di essersi chiuso in bagno a casa della sua ragazza per giocarsi 500 o 1000 euro, perché non riusciva a farne a meno. E’ arrivato a perdere 16000 euro. I follower lo supportano in catch o tramite messaggi, che vengono letti dalla voce automatica interrompendo lo sfogo. Ad un certo punto interviene Dalila, all’epoca la ragazza del Gabbrone, che cerca di calmarlo. Nella parte finale i toni si calmano. Tra i commenti, sia della live che dello streaming, c’è anche chi invita il ragazzo a farsi aiutare. Il video è molto lungo (16 minuti), ma se ne può estrapolare una sequenza più breve partendo da 2’10’’, utilizzabile in classe."
+    "description": "Lo streamer Twitch Il Gabbrone, famoso anche per le sue partite al gioco d’azzardo in diretta, racconta nella live di soffrire di problemi legati al gioco d’azzardo: tra bestemmie e lacrime lo streamer rivela di essersi chiuso in bagno a casa della sua ragazza per giocarsi 500 o 1000 euro, perché non riusciva a farne a meno. E’ arrivato a perdere 16000 euro. I follower lo supportano in catch o tramite messaggi, che vengono letti dalla voce automatica interrompendo lo sfogo. Ad un certo punto interviene Dalila, all’epoca la ragazza del Gabbrone, che cerca di calmarlo. Nella parte finale i toni si calmano. Tra i commenti, sia della live che dello streaming, c’è anche chi invita il ragazzo a farsi aiutare. Il video è molto lungo (16 minuti), ma se ne può estrapolare una sequenza più breve partendo da 2’10’’, utilizzabile in classe.",
+    "dataInserimento": "2024-02-18"
   },
   {
     "id": "HD1928-02",
@@ -3542,7 +3794,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Web e social",
     "prodottoScuola": false,
-    "description": "Uno short di Youtube in formato Instagram che mostra in diciotto secondi un biglietto personalizzato per un matrimonio, in cui è possibile grattare come un Gratta e Vinci e scoprire che cosa si è vinto (in questo caso un ballo con la sposa). Utilizzabile come esempio di “terra di confine”: non si tratta di azzardo, quanto di una normalizzazione in altri contesti di logiche e meccanismi dell’azzardo."
+    "description": "Uno short di Youtube in formato Instagram che mostra in diciotto secondi un biglietto personalizzato per un matrimonio, in cui è possibile grattare come un Gratta e Vinci e scoprire che cosa si è vinto (in questo caso un ballo con la sposa). Utilizzabile come esempio di “terra di confine”: non si tratta di azzardo, quanto di una normalizzazione in altri contesti di logiche e meccanismi dell’azzardo.",
+    "dataInserimento": "2025-02-20"
   },
   {
     "id": "HD1928-03",
@@ -3556,7 +3809,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Web e social",
     "prodottoScuola": false,
-    "description": "Breve video di circa un minuto e mezzo pubblicato su Youtube da Starcasino.it, che mostra una grossa vincita in uno dei giochi proposti dal sito, “Crazy Time” (uno show game analogo alla Ruota della Fortuna), nel bonus round “Pachinko”. Il giovane conduttore in studio commenta in inglese la vincita, che è di oltre 13 milioni di euro divisi tra i 3317 giocatori online in quel momento. Esempio di video promozionale, analogo dell’esposizione dei cartelli “Qui vinti…” nelle tabaccherie. La descrizione del video su Youtube linka ad un blog che offre “maggiori informazioni” sul gioco."
+    "description": "Breve video di circa un minuto e mezzo pubblicato su Youtube da Starcasino.it, che mostra una grossa vincita in uno dei giochi proposti dal sito, “Crazy Time” (uno show game analogo alla Ruota della Fortuna), nel bonus round “Pachinko”. Il giovane conduttore in studio commenta in inglese la vincita, che è di oltre 13 milioni di euro divisi tra i 3317 giocatori online in quel momento. Esempio di video promozionale, analogo dell’esposizione dei cartelli “Qui vinti…” nelle tabaccherie. La descrizione del video su Youtube linka ad un blog che offre “maggiori informazioni” sul gioco.",
+    "dataInserimento": "2025-02-04"
   },
   {
     "id": "HD1928-04",
@@ -3570,7 +3824,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Web e social",
     "prodottoScuola": false,
-    "description": "Videorecensione a cura di uno youtuber, ovviamente stipendiato da Starcasino.it, sul gioco “Crazy time”, una Ruota della Fortuna con quattro sotto giochi che permettono di ottenere bonus e moltiplicatori. Il gioco è condotto da un presentatore live in uno studio coloratissimo, dove oggetti reali e scenografie digitali si integrano. Lo youtuber pone l’accento sulle vincite, sottolineando più volte che, essendo una recensione, sta giocando con la puntata di un euro: quanto avrebbe potuto vincere puntando 10, 25 o 50 euro? Nei commenti al video parecchie persone sottolineano come il gioco sia totalmente pilotato e quindi un “mangia soldi”. Video molto lungo (9 minuti), difficilmente utilizzabile in classe ma utile in sede di formazione e autoformazione per esplorare come sono costruiti i giochi d’azzardo online."
+    "description": "Videorecensione a cura di uno youtuber, ovviamente stipendiato da Starcasino.it, sul gioco “Crazy time”, una Ruota della Fortuna con quattro sotto giochi che permettono di ottenere bonus e moltiplicatori. Il gioco è condotto da un presentatore live in uno studio coloratissimo, dove oggetti reali e scenografie digitali si integrano. Lo youtuber pone l’accento sulle vincite, sottolineando più volte che, essendo una recensione, sta giocando con la puntata di un euro: quanto avrebbe potuto vincere puntando 10, 25 o 50 euro? Nei commenti al video parecchie persone sottolineano come il gioco sia totalmente pilotato e quindi un “mangia soldi”. Video molto lungo (9 minuti), difficilmente utilizzabile in classe ma utile in sede di formazione e autoformazione per esplorare come sono costruiti i giochi d’azzardo online.",
+    "dataInserimento": "2023-03-21"
   },
   {
     "id": "HD1928-05",
@@ -3584,7 +3839,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Web e social",
     "prodottoScuola": false,
-    "description": "Il Gabbrone, noto streamer su Twitch anche di gioco d’azzardo, gioca a Crazy Time, una Ruota della Fortuna disponibile su Starcasino.it. Grazie ad una serie di combinazioni fortunate riesce a moltiplicare la sua puntata per oltre 1400 volte, vincendo 3500 euro. Esultanza urlata: “Ti compro una casa!!” Esistono su youtube migliaia di video come questo, che equivalgono online all’esporre in tabaccherie i cartelli “Vinti qui…”. Interessante anche leggere i commenti del video su Youtube."
+    "description": "Il Gabbrone, noto streamer su Twitch anche di gioco d’azzardo, gioca a Crazy Time, una Ruota della Fortuna disponibile su Starcasino.it. Grazie ad una serie di combinazioni fortunate riesce a moltiplicare la sua puntata per oltre 1400 volte, vincendo 3500 euro. Esultanza urlata: “Ti compro una casa!!” Esistono su youtube migliaia di video come questo, che equivalgono online all’esporre in tabaccherie i cartelli “Vinti qui…”. Interessante anche leggere i commenti del video su Youtube.",
+    "dataInserimento": "2024-08-13"
   },
   {
     "id": "HD1928-06",
@@ -3598,7 +3854,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Web e social",
     "prodottoScuola": false,
-    "description": "Il noto streamer romano Gianmarco Tocco, in arte “Blur”, è diventato nel 2023 lo streamer italiano con maggior seguito. In questa clip, tratta da una sua live, Blur, insieme ad un altro streamer, gioca alla slot online “Hand of Midas”. Nella sessione bonus una serie di spin fortunati portano Blur ad un moltiplicatore sempre più alto, fino alla vincita finale di oltre 1600 euro. Ennesimo video che promuove le vincite alle slot online, analogo ai cartelli “Vinti qui” esposti sulle tabaccherie."
+    "description": "Il noto streamer romano Gianmarco Tocco, in arte “Blur”, è diventato nel 2023 lo streamer italiano con maggior seguito. In questa clip, tratta da una sua live, Blur, insieme ad un altro streamer, gioca alla slot online “Hand of Midas”. Nella sessione bonus una serie di spin fortunati portano Blur ad un moltiplicatore sempre più alto, fino alla vincita finale di oltre 1600 euro. Ennesimo video che promuove le vincite alle slot online, analogo ai cartelli “Vinti qui” esposti sulle tabaccherie.",
+    "dataInserimento": "2024-11-24"
   },
   {
     "id": "HD1938-01",
@@ -3612,7 +3869,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "BORN FOR THE INTERNET. Siamo in una sala parto: la donna sta per partorire, il futuro papà riprende la scena con un tablet. Il bambino nasce e come primo gesto tocca il naso del dottore, che sviene (trascinando con sé un computer portatile con Windows). Il bambino appare già autonomo: dopo un brevissimo sguardo alla madre, chiede e ottiene il tablet dal papà, cerca su Google come tagliarsi il cordone ombelicale e se lo taglia. Poi, sempre a gesti, chiama l’infermiera, indossa la maglietta blu (è un maschio), le prende lo smartphone e si fa con lei un selfie su Instagram. I genitori sono sconvolti e non sanno che cosa fare. Il bambino rotola già dal letto, inizia a gattonare verso il computer caduto a terra: si connette alla rete MTS e va in live streaming. Poi, camminando, esce dalla stanza, guidato dal navigatore del cellulare. L’addetto alla reception lo guarda stupito mentre prende un palloncino azzurro con scritto “It’s a boy” e si incammina deciso verso l’uscita e il mondo esterno. Compare il claim finale: “Born for the Internet”. Lo spot pubblicizza un provider di rete Internet indiano. Pur essendo un video di oltre dieci anni fa ha quasi dieci milioni di views ed è stato rilanciato sui vari social. Utilizzato molto sia nei laboratori nelle classi (dalla primaria alle superiori), sia con genitori e operatori, insieme ad altre pubblicità, per ragionare sulle rappresentazioni del digitale e sul rapporto genitori-figli rispetto all’utilizzo dei device. Esiste un’età giusta per possedere un dispositivo? Che cosa si guadagna e che cosa si rischia di perdere utilizzandolo? Esistono davvero i “nativi digitali” o si tratta di una sovrarappresentazione?"
+    "description": "BORN FOR THE INTERNET. Siamo in una sala parto: la donna sta per partorire, il futuro papà riprende la scena con un tablet. Il bambino nasce e come primo gesto tocca il naso del dottore, che sviene (trascinando con sé un computer portatile con Windows). Il bambino appare già autonomo: dopo un brevissimo sguardo alla madre, chiede e ottiene il tablet dal papà, cerca su Google come tagliarsi il cordone ombelicale e se lo taglia. Poi, sempre a gesti, chiama l’infermiera, indossa la maglietta blu (è un maschio), le prende lo smartphone e si fa con lei un selfie su Instagram. I genitori sono sconvolti e non sanno che cosa fare. Il bambino rotola già dal letto, inizia a gattonare verso il computer caduto a terra: si connette alla rete MTS e va in live streaming. Poi, camminando, esce dalla stanza, guidato dal navigatore del cellulare. L’addetto alla reception lo guarda stupito mentre prende un palloncino azzurro con scritto “It’s a boy” e si incammina deciso verso l’uscita e il mondo esterno. Compare il claim finale: “Born for the Internet”. Lo spot pubblicizza un provider di rete Internet indiano. Pur essendo un video di oltre dieci anni fa ha quasi dieci milioni di views ed è stato rilanciato sui vari social. Utilizzato molto sia nei laboratori nelle classi (dalla primaria alle superiori), sia con genitori e operatori, insieme ad altre pubblicità, per ragionare sulle rappresentazioni del digitale e sul rapporto genitori-figli rispetto all’utilizzo dei device. Esiste un’età giusta per possedere un dispositivo? Che cosa si guadagna e che cosa si rischia di perdere utilizzandolo? Esistono davvero i “nativi digitali” o si tratta di una sovrarappresentazione?",
+    "dataInserimento": "2025-03-10"
   },
   {
     "id": "HD1938-02",
@@ -3626,7 +3884,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "IT’S IN YOUR HANDS. Un gruppo di ragazzini attraversa un bosco in bici. Uno di loro sente un rumore e si ferma. Tra i cespugli, vicino ad un albero, c’è un animaletto mai visto prima, intento a mangiare lumache. Il ragazzo estrae il suo smartphone Huawei e lo fotografa: dopo inizia a immaginare che cosa potrebbe capitare. La foto, inviata inizalmente a degli amici, fa il giro del mondo e diventa un fenomeno globale: l’animaletto, ribattezzato Gnu Gnu, è oggetto di meme e merchandising, mentre il governo organizza una spedizione e arriva a catturarlo. Rinchiuso in una gabbia, il povero Gnu Gnu diventa oggetto di sguardo (e scherno) da parte di chi accede allo zoo. Su questa immagine il ragazzo smette di immaginare: la foto è ancora sul suo dispositivo, l’animaletto lo guarda interrogativo. Il ragazzo prende una decisione: cancella definitivamente la foto e se ne va, mentre l’animaletto ritorna nel bosco. Compare il claim “It’s in your hands” (E’ nelle tue mani), seguito dall’immagine degli smartphone Psmart della Huawei con la scritta “Wicked possibilities” (traducibile con “possibilità favolose” ma anche  “birichine”). Spot molto rilanciato su Youtube e sui social, spesso con commenti positivi (“best commercial ever”). Utilizzato in classe, dalla scuola primaria alle superiori, e con adulti (genitori, insegnanti, operatori) per ragionare rispetto ai comportamenti legati al digitale: privacy, condivisione delle immagini, cyberbullismo, responsabilità delle scelte. Si tratta a tutti gli effetti di un video di marketing sociale, anche se non contiene un messaggio esplicito: è davvero tutto nelle nostre mani? Che ruolo ha il mercato? E’ possibile fare previsioni così a lungo termine rispetto al nostro agire online?"
+    "description": "IT’S IN YOUR HANDS. Un gruppo di ragazzini attraversa un bosco in bici. Uno di loro sente un rumore e si ferma. Tra i cespugli, vicino ad un albero, c’è un animaletto mai visto prima, intento a mangiare lumache. Il ragazzo estrae il suo smartphone Huawei e lo fotografa: dopo inizia a immaginare che cosa potrebbe capitare. La foto, inviata inizalmente a degli amici, fa il giro del mondo e diventa un fenomeno globale: l’animaletto, ribattezzato Gnu Gnu, è oggetto di meme e merchandising, mentre il governo organizza una spedizione e arriva a catturarlo. Rinchiuso in una gabbia, il povero Gnu Gnu diventa oggetto di sguardo (e scherno) da parte di chi accede allo zoo. Su questa immagine il ragazzo smette di immaginare: la foto è ancora sul suo dispositivo, l’animaletto lo guarda interrogativo. Il ragazzo prende una decisione: cancella definitivamente la foto e se ne va, mentre l’animaletto ritorna nel bosco. Compare il claim “It’s in your hands” (E’ nelle tue mani), seguito dall’immagine degli smartphone Psmart della Huawei con la scritta “Wicked possibilities” (traducibile con “possibilità favolose” ma anche  “birichine”). Spot molto rilanciato su Youtube e sui social, spesso con commenti positivi (“best commercial ever”). Utilizzato in classe, dalla scuola primaria alle superiori, e con adulti (genitori, insegnanti, operatori) per ragionare rispetto ai comportamenti legati al digitale: privacy, condivisione delle immagini, cyberbullismo, responsabilità delle scelte. Si tratta a tutti gli effetti di un video di marketing sociale, anche se non contiene un messaggio esplicito: è davvero tutto nelle nostre mani? Che ruolo ha il mercato? E’ possibile fare previsioni così a lungo termine rispetto al nostro agire online?",
+    "dataInserimento": "2024-03-26"
   },
   {
     "id": "HD1938-03",
@@ -3640,7 +3899,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "PRIVACY SOTTO CONTROLLO. Un giovane ordina un cappuccino da asporto in un bar. Quando esce dal locale il barista comincia a seguirlo. Lo stesso fanno tutte le persone che incontra, dalla funzionaria della banca alla commessa di un supermercato. A fine giornata l’uomo si ritrova in casa circondato da sconosciuti che frugano tra i suoi oggetti personali e sbirciano che cosa fa. L’uomo allora estrae l’iPhone e per ciascuna app seleziona l’opzione che impedisce di essere tracciato. Una dopo l’altra le persone nella stanza esplodono e scompaiono. La scritta in bianco ribadisce quanto visto: “Scegli chi può tracciare le tue informazioni. E chi non può. Privacy. Questo è iPhone”. La canzone dello spot è “Mind your own business” (Fatti gli affari tuoi) della band anni ‘80 Delta 5. Su Youtube è visibile anche la versione internazionale di 60 secondi, “Tracked”, utilizzabile in classe perché facilmente comprensibile. Lo spot è stato utilizzato in laboratori con studenti della Secondaria di primo e secondo grado, insieme ad altri spot (commerciali o sociali) per introdurre il tema della profilazione, dei big data e degli algoritmi. La Apple ha dedicato altri spot al tema della privacy, presenti in questo archivio."
+    "description": "PRIVACY SOTTO CONTROLLO. Un giovane ordina un cappuccino da asporto in un bar. Quando esce dal locale il barista comincia a seguirlo. Lo stesso fanno tutte le persone che incontra, dalla funzionaria della banca alla commessa di un supermercato. A fine giornata l’uomo si ritrova in casa circondato da sconosciuti che frugano tra i suoi oggetti personali e sbirciano che cosa fa. L’uomo allora estrae l’iPhone e per ciascuna app seleziona l’opzione che impedisce di essere tracciato. Una dopo l’altra le persone nella stanza esplodono e scompaiono. La scritta in bianco ribadisce quanto visto: “Scegli chi può tracciare le tue informazioni. E chi non può. Privacy. Questo è iPhone”. La canzone dello spot è “Mind your own business” (Fatti gli affari tuoi) della band anni ‘80 Delta 5. Su Youtube è visibile anche la versione internazionale di 60 secondi, “Tracked”, utilizzabile in classe perché facilmente comprensibile. Lo spot è stato utilizzato in laboratori con studenti della Secondaria di primo e secondo grado, insieme ad altri spot (commerciali o sociali) per introdurre il tema della profilazione, dei big data e degli algoritmi. La Apple ha dedicato altri spot al tema della privacy, presenti in questo archivio.",
+    "dataInserimento": "2024-04-22"
   },
   {
     "id": "HD1938-04",
@@ -3654,7 +3914,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "COSE PRIVATE. Un uomo che vuole divorziare lo racconta ai passeggeri del bus; un’impiegata parla male del collega alle sue spalle in ufficio; un atleta sovrappeso che racconta ai passanti i suoi valori fisici; una ragazza a cena con un amico fa sapere a tutti di volere un figlio; infine una donna legge il numero della sua carta di credito al megafono, in un parco frequentatissimo. Dopo queste situazioni che evidenziano in modo paradossale la nostra tendenza a pubblicare tutto, compare su sfondo nero la scritta: “Certe cose è meglio tenerle private. iPhone ti aiuta a farlo”. Lo spot è stato utilizzato in laboratori con studenti della Secondaria di primo e secondo grado, insieme ad altri spot (commerciali o sociali) per introdurre il tema della profilazione, dei big data e degli algoritmi. La Apple ha dedicato altri spot al tema della privacy, presenti in questo archivio."
+    "description": "COSE PRIVATE. Un uomo che vuole divorziare lo racconta ai passeggeri del bus; un’impiegata parla male del collega alle sue spalle in ufficio; un atleta sovrappeso che racconta ai passanti i suoi valori fisici; una ragazza a cena con un amico fa sapere a tutti di volere un figlio; infine una donna legge il numero della sua carta di credito al megafono, in un parco frequentatissimo. Dopo queste situazioni che evidenziano in modo paradossale la nostra tendenza a pubblicare tutto, compare su sfondo nero la scritta: “Certe cose è meglio tenerle private. iPhone ti aiuta a farlo”. Lo spot è stato utilizzato in laboratori con studenti della Secondaria di primo e secondo grado, insieme ad altri spot (commerciali o sociali) per introdurre il tema della profilazione, dei big data e degli algoritmi. La Apple ha dedicato altri spot al tema della privacy, presenti in questo archivio.",
+    "dataInserimento": "2026-03-01"
   },
   {
     "id": "HD1938-05",
@@ -3668,7 +3929,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "ASTA DEI DATI. Una ragazza di nome Ellie apre una porta e scopre una sala colma di gente, dove si sta tenendo l’asta dei suoi dati personali: i suoi movimenti bancari, i suoi messaggi, le sue mail, tutto viene venduto al migliore offerente. Dopo l’iniziale stupore Ellie reagisce: estrae il suo iPhone e imposta le opzioni che bloccano il tracciamento, anche delle mail. I partecipanti all’asta e i compratori scompaiono ad uno ad uno in una nuvoletta di polvere. In chiusura il claim, in inglese: “Privacy. That’s iPhone”. Lo spot, al momento disponibile su Yutube solo in inglese, è stato utilizzato in laboratori con studenti della Secondaria di secondo grado, insieme ad altri spot (commerciali o sociali) per introdurre il tema della profilazione, dei big data e degli algoritmi. La Apple ha dedicato altri spot al tema della privacy, presenti in questo archivio."
+    "description": "ASTA DEI DATI. Una ragazza di nome Ellie apre una porta e scopre una sala colma di gente, dove si sta tenendo l’asta dei suoi dati personali: i suoi movimenti bancari, i suoi messaggi, le sue mail, tutto viene venduto al migliore offerente. Dopo l’iniziale stupore Ellie reagisce: estrae il suo iPhone e imposta le opzioni che bloccano il tracciamento, anche delle mail. I partecipanti all’asta e i compratori scompaiono ad uno ad uno in una nuvoletta di polvere. In chiusura il claim, in inglese: “Privacy. That’s iPhone”. Lo spot, al momento disponibile su Yutube solo in inglese, è stato utilizzato in laboratori con studenti della Secondaria di secondo grado, insieme ad altri spot (commerciali o sociali) per introdurre il tema della profilazione, dei big data e degli algoritmi. La Apple ha dedicato altri spot al tema della privacy, presenti in questo archivio.",
+    "dataInserimento": "2023-06-12"
   },
   {
     "id": "HD1938-06",
@@ -3682,7 +3944,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "SALA D’ATTESA DATI SANITARI. In una sala d’attesa di un presidio medico (dal setting molto americano) una voce narrante femminile, che tutti sentono, rende pubbliche le informazioni sulla salute dei presenti: un uomo non si lava i denti da venerdì, una donna non ha fatto i passi giornalieri necessari per stare in salute, un uomo, Carlo, ha un gonfiore che tiene segreto. Quando passa ad una ragazza, però, questa tira fuori l’iPhone e utilizza l’App Salute, che permette di tenere sotto controllo i dati. La voce si lamenta: “Nooo, mi stavo divertendo”. Utilizzabile in laboratori con studenti o operatori per introdurre il tema della profilazione, dei big data e degli algoritmi, anche nell’ambito sanitario (tema molto sentito negli Stati Uniti, ma del quale si sta discutendo anche in Europa). La Apple ha dedicato altri spot al tema della privacy, presenti in questo archivio."
+    "description": "SALA D’ATTESA DATI SANITARI. In una sala d’attesa di un presidio medico (dal setting molto americano) una voce narrante femminile, che tutti sentono, rende pubbliche le informazioni sulla salute dei presenti: un uomo non si lava i denti da venerdì, una donna non ha fatto i passi giornalieri necessari per stare in salute, un uomo, Carlo, ha un gonfiore che tiene segreto. Quando passa ad una ragazza, però, questa tira fuori l’iPhone e utilizza l’App Salute, che permette di tenere sotto controllo i dati. La voce si lamenta: “Nooo, mi stavo divertendo”. Utilizzabile in laboratori con studenti o operatori per introdurre il tema della profilazione, dei big data e degli algoritmi, anche nell’ambito sanitario (tema molto sentito negli Stati Uniti, ma del quale si sta discutendo anche in Europa). La Apple ha dedicato altri spot al tema della privacy, presenti in questo archivio.",
+    "dataInserimento": "2024-10-05"
   },
   {
     "id": "HD1938-07",
@@ -3696,7 +3959,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "AVATAR. Un giovane cammina per la città, guardandosi intorno: quasi tutte le persone alle prese con un dispositivo digitale (smartphone, console portatile, laptop) appaiono con le sembianze dei propri avatar digitali. Il ragazzo si ritrova così circondato di cavalieri, folletti, zombi, astronauti, supereroi… Arrivato ad un bar, ordina una bottiglia di Coca Cola al banco. Di fianco a lui un orco dall’aspetto minaccioso, seduto al computer, allunga la mano per prendere la bottiglia e così si accorge del ragazzo, che sta leggendo: l’orco si rivela essere una giovane ragazza, a cui lui offre la Coca Cola. I due iniziano a chiacchierare, mentre l’inquadratura si allontana e compare il claim “Open happiness”. Spot del 2009, eppure utilizzabile in quanto la narrazione e la resa grafica degli avatar funzionano ancora oggi: è stato inserito in laboratori con studenti delle superiori per ragionare sull’identità digitale e sul concetto di “onlife”.. La messa in scena della Coca Cola, funzionale a vendere il prodotto, è manichea e semplificatoria: chi è dentro il digitale perde la propria umanità, chi ne resta fuori (il ragazzo non ha dispositivi e legge fumetti) la mantiene. E’ una visione ancora proponibile? Come sono cambiati la percezione del corpo e le relazioni negli ambienti onlife?"
+    "description": "AVATAR. Un giovane cammina per la città, guardandosi intorno: quasi tutte le persone alle prese con un dispositivo digitale (smartphone, console portatile, laptop) appaiono con le sembianze dei propri avatar digitali. Il ragazzo si ritrova così circondato di cavalieri, folletti, zombi, astronauti, supereroi… Arrivato ad un bar, ordina una bottiglia di Coca Cola al banco. Di fianco a lui un orco dall’aspetto minaccioso, seduto al computer, allunga la mano per prendere la bottiglia e così si accorge del ragazzo, che sta leggendo: l’orco si rivela essere una giovane ragazza, a cui lui offre la Coca Cola. I due iniziano a chiacchierare, mentre l’inquadratura si allontana e compare il claim “Open happiness”. Spot del 2009, eppure utilizzabile in quanto la narrazione e la resa grafica degli avatar funzionano ancora oggi: è stato inserito in laboratori con studenti delle superiori per ragionare sull’identità digitale e sul concetto di “onlife”.. La messa in scena della Coca Cola, funzionale a vendere il prodotto, è manichea e semplificatoria: chi è dentro il digitale perde la propria umanità, chi ne resta fuori (il ragazzo non ha dispositivi e legge fumetti) la mantiene. E’ una visione ancora proponibile? Come sono cambiati la percezione del corpo e le relazioni negli ambienti onlife?",
+    "dataInserimento": "2023-07-07"
   },
   {
     "id": "HD1938-08",
@@ -3710,7 +3974,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "DO WHAT YOU CAN’T 60’’ ITA. Uno struzzo si stacca dal suo branco e si avvicina ad una casa, dove gli abitanti hanno lasciato sul tavolo del patio i resti della colazione e un visore VR Samsung Gear. Mentra becca il cibo, lo struzzo indossa inavvertitamente il visore: si ritrova così immerso tra le nuvole, in una simulazione di volo. L’esperienza lo cambia: l’animale inizia ad allenarsi indossando il visore per imparare a volare, tra rovinose cadute e lo scherno dei suoi simili. Finchè un giorno, all’alba, lo struzzo, senza più il visore, prende la rincorsa e spicca il volo. Gli altri struzzi, dal basso, lo guardano volare. L’ultima inquadratura ha una regia raffinata: il movimento di macchina ci mostra prima l’ombra dello struzzo a terra, poi sale verso il cielo ma lo struzzo non c’è. E’ una soggettiva, quindi siamo noi lo struzzo? Oppure è la messa in scena della frase che compare: “Creiamo quello che non può essere creato per farti fare quello che non può essere fatto”, seguita dal significativo claim “#DoWhatYouCant”. La canzone scelta, “Rocket man” di Elton John, contribuisce al significato e al crescendo emotivo dello spot. Il video, anche nella sua versione da 120’ in inglese (reperibile su Youtube) è stato utilizzato anche singolarmente, con brainstorming, per ragionare rispetto a tecnologia, comportamenti e educazione. Tra i possibili spunti operativi: il significato di “allenamento” nel digitale (in riferimento agli esports); il ruolo del gruppo (che cosa fanno gli altri struzzi?); l’aspetto educativo (e se lo struzzo fosse mio figlio?); il tema del limite e del mercato."
+    "description": "DO WHAT YOU CAN’T 60’’ ITA. Uno struzzo si stacca dal suo branco e si avvicina ad una casa, dove gli abitanti hanno lasciato sul tavolo del patio i resti della colazione e un visore VR Samsung Gear. Mentra becca il cibo, lo struzzo indossa inavvertitamente il visore: si ritrova così immerso tra le nuvole, in una simulazione di volo. L’esperienza lo cambia: l’animale inizia ad allenarsi indossando il visore per imparare a volare, tra rovinose cadute e lo scherno dei suoi simili. Finchè un giorno, all’alba, lo struzzo, senza più il visore, prende la rincorsa e spicca il volo. Gli altri struzzi, dal basso, lo guardano volare. L’ultima inquadratura ha una regia raffinata: il movimento di macchina ci mostra prima l’ombra dello struzzo a terra, poi sale verso il cielo ma lo struzzo non c’è. E’ una soggettiva, quindi siamo noi lo struzzo? Oppure è la messa in scena della frase che compare: “Creiamo quello che non può essere creato per farti fare quello che non può essere fatto”, seguita dal significativo claim “#DoWhatYouCant”. La canzone scelta, “Rocket man” di Elton John, contribuisce al significato e al crescendo emotivo dello spot. Il video, anche nella sua versione da 120’ in inglese (reperibile su Youtube) è stato utilizzato anche singolarmente, con brainstorming, per ragionare rispetto a tecnologia, comportamenti e educazione. Tra i possibili spunti operativi: il significato di “allenamento” nel digitale (in riferimento agli esports); il ruolo del gruppo (che cosa fanno gli altri struzzi?); l’aspetto educativo (e se lo struzzo fosse mio figlio?); il tema del limite e del mercato.",
+    "dataInserimento": "2023-07-24"
   },
   {
     "id": "HD1938-09",
@@ -3724,7 +3989,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "LEVEL UP. Spot recitato in inglese, ma facilmente comprensibile anche senza sottotitoli. Una ragazza di colore nella sua stanza estrae il suo smartphone Galaxy e inizia a giocare al videogioco Fortnite, ottenendo una vittoria. La mamma fa capolino nella stanza, dicendole che il negozio di videogiochi locale la vuole sponsorizzare. La ragazza ottiene un nuovo tablet Samsung e con quello continua a vincere a Fortnite: viene allora convocata dal noto rapper Travis Scott, con cui gioca a Fortnite (e vince) visualizzando il tablet su maxi schermo. Arriva infine la chiamata più ambita: il famosissimo pro player Ninja la vuole nel team nazionale. La ragazza entra in uno stadio insieme a Ninja e al resto della squadra: quando la partita sta per iniziale, la ragazza riemerge dal suo sogno ad occhi aperti e si ritrova nella stanza iniziale, con la mamma che le chiede se è pronta. In chiusura compare la scritta: “Upgrade your game, upgrade to Galaxy”. Nel boom del successo di Fornite (la versione Battle Royale è uscita a settembre 2017, lo spot è del 2018) la Samsung sceglie di promuoversi come dispositivo per il gaming, con Travis Scott e Ninja come testimonial. Lo spot è stato utilizzato anche recentemente nelle classi (dalla primaria alle superiori) e con adulti (genitori, insegnanti e operatori) per ragionare sulle rappresentazioni del gaming: la narrazione di questa pubblicità ci restituisce infatti l’idea del gaming come possibile carriera (anche lavorativa), una prospettiva di successo e di affermazione individuale. E’ così? Come funziona davvero il mondo dei pro-player?"
+    "description": "LEVEL UP. Spot recitato in inglese, ma facilmente comprensibile anche senza sottotitoli. Una ragazza di colore nella sua stanza estrae il suo smartphone Galaxy e inizia a giocare al videogioco Fortnite, ottenendo una vittoria. La mamma fa capolino nella stanza, dicendole che il negozio di videogiochi locale la vuole sponsorizzare. La ragazza ottiene un nuovo tablet Samsung e con quello continua a vincere a Fortnite: viene allora convocata dal noto rapper Travis Scott, con cui gioca a Fortnite (e vince) visualizzando il tablet su maxi schermo. Arriva infine la chiamata più ambita: il famosissimo pro player Ninja la vuole nel team nazionale. La ragazza entra in uno stadio insieme a Ninja e al resto della squadra: quando la partita sta per iniziale, la ragazza riemerge dal suo sogno ad occhi aperti e si ritrova nella stanza iniziale, con la mamma che le chiede se è pronta. In chiusura compare la scritta: “Upgrade your game, upgrade to Galaxy”. Nel boom del successo di Fornite (la versione Battle Royale è uscita a settembre 2017, lo spot è del 2018) la Samsung sceglie di promuoversi come dispositivo per il gaming, con Travis Scott e Ninja come testimonial. Lo spot è stato utilizzato anche recentemente nelle classi (dalla primaria alle superiori) e con adulti (genitori, insegnanti e operatori) per ragionare sulle rappresentazioni del gaming: la narrazione di questa pubblicità ci restituisce infatti l’idea del gaming come possibile carriera (anche lavorativa), una prospettiva di successo e di affermazione individuale. E’ così? Come funziona davvero il mondo dei pro-player?",
+    "dataInserimento": "2023-06-21"
   },
   {
     "id": "HD1938-10",
@@ -3738,7 +4004,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "AMICHE. Due amiche e coinquiline hanno entrambe il Samsung, ma una delle due ha il modello più recente (l’S8). L’altra inizia a notare le differenze, sottolineate dalle scritte in sovraimpressione: è più semplice fare shopping, il telefono si sblocca inquadrando il viso, le foto vengono bene anche mentre ci si tuffa in piscina, si riesce a lavorare meglio collegando il dispositivo ad uno schermo tv. Alla fine la ragazza cede e compra il nuovo Samsung, che poi mostra orgogliosa all’amica. Il claim finale è “Libera il tuo smartphone”. Spot utilizzato in classe per ragionare sui meccanismi di mercato, come l’obsolescenza di prodotti che devono essere “consumati” in tempi rapidi. Il video è stato inserito anche in laboratori sul tema del maschile e del femminile."
+    "description": "AMICHE. Due amiche e coinquiline hanno entrambe il Samsung, ma una delle due ha il modello più recente (l’S8). L’altra inizia a notare le differenze, sottolineate dalle scritte in sovraimpressione: è più semplice fare shopping, il telefono si sblocca inquadrando il viso, le foto vengono bene anche mentre ci si tuffa in piscina, si riesce a lavorare meglio collegando il dispositivo ad uno schermo tv. Alla fine la ragazza cede e compra il nuovo Samsung, che poi mostra orgogliosa all’amica. Il claim finale è “Libera il tuo smartphone”. Spot utilizzato in classe per ragionare sui meccanismi di mercato, come l’obsolescenza di prodotti che devono essere “consumati” in tempi rapidi. Il video è stato inserito anche in laboratori sul tema del maschile e del femminile.",
+    "dataInserimento": "2026-02-19"
   },
   {
     "id": "HD1938-11",
@@ -3752,7 +4019,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "THE FLIP SIDE. Una ragazza è seduta su una panchina insieme alla sua amica, che le mostra il nuovo smartphone pieghevole Samsung Z Flip4. “E’ perfetto per le foto di gruppo”, spiega. La ragazza, però, ribatte con decisione: “Non intendo cambiare. Amo il mio smartphone”. Nei giorni successivi, però, l’idea dello smartphone pieghevole comincia a ossessionarla: la ragazza ritrova infatti la comodità del “ripiegare” in mille gesti quotidiani, dalla sedia pieghevole alla tavoletta del water, fino al gesto del saluto. Queste “apparizioni” crescono di intensità, sottolineate da un commento sonoro inquietante, finché la ragazza cede e decide di passare al nuovo Z Flip. Mente lo utilizza in un bus un ragazzo la osserva e capiamo che la storia sta per ripetersi. Il claim è “Apri il tuo mondo”. Lo spot lavora su un registro inedito, una sorta di “thriller psicologico” che sembra rendere il nuovo prodotto digitale un’ossessione e punta a far riflettere sull’irrazionalità del rimanere ancorati alle proprie abitudini (amo il mio smartphone). Utilizzato in formazione con operatori sociosanitari, che ne hanno evidenziato l’aspetto di “craving” ma anche la sottile autoironia (poi ripresa da un video più recente, costruito come un film horror anni ‘80)."
+    "description": "THE FLIP SIDE. Una ragazza è seduta su una panchina insieme alla sua amica, che le mostra il nuovo smartphone pieghevole Samsung Z Flip4. “E’ perfetto per le foto di gruppo”, spiega. La ragazza, però, ribatte con decisione: “Non intendo cambiare. Amo il mio smartphone”. Nei giorni successivi, però, l’idea dello smartphone pieghevole comincia a ossessionarla: la ragazza ritrova infatti la comodità del “ripiegare” in mille gesti quotidiani, dalla sedia pieghevole alla tavoletta del water, fino al gesto del saluto. Queste “apparizioni” crescono di intensità, sottolineate da un commento sonoro inquietante, finché la ragazza cede e decide di passare al nuovo Z Flip. Mente lo utilizza in un bus un ragazzo la osserva e capiamo che la storia sta per ripetersi. Il claim è “Apri il tuo mondo”. Lo spot lavora su un registro inedito, una sorta di “thriller psicologico” che sembra rendere il nuovo prodotto digitale un’ossessione e punta a far riflettere sull’irrazionalità del rimanere ancorati alle proprie abitudini (amo il mio smartphone). Utilizzato in formazione con operatori sociosanitari, che ne hanno evidenziato l’aspetto di “craving” ma anche la sottile autoironia (poi ripresa da un video più recente, costruito come un film horror anni ‘80).",
+    "dataInserimento": "2026-02-07"
   },
   {
     "id": "HD1938-12",
@@ -3766,7 +4034,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "BIG SCREEN. La ragazza protagonista usa il suo smartphone pieghevole Samsung Z Fold 5 in diversi modi: all’inizio a casa propria, per continuare a giocare a Genshin Impact; poi sul lavoro, per continuare il suo progetto di abito in ascensore; infine in taxi, per vedere una partita di calcio proiettata su grandi schermi led sui grattacieli della città. Gli schermi che lei “abbandona”, come la tv e i computer, si animano e le cantano “Please don’t go”. La scritta che compare alla fine riassume il senso dello spot e la caratteristica del prodotto che promuove, “a big screen you can take with you” (uno schermo grande che puoi portare con te). La messa in scena sottolinea il rapporto esclusivo che la ragazza ha con gli schermi: non la vediamo mai interagire con altre persone, neppure online. In questo senso il video è utilizzabile insieme ad altri spot presenti in archivio per far emergere le rappresentazioni del digitale e i possibili rischi."
+    "description": "BIG SCREEN. La ragazza protagonista usa il suo smartphone pieghevole Samsung Z Fold 5 in diversi modi: all’inizio a casa propria, per continuare a giocare a Genshin Impact; poi sul lavoro, per continuare il suo progetto di abito in ascensore; infine in taxi, per vedere una partita di calcio proiettata su grandi schermi led sui grattacieli della città. Gli schermi che lei “abbandona”, come la tv e i computer, si animano e le cantano “Please don’t go”. La scritta che compare alla fine riassume il senso dello spot e la caratteristica del prodotto che promuove, “a big screen you can take with you” (uno schermo grande che puoi portare con te). La messa in scena sottolinea il rapporto esclusivo che la ragazza ha con gli schermi: non la vediamo mai interagire con altre persone, neppure online. In questo senso il video è utilizzabile insieme ad altri spot presenti in archivio per far emergere le rappresentazioni del digitale e i possibili rischi.",
+    "dataInserimento": "2025-01-13"
   },
   {
     "id": "HD1938-13",
@@ -3780,7 +4049,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "RECITA. Versione da 60 secondi dello spot, in inglese ma pienamente comprensibile. Siamo ad una recita scolastica: si apre il sipario e i genitori iniziano a fotografare. Tutti hanno dispositivi Apple, ma le foto vengono sfocate: ecco che gli adulti iniziano a cercare di avvicinarsi al palco in modi sempre più bizzarri (e divertenti), finendo per litigare tra loro sotto gli sguardi stupiti e impauriti dei bambini. Solo una coppia rimane seduta verso il fondo della sala: lui ha uno smartphone “Nokia Lumia 1020”, che ha lo zoom migliore di sempre. Non hanno bisogno di avvicinarsi. Lo slogan finale, infatti, recita: “Don’t fight. Switch” (Non combattere. Cambia), ovvero cambia marca di telefono. Nonostante gli anni e il fallimento del prodotto commercializzato, lo spot continua ad essere utilizzato e utilizzabili sia in classe (anche con bambini della primaria), sia con adulti, per ragionare rispetto ai comportamenti legati al digitale: perché vogliamo fare così tante foto? E’ possibile darsi un limite? Quando nel digitale perdiamo il controllo delle nostre azioni?"
+    "description": "RECITA. Versione da 60 secondi dello spot, in inglese ma pienamente comprensibile. Siamo ad una recita scolastica: si apre il sipario e i genitori iniziano a fotografare. Tutti hanno dispositivi Apple, ma le foto vengono sfocate: ecco che gli adulti iniziano a cercare di avvicinarsi al palco in modi sempre più bizzarri (e divertenti), finendo per litigare tra loro sotto gli sguardi stupiti e impauriti dei bambini. Solo una coppia rimane seduta verso il fondo della sala: lui ha uno smartphone “Nokia Lumia 1020”, che ha lo zoom migliore di sempre. Non hanno bisogno di avvicinarsi. Lo slogan finale, infatti, recita: “Don’t fight. Switch” (Non combattere. Cambia), ovvero cambia marca di telefono. Nonostante gli anni e il fallimento del prodotto commercializzato, lo spot continua ad essere utilizzato e utilizzabili sia in classe (anche con bambini della primaria), sia con adulti, per ragionare rispetto ai comportamenti legati al digitale: perché vogliamo fare così tante foto? E’ possibile darsi un limite? Quando nel digitale perdiamo il controllo delle nostre azioni?",
+    "dataInserimento": "2024-11-04"
   },
   {
     "id": "HD1938-14",
@@ -3794,7 +4064,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "IL FUTURO DEL BENESSERE. Una ragazza, che indossa lo smartwatch della Apple, è sdraiata su un prato e ci dice ch quest’estate vuole solo riposarsi. Il dispositivo però la stimola a continuare a muoversi, sempre più. Prima una corsa, poi una nuotata, quindi la scalata in altura, per arrivare fino agli sport estremi tipo il ribaltamento delle mega ruote dei trattori oppure le arti marziali. Ad ogni nuova sfida la ragazza diventa sempre più brava negli sport precedenti, con immagini volutamente iperboliche. In chiusura la ragazza ci guarda e chiede: “Come? Ti stai solo riposando?” Sull’immagine dello spazio nell’erba ormai vuoto (la ragazza sta correndo) compare l claim: “Il futuro del benessere è qui. Al tuo polso”. Lo spot è stato segnalato nel corso di una formazione per operatori in Liguria. Se inserito insieme ad altri spot sul digitale, può permettere di ragionare sul tema della performance legata al digitale: quanto i dispositivi di automisurazione (come i braccialetti fitbit) ci aiutano a migliorare e quanto invece ci impediscono di ascoltare realmente il nostro corpo? Perchè dovrebbe essere sbagliato “solo” riposarsi? Un altro spunto di discussione può riguardare la raccolta di dati e la profilazione dei consumatori: dove finiscono i dati relativi ai miei esercizi sportivi? In questo senso può essere utile il confronto con lo spot, sempre Apple, relativo alla privacy e ambientato in una sala d’attesa sanitaria (video presente in questo archivio)."
+    "description": "IL FUTURO DEL BENESSERE. Una ragazza, che indossa lo smartwatch della Apple, è sdraiata su un prato e ci dice ch quest’estate vuole solo riposarsi. Il dispositivo però la stimola a continuare a muoversi, sempre più. Prima una corsa, poi una nuotata, quindi la scalata in altura, per arrivare fino agli sport estremi tipo il ribaltamento delle mega ruote dei trattori oppure le arti marziali. Ad ogni nuova sfida la ragazza diventa sempre più brava negli sport precedenti, con immagini volutamente iperboliche. In chiusura la ragazza ci guarda e chiede: “Come? Ti stai solo riposando?” Sull’immagine dello spazio nell’erba ormai vuoto (la ragazza sta correndo) compare l claim: “Il futuro del benessere è qui. Al tuo polso”. Lo spot è stato segnalato nel corso di una formazione per operatori in Liguria. Se inserito insieme ad altri spot sul digitale, può permettere di ragionare sul tema della performance legata al digitale: quanto i dispositivi di automisurazione (come i braccialetti fitbit) ci aiutano a migliorare e quanto invece ci impediscono di ascoltare realmente il nostro corpo? Perchè dovrebbe essere sbagliato “solo” riposarsi? Un altro spunto di discussione può riguardare la raccolta di dati e la profilazione dei consumatori: dove finiscono i dati relativi ai miei esercizi sportivi? In questo senso può essere utile il confronto con lo spot, sempre Apple, relativo alla privacy e ambientato in una sala d’attesa sanitaria (video presente in questo archivio).",
+    "dataInserimento": "2025-08-15"
   },
   {
     "id": "HD1938-15",
@@ -3808,7 +4079,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "FEARLESS. Video originale in inglese con sottotitoli in italiano a cura del Centro Steadycam. Una giovane ci guarda e riflette ad alta voce: “La paura è un mostro. Il mondo ne è pieno”. Mentre parla, il video ci mostra situazioni di paura, solitudine, dubbio, sottolineati da una musica ad archi: il bimbo che teme che cosa c’è sotto il letto, una ragazza sola al bar, un giovane che teme di sbagliare il tiro a canestro, un uomo alla sua scrivania di lavoro. Ma “nel nostro mondo” (ovvero quello del gaming) le persone trovano una via di fuga: la ragazza cammina sul soffitto, l’uomo fugge dal posto di lavoro, il bambino si avventura sotto il letto. “Se ci isolate, ci libereremo. E se provano ad ucciderci, continueremo a tornare”. Mentre la musica va in crescendo, tutti i personaggi corrono dentro una nebbia e riemergono volando, gridando felici. Un anziano ringiovanisce. “Nel nostro mondo non temiamo mai i mostri. Qui siamo senza paura (fearless). Qui giochiamo”. Lo spot si chiude con l’immagine di uno sciame di persone che vola in riva al mare, mentre compare il claim della Playstation 4, “Greatness awaits” (la grandezza / grandiosità attende). Spot molto potente dal punto di vista emozionale, è stato utilizzato sia in interventi con classi terze medie e superiori, sia in formazione con genitori, insegnanti, operatori e psicologi. Le reazioni sono spesso opposte: per alcuni è inquietante, per altri liberatorio. Tra i numerosi spunti che offre, l’aggancio al ragionamento di Jane McGonigal nel suo libro “La realtà in gioco”: in che misura i videogiochi e il loro successo ci permettono di riflettere sulle situazioni di disagio (paura, solitudine, dubbio…) che viviamo nel mondo al di fuori di essi? Quanto il volo finale può essere una sana fuga per ricaricaricarsi e quando, invece, può trasformarsi in incapacità di far fronte alle proprie paure?"
+    "description": "FEARLESS. Video originale in inglese con sottotitoli in italiano a cura del Centro Steadycam. Una giovane ci guarda e riflette ad alta voce: “La paura è un mostro. Il mondo ne è pieno”. Mentre parla, il video ci mostra situazioni di paura, solitudine, dubbio, sottolineati da una musica ad archi: il bimbo che teme che cosa c’è sotto il letto, una ragazza sola al bar, un giovane che teme di sbagliare il tiro a canestro, un uomo alla sua scrivania di lavoro. Ma “nel nostro mondo” (ovvero quello del gaming) le persone trovano una via di fuga: la ragazza cammina sul soffitto, l’uomo fugge dal posto di lavoro, il bambino si avventura sotto il letto. “Se ci isolate, ci libereremo. E se provano ad ucciderci, continueremo a tornare”. Mentre la musica va in crescendo, tutti i personaggi corrono dentro una nebbia e riemergono volando, gridando felici. Un anziano ringiovanisce. “Nel nostro mondo non temiamo mai i mostri. Qui siamo senza paura (fearless). Qui giochiamo”. Lo spot si chiude con l’immagine di uno sciame di persone che vola in riva al mare, mentre compare il claim della Playstation 4, “Greatness awaits” (la grandezza / grandiosità attende). Spot molto potente dal punto di vista emozionale, è stato utilizzato sia in interventi con classi terze medie e superiori, sia in formazione con genitori, insegnanti, operatori e psicologi. Le reazioni sono spesso opposte: per alcuni è inquietante, per altri liberatorio. Tra i numerosi spunti che offre, l’aggancio al ragionamento di Jane McGonigal nel suo libro “La realtà in gioco”: in che misura i videogiochi e il loro successo ci permettono di riflettere sulle situazioni di disagio (paura, solitudine, dubbio…) che viviamo nel mondo al di fuori di essi? Quanto il volo finale può essere una sana fuga per ricaricaricarsi e quando, invece, può trasformarsi in incapacità di far fronte alle proprie paure?",
+    "dataInserimento": "2024-04-26"
   },
   {
     "id": "HD1938-16",
@@ -3822,7 +4094,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "ESPLORATORI. Mentre vediamo un montaggio di immagini di viaggi ed esplorazioni (dallo spazio ai Poli, dalle profondità marine ai deserti) una voce fuori campo maschile ci ricorda che “L’esplorazione è nel nostro DNA”. Qualcosa, dentro ognuno di noi, ci spinge verso l’ignoto, a superare ogni confine. “Siamo tutti esploratori, e ci sono nuovi mondi da esplorare”. Su queste parole compare la console Playstation 5, a cui segue il claim “Play has no limits”. I simboli del controller della Play (X, quadrato, cerchio, triangolo) erano già comparsi in modo veloce nel montaggio delle varie esplorazioni. Lo spot è stato utilizzato sia in classe, sia in formazione con adulti, insieme ad altri spot che promuovono console, per far emergere le rappresentazioni legate al gaming. La Sony sceglie in questo video di legare il lancio della propria console al piacere dell’esplorazione, comune a tutti: insieme alla sfida, si tratta di uno dei piaceri che spiegano il successo di numerosi generi videoludici, dall’avventura al gioco di ruolo, dove l’esplorazione della mappa di gioco e della storia è parte fondamentale dell’esperienza."
+    "description": "ESPLORATORI. Mentre vediamo un montaggio di immagini di viaggi ed esplorazioni (dallo spazio ai Poli, dalle profondità marine ai deserti) una voce fuori campo maschile ci ricorda che “L’esplorazione è nel nostro DNA”. Qualcosa, dentro ognuno di noi, ci spinge verso l’ignoto, a superare ogni confine. “Siamo tutti esploratori, e ci sono nuovi mondi da esplorare”. Su queste parole compare la console Playstation 5, a cui segue il claim “Play has no limits”. I simboli del controller della Play (X, quadrato, cerchio, triangolo) erano già comparsi in modo veloce nel montaggio delle varie esplorazioni. Lo spot è stato utilizzato sia in classe, sia in formazione con adulti, insieme ad altri spot che promuovono console, per far emergere le rappresentazioni legate al gaming. La Sony sceglie in questo video di legare il lancio della propria console al piacere dell’esplorazione, comune a tutti: insieme alla sfida, si tratta di uno dei piaceri che spiegano il successo di numerosi generi videoludici, dall’avventura al gioco di ruolo, dove l’esplorazione della mappa di gioco e della storia è parte fondamentale dell’esperienza.",
+    "dataInserimento": "2023-11-11"
   },
   {
     "id": "HD1938-17",
@@ -3836,7 +4109,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "PLAY HAS NO LIMITS – SCACCHI. Sulle note di una versione remixata di “Blue monday”, brano del 1983 dei New Order, vediamo una metropoli strutturata come una scacchiera, con grattacieli bianchi e neri. E’ in corso una partita a scacchi in cui le pedine, mosse dai due re nei rispettivi palazzi, attivano persone reali: un pedone che fugge in metropolitana inseguito da un altro, un’automobile/alfiere inseguita da motociclette / cavalli, i blindati / torri, le due regine. La partita sembra a favore del re nero, che ha catturato la regina avversaria: ma la strategia dei bianchi porta il semplice pedone bianco a dare scacco matto. Il video si chiude con il pedone che solleva trionfante la corona sottratta al re nero, mentre la folla lo acclama e compare il claim della Ps5 “Play has no limits”. Spot utilizzato nelle classi (medie e superiori) e in incontri formativi con genitori e insegnanti, sia insieme ad altre pubblicità di console, sia singolarmente: la durata analoga ad un breve cortometraggio (2 minuti e mezzo) permette infatti di visionarlo e poi lavorare con un brainstorming libero o chiedendo 2-3 parole per definire quanto visto. Il video promuove la console limitandosi ad evocare i singoli videogiochi (che sono presenti nei poster, nelle statue, nelle scritte sullo sfondo) e mettendo al centro i giocatori, l’adrenalina della sfida, il movimento, la strategia e il senso di community. Forti anche i richiami al mondo della moda (ogni personaggio sembra un cosplayer), ai marchi di lusso (la supercar Mercedes) e all’inclusione (giocano persone di tutto il mondo, la vittoria arriva grazie all’umile pedone)."
+    "description": "PLAY HAS NO LIMITS – SCACCHI. Sulle note di una versione remixata di “Blue monday”, brano del 1983 dei New Order, vediamo una metropoli strutturata come una scacchiera, con grattacieli bianchi e neri. E’ in corso una partita a scacchi in cui le pedine, mosse dai due re nei rispettivi palazzi, attivano persone reali: un pedone che fugge in metropolitana inseguito da un altro, un’automobile/alfiere inseguita da motociclette / cavalli, i blindati / torri, le due regine. La partita sembra a favore del re nero, che ha catturato la regina avversaria: ma la strategia dei bianchi porta il semplice pedone bianco a dare scacco matto. Il video si chiude con il pedone che solleva trionfante la corona sottratta al re nero, mentre la folla lo acclama e compare il claim della Ps5 “Play has no limits”. Spot utilizzato nelle classi (medie e superiori) e in incontri formativi con genitori e insegnanti, sia insieme ad altre pubblicità di console, sia singolarmente: la durata analoga ad un breve cortometraggio (2 minuti e mezzo) permette infatti di visionarlo e poi lavorare con un brainstorming libero o chiedendo 2-3 parole per definire quanto visto. Il video promuove la console limitandosi ad evocare i singoli videogiochi (che sono presenti nei poster, nelle statue, nelle scritte sullo sfondo) e mettendo al centro i giocatori, l’adrenalina della sfida, il movimento, la strategia e il senso di community. Forti anche i richiami al mondo della moda (ogni personaggio sembra un cosplayer), ai marchi di lusso (la supercar Mercedes) e all’inclusione (giocano persone di tutto il mondo, la vittoria arriva grazie all’umile pedone).",
+    "dataInserimento": "2023-12-25"
   },
   {
     "id": "HD1938-18",
@@ -3850,7 +4124,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "TEKKEN PARTY – YOUR FIGHT. E’ sera. Un rider raggiunge una casa dove è in corso un party con ragazzi e ragazze. Consegna la scatola di una pizza, che in realtà contiene il videogioco picchiaduro “Tekken 7”. La festa si anima: i ragazzi si sfidano al videogioco, altri arrivano, tutti condividono l’evento sui social, con live e commenti. Il torneo prosegue e un ragazzo biondo sembra il più forte. Una ragazza si accomoda di fianco a lui e lo sfida. Sullo schermo il duello è tra Kazuya e Heiachi, due personaggi storici di questa serie di videogiochi. All’ultimo colpo la ragazza vince, celebrata dall’abbraccio degli amici e dai commenti sui social. Compare la scritta: “Tekken 7. Your fight”, seguito dal logo del gioco. Spot utilizzato sia nelle classi (medie e superiori), sia in formazione con adulti, per far emergere le rappresentazioni legate al mondo del gaming. Il video mette in scena una situazione di socialità onlife, dove coesistono relazioni e interazioni corporee e online. Il videogioco diventa la “pizza”, ovvero l’occasione di socialità che unisce tutti: la sfida è alta, ma non genera criticità nei rapporti. In classe questo ha permesso l’aggancio con il tema del gaming tossico: quanto è possibile il “fair play” nel gioco multiplayer online? In che misura il gaming può favorire la socialità?"
+    "description": "TEKKEN PARTY – YOUR FIGHT. E’ sera. Un rider raggiunge una casa dove è in corso un party con ragazzi e ragazze. Consegna la scatola di una pizza, che in realtà contiene il videogioco picchiaduro “Tekken 7”. La festa si anima: i ragazzi si sfidano al videogioco, altri arrivano, tutti condividono l’evento sui social, con live e commenti. Il torneo prosegue e un ragazzo biondo sembra il più forte. Una ragazza si accomoda di fianco a lui e lo sfida. Sullo schermo il duello è tra Kazuya e Heiachi, due personaggi storici di questa serie di videogiochi. All’ultimo colpo la ragazza vince, celebrata dall’abbraccio degli amici e dai commenti sui social. Compare la scritta: “Tekken 7. Your fight”, seguito dal logo del gioco. Spot utilizzato sia nelle classi (medie e superiori), sia in formazione con adulti, per far emergere le rappresentazioni legate al mondo del gaming. Il video mette in scena una situazione di socialità onlife, dove coesistono relazioni e interazioni corporee e online. Il videogioco diventa la “pizza”, ovvero l’occasione di socialità che unisce tutti: la sfida è alta, ma non genera criticità nei rapporti. In classe questo ha permesso l’aggancio con il tema del gaming tossico: quanto è possibile il “fair play” nel gioco multiplayer online? In che misura il gaming può favorire la socialità?",
+    "dataInserimento": "2025-11-13"
   },
   {
     "id": "HD1938-19",
@@ -3864,7 +4139,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "NOT EVERYONE IS A SOLDIER. Il video è il teaser trailer del videogioco This war of mine, in cui occorre sopravvivere come civile in uno scenario di guerra ispirato al conflitto nell’ex Jugoslavia. In questo video, realizzato in computer grafica, vediamo, in ralenti, dei soldati che avanzano in una strada cittadina. La ripresa scorre lateralmente: alcuni soldati vengono colpiti e muoiono, altri continuano ad avanzare. Il commento sonoro sale di intensità, dando l’impressione di esaltare l’eroismo dei militari. Invece la ripresa, sempre scorrendo lateralmente, si ferma a inquadrare l’interno di una casa, dove un uomo è ferito tra le braccia di una donna, un altro si appoggia disperato al muro e un bambino guarda nel vuoto. Su questa immagine compare la scritta, in inglese: “In guerra non tutti sono soldati”. Segue il logo del videogioco This war of mine. Spot utilizzato sia nelle classi (medie e superiori), sia in formazione con adulti, per far emergere le rappresentazioni legate al mondo del gaming. Il video (e il videogioco) sono un esempio di come si possa raccontare la guerra da un altro punto di vista, che criticizza quello mainstream di videogiochi molto famosi come la serie di Call of duty. Ogni videogioco, infatti, veicola rappresentazioni del mondo che è utile destrutturare."
+    "description": "NOT EVERYONE IS A SOLDIER. Il video è il teaser trailer del videogioco This war of mine, in cui occorre sopravvivere come civile in uno scenario di guerra ispirato al conflitto nell’ex Jugoslavia. In questo video, realizzato in computer grafica, vediamo, in ralenti, dei soldati che avanzano in una strada cittadina. La ripresa scorre lateralmente: alcuni soldati vengono colpiti e muoiono, altri continuano ad avanzare. Il commento sonoro sale di intensità, dando l’impressione di esaltare l’eroismo dei militari. Invece la ripresa, sempre scorrendo lateralmente, si ferma a inquadrare l’interno di una casa, dove un uomo è ferito tra le braccia di una donna, un altro si appoggia disperato al muro e un bambino guarda nel vuoto. Su questa immagine compare la scritta, in inglese: “In guerra non tutti sono soldati”. Segue il logo del videogioco This war of mine. Spot utilizzato sia nelle classi (medie e superiori), sia in formazione con adulti, per far emergere le rappresentazioni legate al mondo del gaming. Il video (e il videogioco) sono un esempio di come si possa raccontare la guerra da un altro punto di vista, che criticizza quello mainstream di videogiochi molto famosi come la serie di Call of duty. Ogni videogioco, infatti, veicola rappresentazioni del mondo che è utile destrutturare.",
+    "dataInserimento": "2024-10-08"
   },
   {
     "id": "HD1938-20",
@@ -3878,7 +4154,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "RIDEFINIRE IL POSSIBILE. (il video linkato è la versione in inglese dello spot) Su una musica molto ritmata vediamo un montaggio di riprese di giovani di provenienze diverse, vestiti di diversi colori e in contesti molto diversi: un ragazzo in completo giallo su un paesaggio roccioso (che si rivela costruito digitalmente); un giovane di colore che sembra guardarsi allo specchio, ma che scopriamo essere di fronte al proprio gemello; una modella dai tratti asiatici in un giardino dove i fiori vengono ingranditi digitalmente; una designer bionda il cui volto viene scansionato; una ballerina vestita di rosso. Le scritte che compaiono sulle immagini ci dicono che “E’ tempo di riscrivere le regole. Reimmaginare il nostro mondo”. Ridefinire il possibile, appunto. In chiusura compaiono gli smartphone promossi (P30) e poi il logo Huawei, con il claim “Make it possibile”. Spot molto evocativo, giocato su aspetti estetici (colori, ritmo, costumi…). Utilizzato insieme ad altri per ragionare sulle rappresentazioni del digitale e anche all’interno di un percorso per studenti delle scuole superiori sul tema dell’identità digitale (si veda anche Coca Cola Avatar, presente in questo archivio)."
+    "description": "RIDEFINIRE IL POSSIBILE. (il video linkato è la versione in inglese dello spot) Su una musica molto ritmata vediamo un montaggio di riprese di giovani di provenienze diverse, vestiti di diversi colori e in contesti molto diversi: un ragazzo in completo giallo su un paesaggio roccioso (che si rivela costruito digitalmente); un giovane di colore che sembra guardarsi allo specchio, ma che scopriamo essere di fronte al proprio gemello; una modella dai tratti asiatici in un giardino dove i fiori vengono ingranditi digitalmente; una designer bionda il cui volto viene scansionato; una ballerina vestita di rosso. Le scritte che compaiono sulle immagini ci dicono che “E’ tempo di riscrivere le regole. Reimmaginare il nostro mondo”. Ridefinire il possibile, appunto. In chiusura compaiono gli smartphone promossi (P30) e poi il logo Huawei, con il claim “Make it possibile”. Spot molto evocativo, giocato su aspetti estetici (colori, ritmo, costumi…). Utilizzato insieme ad altri per ragionare sulle rappresentazioni del digitale e anche all’interno di un percorso per studenti delle scuole superiori sul tema dell’identità digitale (si veda anche Coca Cola Avatar, presente in questo archivio).",
+    "dataInserimento": "2025-01-28"
   },
   {
     "id": "HD1938-21",
@@ -3892,7 +4169,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "FRIENDS ARE READY. Video in inglese, non ne è stata fatta la versione in italiano. Due uomini sono molto amici negli ambienti in VR dove trascorrono il tempo libero giocando insieme e chiacchierando anche di argomenti privati, il tutto grazie alla tecnologia dei visori VR Meta Quest 2. Nella vita quotidiana i due sono vicini di casa, ma a malapena si salutano: nessuno dei due infatti conosce la vera identità del proprio compagno di giochi. Dopo una vittoria ad un gioco che ricorda Fortnite entrambi esultano rumorosamente: sentendo ciascuno le grida dell’altro, si tolgono il casco e rimproverano il vicino (“abbassa la voce! No, tu abbassa la voce!), poi tornano a giocare, lamentandosi “dei vicini”. Compare la scritta: “Your closest friends are ready. Quest is ready”. Lo spot costruisce una messa in scena di dicotomia radicale tra ciò che avviene negli spazi del Metaverso e ciò che capita fuori, suggerendo che le vere amicizie sono preferibili nel metaverso. Il video è stato utilizzato insieme ad altri spot per ragionare sulle rappresentazioni del digitale, sul tema dell’onlife e dell’identità negli ambienti online (gaming e non). Se veda anche, presente in questo archivio, Coca Cola Avatar."
+    "description": "FRIENDS ARE READY. Video in inglese, non ne è stata fatta la versione in italiano. Due uomini sono molto amici negli ambienti in VR dove trascorrono il tempo libero giocando insieme e chiacchierando anche di argomenti privati, il tutto grazie alla tecnologia dei visori VR Meta Quest 2. Nella vita quotidiana i due sono vicini di casa, ma a malapena si salutano: nessuno dei due infatti conosce la vera identità del proprio compagno di giochi. Dopo una vittoria ad un gioco che ricorda Fortnite entrambi esultano rumorosamente: sentendo ciascuno le grida dell’altro, si tolgono il casco e rimproverano il vicino (“abbassa la voce! No, tu abbassa la voce!), poi tornano a giocare, lamentandosi “dei vicini”. Compare la scritta: “Your closest friends are ready. Quest is ready”. Lo spot costruisce una messa in scena di dicotomia radicale tra ciò che avviene negli spazi del Metaverso e ciò che capita fuori, suggerendo che le vere amicizie sono preferibili nel metaverso. Il video è stato utilizzato insieme ad altri spot per ragionare sulle rappresentazioni del digitale, sul tema dell’onlife e dell’identità negli ambienti online (gaming e non). Se veda anche, presente in questo archivio, Coca Cola Avatar.",
+    "dataInserimento": "2024-08-28"
   },
   {
     "id": "HD1938-22",
@@ -3906,7 +4184,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "OLD FRIENDS NEW FUN. Un cane pupazzo e i suoi amici suonano un pezzo dei Simply Red in un locale. Ma con il passare del tempo il locale si svuota e alla fine chiude; i pupazzi vengono abbandonati. Il cane finisce in un mini golf, poi in un karaoke, quindi a bordo strada, rischiando di finire schiacciato in mezzo agli altri rifiuti. Un signora lo recupera e lo riadatta come “indicazione” per il bar di un museo astronomico. Qui un gruppo di ragazzi, per scherzo, gli mette in testa un visore VR: questo cambia la vita del cane, che attraverso il Meta Quest accede al Metaverso e qui reincontra i suoi vecchi amici. Lo spot si chiude con la band che, riunita grazie ai visori, torna a suonare insieme, ciascuno dalla propria postazione. Spot utilizzato in formazione con operatori sociosanitari e insegnanti. Analogamente a Playstation 4 – Fearless (presente in questo archivio), il video si presta a letture anche molto diverse: gli spazi digitali sono una fuga da una realtà invivibile o un’occasione per ridefinire in positivo la propria identità? Come si può lavorare per tenere in equilibrio queste due dimensioni? Su questi temi si veda anche il film “Ready Player One” e la sua sequenza iniziale (entrambi presenti in archivio)."
+    "description": "OLD FRIENDS NEW FUN. Un cane pupazzo e i suoi amici suonano un pezzo dei Simply Red in un locale. Ma con il passare del tempo il locale si svuota e alla fine chiude; i pupazzi vengono abbandonati. Il cane finisce in un mini golf, poi in un karaoke, quindi a bordo strada, rischiando di finire schiacciato in mezzo agli altri rifiuti. Un signora lo recupera e lo riadatta come “indicazione” per il bar di un museo astronomico. Qui un gruppo di ragazzi, per scherzo, gli mette in testa un visore VR: questo cambia la vita del cane, che attraverso il Meta Quest accede al Metaverso e qui reincontra i suoi vecchi amici. Lo spot si chiude con la band che, riunita grazie ai visori, torna a suonare insieme, ciascuno dalla propria postazione. Spot utilizzato in formazione con operatori sociosanitari e insegnanti. Analogamente a Playstation 4 – Fearless (presente in questo archivio), il video si presta a letture anche molto diverse: gli spazi digitali sono una fuga da una realtà invivibile o un’occasione per ridefinire in positivo la propria identità? Come si può lavorare per tenere in equilibrio queste due dimensioni? Su questi temi si veda anche il film “Ready Player One” e la sua sequenza iniziale (entrambi presenti in archivio).",
+    "dataInserimento": "2023-04-03"
   },
   {
     "id": "HD1938-23",
@@ -3920,7 +4199,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "ONE COKE AWAY FROM EACH OTHER. Siamo in un’arena di esports, dove videogiocatori professionisti si stanno sfidando davanti al pubblico in un videogioco di guerra di ambientazione fantasy. L’orco guidato da un* dei pro player (ragazzo o ragazza?) viene atterrato: la/il ragazz* beve una Coca Cola e riprende il gioco. La bibita, però, in qualche modo arriva all’orco, che prende coscienza della sua situazione e, tra lo stupore di tutti, getta l’arma: non combatterà più. Trascinati dalla sua scelta, anche gli altri combattenti del gioco rinunciano alla guerra, mentre i videogiocatori non riescono più a comandarli. L’evento ha subito un’eco mondiale: l’immagine dell’orco che ha gettato le armi viene ritrasmessa in tv, sui social, su Twitch. Sul mondo del videogioco torna a splendere il sole, mentre la natura rifiorisce grazie al potere di un mago. Nel finale la/il ragazz*, che ha capito la scelta del suo personaggio, scambia uno sguardo complice con l’orco e solleva in suo onore la bottiglia di Coca Cola. Lo slogan, “We are one Coke away from each other (siamo ad una “coca cola” di distanza), compare prima del logo finale con il claim “Real magic”. Lo spot è stato duramente criticato nei commenti su Youtube, dove viene accusato di aver travisato e usato per i fini commerciali il mondo del gaming competitivo. Il video è stato utilizzato in contesti di formazione per operatori, per ragionare su gaming, digitale e sostanze."
+    "description": "ONE COKE AWAY FROM EACH OTHER. Siamo in un’arena di esports, dove videogiocatori professionisti si stanno sfidando davanti al pubblico in un videogioco di guerra di ambientazione fantasy. L’orco guidato da un* dei pro player (ragazzo o ragazza?) viene atterrato: la/il ragazz* beve una Coca Cola e riprende il gioco. La bibita, però, in qualche modo arriva all’orco, che prende coscienza della sua situazione e, tra lo stupore di tutti, getta l’arma: non combatterà più. Trascinati dalla sua scelta, anche gli altri combattenti del gioco rinunciano alla guerra, mentre i videogiocatori non riescono più a comandarli. L’evento ha subito un’eco mondiale: l’immagine dell’orco che ha gettato le armi viene ritrasmessa in tv, sui social, su Twitch. Sul mondo del videogioco torna a splendere il sole, mentre la natura rifiorisce grazie al potere di un mago. Nel finale la/il ragazz*, che ha capito la scelta del suo personaggio, scambia uno sguardo complice con l’orco e solleva in suo onore la bottiglia di Coca Cola. Lo slogan, “We are one Coke away from each other (siamo ad una “coca cola” di distanza), compare prima del logo finale con il claim “Real magic”. Lo spot è stato duramente criticato nei commenti su Youtube, dove viene accusato di aver travisato e usato per i fini commerciali il mondo del gaming competitivo. Il video è stato utilizzato in contesti di formazione per operatori, per ragionare su gaming, digitale e sostanze.",
+    "dataInserimento": "2025-06-28"
   },
   {
     "id": "HD1938-24",
@@ -3934,7 +4214,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "JOIN THE FLIP SIDE 2 - CAMPING. Siamo in un campeggio in riva ad un lago, immerso nel verde. Un gruppo di giovani è seduto al tavolo. Una di loro racconta la storia di un nuovo cellulare: \"se lo guardi una volta non riesci a togliertelo dalla testa\". Subito dopo questa cosa inizia ad accadere: un'altra ragazza del gruppo vede uno smartphone pieghevole Samsung e cade vittima del sortilegio. Spaventati, i ragazzi fuggono, cercando di non guardarsi intorno per non essere anche loro vittime. Il claim è “Join the flip side. Apri il tuo mondo”. Lo spot lavora sul registro horror autoironica, riprendendo l'idea dell nuovo prodotto digitale come una \"minaccia\" per chi vuole rimanere ancorati alle proprie abitudini (amo il mio smartphone). Utilizzabile in formazione per evidenziare l’aspetto di “craving” rispetto al prodotto, ma anche come esempio di storytelling per comunicare un concetto."
+    "description": "JOIN THE FLIP SIDE 2 - CAMPING. Siamo in un campeggio in riva ad un lago, immerso nel verde. Un gruppo di giovani è seduto al tavolo. Una di loro racconta la storia di un nuovo cellulare: \"se lo guardi una volta non riesci a togliertelo dalla testa\". Subito dopo questa cosa inizia ad accadere: un'altra ragazza del gruppo vede uno smartphone pieghevole Samsung e cade vittima del sortilegio. Spaventati, i ragazzi fuggono, cercando di non guardarsi intorno per non essere anche loro vittime. Il claim è “Join the flip side. Apri il tuo mondo”. Lo spot lavora sul registro horror autoironica, riprendendo l'idea dell nuovo prodotto digitale come una \"minaccia\" per chi vuole rimanere ancorati alle proprie abitudini (amo il mio smartphone). Utilizzabile in formazione per evidenziare l’aspetto di “craving” rispetto al prodotto, ma anche come esempio di storytelling per comunicare un concetto.",
+    "dataInserimento": "2023-06-17"
   },
   {
     "id": "HD1938-25",
@@ -3948,7 +4229,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "IT'S IN OUR BLOOD. L'attore ed ex wrestler Dave Bautista (Mortal Kombat è proprietà della Warner Bros) spinge un carrello di libri in una bilioteca e sussurra all'orecchio di uno studente le parole \"Mortal Kombat!\". La voce si sparge, altre persone abbandonano le loro occupazioni per radunarsi sul ponte di una metropoli americana. La voce over di Bausista ci spiega (in inglese): \"C'è una forza nascosta in ognuno di noi. Solo pochi prescelti la scoprono. Una nuova era è su di noi. Questo è il nostro momento\". Al grido di \"Mortal Kombat\" compare il claim \"It's in our blood\" (è nel nostro sangue), a cui seguono alcune immagini del videogioco di combattimento Mortal Kombat 1 (il dodicesimo della serie). Lo spot richiama quello del 1992, visibile su Youtube (https://www.youtube.com/watch?v=R8V7TwlYCt0), il cui urlo \"Mortal Kombat\" divenne celebre perchè remixato in una canzone da discoteca (presente nei titoli di coda del film del 1995). Qui l'urlo viene lanciato da una donna (le videogiocatrici oggi sono oltre il 40% del mercato). Lo spot è utilizzabile in formazione, facendo notare ad esempio l'enfasi sulle mani, la dinamica creazione/distruzione e quali sono le occupazioni che vengono abbandonate in favore della partecipazione al gioco (non presenti nello spot del 1992): lettura/studio, musica, artigianato, accudimento di un bambino (da parte di un uomo), servizio ad un bar. Perchè proprio quelle? Che cosa racconta questo spot della nostra società?"
+    "description": "IT'S IN OUR BLOOD. L'attore ed ex wrestler Dave Bautista (Mortal Kombat è proprietà della Warner Bros) spinge un carrello di libri in una bilioteca e sussurra all'orecchio di uno studente le parole \"Mortal Kombat!\". La voce si sparge, altre persone abbandonano le loro occupazioni per radunarsi sul ponte di una metropoli americana. La voce over di Bausista ci spiega (in inglese): \"C'è una forza nascosta in ognuno di noi. Solo pochi prescelti la scoprono. Una nuova era è su di noi. Questo è il nostro momento\". Al grido di \"Mortal Kombat\" compare il claim \"It's in our blood\" (è nel nostro sangue), a cui seguono alcune immagini del videogioco di combattimento Mortal Kombat 1 (il dodicesimo della serie). Lo spot richiama quello del 1992, visibile su Youtube (https://www.youtube.com/watch?v=R8V7TwlYCt0), il cui urlo \"Mortal Kombat\" divenne celebre perchè remixato in una canzone da discoteca (presente nei titoli di coda del film del 1995). Qui l'urlo viene lanciato da una donna (le videogiocatrici oggi sono oltre il 40% del mercato). Lo spot è utilizzabile in formazione, facendo notare ad esempio l'enfasi sulle mani, la dinamica creazione/distruzione e quali sono le occupazioni che vengono abbandonate in favore della partecipazione al gioco (non presenti nello spot del 1992): lettura/studio, musica, artigianato, accudimento di un bambino (da parte di un uomo), servizio ad un bar. Perchè proprio quelle? Che cosa racconta questo spot della nostra società?",
+    "dataInserimento": "2025-11-12"
   },
   {
     "id": "HD1938-26",
@@ -3962,7 +4244,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "LAUNCH TRAILER. Trailer con immagini di gameplay del videogioco sparatutto multiplayer \"The Finals\", dove lo scopo del gioco è sopravvivere nell'arena e portare alla propria base una cassaforte prima delle squadre avversarie. Il gioco The Finals è stato sviluppato dala software house svedese Embark ed è stato rilasciato come \"free-to-play\", ovvero giocabile gratuitamente (come Fortnite o COD Warzone). Lo spot presenta un montaggio molto concitato, ricco di colori e personaggi dai costumi bizzarrsi. Utilizzato in formazione, insieme ad altri spot che promuovono giochi e/o console, con la domanda: \"Scegli quale video rappresenta meglio il mondo del gaming oggi\"."
+    "description": "LAUNCH TRAILER. Trailer con immagini di gameplay del videogioco sparatutto multiplayer \"The Finals\", dove lo scopo del gioco è sopravvivere nell'arena e portare alla propria base una cassaforte prima delle squadre avversarie. Il gioco The Finals è stato sviluppato dala software house svedese Embark ed è stato rilasciato come \"free-to-play\", ovvero giocabile gratuitamente (come Fortnite o COD Warzone). Lo spot presenta un montaggio molto concitato, ricco di colori e personaggi dai costumi bizzarrsi. Utilizzato in formazione, insieme ad altri spot che promuovono giochi e/o console, con la domanda: \"Scegli quale video rappresenta meglio il mondo del gaming oggi\".",
+    "dataInserimento": "2024-12-11"
   },
   {
     "id": "HD1938-27",
@@ -3976,7 +4259,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "THE INSTRUMENT. Una giovane vorrebbe imparare a suonare il pianoforte per realizzare il desiderio di sua madre, ma lo strumento musicale è troppo costoso. Il suo ragazzo, allora, le regala a sorpresa un visore Meta Quest 3. Tramite un programma, la ragazza impara mese dopo mese a suonare un brano jazz: quando ritrova la madre in un pranzo di famiglia, riesce finalamente a suonare qual brano insieme a lei, sedute entrambe ad un pianoforte reale. Lo spot, della durata di quasi 3 minuti, permette di ragionare su temi come l'apprendimento tramite VR e l'inserimento nella quotidianità di tecnologie digitali e del gaming."
+    "description": "THE INSTRUMENT. Una giovane vorrebbe imparare a suonare il pianoforte per realizzare il desiderio di sua madre, ma lo strumento musicale è troppo costoso. Il suo ragazzo, allora, le regala a sorpresa un visore Meta Quest 3. Tramite un programma, la ragazza impara mese dopo mese a suonare un brano jazz: quando ritrova la madre in un pranzo di famiglia, riesce finalamente a suonare qual brano insieme a lei, sedute entrambe ad un pianoforte reale. Lo spot, della durata di quasi 3 minuti, permette di ragionare su temi come l'apprendimento tramite VR e l'inserimento nella quotidianità di tecnologie digitali e del gaming.",
+    "dataInserimento": "2025-01-12"
   },
   {
     "id": "HD1938-28",
@@ -3990,7 +4274,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "CRUSH. Con il sottofondo musicale di All I ever need is you di Sonny and Cher del 1971, lo spot Apple si apre con l'immagine di un corposo gruppo di oggetti, strumenti musicali, dispositivi tecnologici e apparecchi vari (dal videogioco al giradischi ai barattoli di vernice), ben poggiati sul piatto di una pressa industriale che inizia subito a scendere in modo inesorabile.  Tutto viene distrutto dal macchinario pesante. Quando la pressa si solleva, rimane soltanto il nuovo iPad Pro, che viene promosso come il più sottile di sempre. Lo spot è intriso di una violenza giocosa (diversi oggetti che vendono ditrutti hanno fattezze umane) che può divertire o infastidire: il messaggio, nelle intenzione degli autori, era restituire visivamente la capacità dell'iPad di contenere \"tutto\": creatività, lavoro, tempo libero, divertimento, arte. Crush in inglese può significare sia \"schiacciare\" che \"cotta, infatuazione\". I commenti sul web sono stati immediatamente negativi: molti sono stati infastiditi dalla messa in scena e hanno accusato la Apple di arroganza, di voler \"schiacciare\" la creatività e di mancare di rispetto all'arte. Pochi giorni dopo la pubblicazione, il 10 maggio 2024 la Apple ha ritirato lo spot con una lettera di scuse. Lo spot è stato utilizzato, insieme ad altri che promuovono prodotti digitali, in  apertura di alcune serate informative, per ragionare sulle rappresentazioni del digitale."
+    "description": "CRUSH. Con il sottofondo musicale di All I ever need is you di Sonny and Cher del 1971, lo spot Apple si apre con l'immagine di un corposo gruppo di oggetti, strumenti musicali, dispositivi tecnologici e apparecchi vari (dal videogioco al giradischi ai barattoli di vernice), ben poggiati sul piatto di una pressa industriale che inizia subito a scendere in modo inesorabile.  Tutto viene distrutto dal macchinario pesante. Quando la pressa si solleva, rimane soltanto il nuovo iPad Pro, che viene promosso come il più sottile di sempre. Lo spot è intriso di una violenza giocosa (diversi oggetti che vendono ditrutti hanno fattezze umane) che può divertire o infastidire: il messaggio, nelle intenzione degli autori, era restituire visivamente la capacità dell'iPad di contenere \"tutto\": creatività, lavoro, tempo libero, divertimento, arte. Crush in inglese può significare sia \"schiacciare\" che \"cotta, infatuazione\". I commenti sul web sono stati immediatamente negativi: molti sono stati infastiditi dalla messa in scena e hanno accusato la Apple di arroganza, di voler \"schiacciare\" la creatività e di mancare di rispetto all'arte. Pochi giorni dopo la pubblicazione, il 10 maggio 2024 la Apple ha ritirato lo spot con una lettera di scuse. Lo spot è stato utilizzato, insieme ad altri che promuovono prodotti digitali, in  apertura di alcune serate informative, per ragionare sulle rappresentazioni del digitale.",
+    "dataInserimento": "2025-12-06"
   },
   {
     "id": "HD1938-29",
@@ -4004,7 +4289,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "CONTRA. Vediamo le immagini di Contra, un videogioco di guerra a scorrimento orizzontale degli anni '80. Il soldato protagonista spara e con successo avanza nel gioco, fino a raggiungere una confezione di G Fuel, energy drink solubile molto popolare tra i gamer. Lo spot, molto breve, può essere inserito in un gruppo più ampio di pubblicità per ragionare sul mondo del gaming e avere un aggancio rispetto al consumo di energy drink, che spesso sponsorizzano pro-player ed eventi di e-sports."
+    "description": "CONTRA. Vediamo le immagini di Contra, un videogioco di guerra a scorrimento orizzontale degli anni '80. Il soldato protagonista spara e con successo avanza nel gioco, fino a raggiungere una confezione di G Fuel, energy drink solubile molto popolare tra i gamer. Lo spot, molto breve, può essere inserito in un gruppo più ampio di pubblicità per ragionare sul mondo del gaming e avere un aggancio rispetto al consumo di energy drink, che spesso sponsorizzano pro-player ed eventi di e-sports.",
+    "dataInserimento": "2023-08-09"
   },
   {
     "id": "HD1939-01",
@@ -4018,7 +4304,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "CONDIVIDI CHI. Vediamo una classe di adolescenti in cui ciascuno agisce all’interno dello schermo di uno smartphone: tutti gli smartphone sono inseriti su un supporto giallo, come tessere del gioco Indovina Chi. Una ragazza è in prima fila, da sola: i compagni da dietro cominciano a prenderla in giro, sempre più pesantemente, condividendo e mettendo dei like a ciò che capita. Solo uno di loro mette un dislike e cerca di far smettere gli altri. La situazione degenera quando un ragazzo, sempre per scherzo, dà fuoco con l’accendino allo smartphone della ragazza: mentre questa rischia di bruciare, i compagni si rendono finalmente conto del danno provocato e provano a spegnere le fiamme, soffiando tutti insieme. Compaiono le scritte: “Non condividi più? Se condividi, partecipi. Se partecipi, sei reponsabile. Gli smartphone vanno giù di colpo, mentre compare lo slogan finale: “Connect with respect”. Spot molto utilizzato nelle classi, insieme ad altri spot sociali, per ragionare sull’efficacia."
+    "description": "CONDIVIDI CHI. Vediamo una classe di adolescenti in cui ciascuno agisce all’interno dello schermo di uno smartphone: tutti gli smartphone sono inseriti su un supporto giallo, come tessere del gioco Indovina Chi. Una ragazza è in prima fila, da sola: i compagni da dietro cominciano a prenderla in giro, sempre più pesantemente, condividendo e mettendo dei like a ciò che capita. Solo uno di loro mette un dislike e cerca di far smettere gli altri. La situazione degenera quando un ragazzo, sempre per scherzo, dà fuoco con l’accendino allo smartphone della ragazza: mentre questa rischia di bruciare, i compagni si rendono finalmente conto del danno provocato e provano a spegnere le fiamme, soffiando tutti insieme. Compaiono le scritte: “Non condividi più? Se condividi, partecipi. Se partecipi, sei reponsabile. Gli smartphone vanno giù di colpo, mentre compare lo slogan finale: “Connect with respect”. Spot molto utilizzato nelle classi, insieme ad altri spot sociali, per ragionare sull’efficacia.",
+    "dataInserimento": "2023-08-31"
   },
   {
     "id": "HD1939-02",
@@ -4032,7 +4319,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "Una ragazza trascorre una giornata senza telefonino, rendendosi conto in diverse situazioni di quanto gli smartphone abbiano un forte impatto sulle relazioni quotidiane. Un uomo si perde il sorgere del sole perché impegnato in una telefonata; gli amici smettono di ascoltarla a tavola per guardare gli schermi; nessuno festeggia con lei a bowling; una bimba resta ferma sull’altalena per usare lo smartphone; ad una festa di compleanno tutti sono impegnati a fare riprese e selfie. Anche a fine giornata, quando la ragazza spegne la luce, il suo ragazzo a letto accende lo schermo per scrollare il telefono. Il video non è uno spot sociale, ma un cortometraggio scritto e interpretato da Charlene DeGuzman e diretto da Miles Crawford (Charstarlene e Giantmiles nei brevi titoli di coda). E’ stato molto utilizzato nelle classi, anche di scuola primaria (terze, quarte e quinte) per ragionare sui comportamenti legati al digitale: permette di introdurre i temi del rispetto, dell’ascolto e del contatto visivo con l’altro."
+    "description": "Una ragazza trascorre una giornata senza telefonino, rendendosi conto in diverse situazioni di quanto gli smartphone abbiano un forte impatto sulle relazioni quotidiane. Un uomo si perde il sorgere del sole perché impegnato in una telefonata; gli amici smettono di ascoltarla a tavola per guardare gli schermi; nessuno festeggia con lei a bowling; una bimba resta ferma sull’altalena per usare lo smartphone; ad una festa di compleanno tutti sono impegnati a fare riprese e selfie. Anche a fine giornata, quando la ragazza spegne la luce, il suo ragazzo a letto accende lo schermo per scrollare il telefono. Il video non è uno spot sociale, ma un cortometraggio scritto e interpretato da Charlene DeGuzman e diretto da Miles Crawford (Charstarlene e Giantmiles nei brevi titoli di coda). E’ stato molto utilizzato nelle classi, anche di scuola primaria (terze, quarte e quinte) per ragionare sui comportamenti legati al digitale: permette di introdurre i temi del rispetto, dell’ascolto e del contatto visivo con l’altro.",
+    "dataInserimento": "2024-01-05"
   },
   {
     "id": "HD1939-03",
@@ -4046,7 +4334,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": true,
-    "description": "IL PERICOLO NON MANDA NOTIFICHE. Un adolescente esce da scuola (l’Istituto Avogadro di Torino) insieme ad altri: tutti sono chini sul proprio smartphone. Il ragazzo si incammina sul marciapiede, mentre lo smarthone, tramite notifiche, lo avvisa su come muoversi: evitare gli altri passanti, fermarsi al semaforo rosso, ripartire con quello verde. Peccato che, come ci ricorda la scritta finale, “Il pericolo non manda notifiche. Quando sei in strada presta attenzione alla tua vita”. Lo spot lavoro su un registro ironico e su un messaggio molto preciso: non farsi distrarre dallo smartphone quando si è per strada. Utilizzato nelle classi (primaria e secondaria di primo e secondo grado), il video permette di introdurre il tema degli incidenti stradali provocati dal cellulare (secondo alcune ricerca l’uso improprio dello smartphone è la prima causa di incidenti da distrazione alla guida in Italia)."
+    "description": "IL PERICOLO NON MANDA NOTIFICHE. Un adolescente esce da scuola (l’Istituto Avogadro di Torino) insieme ad altri: tutti sono chini sul proprio smartphone. Il ragazzo si incammina sul marciapiede, mentre lo smarthone, tramite notifiche, lo avvisa su come muoversi: evitare gli altri passanti, fermarsi al semaforo rosso, ripartire con quello verde. Peccato che, come ci ricorda la scritta finale, “Il pericolo non manda notifiche. Quando sei in strada presta attenzione alla tua vita”. Lo spot lavoro su un registro ironico e su un messaggio molto preciso: non farsi distrarre dallo smartphone quando si è per strada. Utilizzato nelle classi (primaria e secondaria di primo e secondo grado), il video permette di introdurre il tema degli incidenti stradali provocati dal cellulare (secondo alcune ricerca l’uso improprio dello smartphone è la prima causa di incidenti da distrazione alla guida in Italia).",
+    "dataInserimento": "2026-02-03"
   },
   {
     "id": "HD1939-04",
@@ -4060,7 +4349,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "Video realizzato da Think U Know Australia. Megan, una studentessa delle superiori, esce dal bagno soddisfatta, aggiustandosi la maglietta: ha appena mandato una sua foto, probabilmente in reggiseno, al suo ragazzo. Questi sogghigna e gira la foto a tutti: Megan inizia ad accorgersene perché i suoi compagni e compagne ricevono notifiche e si girano a guardarla, con occhiate di disgusto e rimprovero (le ragazze) o di maliziosa approvazione (i maschi). Megan è sempre più sconvolta, finché il messaggio arriva anche all’insegnante mentre sta facendo l’appello: il docente la guarda con disapprovazione, Megan non si trattiene più e corre via dalla classe, in lacrime. Una voce over (in inglese) ci chiede: “Pensi di sapere che cosa capita alle tue immagini? Pensaci di nuovo”. Spot costruito su un registro drammatico / terroristico: è stato utilizzato sia con studenti di terza media e delle superiori, sia con adulti, per ragionare rispetto al tema della condivisione delle immagini, del sexting e del cyberbullismo. Tra i mandati possibili, quello di continuare la storia attraverso più punti di vista (Megan, il suo ragazzo, i compagni, le compagne, il professore, …). Un possibile spunto di discussione: di chi è la “colpa”? Perchè nessuno si arrabbia con il ragazzo che ha diffuso la foto? E’ normale che nessuno aiuti Megan?"
+    "description": "Video realizzato da Think U Know Australia. Megan, una studentessa delle superiori, esce dal bagno soddisfatta, aggiustandosi la maglietta: ha appena mandato una sua foto, probabilmente in reggiseno, al suo ragazzo. Questi sogghigna e gira la foto a tutti: Megan inizia ad accorgersene perché i suoi compagni e compagne ricevono notifiche e si girano a guardarla, con occhiate di disgusto e rimprovero (le ragazze) o di maliziosa approvazione (i maschi). Megan è sempre più sconvolta, finché il messaggio arriva anche all’insegnante mentre sta facendo l’appello: il docente la guarda con disapprovazione, Megan non si trattiene più e corre via dalla classe, in lacrime. Una voce over (in inglese) ci chiede: “Pensi di sapere che cosa capita alle tue immagini? Pensaci di nuovo”. Spot costruito su un registro drammatico / terroristico: è stato utilizzato sia con studenti di terza media e delle superiori, sia con adulti, per ragionare rispetto al tema della condivisione delle immagini, del sexting e del cyberbullismo. Tra i mandati possibili, quello di continuare la storia attraverso più punti di vista (Megan, il suo ragazzo, i compagni, le compagne, il professore, …). Un possibile spunto di discussione: di chi è la “colpa”? Perchè nessuno si arrabbia con il ragazzo che ha diffuso la foto? E’ normale che nessuno aiuti Megan?",
+    "dataInserimento": "2025-06-27"
   },
   {
     "id": "HD1939-05",
@@ -4074,7 +4364,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "IMMAGINI INTERNET – CUIDADO LO QUE SUBIS Due giovani amiche in piscine decidono di farsi fare una foto in costume. L’immagine viene caricata sui social e inizia a girare, tra condivisioni e messaggi. Viene utilizzata da un uomo che, seduto al suo computer, la ritaglia e la inserisce sulla home page di un sito pornografico. Una voce over maschile ci dice, in spagnolo: “Quando carichi una tua foto su Internet puoi finire ovunque. Fai attenzione a ciò che carichi online”. Spot di alcuni anni fa ma ancora utilizzabile per ragionare rispetto ai temi del controllo e della diffusione delle immagini."
+    "description": "IMMAGINI INTERNET – CUIDADO LO QUE SUBIS Due giovani amiche in piscine decidono di farsi fare una foto in costume. L’immagine viene caricata sui social e inizia a girare, tra condivisioni e messaggi. Viene utilizzata da un uomo che, seduto al suo computer, la ritaglia e la inserisce sulla home page di un sito pornografico. Una voce over maschile ci dice, in spagnolo: “Quando carichi una tua foto su Internet puoi finire ovunque. Fai attenzione a ciò che carichi online”. Spot di alcuni anni fa ma ancora utilizzabile per ragionare rispetto ai temi del controllo e della diffusione delle immagini.",
+    "dataInserimento": "2024-02-17"
   },
   {
     "id": "HD1939-06",
@@ -4088,7 +4379,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "LOVE STORY. Un ragazzo e una ragazza giovanissimi si messaggiano: il loro rapporto cresce di intensità, finché decidono di incontrarsi di persona. Lui si vestirà di nero, lei di rosa. Li seguiamo avvicinarsi al luogo dell’appuntamento, un parco pubblico. Qui avviene la prima sorpresa: la ragazza sgrana gli occhi, davanti a lei non c’è il ragazzo che abbiamo visto finora ma un uomo di mezz’età, calvo. Ma il colpo di scena è doppio: l’uomo guarda la ragazza e la ripresa ci mostra chi è realmente, ovvero un altro uomo di mezz’età, con gli occhiali e la camicia rosa pattuita per l’appuntamento. I due si scrutano e poi proseguono, ciascuno per la sua strada. Compare la scritta, in inglese: “150 milioni di profili falsi sui social media. Non tutti sono chi tu credi che siano”. In chiusura le immagini ci mostrano i due uomini, ciascuno a casa propria, intenti a messaggiare; segue il logo della compagnia telefonica spagnola Movistar. Si tratta infatti di un video di marketing sociale creato da un’azienda commerciale. Lo spot è stato utilizzato singolarmente, sia nelle classi (medie e superiori), sia in formazione con insegnanti, interrompendolo prima dell’incontro e chiedendo come finisce la storia."
+    "description": "LOVE STORY. Un ragazzo e una ragazza giovanissimi si messaggiano: il loro rapporto cresce di intensità, finché decidono di incontrarsi di persona. Lui si vestirà di nero, lei di rosa. Li seguiamo avvicinarsi al luogo dell’appuntamento, un parco pubblico. Qui avviene la prima sorpresa: la ragazza sgrana gli occhi, davanti a lei non c’è il ragazzo che abbiamo visto finora ma un uomo di mezz’età, calvo. Ma il colpo di scena è doppio: l’uomo guarda la ragazza e la ripresa ci mostra chi è realmente, ovvero un altro uomo di mezz’età, con gli occhiali e la camicia rosa pattuita per l’appuntamento. I due si scrutano e poi proseguono, ciascuno per la sua strada. Compare la scritta, in inglese: “150 milioni di profili falsi sui social media. Non tutti sono chi tu credi che siano”. In chiusura le immagini ci mostrano i due uomini, ciascuno a casa propria, intenti a messaggiare; segue il logo della compagnia telefonica spagnola Movistar. Si tratta infatti di un video di marketing sociale creato da un’azienda commerciale. Lo spot è stato utilizzato singolarmente, sia nelle classi (medie e superiori), sia in formazione con insegnanti, interrompendolo prima dell’incontro e chiedendo come finisce la storia.",
+    "dataInserimento": "2024-11-19"
   },
   {
     "id": "HD1939-07",
@@ -4102,7 +4394,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "KEEP IT REAL - PORNO. Bussano alla porta: una signora va ad aprire e si trova davanti Sue e Derek, due attori porno completamente nudi. La signora è visibilmente sorpresa: i due le spiegano che sono lì perche suo figlio, Matt, li ha appena visti online. Il ragazzo li guarda spesso e da tutti i dispositivi disponibili in casa: la loro preoccupazione è che si tratta di un ragazzino e che quindi non riesca a capire come funzioni realmente una relazione affettiva, dal momento che nei loro video non parlano di consenso e passano direttamente all’atto sessuale. Arriva Matt, chiamato dalla mamma: alla vista dei due attori rimane senza parole. Una voce over femminile invita Sandra, la madre, a stare calma: “Sai che cosa fare”. La madre dice al figlio che è arrivato il momento di parlare delle differenze tra ciò che si vede online e le relazioni nella vita reale. Senza giudizi”. La voce over chiude spiegando che molti ragazzini “usano il porno per imparare a fare sesso”. L’invito è a cercare aiuto e informazioni sul sito della campagna del governo neozelandese “Keep it real online”. Lo spot affronta un tema importante e ad oggi (agosto 2023) poco frequentato dalle campagne sociali italiane: il ruolo della pornografia nel definire rappresentazioni e aspettative rispetto alla sessualità. Lo spot è stato utilizzato con studenti delle scuole superiori all’interno di percorsi su digitale e promozione della salute. E’ pensabile l’utilizzo anche all’interno di classi delle scuole medie (terze o anche seconde?)."
+    "description": "KEEP IT REAL - PORNO. Bussano alla porta: una signora va ad aprire e si trova davanti Sue e Derek, due attori porno completamente nudi. La signora è visibilmente sorpresa: i due le spiegano che sono lì perche suo figlio, Matt, li ha appena visti online. Il ragazzo li guarda spesso e da tutti i dispositivi disponibili in casa: la loro preoccupazione è che si tratta di un ragazzino e che quindi non riesca a capire come funzioni realmente una relazione affettiva, dal momento che nei loro video non parlano di consenso e passano direttamente all’atto sessuale. Arriva Matt, chiamato dalla mamma: alla vista dei due attori rimane senza parole. Una voce over femminile invita Sandra, la madre, a stare calma: “Sai che cosa fare”. La madre dice al figlio che è arrivato il momento di parlare delle differenze tra ciò che si vede online e le relazioni nella vita reale. Senza giudizi”. La voce over chiude spiegando che molti ragazzini “usano il porno per imparare a fare sesso”. L’invito è a cercare aiuto e informazioni sul sito della campagna del governo neozelandese “Keep it real online”. Lo spot affronta un tema importante e ad oggi (agosto 2023) poco frequentato dalle campagne sociali italiane: il ruolo della pornografia nel definire rappresentazioni e aspettative rispetto alla sessualità. Lo spot è stato utilizzato con studenti delle scuole superiori all’interno di percorsi su digitale e promozione della salute. E’ pensabile l’utilizzo anche all’interno di classi delle scuole medie (terze o anche seconde?).",
+    "dataInserimento": "2023-10-03"
   },
   {
     "id": "HD1939-08",
@@ -4116,7 +4409,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "IL VOLTO NASCOSTO DEI SELFIE. Sul un profilo Instagram vediamo il selfie di una bella ragazza, con già diversi like e commenti positivi. Accompagnato da una musica di archi dal sapore drammatico, il video procede in rewind, facendoci scoprire come la ragazza è arrivata a quel selfie. Prima vediamo una serie di modifiche tramite app, che trasformano radicalmente il volto della ragazza: capelli più folti, occhi più grandi, labbra più carnose e pelle priva di imperfezioni. Poi vediamo la ragazza truccarsi (smalto, lacca, rossetto) e scattarsi il selfie che poi modificherà. Infine arriviamo a vedere in primo piano la ragazza senza trucco, scoprendo che è molto più giovane di quanto appare in foto: potrebbe essere una studentessa delle scuole medie. Le scritte finali ci informano che “la pressione dei social media sta danneggiando l’autostima delle nostre ragazze”. L’invito è a invertire questa tendenza, attraverso il supporto all’autostima proposto da Dove. In chiusura il claim di Dove: “Let’s claim beauty”. Lo spot continua sulla linea portata avanti dall’azienda Dove, che da diversi anni propone campagne di marketing sociale che lavorano sulla percezione della bellezza. Interessante il confronto con il video “Dove Evolution”, datato 2007, dove le stesse trasformazioni di immagini venivano ottenute da uno studio fotografico e da un programma di fotoritocco, per poi arrivare alla pubblicazione su cartellone pubblicitario: è un confronto che in modo emblematico tematizza il passaggio dai mass media ai personal/social media. Lo spot è stato utilizzato in numerosi interventi sul digitale con studenti delle scuole medie e superiori, insieme ad altri spot sociali. Può essere utile il richiamo non solo alle app di fotoritocco, ma anche ai filtri di Tik Tok (a marzo 2023 aveva fatto clamore il filtro “bold glamour”)."
+    "description": "IL VOLTO NASCOSTO DEI SELFIE. Sul un profilo Instagram vediamo il selfie di una bella ragazza, con già diversi like e commenti positivi. Accompagnato da una musica di archi dal sapore drammatico, il video procede in rewind, facendoci scoprire come la ragazza è arrivata a quel selfie. Prima vediamo una serie di modifiche tramite app, che trasformano radicalmente il volto della ragazza: capelli più folti, occhi più grandi, labbra più carnose e pelle priva di imperfezioni. Poi vediamo la ragazza truccarsi (smalto, lacca, rossetto) e scattarsi il selfie che poi modificherà. Infine arriviamo a vedere in primo piano la ragazza senza trucco, scoprendo che è molto più giovane di quanto appare in foto: potrebbe essere una studentessa delle scuole medie. Le scritte finali ci informano che “la pressione dei social media sta danneggiando l’autostima delle nostre ragazze”. L’invito è a invertire questa tendenza, attraverso il supporto all’autostima proposto da Dove. In chiusura il claim di Dove: “Let’s claim beauty”. Lo spot continua sulla linea portata avanti dall’azienda Dove, che da diversi anni propone campagne di marketing sociale che lavorano sulla percezione della bellezza. Interessante il confronto con il video “Dove Evolution”, datato 2007, dove le stesse trasformazioni di immagini venivano ottenute da uno studio fotografico e da un programma di fotoritocco, per poi arrivare alla pubblicazione su cartellone pubblicitario: è un confronto che in modo emblematico tematizza il passaggio dai mass media ai personal/social media. Lo spot è stato utilizzato in numerosi interventi sul digitale con studenti delle scuole medie e superiori, insieme ad altri spot sociali. Può essere utile il richiamo non solo alle app di fotoritocco, ma anche ai filtri di Tik Tok (a marzo 2023 aveva fatto clamore il filtro “bold glamour”).",
+    "dataInserimento": "2023-10-25"
   },
   {
     "id": "HD1939-09",
@@ -4130,7 +4424,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "CUCCIOLONE SULLE SPALLE. Un uomo su una panchina è chino sul proprio smartphone, mentre un simpatico cane gli sta appolaiato sul collo. La voce over, maschile, ci informa che questo è “un chiaro esempio di cervi...cane!”. Infatti tenere la testa china sullo smartphone equivale a caricare sul collo un cucciolone di 27 kg. Il consiglio di PIC è chiaro: “ogni tre minuti alza la testa e conta fino a dieci”. Lo spot fa parte della campagna “Ricariche di benessere” di Pic. Il video è stato utilizzato sia con studenti di ogni età (dalla primaria alle superiori), sia con genitori e operatori, per ragionare rispetto ai comportamenti di cui non ci accorgiamo legati al digitale, sia rispetto ai temi del tempo e del corpo. Dal punto di vista comunicativo lo spot fa leva sul simbolo universale del cane (si veda anche lo spot della birra Budweiser su alcol e guida) per comunicare un’informazione precisa (27 kg) e un consiglio. Un altro spunto di discussione riguarda la complessità del cambiare un comportamento: mi basta quest’informazione per ricordarmi di fare una pausa ogni tre minuti?"
+    "description": "CUCCIOLONE SULLE SPALLE. Un uomo su una panchina è chino sul proprio smartphone, mentre un simpatico cane gli sta appolaiato sul collo. La voce over, maschile, ci informa che questo è “un chiaro esempio di cervi...cane!”. Infatti tenere la testa china sullo smartphone equivale a caricare sul collo un cucciolone di 27 kg. Il consiglio di PIC è chiaro: “ogni tre minuti alza la testa e conta fino a dieci”. Lo spot fa parte della campagna “Ricariche di benessere” di Pic. Il video è stato utilizzato sia con studenti di ogni età (dalla primaria alle superiori), sia con genitori e operatori, per ragionare rispetto ai comportamenti di cui non ci accorgiamo legati al digitale, sia rispetto ai temi del tempo e del corpo. Dal punto di vista comunicativo lo spot fa leva sul simbolo universale del cane (si veda anche lo spot della birra Budweiser su alcol e guida) per comunicare un’informazione precisa (27 kg) e un consiglio. Un altro spunto di discussione riguarda la complessità del cambiare un comportamento: mi basta quest’informazione per ricordarmi di fare una pausa ogni tre minuti?",
+    "dataInserimento": "2024-11-10"
   },
   {
     "id": "HD1939-10",
@@ -4144,7 +4439,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "CYBERBULLISMO SE LO RACCONTI TI AIUTI. Due amiche adolescenti ridono complici mentre leggono i messaggi del loro gruppo “Amici sempre”, dove hanno appena scritto a qualcuno “Sei ridicola, fai pena”. A casa il fratellino di una delle ragazze riceve insulti nella chat di un videogioco: la cosa lo fa star male, tanto che a cena non mangia (mentre la sorella continua a sorridere per le prese in giro su Whatsapp). La voce over femminile ci informa che “Basta un commento offensivo per creare una ferita profonda. La violenza digitale e alcuni comportamenti online possono essere punibili penalmente”. L’invito è quindi quello di non rimanere in silenzio e parlarne “con chi conta per te”. Vediamo il fratellino che, consolato dalla sorella, la abbraccia; mentre sono abbracciati la ragazza prende il cellulare e si disiscrive dal gruppo Whatsapp “Amici sempre”. Lo sfogo del fratellino l’ha quindi aiutata a capire che anche lei era complice di cyberbullismo. Lo slogan finale dello spot è “Cyberbullismo: se lo racconti ti aiuti”. Lo spot, utilizzabile con studenti delle medie e primi anni delle superiori (anche della primaria?) sceglie di mettere in scena due diverse situazioni digitali: le prese in giro sul gruppo Whatsapp e il gaming tossico. La “redenzione” della ragazza passa attraverso il contatto empatico con una vittima, in questo caso il fratellino."
+    "description": "CYBERBULLISMO SE LO RACCONTI TI AIUTI. Due amiche adolescenti ridono complici mentre leggono i messaggi del loro gruppo “Amici sempre”, dove hanno appena scritto a qualcuno “Sei ridicola, fai pena”. A casa il fratellino di una delle ragazze riceve insulti nella chat di un videogioco: la cosa lo fa star male, tanto che a cena non mangia (mentre la sorella continua a sorridere per le prese in giro su Whatsapp). La voce over femminile ci informa che “Basta un commento offensivo per creare una ferita profonda. La violenza digitale e alcuni comportamenti online possono essere punibili penalmente”. L’invito è quindi quello di non rimanere in silenzio e parlarne “con chi conta per te”. Vediamo il fratellino che, consolato dalla sorella, la abbraccia; mentre sono abbracciati la ragazza prende il cellulare e si disiscrive dal gruppo Whatsapp “Amici sempre”. Lo sfogo del fratellino l’ha quindi aiutata a capire che anche lei era complice di cyberbullismo. Lo slogan finale dello spot è “Cyberbullismo: se lo racconti ti aiuti”. Lo spot, utilizzabile con studenti delle medie e primi anni delle superiori (anche della primaria?) sceglie di mettere in scena due diverse situazioni digitali: le prese in giro sul gruppo Whatsapp e il gaming tossico. La “redenzione” della ragazza passa attraverso il contatto empatico con una vittima, in questo caso il fratellino.",
+    "dataInserimento": "2024-09-23"
   },
   {
     "id": "HD1939-11",
@@ -4158,7 +4454,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "HATE SPEECH TI SEMBRA PIU’ REALE COSI’. Il video ci mostra i dettagli delle bocche di persone diverse che parlano, su sfondo nero, pronunciando una serie di insulti di ogni tipo (razzisti, misogini, xenofobi, omofobi…), senza risparmiare volgarità: “Guarda come sei vestita, sembri una puttana!”; “Finocchi, pederasti e sodomiti, lesbiche, nullità di uomini e donne”; “Questa è spazzatura da rispedire subito a casa”; e così via. Un commento sonoro in crescendo mantiene alta la tensione, fino all’ultima battuta: “Uccidiamoli tutti”. Su questa cala il silenzio e compare la scritta: Ti sembra più reale così?”, a cui segue la definizione di “hate speech” (la comunicazione online che diffonde odio e intolleranza) e la precisazione finale che tutti i commenti ascoltati sono tratti fedelmente da autentici profili di social media. Il video ha una durata che supera i tre minuti ed è stato utilizzato, insieme ad altri spot sociali, per ragionare sulle problematiche legate al nostro abitare quotidianamente gli ambienti online. Finora è stato utilizzato con studenti delle scuole superiori: se n’è ipotizzata anche la proiezione con studenti di seconda e terza media."
+    "description": "HATE SPEECH TI SEMBRA PIU’ REALE COSI’. Il video ci mostra i dettagli delle bocche di persone diverse che parlano, su sfondo nero, pronunciando una serie di insulti di ogni tipo (razzisti, misogini, xenofobi, omofobi…), senza risparmiare volgarità: “Guarda come sei vestita, sembri una puttana!”; “Finocchi, pederasti e sodomiti, lesbiche, nullità di uomini e donne”; “Questa è spazzatura da rispedire subito a casa”; e così via. Un commento sonoro in crescendo mantiene alta la tensione, fino all’ultima battuta: “Uccidiamoli tutti”. Su questa cala il silenzio e compare la scritta: Ti sembra più reale così?”, a cui segue la definizione di “hate speech” (la comunicazione online che diffonde odio e intolleranza) e la precisazione finale che tutti i commenti ascoltati sono tratti fedelmente da autentici profili di social media. Il video ha una durata che supera i tre minuti ed è stato utilizzato, insieme ad altri spot sociali, per ragionare sulle problematiche legate al nostro abitare quotidianamente gli ambienti online. Finora è stato utilizzato con studenti delle scuole superiori: se n’è ipotizzata anche la proiezione con studenti di seconda e terza media.",
+    "dataInserimento": "2023-04-17"
   },
   {
     "id": "HD1939-12",
@@ -4172,7 +4469,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "VOCE ALLE GAMER’. (versione tagliata da Steadycam) Il noto youtuber e videogiocatore Tuberanza si ritrova in una stanza arancione, con una tv e una console. Inizia a giocare ad uno sparatutto online, ma – ci informano le scritte – dovrà farlo con la voce da donna. Dopo pochi minuti Tuberanza inizia a ricevere insulti, anche se è abile nel gioco: “Bitch”, “Fuck you”, “Ma sai almeno tenerlo in mano?”. Lo youtuber, dopo la sorpresa iniziale, inizia ad avvertire la fatica di continuare la partita sotto continui insulti e prese in giro. Alla fine, ci informa un’altra scritta, Tuberanza, abituato a giocare per molte ore, “nei panni di una donna non arriva a giocarne tre”. Le slide in chiusura ci informano che “il 72% delle gamer donne speghe il microfono mentre gioca”. Anche questa è violenza di genere, perché è un impedimento ad esprimere la loro identità. Lo slogan in chiusura è “Voce alle gamer”, seguito dal logo della Wind: si tratta infatti di una campagna di marketing sociale promossa dall’azienda di telefonia. La versione integrale, visionabile su Youtube, contiene circa 40 secondi in più con un dialogo – poco credibile – tra Tuberanza e la ragazza che alla fine vediamo giocare insieme a lui. Lo spot, nella versione tagliata qui in archivio, è stato utilizzato in laboratori sul digitale con ragazzi delle medie e dei primi anni delle superiori, per ragionare rispetto al tema del gaming tossico."
+    "description": "VOCE ALLE GAMER’. (versione tagliata da Steadycam) Il noto youtuber e videogiocatore Tuberanza si ritrova in una stanza arancione, con una tv e una console. Inizia a giocare ad uno sparatutto online, ma – ci informano le scritte – dovrà farlo con la voce da donna. Dopo pochi minuti Tuberanza inizia a ricevere insulti, anche se è abile nel gioco: “Bitch”, “Fuck you”, “Ma sai almeno tenerlo in mano?”. Lo youtuber, dopo la sorpresa iniziale, inizia ad avvertire la fatica di continuare la partita sotto continui insulti e prese in giro. Alla fine, ci informa un’altra scritta, Tuberanza, abituato a giocare per molte ore, “nei panni di una donna non arriva a giocarne tre”. Le slide in chiusura ci informano che “il 72% delle gamer donne speghe il microfono mentre gioca”. Anche questa è violenza di genere, perché è un impedimento ad esprimere la loro identità. Lo slogan in chiusura è “Voce alle gamer”, seguito dal logo della Wind: si tratta infatti di una campagna di marketing sociale promossa dall’azienda di telefonia. La versione integrale, visionabile su Youtube, contiene circa 40 secondi in più con un dialogo – poco credibile – tra Tuberanza e la ragazza che alla fine vediamo giocare insieme a lui. Lo spot, nella versione tagliata qui in archivio, è stato utilizzato in laboratori sul digitale con ragazzi delle medie e dei primi anni delle superiori, per ragionare rispetto al tema del gaming tossico.",
+    "dataInserimento": "2025-07-15"
   },
   {
     "id": "HD1939-13",
@@ -4186,7 +4484,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "POLLICI STANCHI’. Un video in animazione grafica, in formato verticale, prodotto da Tik Tok per la propria piattaforma. Sulle note della nota canzone di Cindy Lauper “Girls just want to have fun”, qui trasformata in “Thumbs just want to have fun”, vediamo i poveri pollici che fin dalla mattina sono costretti continuamente a scrollare sui display dei telefoni. Ma i pollici vorrebbero anche “riposare” (in inglese è “have fun”, cioè divertirsi). C’è vita oltre lo schermo ed esistono strumenti che ti aiutano a capire quando smettere di scrollare: ad esempio la possibilità di impostare una pausa automatica dopo un periodo di tempo passato sullo schermo. In questo modo i pollici possono riposarsi e divertirsi: li vediamo saltare, andare ad un concerto, partire per il mare. In chiusura l’invito è: “Monitora il tempo che trascorri su Tik Tok”. Il video sottintende l’idea che la regolazione di ciò che facciamo online sia tutta nelle nostre mani: si confronti a questo proposito lo spot “It’s in your hands” di Huawei, presente in questo archivio. Quale ruolo giocano mercato e tecnologia nel guidare i nostri comportamenti quotidiani?"
+    "description": "POLLICI STANCHI’. Un video in animazione grafica, in formato verticale, prodotto da Tik Tok per la propria piattaforma. Sulle note della nota canzone di Cindy Lauper “Girls just want to have fun”, qui trasformata in “Thumbs just want to have fun”, vediamo i poveri pollici che fin dalla mattina sono costretti continuamente a scrollare sui display dei telefoni. Ma i pollici vorrebbero anche “riposare” (in inglese è “have fun”, cioè divertirsi). C’è vita oltre lo schermo ed esistono strumenti che ti aiutano a capire quando smettere di scrollare: ad esempio la possibilità di impostare una pausa automatica dopo un periodo di tempo passato sullo schermo. In questo modo i pollici possono riposarsi e divertirsi: li vediamo saltare, andare ad un concerto, partire per il mare. In chiusura l’invito è: “Monitora il tempo che trascorri su Tik Tok”. Il video sottintende l’idea che la regolazione di ciò che facciamo online sia tutta nelle nostre mani: si confronti a questo proposito lo spot “It’s in your hands” di Huawei, presente in questo archivio. Quale ruolo giocano mercato e tecnologia nel guidare i nostri comportamenti quotidiani?",
+    "dataInserimento": "2023-04-03"
   },
   {
     "id": "HD1939-14",
@@ -4200,7 +4499,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "Mentre vediamo immagini di persone con lo sguardo costantemente sul proprio smartphone, la voce over maschile (in inglese) ci spiega che nel mondo di oggi puoi stare attento a che cosa fai oppure stare attento a dove vai. Ma oggi è possibile chiedere aiuto alle “guiding hands”: persone vestite di giallo, con guanti bianchi, che ti guidano e sostituiscono nelle azioni quotidiane (dal guidare allo spingere i figli sull’altalena), in modo che tu possa stare sempre con lo sguardo fisso sul telefono. Si tratta ovviamente di un registro ironico, ma quanto? Il video (in inglese, ma comprensibile) è la versione breve: la versione completa, visionabile su Youtube, comprende una scena finale con una gag sul sesso che si è scelto di non utilizzare nelle classi della scuola primaria e secondaria di primo grado."
+    "description": "Mentre vediamo immagini di persone con lo sguardo costantemente sul proprio smartphone, la voce over maschile (in inglese) ci spiega che nel mondo di oggi puoi stare attento a che cosa fai oppure stare attento a dove vai. Ma oggi è possibile chiedere aiuto alle “guiding hands”: persone vestite di giallo, con guanti bianchi, che ti guidano e sostituiscono nelle azioni quotidiane (dal guidare allo spingere i figli sull’altalena), in modo che tu possa stare sempre con lo sguardo fisso sul telefono. Si tratta ovviamente di un registro ironico, ma quanto? Il video (in inglese, ma comprensibile) è la versione breve: la versione completa, visionabile su Youtube, comprende una scena finale con una gag sul sesso che si è scelto di non utilizzare nelle classi della scuola primaria e secondaria di primo grado.",
+    "dataInserimento": "2026-01-02"
   },
   {
     "id": "HD1939-15",
@@ -4214,7 +4514,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "CON I TUOI OCCHI – RECITA Il video è un breve cortometraggio che ci mostra una giornata di Ada, una ragazza adolescente. Dopo aver rimproverato la sorellina che ha usato i suoi trucchi, la ragazza esce di casa di corsa: le amiche l’hanno avvisata su Whatsapp che è tornato Marco dall’Inghilterra. Il gruppo si ritrova per festeggiare il rientro del ragazzo: trascorrono la giornata tra parco e shopping. In ogni situazione Ada e i suoi amici scattano e postano selfie e foto di gruppo. A sera, Marco accompgna la ragazza alla recita della sorellina: i due si scambiano un bacio. Ada arriva alla recita, la madre la rimprovera: “sei sempre l’ultima”. Si spengono le luci, la sorellina è sul palco e sta per iniziare a danzare. Tutti gli adulti in platea hanno lo smartphone in mano per fare foto e riprese. Ada, anche lei con lo smartphone, si guarda intorno e si accorge della situazione: abbassa il suo cellulare e guarda la sorellina negli occhi, continuando a farlo e a sorriderle per tutta la recita. La sorellina, rassicurata, fa il suo balletto e sorride a sua volta. Compare la scritta: “Ci sono momenti che è più bello salvare nel cuore”. In chiusura il logo Wind con il claim “Più vicini alle vere emozioni”. Il video è stato utilizzato in incontri informativi con i genitori, per ragionare sulle rappresentazioni e le proiezioni che spesso mettiamo in atto rispetto al digitale, pensando che determinati comportamenti riguardino solo i ragazzi. Si veda per un confronto lo spot di Nokia Lumia “Recita”, presente in questo archivio."
+    "description": "CON I TUOI OCCHI – RECITA Il video è un breve cortometraggio che ci mostra una giornata di Ada, una ragazza adolescente. Dopo aver rimproverato la sorellina che ha usato i suoi trucchi, la ragazza esce di casa di corsa: le amiche l’hanno avvisata su Whatsapp che è tornato Marco dall’Inghilterra. Il gruppo si ritrova per festeggiare il rientro del ragazzo: trascorrono la giornata tra parco e shopping. In ogni situazione Ada e i suoi amici scattano e postano selfie e foto di gruppo. A sera, Marco accompgna la ragazza alla recita della sorellina: i due si scambiano un bacio. Ada arriva alla recita, la madre la rimprovera: “sei sempre l’ultima”. Si spengono le luci, la sorellina è sul palco e sta per iniziare a danzare. Tutti gli adulti in platea hanno lo smartphone in mano per fare foto e riprese. Ada, anche lei con lo smartphone, si guarda intorno e si accorge della situazione: abbassa il suo cellulare e guarda la sorellina negli occhi, continuando a farlo e a sorriderle per tutta la recita. La sorellina, rassicurata, fa il suo balletto e sorride a sua volta. Compare la scritta: “Ci sono momenti che è più bello salvare nel cuore”. In chiusura il logo Wind con il claim “Più vicini alle vere emozioni”. Il video è stato utilizzato in incontri informativi con i genitori, per ragionare sulle rappresentazioni e le proiezioni che spesso mettiamo in atto rispetto al digitale, pensando che determinati comportamenti riguardino solo i ragazzi. Si veda per un confronto lo spot di Nokia Lumia “Recita”, presente in questo archivio.",
+    "dataInserimento": "2024-12-20"
   },
   {
     "id": "HD1939-16",
@@ -4228,7 +4529,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "IL COSTO DELLA BELLEZZA (3 minuti). Il video ci racconta la storia di Mary: le foto e i video ce la mostrano bambina felice fino all'età di 12 anni, quando riceve in regalo uno smartphone. Da quel giorno, iniziando a seguire video e consigli online, Mary modifica la percezione di bellezza e del proprio corpo, arrivando a percepirsi brutta e finendo in un reparto di cura per disturbi alimentari. \"Gli effetti causati dai contenuti di bellezza tossici sono più gravi di quello che pensiamo\", ci ammonisce la Dove. Il video prosegue mostrandoci Mary adolescente insieme alla madre: la didascalia ci segnala che è \"in via di guarigione\". Seguono altre immagini di ragazze, tutte \"in via di guarigione\" da diverse forme di disagio (ansia, depressione, disturbi alimentari ecc). La didascalia finale ci ricorda che \"i contenuti dei social media mettono a rischio la salute mentale di circa 1 giovane su 2\". L'invito è quello di firmare una petizione per promuovere un uso più sicuro e responsabile dei social. Per la sua durata il video è utilizzabile da solo, con possibile brainstorming e analisi dei punti di forza e debolezza (ad esempio: mancanza del maschile? eccessivo determinismo nell'impatto dei social sui comportamenti? ruolo dei genitori? ecc...). Il tema dei disturbi alimentari è trattato in modo esplicito, pertanto andrà valutata con attenzione l'opportunità o meno dell'utilizzo in classe di questo video. Il tema della bellezza corporea legato ai social può essere affrontato anche con altri spot della Dove, presenti in questo archivio."
+    "description": "IL COSTO DELLA BELLEZZA (3 minuti). Il video ci racconta la storia di Mary: le foto e i video ce la mostrano bambina felice fino all'età di 12 anni, quando riceve in regalo uno smartphone. Da quel giorno, iniziando a seguire video e consigli online, Mary modifica la percezione di bellezza e del proprio corpo, arrivando a percepirsi brutta e finendo in un reparto di cura per disturbi alimentari. \"Gli effetti causati dai contenuti di bellezza tossici sono più gravi di quello che pensiamo\", ci ammonisce la Dove. Il video prosegue mostrandoci Mary adolescente insieme alla madre: la didascalia ci segnala che è \"in via di guarigione\". Seguono altre immagini di ragazze, tutte \"in via di guarigione\" da diverse forme di disagio (ansia, depressione, disturbi alimentari ecc). La didascalia finale ci ricorda che \"i contenuti dei social media mettono a rischio la salute mentale di circa 1 giovane su 2\". L'invito è quello di firmare una petizione per promuovere un uso più sicuro e responsabile dei social. Per la sua durata il video è utilizzabile da solo, con possibile brainstorming e analisi dei punti di forza e debolezza (ad esempio: mancanza del maschile? eccessivo determinismo nell'impatto dei social sui comportamenti? ruolo dei genitori? ecc...). Il tema dei disturbi alimentari è trattato in modo esplicito, pertanto andrà valutata con attenzione l'opportunità o meno dell'utilizzo in classe di questo video. Il tema della bellezza corporea legato ai social può essere affrontato anche con altri spot della Dove, presenti in questo archivio.",
+    "dataInserimento": "2024-08-20"
   },
   {
     "id": "HD1939-17",
@@ -4242,7 +4544,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "IL COSTO DELLA BELLEZZA (30 secondi). Il video si apre con questa informazione: \"I contenuti dei social media mettono a rischio la salute mentale di circa 1 giovane su 2\". Vediamo quindi un montaggio di immagini che ci raccontano la stodia di Mary, online a 12 anni. La ragazza, seguendo video e consigli presenti sui social media, modifica la percezione di bellezza e del proprio corpo: a 14 anni la troviamo in cura per disturbi alimentari.  L'invito è quello di proteggere la salute mentale dei giovani, firmando una petizione promossa da Dove. In chiusura rivediamo Mary a 19 anni, \"in via di guarigione\". Lo spot è la versione televisiva di quello di tre minuti visibile su Youtube e presente in questo archivio. Rispetto alla versione più lunga, non vediamo l'infanzia di Mary e la carrellata finale di altre ragazze \"in via di guarigione\". Il messaggio però non cambia. La breve durata permette l'utilizzo insieme ad altri spot sociali, sia sul tema più generale dei rischi legati alle tecnologie (reperibili in questo archivio) sia sul tema dell'immagine corporea.  Dal momento che il tema dei disturbi alimentari è trattato in modo esplicito, andrà valutata con attenzione l'opportunità o meno dell'utilizzo in classe di questo video."
+    "description": "IL COSTO DELLA BELLEZZA (30 secondi). Il video si apre con questa informazione: \"I contenuti dei social media mettono a rischio la salute mentale di circa 1 giovane su 2\". Vediamo quindi un montaggio di immagini che ci raccontano la stodia di Mary, online a 12 anni. La ragazza, seguendo video e consigli presenti sui social media, modifica la percezione di bellezza e del proprio corpo: a 14 anni la troviamo in cura per disturbi alimentari.  L'invito è quello di proteggere la salute mentale dei giovani, firmando una petizione promossa da Dove. In chiusura rivediamo Mary a 19 anni, \"in via di guarigione\". Lo spot è la versione televisiva di quello di tre minuti visibile su Youtube e presente in questo archivio. Rispetto alla versione più lunga, non vediamo l'infanzia di Mary e la carrellata finale di altre ragazze \"in via di guarigione\". Il messaggio però non cambia. La breve durata permette l'utilizzo insieme ad altri spot sociali, sia sul tema più generale dei rischi legati alle tecnologie (reperibili in questo archivio) sia sul tema dell'immagine corporea.  Dal momento che il tema dei disturbi alimentari è trattato in modo esplicito, andrà valutata con attenzione l'opportunità o meno dell'utilizzo in classe di questo video.",
+    "dataInserimento": "2026-01-30"
   },
   {
     "id": "HD1939-18",
@@ -4256,7 +4559,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "GUIDA E BASTA - TUTTO PER LEI. Una mamma e un papà giocano in casa insieme alla loro bimba; il montaggio alternato ce li mostra in automobile, con il padre alla guida e la bimba sul seggiolone posteriore. Arriva un messaggio sullo smartphone: il papà prende il telefono e guarda lo schermo mentre sta guidando. Sentiamo il rumore della frenata, mentre nel salotto della casa i tre vengono sbalzati via e scompaiono. La scritta e la voce over chiudono lo spot con il messaggio: \"Non usare il telefono alla guida e non distrarti\". Spot utilizzabile sia con adulti che con ragazzi (medie e superiori; da valutare l'uso nella primaria), inserito in un blocco di altri spot sociali con il mandato \"Qual è il più efficace e perchè\": il lavoro sull'efficacia comunicativa permette poi l'aggancio sul tema della sicurezza stradale e più in generale della nostra capacità di controllare comportamenti \"abitudinari\", come il controllo delle notifiche."
+    "description": "GUIDA E BASTA - TUTTO PER LEI. Una mamma e un papà giocano in casa insieme alla loro bimba; il montaggio alternato ce li mostra in automobile, con il padre alla guida e la bimba sul seggiolone posteriore. Arriva un messaggio sullo smartphone: il papà prende il telefono e guarda lo schermo mentre sta guidando. Sentiamo il rumore della frenata, mentre nel salotto della casa i tre vengono sbalzati via e scompaiono. La scritta e la voce over chiudono lo spot con il messaggio: \"Non usare il telefono alla guida e non distrarti\". Spot utilizzabile sia con adulti che con ragazzi (medie e superiori; da valutare l'uso nella primaria), inserito in un blocco di altri spot sociali con il mandato \"Qual è il più efficace e perchè\": il lavoro sull'efficacia comunicativa permette poi l'aggancio sul tema della sicurezza stradale e più in generale della nostra capacità di controllare comportamenti \"abitudinari\", come il controllo delle notifiche.",
+    "dataInserimento": "2023-05-03"
   },
   {
     "id": "HD1939-19",
@@ -4270,7 +4574,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "GUIDA E BASTA - ALCOOL E SMARTPHONE. Due auto con giovani a bordo girano per la città di notte. Sulla prima, bianca, il guidatore rispetta i limiti di velocità ed è concentrato alla guida: tutti indossano le cinture di sicurezza. Sulla seconda auto, blu, i quattro giovani bevono e cantano, mentre il guidatore (senza cintura) riprende il tutto con il cellulare, nonostante stia viaggiando ai 150 km/h. La distrazione è fatale: sentiamo il rumore di uno schianto e poi vediamo i tre giovani della prima auto aspettare invano l'arrivo degli amici. La voce over ci ricorda che \"la distrazione alla guida è una delle cause principali degli incidenti stradali\". Spot utilizzabile con adolescenti o giovani per ragionare sui rischi legati al digitale, inserendolo in un blocco di più spot sociali con il mandato \"Quale ti sembra più efficace e perchè\". Il registro \"terroristico\" funziona? Il confronto \"buoni - cattivi\" è efficace?"
+    "description": "GUIDA E BASTA - ALCOOL E SMARTPHONE. Due auto con giovani a bordo girano per la città di notte. Sulla prima, bianca, il guidatore rispetta i limiti di velocità ed è concentrato alla guida: tutti indossano le cinture di sicurezza. Sulla seconda auto, blu, i quattro giovani bevono e cantano, mentre il guidatore (senza cintura) riprende il tutto con il cellulare, nonostante stia viaggiando ai 150 km/h. La distrazione è fatale: sentiamo il rumore di uno schianto e poi vediamo i tre giovani della prima auto aspettare invano l'arrivo degli amici. La voce over ci ricorda che \"la distrazione alla guida è una delle cause principali degli incidenti stradali\". Spot utilizzabile con adolescenti o giovani per ragionare sui rischi legati al digitale, inserendolo in un blocco di più spot sociali con il mandato \"Quale ti sembra più efficace e perchè\". Il registro \"terroristico\" funziona? Il confronto \"buoni - cattivi\" è efficace?",
+    "dataInserimento": "2023-03-04"
   },
   {
     "id": "HD1939-20",
@@ -4284,7 +4589,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "GUIDA E BASTA - TUTTO PUO' ASPETTARE. Lo spot vede come protagonisti tre influencer: Vincenzo Schettini (La Fisica che ci Piace), Ruben Bondì (Cucina con Ruben) e Iris Di Domenico (Sono sempre Iris). Sono ripresi mentre stanno per iniziare un video, ma la loro azione rimane in stand-by. Nella seconda scena una ragazza ha appena parcheggiato: sgancia la cintura di sicurezza, esce dall'auto e prende il cellulare dalla borsa. Lo sblocca e comincia a guardarlo. In quel momento l’azione dei tre influencer si rianima. Il messaggio che chiude lo spot, infatti, è che \"quando sei alla guida tutto può aspettare\": l'invito è a non guardare i cellulari e ad evitare distrazioni quando si guida. Lo spot sceglie un registro diverso dalle precedenti campagne \"Guida e basta\" dell'ANAS (presenti in questo archivio), evitando di rappresentare incidenti o conseguenze negative della distrazione alla guida. Utilizzabile con studenti di tutte le età (anche alla primaria) per ragionare sui rischi legati al digitale, inserendolo in un blocco di più spot sociali con il mandato \"Quale ti sembra più efficace e perchè\"."
+    "description": "GUIDA E BASTA - TUTTO PUO' ASPETTARE. Lo spot vede come protagonisti tre influencer: Vincenzo Schettini (La Fisica che ci Piace), Ruben Bondì (Cucina con Ruben) e Iris Di Domenico (Sono sempre Iris). Sono ripresi mentre stanno per iniziare un video, ma la loro azione rimane in stand-by. Nella seconda scena una ragazza ha appena parcheggiato: sgancia la cintura di sicurezza, esce dall'auto e prende il cellulare dalla borsa. Lo sblocca e comincia a guardarlo. In quel momento l’azione dei tre influencer si rianima. Il messaggio che chiude lo spot, infatti, è che \"quando sei alla guida tutto può aspettare\": l'invito è a non guardare i cellulari e ad evitare distrazioni quando si guida. Lo spot sceglie un registro diverso dalle precedenti campagne \"Guida e basta\" dell'ANAS (presenti in questo archivio), evitando di rappresentare incidenti o conseguenze negative della distrazione alla guida. Utilizzabile con studenti di tutte le età (anche alla primaria) per ragionare sui rischi legati al digitale, inserendolo in un blocco di più spot sociali con il mandato \"Quale ti sembra più efficace e perchè\".",
+    "dataInserimento": "2025-06-14"
   },
   {
     "id": "HD1939-21",
@@ -4298,7 +4604,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "THE CODE - BELLEZZA E INTELLIGENZA ARTIFICALE. Il video si apre informandoci che \"entro il 2025 si prevede che l'Intelligenza artificiale genererà il 90% dei contenuti online\". Sulle note della famosa canzone \"Pure imagination\" vediamo una giovane donna seduta su un divano: chiede ad un programma di AI di generare prima l'immagine di una donna bellissima, poi di una \"pelle perfetta\". Le immagini generate rappresentano standard patinati e irraggiungibili. Aggiungendo però al comando \"come lo farebbe Dove\" le immagini generate cambiano, mostrandoci persone più vicine alla realtà quotidiana, con pregi e difetti. \"Che tipo di bellezza vogliamo insegnare all'intelligenza artificale?\", ci chiede Dove, che poi assicura in chiusura del video che non userà mai l'AI per distorcere le immagini delle donne. Lo spot aggiorna il messaggio sulla \"real beauty\" che Dove porta avanti da diversi anni (si vedano gli altri spot in archivio), aggiornandolo al tema dell'AI e ponendo maggiormente l'accento sul proprio ruolo (e sul proprio marchio) rispetto a quanto fatto in precedenza. Utilizzabile con studenti e adulti per ragionare sia rispetto al tema del digitale, sia rispetto all'immagine corporea."
+    "description": "THE CODE - BELLEZZA E INTELLIGENZA ARTIFICALE. Il video si apre informandoci che \"entro il 2025 si prevede che l'Intelligenza artificiale genererà il 90% dei contenuti online\". Sulle note della famosa canzone \"Pure imagination\" vediamo una giovane donna seduta su un divano: chiede ad un programma di AI di generare prima l'immagine di una donna bellissima, poi di una \"pelle perfetta\". Le immagini generate rappresentano standard patinati e irraggiungibili. Aggiungendo però al comando \"come lo farebbe Dove\" le immagini generate cambiano, mostrandoci persone più vicine alla realtà quotidiana, con pregi e difetti. \"Che tipo di bellezza vogliamo insegnare all'intelligenza artificale?\", ci chiede Dove, che poi assicura in chiusura del video che non userà mai l'AI per distorcere le immagini delle donne. Lo spot aggiorna il messaggio sulla \"real beauty\" che Dove porta avanti da diversi anni (si vedano gli altri spot in archivio), aggiornandolo al tema dell'AI e ponendo maggiormente l'accento sul proprio ruolo (e sul proprio marchio) rispetto a quanto fatto in precedenza. Utilizzabile con studenti e adulti per ragionare sia rispetto al tema del digitale, sia rispetto all'immagine corporea.",
+    "dataInserimento": "2025-08-03"
   },
   {
     "id": "HD1939-22",
@@ -4312,7 +4619,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "NEWTON. Il noto scienziato Isaac Newton è seduto sotto un albero: osservando una mela che cade a terra inizia ad avere l'idea della forza di gravità. Mentre una musica di violino va in crescendo, Newton inizia a scrivere sul suo libro: ma il suo pensiero viene interrotto da una notifica. Lo scienziato estrae lo smartphone dalla tasca, legge la notifica e rimane a scrollare contenuti online, lasciando cadere il libro e il suo pensiero. La scritta finale ci informa (in inglese) che \"il 54% della Gen Z ha difficoltà a concentrars a causa dell'utilizzo della tecnologia\" (il dato è ricavato da una ricerca Global Sync). Lo spot fa parte di una campagna di tre video, tutti presenti in questo archivio, prodotti da Sync Ithra, ente dell'Arabia Saudita che fa ricerca e promuove il benessere digitale. L'espediente narrativo è sempre quello di utilizzare personaggi storici iconici per veicolare risultati di una ricerca sul digitale e far riflettere sui rischi legati all'utilizzo dei social media. I tre spot possono essere utilizzati insieme, con studenti (medie e superiori) e anche con adulti, chiedendo di scegliere, ad esempio, il più importante, il più efficace, quello che farebbero vedere a...."
+    "description": "NEWTON. Il noto scienziato Isaac Newton è seduto sotto un albero: osservando una mela che cade a terra inizia ad avere l'idea della forza di gravità. Mentre una musica di violino va in crescendo, Newton inizia a scrivere sul suo libro: ma il suo pensiero viene interrotto da una notifica. Lo scienziato estrae lo smartphone dalla tasca, legge la notifica e rimane a scrollare contenuti online, lasciando cadere il libro e il suo pensiero. La scritta finale ci informa (in inglese) che \"il 54% della Gen Z ha difficoltà a concentrars a causa dell'utilizzo della tecnologia\" (il dato è ricavato da una ricerca Global Sync). Lo spot fa parte di una campagna di tre video, tutti presenti in questo archivio, prodotti da Sync Ithra, ente dell'Arabia Saudita che fa ricerca e promuove il benessere digitale. L'espediente narrativo è sempre quello di utilizzare personaggi storici iconici per veicolare risultati di una ricerca sul digitale e far riflettere sui rischi legati all'utilizzo dei social media. I tre spot possono essere utilizzati insieme, con studenti (medie e superiori) e anche con adulti, chiedendo di scegliere, ad esempio, il più importante, il più efficace, quello che farebbero vedere a....",
+    "dataInserimento": "2024-08-15"
   },
   {
     "id": "HD1939-23",
@@ -4326,7 +4634,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "LEONARDO. Leonardo Da Vinci sta dipingendo la Monna Lisa. Quando la ragazza che le fa da modella va via, l'artista rimane a contemplare il suo quadro, poi estrae lo smartphone e inizia a scorrere il feed di un social. Tra le foto che hanno avuto commenti positivi, Leonardo si concentra sull'autoritratto di Van Gogh. Ossessionato dalla competizione, Leonardo ritocca il suo quadro per riprodurre lo stile di Van Gogh, fino a creare una Monna Lisa con lo sfondo che ricorda la Notte Stellata di Van Gogh. Non soddisfatto, Da Vinci sbatte con rabbia il quadro per terra, mente una scritta ci informa (in inglese) che l'utilizzo eccessivo di social media è correlato ad una bassa autostima (il dato è ricavato dagli ultimi studi di Sync). Lo spot fa parte di una campagna di tre video, tutti presenti in questo archivio, prodotti da Sync Ithra, ente dell'Arabia Saudita che fa ricerca e promuove il benessere digitale. L'espediente narrativo è sempre quello di utilizzare personaggi storici iconici per veicolare risultati di una ricerca sul digitale e far riflettere sui rischi legati all'utilizzo dei social media. I tre spot possono essere utilizzati insieme, con studenti (medie e superiori) e anche con adulti, chiedendo di scegliere, ad esempio, il più importante, il più efficace, quello che farebbero vedere a...."
+    "description": "LEONARDO. Leonardo Da Vinci sta dipingendo la Monna Lisa. Quando la ragazza che le fa da modella va via, l'artista rimane a contemplare il suo quadro, poi estrae lo smartphone e inizia a scorrere il feed di un social. Tra le foto che hanno avuto commenti positivi, Leonardo si concentra sull'autoritratto di Van Gogh. Ossessionato dalla competizione, Leonardo ritocca il suo quadro per riprodurre lo stile di Van Gogh, fino a creare una Monna Lisa con lo sfondo che ricorda la Notte Stellata di Van Gogh. Non soddisfatto, Da Vinci sbatte con rabbia il quadro per terra, mente una scritta ci informa (in inglese) che l'utilizzo eccessivo di social media è correlato ad una bassa autostima (il dato è ricavato dagli ultimi studi di Sync). Lo spot fa parte di una campagna di tre video, tutti presenti in questo archivio, prodotti da Sync Ithra, ente dell'Arabia Saudita che fa ricerca e promuove il benessere digitale. L'espediente narrativo è sempre quello di utilizzare personaggi storici iconici per veicolare risultati di una ricerca sul digitale e far riflettere sui rischi legati all'utilizzo dei social media. I tre spot possono essere utilizzati insieme, con studenti (medie e superiori) e anche con adulti, chiedendo di scegliere, ad esempio, il più importante, il più efficace, quello che farebbero vedere a....",
+    "dataInserimento": "2025-08-11"
   },
   {
     "id": "HD1939-24",
@@ -4340,7 +4649,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "MOZART. Il giovanissimo Mozart sta eseguendo al clavicembalo una delle sue famose sonate, trasmettendo in live attraverso uno smartphone. I follower aumentano e i commenti sono tutti lusinghieri, quando arriva il primo intoppo: un paio di persone scrivono commenti negativi. Mozart inizia a perdere la concentrazione e a sbagliare: i commenti negativi si moltiplicano e diventano più pesanti, finchè il bambino smette di suonare e corre in lacrime ad abbracciare la mamma. Una scritta ci informa (in inglese) che \"un utente online su 4 ha sperimentato cyberbullismo o cyber harassment\", secondo una ricerca di Sync. Lo spot fa parte di una campagna di tre video, tutti presenti in questo archivio, prodotti da Sync Ithra, ente dell'Arabia Saudita che fa ricerca e promuove il benessere digitale. L'espediente narrativo è sempre quello di utilizzare personaggi storici iconici per veicolare risultati di una ricerca sul digitale e far riflettere sui rischi legati all'utilizzo dei social media. I tre spot possono essere utilizzati insieme, con studenti (medie e superiori) e anche con adulti, chiedendo di scegliere, ad esempio, il più importante, il più efficace, quello che farebbero vedere a...."
+    "description": "MOZART. Il giovanissimo Mozart sta eseguendo al clavicembalo una delle sue famose sonate, trasmettendo in live attraverso uno smartphone. I follower aumentano e i commenti sono tutti lusinghieri, quando arriva il primo intoppo: un paio di persone scrivono commenti negativi. Mozart inizia a perdere la concentrazione e a sbagliare: i commenti negativi si moltiplicano e diventano più pesanti, finchè il bambino smette di suonare e corre in lacrime ad abbracciare la mamma. Una scritta ci informa (in inglese) che \"un utente online su 4 ha sperimentato cyberbullismo o cyber harassment\", secondo una ricerca di Sync. Lo spot fa parte di una campagna di tre video, tutti presenti in questo archivio, prodotti da Sync Ithra, ente dell'Arabia Saudita che fa ricerca e promuove il benessere digitale. L'espediente narrativo è sempre quello di utilizzare personaggi storici iconici per veicolare risultati di una ricerca sul digitale e far riflettere sui rischi legati all'utilizzo dei social media. I tre spot possono essere utilizzati insieme, con studenti (medie e superiori) e anche con adulti, chiedendo di scegliere, ad esempio, il più importante, il più efficace, quello che farebbero vedere a....",
+    "dataInserimento": "2025-11-14"
   },
   {
     "id": "HD1939-25",
@@ -4354,7 +4664,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Spot sociale",
     "prodottoScuola": false,
-    "description": "SHARENTING. Deutsche Telekom lancia un messaggio ai genitori con una campagna virale. Una giovane coppia di genitori entra in un cinema e si siede in platea. Inaspettatamente sullo schermo compare l'immagine della loro bambina,  Ella, modificata digitalmente per sembrare adulta. La ragazza mette in guardia i genitori: non condividete foto e video dei figli sui social media, perchè quelle che per voi sono ricordi per altri sono \"dati\" che possono essere usati per fini malevoli. Lo \"sharenting\" (crasi tra \"parents\", genitori, e \"sharing\", condivisione) presenta rischi dei quali spesso gli adulti sono inconsapevoli come pedopornografia, furti d'identità e truffe. Lo spot ha un forte registro terroristico: il suo obiettivo è spaventare per modificare un'abitudine diffusa, in quanto - ci viene detto all'inizio - \"oltre il 75% dei genitori condivide i dati dei propri figli sui social media\". Video utilizzato singolarmente in alcune serate informative, per introdurre il tema: sullo sharenting si trova un'interessante disamina nel libro di Michele Marangi \"Addomesticare gli schermi\". Più difficile l'utilizzo insieme ad altri spot, per la durata e il forte impatto emotivo."
+    "description": "SHARENTING. Deutsche Telekom lancia un messaggio ai genitori con una campagna virale. Una giovane coppia di genitori entra in un cinema e si siede in platea. Inaspettatamente sullo schermo compare l'immagine della loro bambina,  Ella, modificata digitalmente per sembrare adulta. La ragazza mette in guardia i genitori: non condividete foto e video dei figli sui social media, perchè quelle che per voi sono ricordi per altri sono \"dati\" che possono essere usati per fini malevoli. Lo \"sharenting\" (crasi tra \"parents\", genitori, e \"sharing\", condivisione) presenta rischi dei quali spesso gli adulti sono inconsapevoli come pedopornografia, furti d'identità e truffe. Lo spot ha un forte registro terroristico: il suo obiettivo è spaventare per modificare un'abitudine diffusa, in quanto - ci viene detto all'inizio - \"oltre il 75% dei genitori condivide i dati dei propri figli sui social media\". Video utilizzato singolarmente in alcune serate informative, per introdurre il tema: sullo sharenting si trova un'interessante disamina nel libro di Michele Marangi \"Addomesticare gli schermi\". Più difficile l'utilizzo insieme ad altri spot, per la durata e il forte impatto emotivo.",
+    "dataInserimento": "2026-02-25"
   },
   {
     "id": "HD1940-01",
@@ -4368,7 +4679,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "La pornodipendenza è una forma di compulsione che porta ad un abuso di materiale pornografico, per lo più accompagnato da masturbazione. Chi ne soffre può stare fino a 20 ore al giorno attaccato ad un monitor. Con conseguenze negative sulle relazioni, sul lavoro e sull'autostima.  Secondo una ricerca dell'AIRS, Associazione Italiana per la Ricerca in Sessuologia, diretta dal dott. Franco Avenia, in Italia si stimano 2 milioni di pornodipendenti. Questi dati sono in forte aumento e vanno in parallelo con la diffusione di internet. Questa patologia, però, non è annoverata nell'ultima edizione del DSM, il manuale diagnostico e statistico dei disturbi mentali, e il parere degli specialisti è divergente. \"Molti si fanno una risata quando sentono parlare di \"pornodipendenza\", – spiega Cesare Guerreschi, presidente del SIIPaC, Società Italiana di Intervento sulle Patologie Compulsive, che negli ultimi anni ha curato migliaia di persone affette da dipendenza dal porno – ma si facevano una risata anche quando si parlava di alcolismo, o quando abbiamo iniziato a parlare di ludopatia, oggi sono tutte patologie riconosciute e trattate in maniera adeguata\". Il video di Fanpage riporta le testimonianze dei due uomini, di diversa età, che hanno sofferto di questo problema."
+    "description": "La pornodipendenza è una forma di compulsione che porta ad un abuso di materiale pornografico, per lo più accompagnato da masturbazione. Chi ne soffre può stare fino a 20 ore al giorno attaccato ad un monitor. Con conseguenze negative sulle relazioni, sul lavoro e sull'autostima.  Secondo una ricerca dell'AIRS, Associazione Italiana per la Ricerca in Sessuologia, diretta dal dott. Franco Avenia, in Italia si stimano 2 milioni di pornodipendenti. Questi dati sono in forte aumento e vanno in parallelo con la diffusione di internet. Questa patologia, però, non è annoverata nell'ultima edizione del DSM, il manuale diagnostico e statistico dei disturbi mentali, e il parere degli specialisti è divergente. \"Molti si fanno una risata quando sentono parlare di \"pornodipendenza\", – spiega Cesare Guerreschi, presidente del SIIPaC, Società Italiana di Intervento sulle Patologie Compulsive, che negli ultimi anni ha curato migliaia di persone affette da dipendenza dal porno – ma si facevano una risata anche quando si parlava di alcolismo, o quando abbiamo iniziato a parlare di ludopatia, oggi sono tutte patologie riconosciute e trattate in maniera adeguata\". Il video di Fanpage riporta le testimonianze dei due uomini, di diversa età, che hanno sofferto di questo problema.",
+    "dataInserimento": "2024-11-12"
   },
   {
     "id": "HD1940-02",
@@ -4382,7 +4694,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "Secondo uno studio della Lancaster University pubblicato sulla rivista Plos One, controlliamo lo smartphone 85 volte al giorno, mentre secondo Counterpoint Research più di un quarto delle persone intervistate lo usa fino a 7 ore al giorno: lo smartphone è sempre più parte integrante delle nostre vite. Ma l'uso compulsivo del cellulare può essere considerato una malattia? Matteo Lancini del Minotauro di Milano ci ricorda che occorre cercare di capire quanto i nostri comportamenti siano un adattamento ad una situazione diventata normale e quando, invece, segnalano un disagio. Secondo l'opinione di molti esperti l'uso eccessivo dello smartphone può segnalare alcune problematiche legate alla dipendenza e per questo in alcune strutture specializzate si affrontano percorsi di disintossicazione. Ralf è un ragazzo che si è rivolto ad un centro Siipac di Bolzano per combattere il suo utilizzo eccessivo dello smartphone. Del tema si è occupata anche una classe di un liceo di Pavia, che ha portato avanti un esperimento sulla disconnessione dai social per cinque giorni, coinvolgendo alunni di altre classi.."
+    "description": "Secondo uno studio della Lancaster University pubblicato sulla rivista Plos One, controlliamo lo smartphone 85 volte al giorno, mentre secondo Counterpoint Research più di un quarto delle persone intervistate lo usa fino a 7 ore al giorno: lo smartphone è sempre più parte integrante delle nostre vite. Ma l'uso compulsivo del cellulare può essere considerato una malattia? Matteo Lancini del Minotauro di Milano ci ricorda che occorre cercare di capire quanto i nostri comportamenti siano un adattamento ad una situazione diventata normale e quando, invece, segnalano un disagio. Secondo l'opinione di molti esperti l'uso eccessivo dello smartphone può segnalare alcune problematiche legate alla dipendenza e per questo in alcune strutture specializzate si affrontano percorsi di disintossicazione. Ralf è un ragazzo che si è rivolto ad un centro Siipac di Bolzano per combattere il suo utilizzo eccessivo dello smartphone. Del tema si è occupata anche una classe di un liceo di Pavia, che ha portato avanti un esperimento sulla disconnessione dai social per cinque giorni, coinvolgendo alunni di altre classi..",
+    "dataInserimento": "2024-12-19"
   },
   {
     "id": "HD1940-03",
@@ -4396,7 +4709,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "REPORT Puntata del 14/11/22. Il servizio analizza lo stato degli eSports in Italia: si tratta delle competizioni tra videogiocatori professionisti (pro-player), che in altri paesi è riconosciuto come uno sport. Il fenomeno è in continua crescita: la finale di League of Legends a Parigi ha avuto 20.000 spettatori presenti, mentre il seguito sulle piattaforme di streaming come Twitch è aumentato in Italia più del 300% in tre anni. L’italiano Valerio Gallo ha vinto le gare di Gran Turismo (un videogioco di corsa) nel primo torneo di eSports con licenza ufficiale del Comitato Olimpico. In Italia però questo non ha ricevuto riconoscimento dal Coni. I club di serie A hanno creato i propri team di esports. Il mercato sta crescendo, ma in Italia la figura del videogiocatore professionista non è disciplinata e quindi non è tutelata dal punto di vista sanitario e sindacale. Il pro player di FIFA Nicolò Mirra ci spiega infatti che un videogiocatore si allena 5-6 ore al giorno e ha bisogno di curare il fisico in palestra e l’alimentazione. Un riconoscimento come sportivo professionista garantirebbe maggiore tutela sui contratti: mancano linee guida, che invece in Francia sono state stabilite. Le regole condivise servono anche per i locali dove si praticano gli esports: non si possono omologare le console e i pc dove si gioca, perché altrimenti non potrebbero ricevere gli aggiornamenti."
+    "description": "REPORT Puntata del 14/11/22. Il servizio analizza lo stato degli eSports in Italia: si tratta delle competizioni tra videogiocatori professionisti (pro-player), che in altri paesi è riconosciuto come uno sport. Il fenomeno è in continua crescita: la finale di League of Legends a Parigi ha avuto 20.000 spettatori presenti, mentre il seguito sulle piattaforme di streaming come Twitch è aumentato in Italia più del 300% in tre anni. L’italiano Valerio Gallo ha vinto le gare di Gran Turismo (un videogioco di corsa) nel primo torneo di eSports con licenza ufficiale del Comitato Olimpico. In Italia però questo non ha ricevuto riconoscimento dal Coni. I club di serie A hanno creato i propri team di esports. Il mercato sta crescendo, ma in Italia la figura del videogiocatore professionista non è disciplinata e quindi non è tutelata dal punto di vista sanitario e sindacale. Il pro player di FIFA Nicolò Mirra ci spiega infatti che un videogiocatore si allena 5-6 ore al giorno e ha bisogno di curare il fisico in palestra e l’alimentazione. Un riconoscimento come sportivo professionista garantirebbe maggiore tutela sui contratti: mancano linee guida, che invece in Francia sono state stabilite. Le regole condivise servono anche per i locali dove si praticano gli esports: non si possono omologare le console e i pc dove si gioca, perché altrimenti non potrebbero ricevere gli aggiornamenti.",
+    "dataInserimento": "2026-01-12"
   },
   {
     "id": "HD1940-04",
@@ -4410,7 +4724,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "PRESADIRETTA Puntata del 20/03/23 dal titolo “La scatola nera”. La clip, della durata di circa 20 minuti, si concentra su Tik Tok e sul suo successo. Sul banco degli imputati i motori di raccomandazione, i potentissimi software che \"personalizzano\" i contenuti offerti a ciascun utente. Scandagliano i tuoi interessi ma anche le tue paure e colpiscono là dove sei più fragile. Il più potente in assoluto è quello di TikTok. Con quali effetti sui giovani più insicuri e fragili? Sono 10 anni, da quando i social sono esplosi, che i medici accusano l'aumento del disagio tra i più giovani: ansia, stress, disturbi dell'attenzione e del linguaggio, anoressia, depressione, autolesionismo. L’algoritmo di Tik Tok tende a rinforzare il tuo stato d’animo, perché propone contenuti sulla base di quelli appena cercati o visionati. In più grazie ai filtri facciali, l’applicazione ha accesso alla nostra videocamera e può scansionarci la faccia mentre scrolliamo i contenuti, riuscendo a capire – questa è l’ipotesi, al momento difficile da verificare – i nostri stati d’animo. Una parte del video è stata utilizzata con studenti delle scuole superiori e, in alcuni casi, in classi delle medie, per approfondire i meccanismi tecnici di profilazione dei social. Tik tok è più potente di Youtube, perché raffina la profilazione ad ogni video registrando le nostre reazioni."
+    "description": "PRESADIRETTA Puntata del 20/03/23 dal titolo “La scatola nera”. La clip, della durata di circa 20 minuti, si concentra su Tik Tok e sul suo successo. Sul banco degli imputati i motori di raccomandazione, i potentissimi software che \"personalizzano\" i contenuti offerti a ciascun utente. Scandagliano i tuoi interessi ma anche le tue paure e colpiscono là dove sei più fragile. Il più potente in assoluto è quello di TikTok. Con quali effetti sui giovani più insicuri e fragili? Sono 10 anni, da quando i social sono esplosi, che i medici accusano l'aumento del disagio tra i più giovani: ansia, stress, disturbi dell'attenzione e del linguaggio, anoressia, depressione, autolesionismo. L’algoritmo di Tik Tok tende a rinforzare il tuo stato d’animo, perché propone contenuti sulla base di quelli appena cercati o visionati. In più grazie ai filtri facciali, l’applicazione ha accesso alla nostra videocamera e può scansionarci la faccia mentre scrolliamo i contenuti, riuscendo a capire – questa è l’ipotesi, al momento difficile da verificare – i nostri stati d’animo. Una parte del video è stata utilizzata con studenti delle scuole superiori e, in alcuni casi, in classi delle medie, per approfondire i meccanismi tecnici di profilazione dei social. Tik tok è più potente di Youtube, perché raffina la profilazione ad ogni video registrando le nostre reazioni.",
+    "dataInserimento": "2025-08-29"
   },
   {
     "id": "HD1940-05",
@@ -4424,7 +4739,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Info",
     "prodottoScuola": false,
-    "description": "PRESADIRETTA Puntata del 20/03/23 dal titolo “La scatola nera”. La clip si concentra sul nascente mercato legato al metaverso. Anzi, ai metaversi: non c'è solo Meta, sono tantissime le società che stanno creando i loro metaversi. Realtà immersive, esperienze sensoriali, possibilità di muoversi negli spazi virtuali: come cambieranno le nostre vite nel futuro di Internet? Il settore dell’intrattenimento è al momento quello più coinvolto. Anche il mondo della moda non resta a guardare: molti prodotti (felpe, scarpe..) vengono lanciati prima all’interno di spazi online condivisi di videogiochi famosi, come Fortnite, e poi escono nei negozi reali. Tra i ragazzi non c’è differenza tra digitale e reale: il digitale è reale. Vivere una cosa a schermo è comunque vivere. E’ stato stimato che nel 2030 il 10% di tutto il mercato della moda e del lusso si venderà su piattaforme virtuali. Tutto ciò aumenterà il potere delle aziende che controllano i metaversi, che già dispongono oggi di un potere immenso."
+    "description": "PRESADIRETTA Puntata del 20/03/23 dal titolo “La scatola nera”. La clip si concentra sul nascente mercato legato al metaverso. Anzi, ai metaversi: non c'è solo Meta, sono tantissime le società che stanno creando i loro metaversi. Realtà immersive, esperienze sensoriali, possibilità di muoversi negli spazi virtuali: come cambieranno le nostre vite nel futuro di Internet? Il settore dell’intrattenimento è al momento quello più coinvolto. Anche il mondo della moda non resta a guardare: molti prodotti (felpe, scarpe..) vengono lanciati prima all’interno di spazi online condivisi di videogiochi famosi, come Fortnite, e poi escono nei negozi reali. Tra i ragazzi non c’è differenza tra digitale e reale: il digitale è reale. Vivere una cosa a schermo è comunque vivere. E’ stato stimato che nel 2030 il 10% di tutto il mercato della moda e del lusso si venderà su piattaforme virtuali. Tutto ciò aumenterà il potere delle aziende che controllano i metaversi, che già dispongono oggi di un potere immenso.",
+    "dataInserimento": "2023-06-06"
   },
   {
     "id": "HD1941-01",
@@ -4438,7 +4754,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Siamo nel 2045, a Columbus, Ohio. Sulle note di “Jump” dei Van Halen il protagonista, Wade, scende dalle “case accatastate” dove vive fino al terreno. La sua voce ci racconta questo futuro distopico: il mondo ha attraversato crisi e rivolte, le persone come lui vivono nelle baracche ma tutti sopravvivono perché prorprio lì è stato inventato Oasis, uno spazio digitale online (analogo al metaverso), accessibile tramite visori e guanti, dove “puoi fare quello che vuoi”. Si può giocare, sposarsi, “scalare l’everest con Batman”, giocare d’azzardo, andare nei motel. “La gente”, conclude, “viene su Oasis per tutto quello che si può fare, ma ci rimane per tutto quello che si può essere”. La sequenza selezionata (i primi 4 minuti e mezzo del video linkato) è stata utilizzata con studenti delle medie e delle superiori per ragionare rispetto al digitale ma anche per introdurre un discorso più generale sul consumo di sostanze: quanto, infatti, ciascun consumo comunica un disagio presente altrove? Se il mondo fosse migliore, andremmo lo stesso tutti su Oasis?"
+    "description": "Siamo nel 2045, a Columbus, Ohio. Sulle note di “Jump” dei Van Halen il protagonista, Wade, scende dalle “case accatastate” dove vive fino al terreno. La sua voce ci racconta questo futuro distopico: il mondo ha attraversato crisi e rivolte, le persone come lui vivono nelle baracche ma tutti sopravvivono perché prorprio lì è stato inventato Oasis, uno spazio digitale online (analogo al metaverso), accessibile tramite visori e guanti, dove “puoi fare quello che vuoi”. Si può giocare, sposarsi, “scalare l’everest con Batman”, giocare d’azzardo, andare nei motel. “La gente”, conclude, “viene su Oasis per tutto quello che si può fare, ma ci rimane per tutto quello che si può essere”. La sequenza selezionata (i primi 4 minuti e mezzo del video linkato) è stata utilizzata con studenti delle medie e delle superiori per ragionare rispetto al digitale ma anche per introdurre un discorso più generale sul consumo di sostanze: quanto, infatti, ciascun consumo comunica un disagio presente altrove? Se il mondo fosse migliore, andremmo lo stesso tutti su Oasis?",
+    "dataInserimento": "2023-05-11"
   },
   {
     "id": "HD1941-02",
@@ -4452,7 +4769,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Tristan Harris, informatico che ha lavorato per Google, ci spiega che lo smartphone è diverso da una bicicletta. Quando la bicicletta è arrivata nella società nessuno ha pensato che stesse minacciando la democrazia. Questo perché la bicicletta è uno strumento: se non lo usi non ti richiama. Invece lo smartphone “vuole qualcosa da te”. Questa sequenza è stata usata in numerosi incontri informativi e formazioni per genitori, insegnanti e operatori, per introdurre il tema del “mercato dell’attenzione” (di veda a proposito il libro “The attention merchants” di Tim Wu) e il passaggio dai media “strumenti” ai media “ambienti” e “tessuto connettivo”."
+    "description": "Tristan Harris, informatico che ha lavorato per Google, ci spiega che lo smartphone è diverso da una bicicletta. Quando la bicicletta è arrivata nella società nessuno ha pensato che stesse minacciando la democrazia. Questo perché la bicicletta è uno strumento: se non lo usi non ti richiama. Invece lo smartphone “vuole qualcosa da te”. Questa sequenza è stata usata in numerosi incontri informativi e formazioni per genitori, insegnanti e operatori, per introdurre il tema del “mercato dell’attenzione” (di veda a proposito il libro “The attention merchants” di Tim Wu) e il passaggio dai media “strumenti” ai media “ambienti” e “tessuto connettivo”.",
+    "dataInserimento": "2025-12-27"
   },
   {
     "id": "HD1941-03",
@@ -4466,7 +4784,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Justin Rosenstein, l’informatico che ha inventato il tasto “Like” quando lavorava per Facebook, spiega il fatto che l’algoritmo di Google ci restituisce risultati personalizzati: i miei risultati della ricerca non saranno uguali a quelli dei miei amici. Lo stesso capita sui social: ogni feed è diverso. E’ come se fossimo miliardi di Truman Show: con il tempo si ha la falsa sensazione che tutti siano d’accordo con te, e quando si è in questo stato si è facilmente manipolabili. Sono le piattaforme a decidere che cosa vediamo: questo ci impedisce di entrare in contatto con opinioni che contraddicono le nostre. La sequenza è stata utilizzata in alcune classi medie e superiori per approfondire il funzionamento di motori di ricerca e social. A partire dal 2023 è stata aggiunta la sequenza tratta da Presadiretta “La scatola nera” sul funzionamento di Tik Tok, che in The Social Dilemma non viene analizzato."
+    "description": "Justin Rosenstein, l’informatico che ha inventato il tasto “Like” quando lavorava per Facebook, spiega il fatto che l’algoritmo di Google ci restituisce risultati personalizzati: i miei risultati della ricerca non saranno uguali a quelli dei miei amici. Lo stesso capita sui social: ogni feed è diverso. E’ come se fossimo miliardi di Truman Show: con il tempo si ha la falsa sensazione che tutti siano d’accordo con te, e quando si è in questo stato si è facilmente manipolabili. Sono le piattaforme a decidere che cosa vediamo: questo ci impedisce di entrare in contatto con opinioni che contraddicono le nostre. La sequenza è stata utilizzata in alcune classi medie e superiori per approfondire il funzionamento di motori di ricerca e social. A partire dal 2023 è stata aggiunta la sequenza tratta da Presadiretta “La scatola nera” sul funzionamento di Tik Tok, che in The Social Dilemma non viene analizzato.",
+    "dataInserimento": "2024-05-20"
   },
   {
     "id": "HD1941-04",
@@ -4480,7 +4799,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Se non stai pagando per un prodotto, il prodotto sei tu. Tristan Harris (ex ingengere informatico di Google) e altri informatici che hanno lavorato per i colossi di Internet ci spiegano che dietro i servizi gratuiti che tutti utilizziamo ci sono aziende, il cui obiettivo è tenerci agganciati per più tempo possibile. La nostra attenzione viene monetizzata attraverso le pubblicità. Jaron Lanier, uno dei pionieri della realtà virtuale, precisa che il vero prodotto è il “graduale, impercettibile cambiamento del tuo comportamento e della tua percezione”. Chi controlla motori di ricerche e social ha un potere immenso, possono cambiare quello che fai, ciò che pensi, chi sei, in modo graduale. Shoshana Zuboff, autrice del libro “Il capitalismo della sorveglianza”, spiega che è in questo modo che aziende come Google o Meta fanno affari: “vendendo certezza”. Per farlo hanno bisogno di molti dati. La sequenza è stata utilizzata con studenti delle medie e delle superiori e, in alcuni casi, anche in classi dell’ultimo anno della primaria: permette di introdurre e ragionare sui modelli di business di ambienti come Youtube, Instagram e Tik Tok e sull’impatto che questo ha sui nostri comportamenti (tempo, attenzione, capacità di attendere…)"
+    "description": "Se non stai pagando per un prodotto, il prodotto sei tu. Tristan Harris (ex ingengere informatico di Google) e altri informatici che hanno lavorato per i colossi di Internet ci spiegano che dietro i servizi gratuiti che tutti utilizziamo ci sono aziende, il cui obiettivo è tenerci agganciati per più tempo possibile. La nostra attenzione viene monetizzata attraverso le pubblicità. Jaron Lanier, uno dei pionieri della realtà virtuale, precisa che il vero prodotto è il “graduale, impercettibile cambiamento del tuo comportamento e della tua percezione”. Chi controlla motori di ricerche e social ha un potere immenso, possono cambiare quello che fai, ciò che pensi, chi sei, in modo graduale. Shoshana Zuboff, autrice del libro “Il capitalismo della sorveglianza”, spiega che è in questo modo che aziende come Google o Meta fanno affari: “vendendo certezza”. Per farlo hanno bisogno di molti dati. La sequenza è stata utilizzata con studenti delle medie e delle superiori e, in alcuni casi, anche in classi dell’ultimo anno della primaria: permette di introdurre e ragionare sui modelli di business di ambienti come Youtube, Instagram e Tik Tok e sull’impatto che questo ha sui nostri comportamenti (tempo, attenzione, capacità di attendere…)",
+    "dataInserimento": "2024-07-25"
   },
   {
     "id": "HD1941-05",
@@ -4494,7 +4814,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Sui titoli di coda del documentario The Social Dilemma tutti le persone che sono state intervistate nel corso del documentario propongono i loro consigli pratici su come comportarsi per arginare il potere delle aziende digitali. Tra le proposte: disattivare tutte le notifiche, utilizzare motori di ricerca alternativi come Qwant; spegnere tutti i dispositivi mezz’ora prima di coricarsi; cancellare i propri account social. Sequenza utilizzabile con studenti e genitori, da sola o insieme ad altre proposte di regole, con il possibile mandato di scegliere il consiglio ritenuto più importante."
+    "description": "Sui titoli di coda del documentario The Social Dilemma tutti le persone che sono state intervistate nel corso del documentario propongono i loro consigli pratici su come comportarsi per arginare il potere delle aziende digitali. Tra le proposte: disattivare tutte le notifiche, utilizzare motori di ricerca alternativi come Qwant; spegnere tutti i dispositivi mezz’ora prima di coricarsi; cancellare i propri account social. Sequenza utilizzabile con studenti e genitori, da sola o insieme ad altre proposte di regole, con il possibile mandato di scegliere il consiglio ritenuto più importante.",
+    "dataInserimento": "2024-10-14"
   },
   {
     "id": "HD1941-06",
@@ -4508,7 +4829,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Ad una festa due adolescenti, Cassie e McKay, si conoscono e poi finiscono a letto. Nei preliminari le cose sembrano andare bene, poi lui inizia un approccio più aggressivo, strozzando il collo di Cassie. Un fermo immagine blocca la scena: in voce over la protagonista della serie, Ru, spiega perché sta avvenendo tutto ciò. Non finirà in uno stupro: semplicemente McKay sta replicando ciò che ha visto su Pornhub, dove nei video porno più visionati le ragazze vengono maltrattate e umiliate. Ritorniamo alla scena di sesso: Cassie ferma McKay e gli spiega che non deve fare così, lo ha spaventata. A meno che “tu non me lo chieda prima, o sia io a chiedertelo”. Su queste parole i due ritrovano l’intesa. La sequenza fotografa bene l’impatto che la fruizione di pornografia può avere sui comportamenti e sulle aspettative in un rapporto sessuale. Utilizzabile con studenti delle superiori, eventualmente avvisando prima gli insegnanti referenti del contenuto esplicito della scena."
+    "description": "Ad una festa due adolescenti, Cassie e McKay, si conoscono e poi finiscono a letto. Nei preliminari le cose sembrano andare bene, poi lui inizia un approccio più aggressivo, strozzando il collo di Cassie. Un fermo immagine blocca la scena: in voce over la protagonista della serie, Ru, spiega perché sta avvenendo tutto ciò. Non finirà in uno stupro: semplicemente McKay sta replicando ciò che ha visto su Pornhub, dove nei video porno più visionati le ragazze vengono maltrattate e umiliate. Ritorniamo alla scena di sesso: Cassie ferma McKay e gli spiega che non deve fare così, lo ha spaventata. A meno che “tu non me lo chieda prima, o sia io a chiedertelo”. Su queste parole i due ritrovano l’intesa. La sequenza fotografa bene l’impatto che la fruizione di pornografia può avere sui comportamenti e sulle aspettative in un rapporto sessuale. Utilizzabile con studenti delle superiori, eventualmente avvisando prima gli insegnanti referenti del contenuto esplicito della scena.",
+    "dataInserimento": "2025-03-09"
   },
   {
     "id": "HD1941-07",
@@ -4522,7 +4844,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Ad un party con piscina, dove c’è anche un prestigiatore che intrattiene i ragazzi, Daniel cerca di convincere suo figlio a smettere di giocare ad uno sparatutto sul tablet. Il ragazzino però non stacca gli occhi dallo schermo e si rifiuta anche di andare a prendere da bere. Il papà e la mamma sono al bar a sorseggiare un Martini, quando il ragazzo, sempre continuando a giocare, chiama: “Dov’è la mia bibita? Datti una mossa!”. Daniel commenta che lo butterebbe in piscina. Sequenza molto breve (meno di un minuto), utilizzabile sia con studenti di diverse età, sia con genitori. Possibile mandato: come prosegue la scena? Come interverresti?"
+    "description": "Ad un party con piscina, dove c’è anche un prestigiatore che intrattiene i ragazzi, Daniel cerca di convincere suo figlio a smettere di giocare ad uno sparatutto sul tablet. Il ragazzino però non stacca gli occhi dallo schermo e si rifiuta anche di andare a prendere da bere. Il papà e la mamma sono al bar a sorseggiare un Martini, quando il ragazzo, sempre continuando a giocare, chiama: “Dov’è la mia bibita? Datti una mossa!”. Daniel commenta che lo butterebbe in piscina. Sequenza molto breve (meno di un minuto), utilizzabile sia con studenti di diverse età, sia con genitori. Possibile mandato: come prosegue la scena? Come interverresti?",
+    "dataInserimento": "2025-12-01"
   },
   {
     "id": "HD1941-08",
@@ -4536,7 +4859,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Alla festa di Halloween di una scuola superiore americana una ragazza di colore, Aisha, sta mangiando patatine al tavolo del buffet. Viene vista da un gruppetto di ragazze vestite con le divise dei Lakers. Una di loro riprende Aisha mentre mangia e crea un breve video denigratorio, mettendole un muso da maiale e la scritta (in inglese) “il tavolo del buffet è sotto attacco”. Immediatamente manda il video a tutti e in pochi secondi Aisha inizia ad essere derisa, finché non abbandona la sala. Sequenza utilizzabile, da sola o insieme ad altre, per ragionare sul cyberbullismo."
+    "description": "Alla festa di Halloween di una scuola superiore americana una ragazza di colore, Aisha, sta mangiando patatine al tavolo del buffet. Viene vista da un gruppetto di ragazze vestite con le divise dei Lakers. Una di loro riprende Aisha mentre mangia e crea un breve video denigratorio, mettendole un muso da maiale e la scritta (in inglese) “il tavolo del buffet è sotto attacco”. Immediatamente manda il video a tutti e in pochi secondi Aisha inizia ad essere derisa, finché non abbandona la sala. Sequenza utilizzabile, da sola o insieme ad altre, per ragionare sul cyberbullismo.",
+    "dataInserimento": "2024-05-30"
   },
   {
     "id": "HD1941-09",
@@ -4550,7 +4874,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Dolores spiega a Caleb il funzionamento di Rehoboam, un potentissimo algoritmo che ha raccolto e processato i dati di tutti, arrivando a fornire previsioni sulle vite delle persone. L’algoritmo, infatti, non ti dice chi sei, ma “chi ti faranno diventare”. Per convincere Caleb, Dolores lo porta su un molo sull’oceano. “Qui”, spiega, “è dove ti uccidi”. L’algoritmo ha previsto il suicidio di Caleb entro 10-12 anni. Sulla base di questa previsione a Caleb viene negato l’accesso a determinate possibilità sociali e tipi di lavoro: in questo modo la profezia si autoavvera. La sequenza può essere usata anche in una versione accorciata, fino alla frase “chi ti faranno diventare”. Utilizzata in formazione e in alcuni laboratori con studenti delle superioti per ragionare sui temi della profilazione e degli algoritmi."
+    "description": "Dolores spiega a Caleb il funzionamento di Rehoboam, un potentissimo algoritmo che ha raccolto e processato i dati di tutti, arrivando a fornire previsioni sulle vite delle persone. L’algoritmo, infatti, non ti dice chi sei, ma “chi ti faranno diventare”. Per convincere Caleb, Dolores lo porta su un molo sull’oceano. “Qui”, spiega, “è dove ti uccidi”. L’algoritmo ha previsto il suicidio di Caleb entro 10-12 anni. Sulla base di questa previsione a Caleb viene negato l’accesso a determinate possibilità sociali e tipi di lavoro: in questo modo la profezia si autoavvera. La sequenza può essere usata anche in una versione accorciata, fino alla frase “chi ti faranno diventare”. Utilizzata in formazione e in alcuni laboratori con studenti delle superioti per ragionare sui temi della profilazione e degli algoritmi.",
+    "dataInserimento": "2025-07-03"
   },
   {
     "id": "HD1941-10",
@@ -4564,7 +4889,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "August, il ragazzino con la malformazione al volto che è protagonista del film, è seduto al computer. Il suo compagno di classe Jack gli dà l’accesso al suo server Minecraft: August si ritrova ad esplorare il mondo costruito da Jack nel noto videogioco: uno splendido castello con ai piedi un lago e un veliero. I due ragazzi comunicano in chat testuale: Jack si dice dispiaciuto per le parole che gli ha detto e gli chiede di tornare ad essere amici. August gli risponde OK: Jack sorride contento. La sequenza mette in scena un bell’esempio di relazione onlife: August e Jack si conoscono al di fuori dell’online, ma trovano nello spazio condiviso di Minecraft e nella modalità di messaggistica scritta il modo per riappacificarsi. Video utilizzabile con genitori, insegnanti e operatori, per ragionare sulle relazioni online e sugli aspetti sociali del gaming."
+    "description": "August, il ragazzino con la malformazione al volto che è protagonista del film, è seduto al computer. Il suo compagno di classe Jack gli dà l’accesso al suo server Minecraft: August si ritrova ad esplorare il mondo costruito da Jack nel noto videogioco: uno splendido castello con ai piedi un lago e un veliero. I due ragazzi comunicano in chat testuale: Jack si dice dispiaciuto per le parole che gli ha detto e gli chiede di tornare ad essere amici. August gli risponde OK: Jack sorride contento. La sequenza mette in scena un bell’esempio di relazione onlife: August e Jack si conoscono al di fuori dell’online, ma trovano nello spazio condiviso di Minecraft e nella modalità di messaggistica scritta il modo per riappacificarsi. Video utilizzabile con genitori, insegnanti e operatori, per ragionare sulle relazioni online e sugli aspetti sociali del gaming.",
+    "dataInserimento": "2025-02-09"
   },
   {
     "id": "HD1941-11",
@@ -4578,7 +4904,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Sequenze",
     "prodottoScuola": false,
-    "description": "Andrea, un ragazzo di 17 anni con un fratello gemello, sta guardando una partita di basket in tv insieme alla famiglia, quando riceve un messaggio di Daniele, un ragazzo di cui è invaghito. Daniele pensa che Andrea sia una ragazza, perché lo conosce tramite le foto del profilo Instagram “No one knows me like”, su cui Andrea pubblica immagini di se stesso vestito da donna e senza il volto riconoscibile. Ora però Daniele lo incalza: vuole una foto della “ragazza” non tagliata, perché altrimenti come fa a sapere che non è un “vecchio di merda”? Andrea, sotto pressione, va in bagno per sentire un audio di Daniele, prova a prendere tempo e alla fine cede: cerco una foto della sua ex fidanzata, Micol, e la manda a Daniele, che sorride soddisfatto. La sequenza è stata utilizzata con studenti delle scuole superiori all’interno di un percorso sul tema dell’identità online. I commenti dei ragazzi hanno evidenziato la pressione a cui è sottoposto Andrea, il suo comportamento discutibile ma anche comprensibile, il fatto che a volte online è possibile giocarsi parti della nostra identità che in altri contesti teniamo nascoste. La serie tv Prisma, anche se creata dagli stessi autori di Skam, al momento non ha avuto grande diffusione tra gli studenti delle superiori."
+    "description": "Andrea, un ragazzo di 17 anni con un fratello gemello, sta guardando una partita di basket in tv insieme alla famiglia, quando riceve un messaggio di Daniele, un ragazzo di cui è invaghito. Daniele pensa che Andrea sia una ragazza, perché lo conosce tramite le foto del profilo Instagram “No one knows me like”, su cui Andrea pubblica immagini di se stesso vestito da donna e senza il volto riconoscibile. Ora però Daniele lo incalza: vuole una foto della “ragazza” non tagliata, perché altrimenti come fa a sapere che non è un “vecchio di merda”? Andrea, sotto pressione, va in bagno per sentire un audio di Daniele, prova a prendere tempo e alla fine cede: cerco una foto della sua ex fidanzata, Micol, e la manda a Daniele, che sorride soddisfatto. La sequenza è stata utilizzata con studenti delle scuole superiori all’interno di un percorso sul tema dell’identità online. I commenti dei ragazzi hanno evidenziato la pressione a cui è sottoposto Andrea, il suo comportamento discutibile ma anche comprensibile, il fatto che a volte online è possibile giocarsi parti della nostra identità che in altri contesti teniamo nascoste. La serie tv Prisma, anche se creata dagli stessi autori di Skam, al momento non ha avuto grande diffusione tra gli studenti delle superiori.",
+    "dataInserimento": "2025-08-31"
   },
   {
     "id": "HD1942-01",
@@ -4592,7 +4919,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Steven Spielberg. Nel 2045, anno in cui il mondo sta per collassare sull’orlo del caos, le persone hanno trovato la salvezza nell’OASIS, un enorme universo di realtà virtuale creto dal brillante ed eccentrico James Halliday (Mark Rylance). A seguito della morte di Halliday, la sua immensa fortuna andrà in dote a colui che per primo troverà un Easter egg nascosto da qualche parte all’interno dell’OASIS, dando il via ad una gara che coinvolgerà il mondo intero. Quando un improbabile giovane eroe di nome Wade Watts (Tye Sheridan) deciderà di prendere parte alla gara, verrà coinvolto in una vertiginosa caccia al tesoro in questo fantastico universo fatto di misteri, scoperte sensazionali e pericoli. Il film propone azione e avventura in pieno stile Spielberg, rendendolo utilizzabile nella sua interezza anche in una classe terza media o prima superiore. La conclusione della narrazione propone un tentativo di ricerca di equilibrio onlife, tra la “vita reale” e lo spazio digitale (metaverso?) di Oasis. La sequenza iniziale, presente in questo archivio, è stata utilizzata con studenti delle medie e delle superiori per ragionare rispetto al digitale ma anche per introdurre un discorso più generale sul consumo di sostanze: quanto, infatti, ciascun consumo comunica un disagio presente altrove? Se il mondo fosse migliore, andremmo lo stesso tutti su Oasis?"
+    "description": "Regia: Steven Spielberg. Nel 2045, anno in cui il mondo sta per collassare sull’orlo del caos, le persone hanno trovato la salvezza nell’OASIS, un enorme universo di realtà virtuale creto dal brillante ed eccentrico James Halliday (Mark Rylance). A seguito della morte di Halliday, la sua immensa fortuna andrà in dote a colui che per primo troverà un Easter egg nascosto da qualche parte all’interno dell’OASIS, dando il via ad una gara che coinvolgerà il mondo intero. Quando un improbabile giovane eroe di nome Wade Watts (Tye Sheridan) deciderà di prendere parte alla gara, verrà coinvolto in una vertiginosa caccia al tesoro in questo fantastico universo fatto di misteri, scoperte sensazionali e pericoli. Il film propone azione e avventura in pieno stile Spielberg, rendendolo utilizzabile nella sua interezza anche in una classe terza media o prima superiore. La conclusione della narrazione propone un tentativo di ricerca di equilibrio onlife, tra la “vita reale” e lo spazio digitale (metaverso?) di Oasis. La sequenza iniziale, presente in questo archivio, è stata utilizzata con studenti delle medie e delle superiori per ragionare rispetto al digitale ma anche per introdurre un discorso più generale sul consumo di sostanze: quanto, infatti, ciascun consumo comunica un disagio presente altrove? Se il mondo fosse migliore, andremmo lo stesso tutti su Oasis?",
+    "dataInserimento": "2025-06-04"
   },
   {
     "id": "HD1942-02",
@@ -4606,7 +4934,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Jeff Orlowski. The Social Dilemma è un documentario, visibile su Netflix, che ci mostra la vita di Ben – l’attore Skyler Gisondo – che vive una dipendenza da Social Network: costretto dalla madre a non utilizzare il telefono cellulare per una settimana, entra in uno stato di profonda crisi trascorsi appena due giorni. A questa narrazione di fiction vengono alternate interviste ad alcuni tra i più noti dipendenti di Google, Facebook, Instagram, Twitter, Pinterest ed altre famose piattaforme, impiegati della Silicon Valley. I professionisti intervistati, tra cui l’inventore del tasto ‘like’ di Facebook, riconoscono ad oggi le importanti implicazioni psicologiche che si celano dietro le loro scoperte, novità che in alcuni casi stanno provocando gravi conseguenze per la salute mentale dei cittadini di tutto il mondo. Molti di essi attualmente hanno addirittura deciso di licenziarsi: riconoscono di aver contribuito alla nascita di strumenti, sicuramente utili e meravigliosi, ma non senza gravi rischi per l’equilibrio psichico dell’essere umano. Una delle tesi di The Social Dilemma è che la “dipendenza” dagli ambienti digitali non è un bug, bensì un obbiettivo che le aziende della Silicon Valley si sono poste e che hanno ampiamente raggiunto grazie all’utilizzo sempre più raffinato degli algoritmi. Si noti che il documentario non prende direttamente in esame Tik Tok, che viene solo citato di sfuggita: nessuno degli intervistati vi ha lavorato, trattandosi di un’azienda cinese. Dal documentario sono state tratte alcune brevi sequenze, presenti in questo archivio."
+    "description": "Regia: Jeff Orlowski. The Social Dilemma è un documentario, visibile su Netflix, che ci mostra la vita di Ben – l’attore Skyler Gisondo – che vive una dipendenza da Social Network: costretto dalla madre a non utilizzare il telefono cellulare per una settimana, entra in uno stato di profonda crisi trascorsi appena due giorni. A questa narrazione di fiction vengono alternate interviste ad alcuni tra i più noti dipendenti di Google, Facebook, Instagram, Twitter, Pinterest ed altre famose piattaforme, impiegati della Silicon Valley. I professionisti intervistati, tra cui l’inventore del tasto ‘like’ di Facebook, riconoscono ad oggi le importanti implicazioni psicologiche che si celano dietro le loro scoperte, novità che in alcuni casi stanno provocando gravi conseguenze per la salute mentale dei cittadini di tutto il mondo. Molti di essi attualmente hanno addirittura deciso di licenziarsi: riconoscono di aver contribuito alla nascita di strumenti, sicuramente utili e meravigliosi, ma non senza gravi rischi per l’equilibrio psichico dell’essere umano. Una delle tesi di The Social Dilemma è che la “dipendenza” dagli ambienti digitali non è un bug, bensì un obbiettivo che le aziende della Silicon Valley si sono poste e che hanno ampiamente raggiunto grazie all’utilizzo sempre più raffinato degli algoritmi. Si noti che il documentario non prende direttamente in esame Tik Tok, che viene solo citato di sfuggita: nessuno degli intervistati vi ha lavorato, trattandosi di un’azienda cinese. Dal documentario sono state tratte alcune brevi sequenze, presenti in questo archivio.",
+    "dataInserimento": "2025-09-27"
   },
   {
     "id": "HD1942-03",
@@ -4620,7 +4949,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Shalini Kantayya. (film in inglese senza sottotitoli). Coded Bias” di Netflix è un documentario sul nostro attuale mondo videosorvegliato e sul ruolo che giocano gli algoritmi. La storia portante è quella della ricercatrice afroamericana Joy Buolamwini, autrice di un paper – poi ripreso da tutta la stampa statunitense – sui pregiudizi razziali e di genere dei software per il riconoscimento facciale come Amazon Rekognition. La ricerca ha dimostrato come gli algoritmi di Amazon e di altre grandi società sappiano riconoscere benissimo un maschio bianco mentre fanno molta più fatica con il volto di un maschio nero, ancora di più con quello di una donna bianca e hanno un’altissima probabilità di sbagliare quando provano a identificare una donna nera. Alla base della struttura degli algoritmi non ci sono razzismo o sessismo ma dati, e i dati incorporano il passato, non solo il passato recente ma il passato oscuro; prima degli algoritmi viene l’uomo che può essere molto ingiusto, può discriminare per razza, sesso. Se usiamo modelli di apprendimento che replicano il mondo di oggi, il razzismo viene automatizzato e non faremo nessun progresso sociale. All’interno di Coded Bias viene anche mostrato un altro sistema di riconoscimento facciale, che viene adoperato a Londra dalla polizia per cercare possibili criminali; il sistema avvisa la polizia di possibili corrispondenze attraverso una scansione del volto. Dopo una campagna per la libertà dell’informazione alcuni attivisti inglesi di Big Brother Watch hanno scoperto che il 98% di quelle corrispondenze hanno associato erroneamente una persona innocente a una ricercata, ribandendo che i software di riconoscimento facciale vìolano i diritti umani senza contare il rischio del potenziale abuso circa l’utilizzo e l’archiviazione dei dati."
+    "description": "Regia: Shalini Kantayya. (film in inglese senza sottotitoli). Coded Bias” di Netflix è un documentario sul nostro attuale mondo videosorvegliato e sul ruolo che giocano gli algoritmi. La storia portante è quella della ricercatrice afroamericana Joy Buolamwini, autrice di un paper – poi ripreso da tutta la stampa statunitense – sui pregiudizi razziali e di genere dei software per il riconoscimento facciale come Amazon Rekognition. La ricerca ha dimostrato come gli algoritmi di Amazon e di altre grandi società sappiano riconoscere benissimo un maschio bianco mentre fanno molta più fatica con il volto di un maschio nero, ancora di più con quello di una donna bianca e hanno un’altissima probabilità di sbagliare quando provano a identificare una donna nera. Alla base della struttura degli algoritmi non ci sono razzismo o sessismo ma dati, e i dati incorporano il passato, non solo il passato recente ma il passato oscuro; prima degli algoritmi viene l’uomo che può essere molto ingiusto, può discriminare per razza, sesso. Se usiamo modelli di apprendimento che replicano il mondo di oggi, il razzismo viene automatizzato e non faremo nessun progresso sociale. All’interno di Coded Bias viene anche mostrato un altro sistema di riconoscimento facciale, che viene adoperato a Londra dalla polizia per cercare possibili criminali; il sistema avvisa la polizia di possibili corrispondenze attraverso una scansione del volto. Dopo una campagna per la libertà dell’informazione alcuni attivisti inglesi di Big Brother Watch hanno scoperto che il 98% di quelle corrispondenze hanno associato erroneamente una persona innocente a una ricercata, ribandendo che i software di riconoscimento facciale vìolano i diritti umani senza contare il rischio del potenziale abuso circa l’utilizzo e l’archiviazione dei dati.",
+    "dataInserimento": "2024-06-08"
   },
   {
     "id": "HD1942-04",
@@ -4634,7 +4964,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Pippa Bianco. La sedicenne Mandy si ritrova nottetempo, e improvvisamente, nel proprio giardino di casa con lividi sul corpo, senza ricordare cosa le sia accaduto. Dopo qualche tempo scoprirà, tramite un video diffuso in rete, di avere partecipato a una festa e di aver subito, in preda all’alcol, degli abusi da parte di qualcuno che si è spregevolmente approfittato di lei. Se inizialmente tutto sembra precipitare nell’oblio, la situazione muta quando i suoi genitori decidono di sporgere denuncia. Così, il mondo interiore ed esteriore di Mandy comincia a crollare, con la ragazza che cercherà di risalire allo svolgimento degli eventi che l’hanno coinvolta e di scoprire di quali amici fidarsi veramente. La pellicola di Pippa Bianco, che ha fatto il giro dei festival di mezzo mondo (il film è stato presentato al Sundance ma anche al Festival di Cannes), è una lucida e spietata rappresentazione di una piaga sociale difficile da contrastare. La Bianco, attraverso un approccio indie (la camera a mano qui è predominante) e l’utilizzo di una fotografia scura, ci trascina nell’inferno di una liceale vittima di un atto estremamente odioso. Una delle caratteristiche più interessanti di Share è che la regista non svela allo spettatore i colpevoli del fattaccio e, soprattutto, non sappiamo se Mandy sia stata effettivamente violentata; il vero obiettivo dell’opera è quello di mostrare le ipocrisie di una società, rappresentata da un sobborgo americano (ma potrebbe essere una qualsiasi cittadina occidentale), che solo a parole stigmatizza il fenomeno del cyberbullismo."
+    "description": "Regia: Pippa Bianco. La sedicenne Mandy si ritrova nottetempo, e improvvisamente, nel proprio giardino di casa con lividi sul corpo, senza ricordare cosa le sia accaduto. Dopo qualche tempo scoprirà, tramite un video diffuso in rete, di avere partecipato a una festa e di aver subito, in preda all’alcol, degli abusi da parte di qualcuno che si è spregevolmente approfittato di lei. Se inizialmente tutto sembra precipitare nell’oblio, la situazione muta quando i suoi genitori decidono di sporgere denuncia. Così, il mondo interiore ed esteriore di Mandy comincia a crollare, con la ragazza che cercherà di risalire allo svolgimento degli eventi che l’hanno coinvolta e di scoprire di quali amici fidarsi veramente. La pellicola di Pippa Bianco, che ha fatto il giro dei festival di mezzo mondo (il film è stato presentato al Sundance ma anche al Festival di Cannes), è una lucida e spietata rappresentazione di una piaga sociale difficile da contrastare. La Bianco, attraverso un approccio indie (la camera a mano qui è predominante) e l’utilizzo di una fotografia scura, ci trascina nell’inferno di una liceale vittima di un atto estremamente odioso. Una delle caratteristiche più interessanti di Share è che la regista non svela allo spettatore i colpevoli del fattaccio e, soprattutto, non sappiamo se Mandy sia stata effettivamente violentata; il vero obiettivo dell’opera è quello di mostrare le ipocrisie di una società, rappresentata da un sobborgo americano (ma potrebbe essere una qualsiasi cittadina occidentale), che solo a parole stigmatizza il fenomeno del cyberbullismo.",
+    "dataInserimento": "2023-11-06"
   },
   {
     "id": "HD1942-05",
@@ -4648,7 +4979,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Hae-Jun Lee. Seul, Corea del Sud. Un impiegato rovinato economicamente e psicologicamente tenta il suicidio gettandosi da un ponte sul fiume Han ma anziché in acqua finisce sull'isoletta Bamseom. Minuscola, verdeggiante e disabitata, l'isola si rivelerà da principio una prigione - Mr Kim non sa nuotare e ha il cellulare scarico, quindi non può andarsene da Bamseom - e in seguito un rifugio per il protagonista, emarginato da una società schiava della pura logica del profitto. Unica ad accorgersi di questo \"naufrago di città\" è un'anima altrettanto sensibile e altrettanto aliena(ta), la hikikomori Ms Kim, reclusa volontaria da tre anni per sfuggire a una società - in particolar modo quella coreana - ormai maniacalmente basata sull'immagine e sulla perfezione estetica. Due solitudini destinate a incontrarsi e a trasformare quella che per quasi un'ora è un'irresistibile commedia grottesca in un dramma in cui l'amore sembra metterci lo zampino. Un film che racconta bene il fenomeno degli Hikikomori, inserendolo nel contesto della società coreana dove la pressione sociale alla performance e le oggettive difficoltà per chi è giovane si combinano in un mix micidiale: emblematica, a questo proposito, la nota serie tv “Squid game”."
+    "description": "Regia: Hae-Jun Lee. Seul, Corea del Sud. Un impiegato rovinato economicamente e psicologicamente tenta il suicidio gettandosi da un ponte sul fiume Han ma anziché in acqua finisce sull'isoletta Bamseom. Minuscola, verdeggiante e disabitata, l'isola si rivelerà da principio una prigione - Mr Kim non sa nuotare e ha il cellulare scarico, quindi non può andarsene da Bamseom - e in seguito un rifugio per il protagonista, emarginato da una società schiava della pura logica del profitto. Unica ad accorgersi di questo \"naufrago di città\" è un'anima altrettanto sensibile e altrettanto aliena(ta), la hikikomori Ms Kim, reclusa volontaria da tre anni per sfuggire a una società - in particolar modo quella coreana - ormai maniacalmente basata sull'immagine e sulla perfezione estetica. Due solitudini destinate a incontrarsi e a trasformare quella che per quasi un'ora è un'irresistibile commedia grottesca in un dramma in cui l'amore sembra metterci lo zampino. Un film che racconta bene il fenomeno degli Hikikomori, inserendolo nel contesto della società coreana dove la pressione sociale alla performance e le oggettive difficoltà per chi è giovane si combinano in un mix micidiale: emblematica, a questo proposito, la nota serie tv “Squid game”.",
+    "dataInserimento": "2024-10-28"
   },
   {
     "id": "HD1942-06",
@@ -4662,7 +4994,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Shawn Levy. Guy è un cassiere di banca che vive felicemente a Free City, dove il mondo si divide fra due gruppi di individui: quelli con gli occhiali cui tutto è consentito, che si dedicano a rapinare, colpire, uccidere e incendiare, e quelli \"che stanno a terra e le prendono\". Guy appartiene alla seconda categoria, ma non sembra pesargli affatto. Ogni mattina si sveglia con un gran sorriso, saluta il suo pesce rosso e si avvia verso una giornata sempre uguale, convinto che sarà fantastica. Ma il suo mondo non è reale: è un videogioco inventato da un magnate tecnologico che ne ha rubato il codice a due giovani programmatori. E una dei due game creator entrerà a Free City attraverso il suo avatar per recuperare quel codice nascosto. La divisione fra Personaggi Non Giocanti, che non contano nulla e fanno solo da sfondo, e player, nonché l'ulteriore richiamo a chi li manovra da una stanza dei bottoni posta molto più in alto, è quantomai attuale. I PNG \"stanno al loro posto\" e si accontentano di una quotidianità rigidamente prevedibile, senza mai aspirare a sovvertire l'ordine costituito. E quando Guy decide di rubare un paio di occhiali e cambiare la sua vita diventa Oliver Twist che chiede una scodella di minestra in più. E’ interessante il paragone con due film di fine anni ‘90, Truman Show e The Matrix: nel primo il medium oppressore era la televisione, nel secondo una “neurosimulazione” a metà tra Internet e i videogiochi. Qui siamo pienamente nel mondo del gaming, a segnare l’importanza che hanno assunto in questi ultimi vent’anni all’interno non solo dell’industria, ma anche dell’immaginario quotidiano delle persone. Quella dei videogame è un’industria a tutti gli effetti, con le sue regole e i suoi influencer, schiavi contemporanei di un sistema lavorativo crudele e settario e delle leggi implacabili della popolarità istantanea. Guy sfugge a questa logica nel momento in cui diventa tecnologicamente irrintracciabile, il che gli consente di sviluppare una volontà e una coscienza libere."
+    "description": "Regia: Shawn Levy. Guy è un cassiere di banca che vive felicemente a Free City, dove il mondo si divide fra due gruppi di individui: quelli con gli occhiali cui tutto è consentito, che si dedicano a rapinare, colpire, uccidere e incendiare, e quelli \"che stanno a terra e le prendono\". Guy appartiene alla seconda categoria, ma non sembra pesargli affatto. Ogni mattina si sveglia con un gran sorriso, saluta il suo pesce rosso e si avvia verso una giornata sempre uguale, convinto che sarà fantastica. Ma il suo mondo non è reale: è un videogioco inventato da un magnate tecnologico che ne ha rubato il codice a due giovani programmatori. E una dei due game creator entrerà a Free City attraverso il suo avatar per recuperare quel codice nascosto. La divisione fra Personaggi Non Giocanti, che non contano nulla e fanno solo da sfondo, e player, nonché l'ulteriore richiamo a chi li manovra da una stanza dei bottoni posta molto più in alto, è quantomai attuale. I PNG \"stanno al loro posto\" e si accontentano di una quotidianità rigidamente prevedibile, senza mai aspirare a sovvertire l'ordine costituito. E quando Guy decide di rubare un paio di occhiali e cambiare la sua vita diventa Oliver Twist che chiede una scodella di minestra in più. E’ interessante il paragone con due film di fine anni ‘90, Truman Show e The Matrix: nel primo il medium oppressore era la televisione, nel secondo una “neurosimulazione” a metà tra Internet e i videogiochi. Qui siamo pienamente nel mondo del gaming, a segnare l’importanza che hanno assunto in questi ultimi vent’anni all’interno non solo dell’industria, ma anche dell’immaginario quotidiano delle persone. Quella dei videogame è un’industria a tutti gli effetti, con le sue regole e i suoi influencer, schiavi contemporanei di un sistema lavorativo crudele e settario e delle leggi implacabili della popolarità istantanea. Guy sfugge a questa logica nel momento in cui diventa tecnologicamente irrintracciabile, il che gli consente di sviluppare una volontà e una coscienza libere.",
+    "dataInserimento": "2024-10-31"
   },
   {
     "id": "HD1942-07",
@@ -4676,7 +5009,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Film",
     "prodottoScuola": false,
-    "description": "Regia: Rich Moore e Phil Johnston. Nella sala di giochi di Litwak le cose vanno molto meglio da quando Ralph ha la sua amica Vanellope e Vanellope ha il suo eroe Ralph. A volte, se mai, alla ragazzina va un po' stretto il suo gioco: sempre le stesse piste, poco spazio per l'imprevisto. Ma ecco che una grande avventura bussa allora alle loro porte, quando un guasto al volante di Sugar Rush, e l'impossibilità di reperire il pezzo di ricambio, minaccia di mandare in pensione il gioco di Vanellope, lasciando senza casa e senza lavoro lei e tutti gli altri corridori. Non resta che tentare di acquistare il volante su Ebay, avventurandosi in quell'ignoto universo chiamato Internet. Facendosi strada tra l'assalto dei banner pop up, tra promesse di casalinghe vivaci, di riduzione del grasso addominale e gattini gattini gattini, il gigante e la bambina non vanno soltanto verso il loro obiettivo materiale, ma soprattutto verso una messa alla prova del loro legame, che vedrà Ralph vacillare per paura e poi peccare per amore, sulla strada per arrivare a comprendere che l'amicizia non è possesso ma rispetto della libertà dell'altro. Il film scherza così sulla psicosi dei \"like\", sulla cattiveria degli haters, sull'odierno mescolare in quantità la sofferenza umana con le sfide di ingestione del peperoncino, le capre che urlano e i tutorial di trucco, senza smettere di produrre incessanti e desolanti battute sulle api. Ma la tappa più bella è senza dubbio quella nel salotto di casa (Disney), tra le principesse che hanno fatto la storia e l'evoluzione del genere (e che qui fanno un istantaneo, ulteriore balzo in avanti)."
+    "description": "Regia: Rich Moore e Phil Johnston. Nella sala di giochi di Litwak le cose vanno molto meglio da quando Ralph ha la sua amica Vanellope e Vanellope ha il suo eroe Ralph. A volte, se mai, alla ragazzina va un po' stretto il suo gioco: sempre le stesse piste, poco spazio per l'imprevisto. Ma ecco che una grande avventura bussa allora alle loro porte, quando un guasto al volante di Sugar Rush, e l'impossibilità di reperire il pezzo di ricambio, minaccia di mandare in pensione il gioco di Vanellope, lasciando senza casa e senza lavoro lei e tutti gli altri corridori. Non resta che tentare di acquistare il volante su Ebay, avventurandosi in quell'ignoto universo chiamato Internet. Facendosi strada tra l'assalto dei banner pop up, tra promesse di casalinghe vivaci, di riduzione del grasso addominale e gattini gattini gattini, il gigante e la bambina non vanno soltanto verso il loro obiettivo materiale, ma soprattutto verso una messa alla prova del loro legame, che vedrà Ralph vacillare per paura e poi peccare per amore, sulla strada per arrivare a comprendere che l'amicizia non è possesso ma rispetto della libertà dell'altro. Il film scherza così sulla psicosi dei \"like\", sulla cattiveria degli haters, sull'odierno mescolare in quantità la sofferenza umana con le sfide di ingestione del peperoncino, le capre che urlano e i tutorial di trucco, senza smettere di produrre incessanti e desolanti battute sulle api. Ma la tappa più bella è senza dubbio quella nel salotto di casa (Disney), tra le principesse che hanno fatto la storia e l'evoluzione del genere (e che qui fanno un istantaneo, ulteriore balzo in avanti).",
+    "dataInserimento": "2023-12-02"
   },
   {
     "id": "HD1943-01",
@@ -4690,7 +5024,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Cortometraggio",
     "prodottoScuola": false,
-    "description": "Cortometraggio realizzato da Emanuele Lucci e Mario Savina (Scarti). Una voce over maschile ci informa che “nel 2014 l’umanità ha attraversato la più grande crisi delle comunicazioni nella storia”. Il video racconta questa vicenda attraverso le voci di tre persone comuni, “che di colpo si sono trovate catapultate in un mondo che non le apparteneva”. E’ la sera del 22 febbraio quando di colpo Whatsapp smette di funzionare. Un ragazzo sta cercando gli amici per vedere insieme una partita di calcio; una ragazza è al suo primo appuntamento, con un’amica che fa il tifo per lei via messaggi; un terzo ragazzo sta raggiungendo gli amici al cinema. Il blocco di Whatsapp costringe tutti a cambiare comportamenti: si alza lo sguardo dal cellulare e ci si guarda intorno. I due al primo appuntamento finalmente si guardano negli occhi; il ragazzo che cerca gli amici per la partita incontra una ragazza e inizia a parlare con lei; al cinema, le persone dicono “al diavolo, ce lo scegliamo da soli il film!”. E’ come un risveglio collettivo, ma dura poco, perché di colpo Whatsapp ricomincia a funzionare. Tutti, sentendo le notifiche, tornano alle vecchie abitudini. “Per un attimo ho creduto addirittura di poter vivere senza: che cretina!”. Il video è stato utilizzato in alcuni incontri informativi rivolti alla cittadinanza."
+    "description": "Cortometraggio realizzato da Emanuele Lucci e Mario Savina (Scarti). Una voce over maschile ci informa che “nel 2014 l’umanità ha attraversato la più grande crisi delle comunicazioni nella storia”. Il video racconta questa vicenda attraverso le voci di tre persone comuni, “che di colpo si sono trovate catapultate in un mondo che non le apparteneva”. E’ la sera del 22 febbraio quando di colpo Whatsapp smette di funzionare. Un ragazzo sta cercando gli amici per vedere insieme una partita di calcio; una ragazza è al suo primo appuntamento, con un’amica che fa il tifo per lei via messaggi; un terzo ragazzo sta raggiungendo gli amici al cinema. Il blocco di Whatsapp costringe tutti a cambiare comportamenti: si alza lo sguardo dal cellulare e ci si guarda intorno. I due al primo appuntamento finalmente si guardano negli occhi; il ragazzo che cerca gli amici per la partita incontra una ragazza e inizia a parlare con lei; al cinema, le persone dicono “al diavolo, ce lo scegliamo da soli il film!”. E’ come un risveglio collettivo, ma dura poco, perché di colpo Whatsapp ricomincia a funzionare. Tutti, sentendo le notifiche, tornano alle vecchie abitudini. “Per un attimo ho creduto addirittura di poter vivere senza: che cretina!”. Il video è stato utilizzato in alcuni incontri informativi rivolti alla cittadinanza.",
+    "dataInserimento": "2024-04-06"
   },
   {
     "id": "HD1943-02",
@@ -4704,7 +5039,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Cortometraggio",
     "prodottoScuola": false,
-    "description": "Cortometraggio realizzato da Keiichi Matsuda. Il video è interamente girato in soggettiva: seguiamo le vicende di Juliana Restrepo, una quarantenne che vive e lavora a Medellin. Il suo sguardo sulla realtà è costantemente in realtà aumentata: all’inizio sta viaggiando in autobus, ma noi vediamo un videogioco a cui sta giocando, i suoi punti fedeltà, il suo livello raggiunto nell’app di lavoro (Job Monkey) e mille altre informazioni collegate a ciò che le sta intorno. Mentre la donna fa la spesa in un supermercato il suo dispositivo inizia ad avere dei problemi: l’assistenza del suo operatore telefonico la informa che qualcuno sta cercando di hackerare la sua identità digitale. La donna è preoccupata per lo stato dei suoi punti: l’operatore la invita a recarsi al più vicino centro di assistenza. Tornata in strada, la donna viene avvicinata da un individuo dall’identità mascherata, che la pugnala alla mano. La sua identità digitale viene azzerata e la visione torna priva di realtà aumentata. La donna, disperata, si chiede che cosa fare: attraversa la strada e raggiunge una statua della Madonna. Qui la realtà aumentata si riattiva, con le scritte “Start again”. La donna fa una croce con la mano e in questo modo aderisce al Cattolicesimo – Livello 1. Il cortometraggio, denso di dettagli, è stato utilizzato anni fa durante alcune formazioni per operatori, risultando poco comprensibile. Oggi (2023) può essere riproposto, per ragionare su diversi aspetti legati al digitale e qui presenti nella realtà aumentata messa in scena (marketing, lavoro precario, rischi legati ai furti di identità, ecc…)."
+    "description": "Cortometraggio realizzato da Keiichi Matsuda. Il video è interamente girato in soggettiva: seguiamo le vicende di Juliana Restrepo, una quarantenne che vive e lavora a Medellin. Il suo sguardo sulla realtà è costantemente in realtà aumentata: all’inizio sta viaggiando in autobus, ma noi vediamo un videogioco a cui sta giocando, i suoi punti fedeltà, il suo livello raggiunto nell’app di lavoro (Job Monkey) e mille altre informazioni collegate a ciò che le sta intorno. Mentre la donna fa la spesa in un supermercato il suo dispositivo inizia ad avere dei problemi: l’assistenza del suo operatore telefonico la informa che qualcuno sta cercando di hackerare la sua identità digitale. La donna è preoccupata per lo stato dei suoi punti: l’operatore la invita a recarsi al più vicino centro di assistenza. Tornata in strada, la donna viene avvicinata da un individuo dall’identità mascherata, che la pugnala alla mano. La sua identità digitale viene azzerata e la visione torna priva di realtà aumentata. La donna, disperata, si chiede che cosa fare: attraversa la strada e raggiunge una statua della Madonna. Qui la realtà aumentata si riattiva, con le scritte “Start again”. La donna fa una croce con la mano e in questo modo aderisce al Cattolicesimo – Livello 1. Il cortometraggio, denso di dettagli, è stato utilizzato anni fa durante alcune formazioni per operatori, risultando poco comprensibile. Oggi (2023) può essere riproposto, per ragionare su diversi aspetti legati al digitale e qui presenti nella realtà aumentata messa in scena (marketing, lavoro precario, rischi legati ai furti di identità, ecc…).",
+    "dataInserimento": "2024-11-04"
   },
   {
     "id": "HD1943-03",
@@ -4718,7 +5054,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Cortometraggio",
     "prodottoScuola": false,
-    "description": "Cortometraggio realizzato da Eran May-raz e Daniel Lazo; interamente in inglese, su Youtube sono disponibili i sottotitoli in italiano. In un mondo in cui una tecnologia analoga ai Google Glass è integrata direttamente negli occhi delle persone, è possibile ad accedere a miriadi di app semplicemente con lo sguardo. Un giovane single è nel suo appartamento: gioca a un videogioco che gli permette di fare esercizio fisico, poi si prepara la cena seguendo le istruzioni gamificate di un’altra app. Quindi si prepara ad un appuntamento con una ragazza. Al tavolo del ristorante l’uomo attiva un’app, Wingman, che attraverso suggerimenti basati sulle informazioni e sulla lettura delle espressioni della ragazza gli permette di trasformare il goffo approccio iniziale in un successo. A fine serata la ragazza accetta di salire nell’appartamento di lui per un drink. Al momento del brindisi, però, lei si accorge dell’app per appuntamenti: arrabbiata, decide di andarsene. L’uomo, però, la blocca: è un ingegnere che lavora per Sight ed appare in grado di hackerare il sistema di lei, costringendola a restare. Il cortometraggio termina così. Il video è stato utilizzato con studenti delle scuole superiori nell’ambito del percorso “Social Media corpo e relazioni”, per ragionare sulle relazioni tra i sessi e sui rischi legati alla violenza di genere."
+    "description": "Cortometraggio realizzato da Eran May-raz e Daniel Lazo; interamente in inglese, su Youtube sono disponibili i sottotitoli in italiano. In un mondo in cui una tecnologia analoga ai Google Glass è integrata direttamente negli occhi delle persone, è possibile ad accedere a miriadi di app semplicemente con lo sguardo. Un giovane single è nel suo appartamento: gioca a un videogioco che gli permette di fare esercizio fisico, poi si prepara la cena seguendo le istruzioni gamificate di un’altra app. Quindi si prepara ad un appuntamento con una ragazza. Al tavolo del ristorante l’uomo attiva un’app, Wingman, che attraverso suggerimenti basati sulle informazioni e sulla lettura delle espressioni della ragazza gli permette di trasformare il goffo approccio iniziale in un successo. A fine serata la ragazza accetta di salire nell’appartamento di lui per un drink. Al momento del brindisi, però, lei si accorge dell’app per appuntamenti: arrabbiata, decide di andarsene. L’uomo, però, la blocca: è un ingegnere che lavora per Sight ed appare in grado di hackerare il sistema di lei, costringendola a restare. Il cortometraggio termina così. Il video è stato utilizzato con studenti delle scuole superiori nell’ambito del percorso “Social Media corpo e relazioni”, per ragionare sulle relazioni tra i sessi e sui rischi legati alla violenza di genere.",
+    "dataInserimento": "2025-01-04"
   },
   {
     "id": "HD1944-01",
@@ -4732,7 +5069,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Videoclip",
     "prodottoScuola": false,
-    "description": "Il video è realizzato in animazione da Steve Cutts; i disegni, in bianco e nero, ricordano i cartoni animati degli anni ‘20 del ‘900. L’ambientazione è contemporanea: sulle note della canzone di Moby, tratta dall’album “These Systems are failing” (parole che ricorrono nel video), il protagonista, senza dispositivi, si muove solitario e triste in un mondo in cui tutte le persone sono costantemente  con gli occhi fissi sul proprio display. Le situazioni messe in scena sono un campionario dei comportamenti negativi legati al digitale: dal cyberbullismo alla non comunicazione a tavola, dal flaming ai filtri che nascondono le brutture del reale, fino al suicidio di una ragazza derisa sui social. Il protagonista prova in diversi modi a cambiare la situazione, cercando di far alzare lo sguardo alle persone, ma invano. Nel finale, in una landa desolata, le persone camminano fino a precipitare in un burrone, sempre senza staccare gli occhi dal proprio cellulare. Video che estremizza i rischi legati all’abuso del digitale, senza prospettare soluzioni. Alcuni commenti su Youtube ne criticano la visione eccessiva e/o da “boomer”: ad esempio “Questo è come vedono il mondo le persone che non escono e socializzano”. Il videoclip è stato utilizzato con studenti delle medie e delle superiori, con il mandato di scegliere la situazione messa in scena che ha colpito di più, quella che si ritiene più veritiera e quella che invece è esagerata."
+    "description": "Il video è realizzato in animazione da Steve Cutts; i disegni, in bianco e nero, ricordano i cartoni animati degli anni ‘20 del ‘900. L’ambientazione è contemporanea: sulle note della canzone di Moby, tratta dall’album “These Systems are failing” (parole che ricorrono nel video), il protagonista, senza dispositivi, si muove solitario e triste in un mondo in cui tutte le persone sono costantemente  con gli occhi fissi sul proprio display. Le situazioni messe in scena sono un campionario dei comportamenti negativi legati al digitale: dal cyberbullismo alla non comunicazione a tavola, dal flaming ai filtri che nascondono le brutture del reale, fino al suicidio di una ragazza derisa sui social. Il protagonista prova in diversi modi a cambiare la situazione, cercando di far alzare lo sguardo alle persone, ma invano. Nel finale, in una landa desolata, le persone camminano fino a precipitare in un burrone, sempre senza staccare gli occhi dal proprio cellulare. Video che estremizza i rischi legati all’abuso del digitale, senza prospettare soluzioni. Alcuni commenti su Youtube ne criticano la visione eccessiva e/o da “boomer”: ad esempio “Questo è come vedono il mondo le persone che non escono e socializzano”. Il videoclip è stato utilizzato con studenti delle medie e delle superiori, con il mandato di scegliere la situazione messa in scena che ha colpito di più, quella che si ritiene più veritiera e quella che invece è esagerata.",
+    "dataInserimento": "2025-09-23"
   },
   {
     "id": "HD1944-02",
@@ -4746,7 +5084,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Videoclip",
     "prodottoScuola": false,
-    "description": "Dopo un intro recitata, dove un signore anziano invita Shade a staccare gli occhi da Instagram e ad andare a conoscere le ragazze di persona, parte la canzone. Il video ci mostra Shade circondato da belle ragazze e situazioni di festa (in piscina, con una squadra di footbal, in una splendida villa…), dove però quasi tutte e tutti sono impegnate/i a scattarsi selfie. Il testo lavora sulla dicotomia tra la visibilità sui social e la difficoltà all’approccio di persona: “Da quando ti ho vista / Mi hai mandato in fissa / Sì però sono stanco di vederti solo sul cell / Ma dov'è che posso vederti dal vivo, di foto profilo? / Dov'è che sei no filter, no finta? /Amore a prima insta”. La messa in scena di una situazione “esagerata” ricorda quella di “Are you lost in the world like me” di Moby (presente in questo archivio), ma con un registro opposto: qui i toni sono colorati, allegri e molto autoironici. Il video potrebbe essere utilizzato in contrapposizione a quello di Moby per ragionare sulla ricerca di equilibrio onlife: come riesco a stare bene in una costante ibridazione tra online e offline? Un altro possibile ambito operativo è quello delle rappresentazioni del maschile e femminile."
+    "description": "Dopo un intro recitata, dove un signore anziano invita Shade a staccare gli occhi da Instagram e ad andare a conoscere le ragazze di persona, parte la canzone. Il video ci mostra Shade circondato da belle ragazze e situazioni di festa (in piscina, con una squadra di footbal, in una splendida villa…), dove però quasi tutte e tutti sono impegnate/i a scattarsi selfie. Il testo lavora sulla dicotomia tra la visibilità sui social e la difficoltà all’approccio di persona: “Da quando ti ho vista / Mi hai mandato in fissa / Sì però sono stanco di vederti solo sul cell / Ma dov'è che posso vederti dal vivo, di foto profilo? / Dov'è che sei no filter, no finta? /Amore a prima insta”. La messa in scena di una situazione “esagerata” ricorda quella di “Are you lost in the world like me” di Moby (presente in questo archivio), ma con un registro opposto: qui i toni sono colorati, allegri e molto autoironici. Il video potrebbe essere utilizzato in contrapposizione a quello di Moby per ragionare sulla ricerca di equilibrio onlife: come riesco a stare bene in una costante ibridazione tra online e offline? Un altro possibile ambito operativo è quello delle rappresentazioni del maschile e femminile.",
+    "dataInserimento": "2023-12-01"
   },
   {
     "id": "HD1944-03",
@@ -4760,7 +5099,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Videoclip",
     "prodottoScuola": false,
-    "description": "Il video mette in scena il display del cellulare di Willie Peyote, sul quale compaiono le parole della canzone. Il testo esprime l’amore verso una ragazza: “Tu ti muovi così bene dimmi come fai / Ad entrare senza password e a sgamarmi I file / L'algoritmo ha il tuo ritmo”. Nel corso del video le immagini della ragazze arrivano ad invadere il display, sovrapponendosi a tutte le icone. Viene allora scaricato un anti-malware che ha il volto di Shaggy, mentre nella canzone entra la sua featuring. Il programma “ripulisce” lo smartphone da tutte le immagini della ragazza; nel finale viene data conferma di abbandonare “Jessica_98”. Il video può essere utilizzato per ragionare rispetto a digitale e relazioni."
+    "description": "Il video mette in scena il display del cellulare di Willie Peyote, sul quale compaiono le parole della canzone. Il testo esprime l’amore verso una ragazza: “Tu ti muovi così bene dimmi come fai / Ad entrare senza password e a sgamarmi I file / L'algoritmo ha il tuo ritmo”. Nel corso del video le immagini della ragazze arrivano ad invadere il display, sovrapponendosi a tutte le icone. Viene allora scaricato un anti-malware che ha il volto di Shaggy, mentre nella canzone entra la sua featuring. Il programma “ripulisce” lo smartphone da tutte le immagini della ragazza; nel finale viene data conferma di abbandonare “Jessica_98”. Il video può essere utilizzato per ragionare rispetto a digitale e relazioni.",
+    "dataInserimento": "2023-08-30"
   },
   {
     "id": "HD1944-04",
@@ -4774,7 +5114,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Videoclip",
     "prodottoScuola": false,
-    "description": "Un capolavoro di regia ed effetti visivi. Siamo all’interno della stanza di un ragazzo giapponese, che vi abita da solo, indossando una mascherina (il video è del 2017, quindi precedente alla pandemia di Covid). La stanza è un po’ in disordine: ci sono uno schermo, alcune stoviglie, una mela rossa, mucchietti di vestiti sul pavimento. La ripresa inizia a muoversi seguendo una linea al centro dell’inquadratura, verso una porta sul fondo: quando questa si apre, svela una stanza uguale alla precedente, e poi un’altra e un’altra ancora. In ognuna il protagonista compie azioni diverse (gioca ad un videogioco, mangia, dorme; e in ognuna, grazie ad un magnifico effetto, le dimensioni dell’ambiente si rimpiccioliscono sempre di più. Le stanze finali sembrano grandi come la mano del ragazzo, che spunta del muro: nell’ultima la porta si apre, dietro vediamo il volto del ragazzo che pronuncia il verso della canzone “Stay warm” (traducibile con “resta al caldo”, ma anche come formula di saluto, “stammi bene”). Dopo questo la videocamera torna indietro, fino all’ambiente iniziale. Il video non si focalizza sul digitale, comunque presente, ma può essere utilizzato come rappresentazione del ritiro sociale: come notano numerosi commenti su Youtube, la messa in scena ha anticipato profeticamente quanto vissuto dalle persone durante i lockdown."
+    "description": "Un capolavoro di regia ed effetti visivi. Siamo all’interno della stanza di un ragazzo giapponese, che vi abita da solo, indossando una mascherina (il video è del 2017, quindi precedente alla pandemia di Covid). La stanza è un po’ in disordine: ci sono uno schermo, alcune stoviglie, una mela rossa, mucchietti di vestiti sul pavimento. La ripresa inizia a muoversi seguendo una linea al centro dell’inquadratura, verso una porta sul fondo: quando questa si apre, svela una stanza uguale alla precedente, e poi un’altra e un’altra ancora. In ognuna il protagonista compie azioni diverse (gioca ad un videogioco, mangia, dorme; e in ognuna, grazie ad un magnifico effetto, le dimensioni dell’ambiente si rimpiccioliscono sempre di più. Le stanze finali sembrano grandi come la mano del ragazzo, che spunta del muro: nell’ultima la porta si apre, dietro vediamo il volto del ragazzo che pronuncia il verso della canzone “Stay warm” (traducibile con “resta al caldo”, ma anche come formula di saluto, “stammi bene”). Dopo questo la videocamera torna indietro, fino all’ambiente iniziale. Il video non si focalizza sul digitale, comunque presente, ma può essere utilizzato come rappresentazione del ritiro sociale: come notano numerosi commenti su Youtube, la messa in scena ha anticipato profeticamente quanto vissuto dalle persone durante i lockdown.",
+    "dataInserimento": "2025-03-10"
   },
   {
     "id": "HD1945-01",
@@ -4788,7 +5129,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Web e social",
     "prodottoScuola": false,
-    "description": "Il video, realizzato dal noto gruppo di attori e comici “The Jackal” (oltre un milione di iscritti su Youtube) si immagina che la poca dimestichezza con la tecnologia digitale tipica dei “boomer” sia in realtà una strategia precisa, il “Protocollo boomer”. Come ci spiegano alcuni personaggi, genitori e nonni fanno finta di non sapere come funzionano social, Internet e videogiochi: in questo modo, con la scusa di farsi spiegare le cose, possono passare più tempo con figli e nipoti. Il loro motto è: “+ boomer, + amore”. Esilarante la nonnina che, dopo aver finto di non capire che cos’è la cassa del telefonino, riprende a killare su Fortnite. Il video è stato commissionato dalla compagnia di assicurazioni Cattolica: nella parte finale viene inserita nella narrazione la promozione di una funzione di richiesta aiuto in caso di guasto dell’auto. Il video è stato utilizzato nell’ambito di serate informative rivolte a genitori e adulti, a volte come chiusura divertente, in alcuni casi come spunto di riflessione. E’ possibile un aggancio con il concetto di Tecnologia di comunità elaborato dal Prof. Pier Cesare Rivoltella nel libro omonimo (Ed. La scuola, 2017): come rendere gli ambienti digitali dei facilitatori di relazioni, non solo online ma anche in presenza?"
+    "description": "Il video, realizzato dal noto gruppo di attori e comici “The Jackal” (oltre un milione di iscritti su Youtube) si immagina che la poca dimestichezza con la tecnologia digitale tipica dei “boomer” sia in realtà una strategia precisa, il “Protocollo boomer”. Come ci spiegano alcuni personaggi, genitori e nonni fanno finta di non sapere come funzionano social, Internet e videogiochi: in questo modo, con la scusa di farsi spiegare le cose, possono passare più tempo con figli e nipoti. Il loro motto è: “+ boomer, + amore”. Esilarante la nonnina che, dopo aver finto di non capire che cos’è la cassa del telefonino, riprende a killare su Fortnite. Il video è stato commissionato dalla compagnia di assicurazioni Cattolica: nella parte finale viene inserita nella narrazione la promozione di una funzione di richiesta aiuto in caso di guasto dell’auto. Il video è stato utilizzato nell’ambito di serate informative rivolte a genitori e adulti, a volte come chiusura divertente, in alcuni casi come spunto di riflessione. E’ possibile un aggancio con il concetto di Tecnologia di comunità elaborato dal Prof. Pier Cesare Rivoltella nel libro omonimo (Ed. La scuola, 2017): come rendere gli ambienti digitali dei facilitatori di relazioni, non solo online ma anche in presenza?",
+    "dataInserimento": "2025-05-09"
   },
   {
     "id": "HD1945-02",
@@ -4802,7 +5144,8 @@ export const videos = [
     "tema": "Digitale",
     "natura": "Web e social",
     "prodottoScuola": false,
-    "description": "Essere adolescenti nell’epoca della fragilità adulta non è un ruolo facile e le persone adulte dovrebbero rimettere in discussione luoghi comuni, comportamenti e priorità quando si mettono in relazione con persone adolescenti. In questo talk d’esortazione, Matteo Lancini incoraggia adulti e genitori a mettersi in profonda discussione e immaginare nuovi modi di accompagnare figli e adolescenti nella loro crescita, in una realtà sempre più complessa e digitale. Gli adolescenti, secondo Lancini, devono affrontare “una fragilità adulta senza precedenti”. All’adultizzazione dell’infanzia segue l’infantilizzazione dell’adolescenza. Prima della pandemia era tutto colpa di Internet, poi li abbiamo obbligati a collegarsi e a mettere la faccia davanti allo schermo. La pandemia ha esacerbato problemi che erano già presenti, come i disturbi alimentari, il ritiro sociale e l’autolesionismo. Occorre sfatare alcuni miti sull’adolescenza: ad esempio l’adolescente odierno non è più trasgressivo. Il sesso è sempre meno importante per i ragazzi: “conta vivere nella mente dell’altro, non compenetrare il corpo”. Non ha più senso proporre modelli educativi basati sulla privazione. Noi adulti abbiamo sequestrato il corpo ai bambini: li accompagnamo a scuola, mettiamo loro le note se si muovono. Per reazione i ragazzi usano i loro corpi virtuali negli ambienti digitali. E’ arrivato il momento di “smetterla di ascoltare gli adolescenti senza sentirli”: occorre responsabilizzarli e dare loro dei ruoli. Il video dura più di dodici minuti: è consigliabile estrapolare alcune sequenze, che possono essere utilizzate in formazione con adulti e genitori."
+    "description": "Essere adolescenti nell’epoca della fragilità adulta non è un ruolo facile e le persone adulte dovrebbero rimettere in discussione luoghi comuni, comportamenti e priorità quando si mettono in relazione con persone adolescenti. In questo talk d’esortazione, Matteo Lancini incoraggia adulti e genitori a mettersi in profonda discussione e immaginare nuovi modi di accompagnare figli e adolescenti nella loro crescita, in una realtà sempre più complessa e digitale. Gli adolescenti, secondo Lancini, devono affrontare “una fragilità adulta senza precedenti”. All’adultizzazione dell’infanzia segue l’infantilizzazione dell’adolescenza. Prima della pandemia era tutto colpa di Internet, poi li abbiamo obbligati a collegarsi e a mettere la faccia davanti allo schermo. La pandemia ha esacerbato problemi che erano già presenti, come i disturbi alimentari, il ritiro sociale e l’autolesionismo. Occorre sfatare alcuni miti sull’adolescenza: ad esempio l’adolescente odierno non è più trasgressivo. Il sesso è sempre meno importante per i ragazzi: “conta vivere nella mente dell’altro, non compenetrare il corpo”. Non ha più senso proporre modelli educativi basati sulla privazione. Noi adulti abbiamo sequestrato il corpo ai bambini: li accompagnamo a scuola, mettiamo loro le note se si muovono. Per reazione i ragazzi usano i loro corpi virtuali negli ambienti digitali. E’ arrivato il momento di “smetterla di ascoltare gli adolescenti senza sentirli”: occorre responsabilizzarli e dare loro dei ruoli. Il video dura più di dodici minuti: è consigliabile estrapolare alcune sequenze, che possono essere utilizzate in formazione con adulti e genitori.",
+    "dataInserimento": "2025-01-22"
   },
   {
     "id": "HD1930-01",
@@ -4816,7 +5159,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "HUMAN SPIRIT. Le immagini ci mostrano situazioni in cui gli essere umani vengono battuti dai robot: in una partita a scacchi, a ping pong, in cucina, nello suonare la batteria, in un corsa. La voce over maschile si rivolge alla macchina: “Hai programmi per superarmi in ogni cosa”. Ma nel finale viene rivalutato lo “human spirit” che dà il titolo alla campagna: sulle immagini di un gruppo di amici che si ritrova a bere amaro Montenegro al bar, la voce over chiosa: “Io ho programmi per la serata. Ci sono momenti che si gustano solo con il cuore”. L’alcool viene qui promosso come  collante delle relazioni che definiscono l’umano e, quindi, come essenza stessa dell’umano. Lo spot è stato utilizzato in classe sia in interventi relativi all’alcool, insieme ad altri spot commerciali, sia in alcuni laboratori sul tema del digitale, anche con adulti, per ragionare rispetto all’ibridazione tra “umano “ e digitale."
+    "description": "HUMAN SPIRIT. Le immagini ci mostrano situazioni in cui gli essere umani vengono battuti dai robot: in una partita a scacchi, a ping pong, in cucina, nello suonare la batteria, in un corsa. La voce over maschile si rivolge alla macchina: “Hai programmi per superarmi in ogni cosa”. Ma nel finale viene rivalutato lo “human spirit” che dà il titolo alla campagna: sulle immagini di un gruppo di amici che si ritrova a bere amaro Montenegro al bar, la voce over chiosa: “Io ho programmi per la serata. Ci sono momenti che si gustano solo con il cuore”. L’alcool viene qui promosso come  collante delle relazioni che definiscono l’umano e, quindi, come essenza stessa dell’umano. Lo spot è stato utilizzato in classe sia in interventi relativi all’alcool, insieme ad altri spot commerciali, sia in alcuni laboratori sul tema del digitale, anche con adulti, per ragionare rispetto all’ibridazione tra “umano “ e digitale.",
+    "dataInserimento": "2023-12-14"
   },
   {
     "id": "HD1930-02",
@@ -4830,7 +5174,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "FRIENDSHIP CALLING. Una ragazza in ufficio sente  abbozzare il jingle dell’Amaro Montenegro dal suono di apertura delle porte dell’ascensore: sorride e si alza dalla scrivania per uscire. Un ragazzo su una collina, sentendo lo stesso jingle “suonato” da un sonaglio, prende l’auto e si dirige in città. Un giovane di colore sente anche lui il jingle fischiettato dall’autista del taxi su cui sta viaggiando: nonostante la pioggia ferma il taxi e scende di corsa. Tutti e tre si ritrovano ad abbracciarsi e a brindare al bar, ovviamente con l’amaro Montenegro. “Lo hai sentito anche tu? E’ il richiamo dell’amicizia”. Come già in precedenti campagne (“Human spirit”, presente in questo archivio) l’amaro si promuove come collante sociale."
+    "description": "FRIENDSHIP CALLING. Una ragazza in ufficio sente  abbozzare il jingle dell’Amaro Montenegro dal suono di apertura delle porte dell’ascensore: sorride e si alza dalla scrivania per uscire. Un ragazzo su una collina, sentendo lo stesso jingle “suonato” da un sonaglio, prende l’auto e si dirige in città. Un giovane di colore sente anche lui il jingle fischiettato dall’autista del taxi su cui sta viaggiando: nonostante la pioggia ferma il taxi e scende di corsa. Tutti e tre si ritrovano ad abbracciarsi e a brindare al bar, ovviamente con l’amaro Montenegro. “Lo hai sentito anche tu? E’ il richiamo dell’amicizia”. Come già in precedenti campagne (“Human spirit”, presente in questo archivio) l’amaro si promuove come collante sociale.",
+    "dataInserimento": "2023-06-07"
   },
   {
     "id": "HD1930-03",
@@ -4844,7 +5189,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "TOGETHER WE JOY. Un montaggio serrato e coloratissimo ci mostra situazioni di aperitivo / pasto conviviale con persone e contesti molto diversi, ma sempre con giovani protagonisti e il colore arancione che ricorre (carote, frutta, salse, vestiti…). Tutti bevono Aperol Spritz. Le immagini sono commentate dal brano ben ritmato  di Myles Parrish, “Cut a rug”. Fotografia e inquadrature curatissime, quasi “patinate”, veicolano il concept di un alcolico che “con il suo vibrante colore arancione e il suo gusto unico mette tutti in sintonia e moltiplica la gioia di stare insieme” (così recita la descrizione del video sul canale Youtube ufficiale Aperol Spritz Italia)."
+    "description": "TOGETHER WE JOY. Un montaggio serrato e coloratissimo ci mostra situazioni di aperitivo / pasto conviviale con persone e contesti molto diversi, ma sempre con giovani protagonisti e il colore arancione che ricorre (carote, frutta, salse, vestiti…). Tutti bevono Aperol Spritz. Le immagini sono commentate dal brano ben ritmato  di Myles Parrish, “Cut a rug”. Fotografia e inquadrature curatissime, quasi “patinate”, veicolano il concept di un alcolico che “con il suo vibrante colore arancione e il suo gusto unico mette tutti in sintonia e moltiplica la gioia di stare insieme” (così recita la descrizione del video sul canale Youtube ufficiale Aperol Spritz Italia).",
+    "dataInserimento": "2026-03-03"
   },
   {
     "id": "HD1930-04",
@@ -4858,7 +5204,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "PRIDE. Entriamo nell’etichetta di una bottiglia di Vodka Tahoe e seguiamo, in immagini, il ciclo dell’acqua: dalla pioggia alla neve delle montagne, fino ai fiumi e ad un lago meraviglioso, lo statunitense Tahoe. Il tutto si ritrova all’interno di un bicchiere di vodka cristallina, mentre compare la domanda, in inglese, “Che cosa dona a Tahoe la sua magia?”. La risposta è nel claim finale: “It starts with the water”. Sul finale il marchio di vodka (prodotta sul lago Tahoe, negli USA) dichiara il proprio supporto al Pride 2020. Lo spot lavora sull’associazione tra immagini di natura e acqua (un’idea di forza e purezza) e il prodotto venduto, un superalcolico."
+    "description": "PRIDE. Entriamo nell’etichetta di una bottiglia di Vodka Tahoe e seguiamo, in immagini, il ciclo dell’acqua: dalla pioggia alla neve delle montagne, fino ai fiumi e ad un lago meraviglioso, lo statunitense Tahoe. Il tutto si ritrova all’interno di un bicchiere di vodka cristallina, mentre compare la domanda, in inglese, “Che cosa dona a Tahoe la sua magia?”. La risposta è nel claim finale: “It starts with the water”. Sul finale il marchio di vodka (prodotta sul lago Tahoe, negli USA) dichiara il proprio supporto al Pride 2020. Lo spot lavora sull’associazione tra immagini di natura e acqua (un’idea di forza e purezza) e il prodotto venduto, un superalcolico.",
+    "dataInserimento": "2025-06-26"
   },
   {
     "id": "HD1930-05",
@@ -4872,7 +5219,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "OPEN SICILY. Lo spot si apre su un paio di inquadrature da cartolina della Sicilia (un borgo visto dal mare, la scalinata di Caltagirone con una ragazza vestita di nero), commentate da una melodia ad archi che evoca Il Padrino. Ma si tratta di pochi secondi: la ragazza si toglie il vestito nero, rivelando sotto un abito moderno e colorato, mentre la musica passa ad un hip hop che mescola inglese e dialetto siciliano. Da qui in avanti lo spot segue un montaggio raffinato e ben ritmato che ci mostra scorci vita in Sicilia, legati del concept di “aprire” (Open Sicily è lo slogan della campagna e ricorre nel testo della canzone). Ovviamente è ben presente l’Amaro Averna, il cui tappo viene aperto come la frutta, le porte e le finestre delle case. Il messaggio veicolato è quello dell’apertura, dell’accoglienza e del rifiuto degli stereotipi: l’amaro Averna non è più “roba da vecchi”, ma si lega ad un’immaginario giovane, conviviale ed esteticamente piacevole. Come evidenziano alcuni commenti su Youtube, il video funzionerebbe come spot per il turismo dell’isola. Fotografia, regia e montaggio vengono ripresi dallo spot dell’Aperol “Together we joy”, dell’anno seguente (Aperol e Averna sono marchi della stessa azienda, la Campari)."
+    "description": "OPEN SICILY. Lo spot si apre su un paio di inquadrature da cartolina della Sicilia (un borgo visto dal mare, la scalinata di Caltagirone con una ragazza vestita di nero), commentate da una melodia ad archi che evoca Il Padrino. Ma si tratta di pochi secondi: la ragazza si toglie il vestito nero, rivelando sotto un abito moderno e colorato, mentre la musica passa ad un hip hop che mescola inglese e dialetto siciliano. Da qui in avanti lo spot segue un montaggio raffinato e ben ritmato che ci mostra scorci vita in Sicilia, legati del concept di “aprire” (Open Sicily è lo slogan della campagna e ricorre nel testo della canzone). Ovviamente è ben presente l’Amaro Averna, il cui tappo viene aperto come la frutta, le porte e le finestre delle case. Il messaggio veicolato è quello dell’apertura, dell’accoglienza e del rifiuto degli stereotipi: l’amaro Averna non è più “roba da vecchi”, ma si lega ad un’immaginario giovane, conviviale ed esteticamente piacevole. Come evidenziano alcuni commenti su Youtube, il video funzionerebbe come spot per il turismo dell’isola. Fotografia, regia e montaggio vengono ripresi dallo spot dell’Aperol “Together we joy”, dell’anno seguente (Aperol e Averna sono marchi della stessa azienda, la Campari).",
+    "dataInserimento": "2024-03-19"
   },
   {
     "id": "HD1930-06",
@@ -4886,7 +5234,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "INIMITABILE COME TE. Su una musica elettronica ritmata (“End of times” dei Golden Filter) la voce over maschile recita: “Io sono la mia storia, le mie radici, i miei segreti…” Su queste parole le immagini alternano il richiamo alla tradizione del prodotto (un busto del fondatore, le erbe e le botti per la produzione, la famosa aquila) a quelle della contemporaneità: primi piani di giovani, ragazzi e ragazze, mentre le parole del testo ci ricordano che Fernet Branca è “le mie regole” e “quello che non si adatta”. L’amaro, chiude lo spot, è “inimitabile, come te”. Lo spot è stato usato in classe sia insieme ad altre pubblicità di alcolici, sia in un blocco di spot vari (dallo smartphone al profumo, dall’azzardo alle automobili) per la strategia retorica di rivestire, parlando in prima persona, il prodotto di valori in cui il pubblico vuole rispecchiarsi. Si veda ad esempio lo spot della Unibet “Messaggio per giocatori”, presente in questo archivio tra le pubblicità commerciali dell’azzardo."
+    "description": "INIMITABILE COME TE. Su una musica elettronica ritmata (“End of times” dei Golden Filter) la voce over maschile recita: “Io sono la mia storia, le mie radici, i miei segreti…” Su queste parole le immagini alternano il richiamo alla tradizione del prodotto (un busto del fondatore, le erbe e le botti per la produzione, la famosa aquila) a quelle della contemporaneità: primi piani di giovani, ragazzi e ragazze, mentre le parole del testo ci ricordano che Fernet Branca è “le mie regole” e “quello che non si adatta”. L’amaro, chiude lo spot, è “inimitabile, come te”. Lo spot è stato usato in classe sia insieme ad altre pubblicità di alcolici, sia in un blocco di spot vari (dallo smartphone al profumo, dall’azzardo alle automobili) per la strategia retorica di rivestire, parlando in prima persona, il prodotto di valori in cui il pubblico vuole rispecchiarsi. Si veda ad esempio lo spot della Unibet “Messaggio per giocatori”, presente in questo archivio tra le pubblicità commerciali dell’azzardo.",
+    "dataInserimento": "2024-08-14"
   },
   {
     "id": "HD1930-07",
@@ -4900,7 +5249,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "NOT ALL THE NIGHTS OUT ARE OUT. E’ sera. Sulle note di “Don’t stop me now” dei Queen vediamo quattro giovani amici darsi appuntamento, via messaggio, per un ritrovo alle otto. Una di loro, violoncellista in un’orchestra, esce dal lavoro e inizia ad avere una serie di disavventure: la metropolitana è appena partita, lo scooter elettrico a noleggio si scarica, inizia a piovere a dirotto. La ragazza torna a casa propria, fradicia e in ritardo: apre il frigo e si stappa una birra Heineken. Ci immaginiamo che abbia rinunciato a vedere gli amici, ma in realtà questi la stanno aspettando… nella lobby di un videogioco online. Mentre ripartono le note dei Queen i quattro amici brindano ognuno dalla propria postazione, mentre compare la scritta “Not all the nights out are out” (“Non tutte le serate fuori sono fuori”, inteso come “fuori casa”). Lo spot si chiude sull’immagine dei quattro avatar che all’interno del gioco osservano la città dall’alto di un grattacielo, mentre compare il logo Heineken e la scritta “For a fresher world”. Spot utilizzabile sia per lavorare sull’alcool, sia per un intervento sul digitale e sul gaming, anche con adulti."
+    "description": "NOT ALL THE NIGHTS OUT ARE OUT. E’ sera. Sulle note di “Don’t stop me now” dei Queen vediamo quattro giovani amici darsi appuntamento, via messaggio, per un ritrovo alle otto. Una di loro, violoncellista in un’orchestra, esce dal lavoro e inizia ad avere una serie di disavventure: la metropolitana è appena partita, lo scooter elettrico a noleggio si scarica, inizia a piovere a dirotto. La ragazza torna a casa propria, fradicia e in ritardo: apre il frigo e si stappa una birra Heineken. Ci immaginiamo che abbia rinunciato a vedere gli amici, ma in realtà questi la stanno aspettando… nella lobby di un videogioco online. Mentre ripartono le note dei Queen i quattro amici brindano ognuno dalla propria postazione, mentre compare la scritta “Not all the nights out are out” (“Non tutte le serate fuori sono fuori”, inteso come “fuori casa”). Lo spot si chiude sull’immagine dei quattro avatar che all’interno del gioco osservano la città dall’alto di un grattacielo, mentre compare il logo Heineken e la scritta “For a fresher world”. Spot utilizzabile sia per lavorare sull’alcool, sia per un intervento sul digitale e sul gaming, anche con adulti.",
+    "dataInserimento": "2025-04-15"
   },
   {
     "id": "HD1930-08",
@@ -4914,7 +5264,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "LEGGENDE DI STRADA. Sulle note di “Ragazzo di strada” de I Corvi, lo spot (girato in pellicola) mette in scena il passato: scene di vita tra giovani amici sulle strade delle città anni ‘80, tra partite di calciobalilla al bar e serate finite dal paninaro o a chiacchierare in un parcheggio all’alba. Le voci over, maschili e femminili, ci raccontano che cos’è la strada: “La mia famiglia”, “Quando sbagli e impari”, “E’il posto dove sta il cuore”. Sul finale compare la scritta “La strada ci ha reso ciò che siamo oggi”, a cui segue il claim “Leggende di strada dal 1963” che celebra i sessant’anni del marchio di birra danese. La rappresentazione del prodotto legata ai valori di socialità e amicizia si tinge qui di una coloritura retrò, che, secondo le intenzioni dell’agenzia pubblicitaria DUDE (autrice del prodotto) dovrebbe “celebrare tre generazioni di brand lovers con un copy senza tempo”."
+    "description": "LEGGENDE DI STRADA. Sulle note di “Ragazzo di strada” de I Corvi, lo spot (girato in pellicola) mette in scena il passato: scene di vita tra giovani amici sulle strade delle città anni ‘80, tra partite di calciobalilla al bar e serate finite dal paninaro o a chiacchierare in un parcheggio all’alba. Le voci over, maschili e femminili, ci raccontano che cos’è la strada: “La mia famiglia”, “Quando sbagli e impari”, “E’il posto dove sta il cuore”. Sul finale compare la scritta “La strada ci ha reso ciò che siamo oggi”, a cui segue il claim “Leggende di strada dal 1963” che celebra i sessant’anni del marchio di birra danese. La rappresentazione del prodotto legata ai valori di socialità e amicizia si tinge qui di una coloritura retrò, che, secondo le intenzioni dell’agenzia pubblicitaria DUDE (autrice del prodotto) dovrebbe “celebrare tre generazioni di brand lovers con un copy senza tempo”.",
+    "dataInserimento": "2024-07-26"
   },
   {
     "id": "HD1930-09",
@@ -4928,7 +5279,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "BE NOTTHING BUT ABSOLUT. Notte. Vediamo una ragazza che vince un orsacchiotto bianco in un luna park deserto; un ragazzo in coda che all’improvviso bacia l’addetto alla security; un giovane scultore che sta lavorando alla sua opera. Una voce over femminile sentenzia, in inglese: “Your style, your pride, your ideas. Nothing but absolut”. (“Il tuo stile, il tuo orgoglio, le tue idee. Niente di meno che assolute”). Nel finale dello spot ritroviamo tutti i personaggi che ballano in una discoteca. Il claim della vodka richiama il proprio nome: “Be nothing but absolut”. La vodka viene quindi identificata con un valore di libertà di esprimersi, senza costrizioni (ab-solutum). Utilizzabile in classe insieme ad altri spot commerciali recenti (ad esempio Heineken, Aperol, Ceres…), presenti in questo archivio, proponendo un brainstorming e/o chiedendo di scegliere individualmente quale funziona meglio per vendere il prodotto."
+    "description": "BE NOTTHING BUT ABSOLUT. Notte. Vediamo una ragazza che vince un orsacchiotto bianco in un luna park deserto; un ragazzo in coda che all’improvviso bacia l’addetto alla security; un giovane scultore che sta lavorando alla sua opera. Una voce over femminile sentenzia, in inglese: “Your style, your pride, your ideas. Nothing but absolut”. (“Il tuo stile, il tuo orgoglio, le tue idee. Niente di meno che assolute”). Nel finale dello spot ritroviamo tutti i personaggi che ballano in una discoteca. Il claim della vodka richiama il proprio nome: “Be nothing but absolut”. La vodka viene quindi identificata con un valore di libertà di esprimersi, senza costrizioni (ab-solutum). Utilizzabile in classe insieme ad altri spot commerciali recenti (ad esempio Heineken, Aperol, Ceres…), presenti in questo archivio, proponendo un brainstorming e/o chiedendo di scegliere individualmente quale funziona meglio per vendere il prodotto.",
+    "dataInserimento": "2025-10-11"
   },
   {
     "id": "HD1930-10",
@@ -4942,7 +5294,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "BEVI COME VIVI. Su una musica molto ritmata vediamo una serie di situazioni con una grossa scritta in sovrimpressione, che ci invita ad agire “crudo”: “gioca crudo” (una ragazza che si allena e poi gioca a rugby in un campo fangoso), “ama crudo” (una ragazza che bacia appassionatamente un ragazzo in biblioteca, per poi andarsene) e così via, fino al “vivi crudo”, in cui un uomo anziano si denuda prima di entrare nell’acqua di un lago all’alba. “La vita ha più gusto quando la bevi cruda”: lo spot infatti pubblicizza la birra Peroni cruda, cioè non pastorizzata. Nel finale, sull’immagine della bottiglia di birra, compare lo slogan: “Bevi come vivi”. Come già nello spot della vodka Absolut (presente in archivio), la comunicazione dello spot associa una caratteristica del prodotto ad uno stile di vita che può coinvolgere uomini e donne, giovani come anziani."
+    "description": "BEVI COME VIVI. Su una musica molto ritmata vediamo una serie di situazioni con una grossa scritta in sovrimpressione, che ci invita ad agire “crudo”: “gioca crudo” (una ragazza che si allena e poi gioca a rugby in un campo fangoso), “ama crudo” (una ragazza che bacia appassionatamente un ragazzo in biblioteca, per poi andarsene) e così via, fino al “vivi crudo”, in cui un uomo anziano si denuda prima di entrare nell’acqua di un lago all’alba. “La vita ha più gusto quando la bevi cruda”: lo spot infatti pubblicizza la birra Peroni cruda, cioè non pastorizzata. Nel finale, sull’immagine della bottiglia di birra, compare lo slogan: “Bevi come vivi”. Come già nello spot della vodka Absolut (presente in archivio), la comunicazione dello spot associa una caratteristica del prodotto ad uno stile di vita che può coinvolgere uomini e donne, giovani come anziani.",
+    "dataInserimento": "2025-12-15"
   },
   {
     "id": "HD1930-11",
@@ -4956,7 +5309,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "PIU’ GUSTO CON MENO. Una musica di percussioni dà il ritmo ad un montaggio di immagini con grandi scritte bianche in sovraimpressione, in cui l’accento è sui segni “+” e “-”: “+ amici” (un gruppo di ragazzi che gioca a bowling e a pallacanestro), “+ ritmo” (giovani che praticano danza moderna in palestra), “+ leggerezza” (una coppia che balla in casa). Sull’immagine di un tuffo nell’acqua compare la scritta “+ gusto con Peroni”, seguita dalla birra, mente su una ragazza che corre la scritta ci informa che ci sono “- alcool” e “- calorie”. Questa birra Peroni, infatti, ha una gradazione alcolica bassa, 3,5. In chiusura, sull’immagine della bottiglia di birra, il claim “Più gusto, con meno”. Con una fotografia giocata sui toni del blu e rosso (colori del cielo all’alba, presenti anche sull’etichetta del prodotto), lo spot utilizza la stessa retorica di Peroni Cruda (presente in archivio), collegando una caratteristica della birra (il basso grado alcolico) al concetto di movimento, sport e vita sana, in quanto meno alcool significa meno calorie. La Peroni 3,5 (ma non l’atto esplicito del bere, che non vediamo mai) diventa quindi parte di uno stile di vita salutare, come l’acqua."
+    "description": "PIU’ GUSTO CON MENO. Una musica di percussioni dà il ritmo ad un montaggio di immagini con grandi scritte bianche in sovraimpressione, in cui l’accento è sui segni “+” e “-”: “+ amici” (un gruppo di ragazzi che gioca a bowling e a pallacanestro), “+ ritmo” (giovani che praticano danza moderna in palestra), “+ leggerezza” (una coppia che balla in casa). Sull’immagine di un tuffo nell’acqua compare la scritta “+ gusto con Peroni”, seguita dalla birra, mente su una ragazza che corre la scritta ci informa che ci sono “- alcool” e “- calorie”. Questa birra Peroni, infatti, ha una gradazione alcolica bassa, 3,5. In chiusura, sull’immagine della bottiglia di birra, il claim “Più gusto, con meno”. Con una fotografia giocata sui toni del blu e rosso (colori del cielo all’alba, presenti anche sull’etichetta del prodotto), lo spot utilizza la stessa retorica di Peroni Cruda (presente in archivio), collegando una caratteristica della birra (il basso grado alcolico) al concetto di movimento, sport e vita sana, in quanto meno alcool significa meno calorie. La Peroni 3,5 (ma non l’atto esplicito del bere, che non vediamo mai) diventa quindi parte di uno stile di vita salutare, come l’acqua.",
+    "dataInserimento": "2025-07-04"
   },
   {
     "id": "HD1930-12",
@@ -4970,7 +5324,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "STILE CAPRI. Una giovane coppia si rilassa su una sdraio, sorseggiando una birra Nastro Azzurro e sfogliando un libro su Capri. Anche la musica che accompagna la scena suggerisce un contesto di vacanza al mare. Ma una nuova inquadratura ridefinisce la scena: i due sono accomodati su due sdraio in vendita in un centro commerciale di arredi da giardino, mentre dietro di loro un operaio manovra un muletto per scaricare una pianta. I due, però, continuano a rilassarsi e brindano con le loro bottiglie. Compare la scritta Un sorso e sei lì, mentre in chiusura una voce over femminile ci invita a provare la nuova Peroni Nastro Azzurro Stile Capri."
+    "description": "STILE CAPRI. Una giovane coppia si rilassa su una sdraio, sorseggiando una birra Nastro Azzurro e sfogliando un libro su Capri. Anche la musica che accompagna la scena suggerisce un contesto di vacanza al mare. Ma una nuova inquadratura ridefinisce la scena: i due sono accomodati su due sdraio in vendita in un centro commerciale di arredi da giardino, mentre dietro di loro un operaio manovra un muletto per scaricare una pianta. I due, però, continuano a rilassarsi e brindano con le loro bottiglie. Compare la scritta Un sorso e sei lì, mentre in chiusura una voce over femminile ci invita a provare la nuova Peroni Nastro Azzurro Stile Capri.",
+    "dataInserimento": "2025-11-26"
   },
   {
     "id": "HD1930-13",
@@ -4984,7 +5339,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "IN BUONA COMPAGNIA COSI’ COME SIAMO. Un giovane sta per battere un rigore, mentre compare la voce over recita “siamo sognatori”: il ragazzo batte il rigore “a cucchiaio”, ma il portiere avversario para facilmente. Continuano gli aggettivi che “ci” descrivono: “creativi” (un uomo brucia l’arrosto in cucina), “coraggiosi” (lui presenta la sua fidanzata, orientale e tatuata, ai genitori di stampo tradizionale), “a volte ritardatari” (un giovane arriva di corsa in un bar dove i suoi amici lo aspettano). “Ma soprattutto veri”: su queste parole tutti i protagonisti nelle varie scene bevono birra Moretti, brindando e socializzando. “Per rendere ogni compagnia davvero buona basta essere così come siamo”. Lo spot si chiude con l’immagine dei diversi tipi di Birra Moretti e il claim “in buona compagnia, così come siamo”. Lo spot mette in scena una tipologia di consumatore giovane-adulto (20-35 anni), lavorando sui due concept del claim: la socialità e l’autenticità (che richiama la “sincerità” delle passate campagne del marchio)."
+    "description": "IN BUONA COMPAGNIA COSI’ COME SIAMO. Un giovane sta per battere un rigore, mentre compare la voce over recita “siamo sognatori”: il ragazzo batte il rigore “a cucchiaio”, ma il portiere avversario para facilmente. Continuano gli aggettivi che “ci” descrivono: “creativi” (un uomo brucia l’arrosto in cucina), “coraggiosi” (lui presenta la sua fidanzata, orientale e tatuata, ai genitori di stampo tradizionale), “a volte ritardatari” (un giovane arriva di corsa in un bar dove i suoi amici lo aspettano). “Ma soprattutto veri”: su queste parole tutti i protagonisti nelle varie scene bevono birra Moretti, brindando e socializzando. “Per rendere ogni compagnia davvero buona basta essere così come siamo”. Lo spot si chiude con l’immagine dei diversi tipi di Birra Moretti e il claim “in buona compagnia, così come siamo”. Lo spot mette in scena una tipologia di consumatore giovane-adulto (20-35 anni), lavorando sui due concept del claim: la socialità e l’autenticità (che richiama la “sincerità” delle passate campagne del marchio).",
+    "dataInserimento": "2024-06-06"
   },
   {
     "id": "HD1930-14",
@@ -4998,7 +5354,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "SENTI IL BRIVIDO. Su un montaggio di immagini che evocano la forza e la freschezza del liquore Brancamenta (un cubetto di ghiaccio, la menta, un batterista che suona circondato dal verde…) una voce over femminile ci descrive in modo poetico l’esperienza di Brancamenta “Lo senti? … Un viaggio che inizia, un tuffo al cuore, una risata dolce…”. Nel finale si torna all’immagine tradizionalmente associata al liquore, quella del brivido lungo la schiena, con il claim “Senti il brivido?”. Le immagini scelte, con il colore verde sempre presente, costruiscono una rappresentazione molto legata alla natura, a spazi aperti, a freschezza e purezza. La retorica ricorda quella dello spot della Vodka Tahoe, presente in questo archivio."
+    "description": "SENTI IL BRIVIDO. Su un montaggio di immagini che evocano la forza e la freschezza del liquore Brancamenta (un cubetto di ghiaccio, la menta, un batterista che suona circondato dal verde…) una voce over femminile ci descrive in modo poetico l’esperienza di Brancamenta “Lo senti? … Un viaggio che inizia, un tuffo al cuore, una risata dolce…”. Nel finale si torna all’immagine tradizionalmente associata al liquore, quella del brivido lungo la schiena, con il claim “Senti il brivido?”. Le immagini scelte, con il colore verde sempre presente, costruiscono una rappresentazione molto legata alla natura, a spazi aperti, a freschezza e purezza. La retorica ricorda quella dello spot della Vodka Tahoe, presente in questo archivio.",
+    "dataInserimento": "2023-09-19"
   },
   {
     "id": "HD1930-15",
@@ -5012,7 +5369,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "CORPORATE VIDEO 2023. Non si tratta dello spot di un prodotto, ma del video che in due minuti e mezzo, attraverso una grafica animata, riassume le caratteristiche dell’azienda Campari, la sesta al mondo nel settore degli alcolici. Nata come azienda italiana nel 1869, oggi è un gruppo in forte crescita che, oltre agli storici marchi Campari e Aperol, ha acquisito negli anni Grand Marnier, Cynar, Vodka Skyy e molti altri. Alcuni dei cocktail più diffusi al mondo, come il Negroni o l’Aperol Spritz, prevedono l’uso di loro marchi proprietari. L’azienda si basa su alcuni valori guida, tra cui “insieme”, “passione” e sostenibilità, con attenzione sia al mercato locale che a quello globale. Video utilizzabile singolarmente per introdurre l’aspetto di mercato rispetto all’alcool: la presenza di più marchi sotto un’unica azienda, i fatturati che crescono, i valori scelti per la comunicazione, ecc…"
+    "description": "CORPORATE VIDEO 2023. Non si tratta dello spot di un prodotto, ma del video che in due minuti e mezzo, attraverso una grafica animata, riassume le caratteristiche dell’azienda Campari, la sesta al mondo nel settore degli alcolici. Nata come azienda italiana nel 1869, oggi è un gruppo in forte crescita che, oltre agli storici marchi Campari e Aperol, ha acquisito negli anni Grand Marnier, Cynar, Vodka Skyy e molti altri. Alcuni dei cocktail più diffusi al mondo, come il Negroni o l’Aperol Spritz, prevedono l’uso di loro marchi proprietari. L’azienda si basa su alcuni valori guida, tra cui “insieme”, “passione” e sostenibilità, con attenzione sia al mercato locale che a quello globale. Video utilizzabile singolarmente per introdurre l’aspetto di mercato rispetto all’alcool: la presenza di più marchi sotto un’unica azienda, i fatturati che crescono, i valori scelti per la comunicazione, ecc…",
+    "dataInserimento": "2026-01-08"
   },
   {
     "id": "HD1930-16",
@@ -5026,7 +5384,8 @@ export const videos = [
     "tema": "Alcool",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "SKIP ORDINARY BEAUTY. Mentre vediamo immagini di donne truccate e filmate in modi e contesti creativi e originali, la voce over, femminile, ci ricorda che la bellezza femminile non è fatta per essere tutta uguale. “Non siamo uno stereotipo, un’immagine, un prototipo. Siamo arte. Siamo la rinascita ribelle, un quadro incompleto”. Le immagini ci mostrano splendidi murales colorati che decorano uno scenario urbano periferico. “Siamo Skip ordinary beauty: fuori dall’ordinario, sopra le righe e dentro le sfide”. Solo in chiusura compare brevemente il logo della vodka Keglevich, che ha scelto di promuoversi dando vita a#SkipOrdinaryBeauty, un progetto che racchiude tutta la forza della diversity femminile. L’arte urbana dà forma e colore a questo pensiero, traducendolo in sei originali opere di street art, tutte realizzate nel quartiere Crescenzago di Milano. Come in altri spot presenti in archivio (Absolut, Peroni Cruda, Amaro Montenegro…), anche qui il prodotto alcolico viene legato fortemente ad un valore (la libertà femminile). Spot utilizzabile anche per interventi su genere, corpo, sessualità."
+    "description": "SKIP ORDINARY BEAUTY. Mentre vediamo immagini di donne truccate e filmate in modi e contesti creativi e originali, la voce over, femminile, ci ricorda che la bellezza femminile non è fatta per essere tutta uguale. “Non siamo uno stereotipo, un’immagine, un prototipo. Siamo arte. Siamo la rinascita ribelle, un quadro incompleto”. Le immagini ci mostrano splendidi murales colorati che decorano uno scenario urbano periferico. “Siamo Skip ordinary beauty: fuori dall’ordinario, sopra le righe e dentro le sfide”. Solo in chiusura compare brevemente il logo della vodka Keglevich, che ha scelto di promuoversi dando vita a#SkipOrdinaryBeauty, un progetto che racchiude tutta la forza della diversity femminile. L’arte urbana dà forma e colore a questo pensiero, traducendolo in sei originali opere di street art, tutte realizzate nel quartiere Crescenzago di Milano. Come in altri spot presenti in archivio (Absolut, Peroni Cruda, Amaro Montenegro…), anche qui il prodotto alcolico viene legato fortemente ad un valore (la libertà femminile). Spot utilizzabile anche per interventi su genere, corpo, sessualità.",
+    "dataInserimento": "2024-01-13"
   },
   {
     "id": "HD1921-01",
@@ -5040,7 +5399,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "BISIO INVITATI. Claudio Bisio e i suoi amici giocano al Lotto e vincono: uno degli amici esulta con molta calma. Gli amici sono ora in giardino a cucinare una grigliata, mentre pensano ai prossimi numeri da giocare. \"40, come gli invitati a questa festa\". \"4, come quelli che sono venuti\". Messa in scena dell'azzardo in contesti quotidiani, uso del testimonial simpatico e dell'autoironia. Si pensa sempre ai numeri. Possibile utilizzo insieme ad altri spot per un lavoro di brainstorming."
+    "description": "BISIO INVITATI. Claudio Bisio e i suoi amici giocano al Lotto e vincono: uno degli amici esulta con molta calma. Gli amici sono ora in giardino a cucinare una grigliata, mentre pensano ai prossimi numeri da giocare. \"40, come gli invitati a questa festa\". \"4, come quelli che sono venuti\". Messa in scena dell'azzardo in contesti quotidiani, uso del testimonial simpatico e dell'autoironia. Si pensa sempre ai numeri. Possibile utilizzo insieme ad altri spot per un lavoro di brainstorming.",
+    "dataInserimento": "2025-06-24"
   },
   {
     "id": "HD1921-02",
@@ -5054,7 +5414,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "5 MINUTI BAR. Un ragazzo ordina colazione al bar mentre le sue azioni vengono commentate come una cronaca sportiva dalla voce di Giampiero Galeazzi. Gioca al lotto e vince. Dopo il claim \"Cinque minuti di emozioni\" la voce over del cronista sottolinea \"Mi raccomando, che siano cinque minuti\". L'azzardo viene inserito in un contesto di quotidianità, molto \"italiano\", mentre la telecronaca aggiunge un elemento di agonismo con inevitabile vittoria. L'idea è che si può giocare sempre e ovunque: l'invito è a non ripetersi. Spot utilizzato con altri cinque in un blocco introduttivo per brainstorming sull'azzardo e scelta del più efficace."
+    "description": "5 MINUTI BAR. Un ragazzo ordina colazione al bar mentre le sue azioni vengono commentate come una cronaca sportiva dalla voce di Giampiero Galeazzi. Gioca al lotto e vince. Dopo il claim \"Cinque minuti di emozioni\" la voce over del cronista sottolinea \"Mi raccomando, che siano cinque minuti\". L'azzardo viene inserito in un contesto di quotidianità, molto \"italiano\", mentre la telecronaca aggiunge un elemento di agonismo con inevitabile vittoria. L'idea è che si può giocare sempre e ovunque: l'invito è a non ripetersi. Spot utilizzato con altri cinque in un blocco introduttivo per brainstorming sull'azzardo e scelta del più efficace.",
+    "dataInserimento": "2024-10-09"
   },
   {
     "id": "HD1921-03",
@@ -5068,7 +5429,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "5 MINUTI FILA. Gina si trova in fila agli uffici comunali e controlla le estrazioni del Lotto sul suo smartphone, mentre la telecronaca di Galeazzi commenta le sue azioni. La ragazza riesce a superare in fretta la fila e, quando si presenta allo sportello, scopre di aver vinto al Lotto. Dopo il claim \"Cinque minuti di emozioni\" la voce over del cronista sottolinea \"Mi raccomando, che siano cinque minuti\". L'azzardo viene inserito in un contesto di quotidianità mentre la telecronaca aggiunge un elemento di agonismo con inevitabile vittoria. Giocando le cose vanno meglio del previsto. Si può giocare sempre e ovunque: l'invito è a non ripetersi. Spot utilizzabile con altri in un blocco introduttivo per brainstorming sull'azzardo."
+    "description": "5 MINUTI FILA. Gina si trova in fila agli uffici comunali e controlla le estrazioni del Lotto sul suo smartphone, mentre la telecronaca di Galeazzi commenta le sue azioni. La ragazza riesce a superare in fretta la fila e, quando si presenta allo sportello, scopre di aver vinto al Lotto. Dopo il claim \"Cinque minuti di emozioni\" la voce over del cronista sottolinea \"Mi raccomando, che siano cinque minuti\". L'azzardo viene inserito in un contesto di quotidianità mentre la telecronaca aggiunge un elemento di agonismo con inevitabile vittoria. Giocando le cose vanno meglio del previsto. Si può giocare sempre e ovunque: l'invito è a non ripetersi. Spot utilizzabile con altri in un blocco introduttivo per brainstorming sull'azzardo.",
+    "dataInserimento": "2023-08-21"
   },
   {
     "id": "HD1921-04",
@@ -5082,7 +5444,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "TOTTI DENTISTA. Francesco Totti è al bar e una ragazza gli chiede che cosa avrebbe voluto fare a parte il calciatore. Totti si immagina dentista: \"Potevo farlo, c'avevo i numeri\". Con i numeri gioca invece al Lotto: c'è un'estrazione ogni cinque minuti, \"pure qua\". L'idea di poter giocare ovunque viene sottolineata; l'uso di Totti come testimonial è giocato sull'ironia."
+    "description": "TOTTI DENTISTA. Francesco Totti è al bar e una ragazza gli chiede che cosa avrebbe voluto fare a parte il calciatore. Totti si immagina dentista: \"Potevo farlo, c'avevo i numeri\". Con i numeri gioca invece al Lotto: c'è un'estrazione ogni cinque minuti, \"pure qua\". L'idea di poter giocare ovunque viene sottolineata; l'uso di Totti come testimonial è giocato sull'ironia.",
+    "dataInserimento": "2023-07-06"
   },
   {
     "id": "HD1921-05",
@@ -5096,7 +5459,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "TOTTI PRESIDENTE. Francesco Totti entra in un ufficio che ricorda quello del Presidente degli Stati Uniti. La segretaria gli ricorda che lì \"non c'è campo\", al che Totti si preoccupa: come faccio a giocare? Lo vediamo cercare la connessione e riuscire finalmente a piazzare le scommesse sul 10 e Lotto online. La voce over ci ricorda che puoi giocare dove e quando vuoi. Lo spot mette in scena il bisogno di giocare, collegato all'assenza di campo."
+    "description": "TOTTI PRESIDENTE. Francesco Totti entra in un ufficio che ricorda quello del Presidente degli Stati Uniti. La segretaria gli ricorda che lì \"non c'è campo\", al che Totti si preoccupa: come faccio a giocare? Lo vediamo cercare la connessione e riuscire finalmente a piazzare le scommesse sul 10 e Lotto online. La voce over ci ricorda che puoi giocare dove e quando vuoi. Lo spot mette in scena il bisogno di giocare, collegato all'assenza di campo.",
+    "dataInserimento": "2023-10-12"
   },
   {
     "id": "HD1921-06",
@@ -5110,7 +5474,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "TOTTI AGENTE SEGRETO. Francesco Totti è al bar e un signore gli chiede se gli sarebbe piaciuto fare altro. Totti si immagina agente segreto: \"Potevo farlo, c'avevo i numeri\". Con il numero Oro si può vincere di più. L'uso di Totti come testimonial è giocato sull'ironia."
+    "description": "TOTTI AGENTE SEGRETO. Francesco Totti è al bar e un signore gli chiede se gli sarebbe piaciuto fare altro. Totti si immagina agente segreto: \"Potevo farlo, c'avevo i numeri\". Con il numero Oro si può vincere di più. L'uso di Totti come testimonial è giocato sull'ironia.",
+    "dataInserimento": "2024-10-03"
   },
   {
     "id": "HD1921-07",
@@ -5124,7 +5489,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "AMENDOLA. Il noto attore Claudio Amendola ci spiega di essere membro del più grande gruppo di scommesse sportive online al mondo, ovvero Bet365. Può giocare e scommettere ovunque sia. Lo spot veicola l'idea dell'azzardo come qualcosa che può essere fatto da chiunque in qualunque condizione di tempo e spazio, ma anche il senso di appartenenza ad un club esclusivo. Le versioni per altri paesi dello stesso spot utilizzano altri testimonial."
+    "description": "AMENDOLA. Il noto attore Claudio Amendola ci spiega di essere membro del più grande gruppo di scommesse sportive online al mondo, ovvero Bet365. Può giocare e scommettere ovunque sia. Lo spot veicola l'idea dell'azzardo come qualcosa che può essere fatto da chiunque in qualunque condizione di tempo e spazio, ma anche il senso di appartenenza ad un club esclusivo. Le versioni per altri paesi dello stesso spot utilizzano altri testimonial.",
+    "dataInserimento": "2024-07-28"
   },
   {
     "id": "HD1921-08",
@@ -5138,7 +5504,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "AMENDOLA 22 MILIONI. Il noto attore Claudio Amendola ci spiega che esiste un posto dove si può seguire lo sport in diretta, dove il boato dello stadio risuona sempre. Questo posto è Bet365. Le immagini di persone che scommettono includono un tifoso inglese, un uomo d'affari, un anziano, una giovane ragazza.  Lo spot sottolinea l'idea dell'azzardo come una community accessibile a tutti. Le versioni per altri paesi dello stesso spot utilizzano altri testimonial."
+    "description": "AMENDOLA 22 MILIONI. Il noto attore Claudio Amendola ci spiega che esiste un posto dove si può seguire lo sport in diretta, dove il boato dello stadio risuona sempre. Questo posto è Bet365. Le immagini di persone che scommettono includono un tifoso inglese, un uomo d'affari, un anziano, una giovane ragazza.  Lo spot sottolinea l'idea dell'azzardo come una community accessibile a tutti. Le versioni per altri paesi dello stesso spot utilizzano altri testimonial.",
+    "dataInserimento": "2024-12-10"
   },
   {
     "id": "HD1921-09",
@@ -5152,7 +5519,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "PRONTO A GIOCARE. Un montaggio di immagini adrenaliniche (un tornado, persone che si allenano, un cuore che batte…) viene commentato da una voce maschile che spiega come i veri campioni sono pronti a giocare al fischio d'inizio, non un attimo prima, non un attimo dopo. Spot che lavora sulla rappresentazione dell'azzardo come uno sport, sul concetto di allenamento per essere \"pronti a giocare\" (\"ready\" nella versione in inglese). Ci si può allenare per giocare d'azzardo? Utilizzato in numerosi interventi educativi insieme ad altri spot sull'azzardo per lavoro di brainstorming."
+    "description": "PRONTO A GIOCARE. Un montaggio di immagini adrenaliniche (un tornado, persone che si allenano, un cuore che batte…) viene commentato da una voce maschile che spiega come i veri campioni sono pronti a giocare al fischio d'inizio, non un attimo prima, non un attimo dopo. Spot che lavora sulla rappresentazione dell'azzardo come uno sport, sul concetto di allenamento per essere \"pronti a giocare\" (\"ready\" nella versione in inglese). Ci si può allenare per giocare d'azzardo? Utilizzato in numerosi interventi educativi insieme ad altri spot sull'azzardo per lavoro di brainstorming.",
+    "dataInserimento": "2025-12-07"
   },
   {
     "id": "HD1921-10",
@@ -5166,7 +5534,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "LA FORTUNA NON E' COINCIDENZA. Tra amici seguono il calcio. Due di loro hanno scommesso sulla squadra più debole e spiegano al terzo i motivi: stadio piccolo, i campioni saranno più nervosi e si faranno espellere. La realtà dà loro ragione e le scommesse si rivelano vincenti. Compare il claim \"La fortuna non è coincidenza\". Lo spot rinforza un'idea molto diffusa tra i ragazzi, ovvero che le conoscenze sullo sport (ad esempio la conoscenza del calcio) aiutino a vincere le scommesse sportive. In che misura è vero? Utilizzabile con altri spot per ragionare sulle rappresentazioni dell'azzardo."
+    "description": "LA FORTUNA NON E' COINCIDENZA. Tra amici seguono il calcio. Due di loro hanno scommesso sulla squadra più debole e spiegano al terzo i motivi: stadio piccolo, i campioni saranno più nervosi e si faranno espellere. La realtà dà loro ragione e le scommesse si rivelano vincenti. Compare il claim \"La fortuna non è coincidenza\". Lo spot rinforza un'idea molto diffusa tra i ragazzi, ovvero che le conoscenze sullo sport (ad esempio la conoscenza del calcio) aiutino a vincere le scommesse sportive. In che misura è vero? Utilizzabile con altri spot per ragionare sulle rappresentazioni dell'azzardo.",
+    "dataInserimento": "2025-08-15"
   },
   {
     "id": "HD1921-11",
@@ -5180,7 +5549,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "AVVENTURA. Un gruppo di amici in una giungla misteriosa riesce a superare diversi ostacoli compiendo le giuste operazioni. Sono in realtà in una sala scommessa di Better, dove \"ogni scommessa è una nuova avventura\". Lo spot gioca sull'idea che l'azzardo sia un'esperienza avventurosa, che rafforza lo spirito di gruppo. Utilizzabile con altri spot per ragionare sulle rappresentazioni dell'azzardo."
+    "description": "AVVENTURA. Un gruppo di amici in una giungla misteriosa riesce a superare diversi ostacoli compiendo le giuste operazioni. Sono in realtà in una sala scommessa di Better, dove \"ogni scommessa è una nuova avventura\". Lo spot gioca sull'idea che l'azzardo sia un'esperienza avventurosa, che rafforza lo spirito di gruppo. Utilizzabile con altri spot per ragionare sulle rappresentazioni dell'azzardo.",
+    "dataInserimento": "2024-04-19"
   },
   {
     "id": "HD1921-12",
@@ -5194,7 +5564,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "LASCIATEMI SOGNARE. Sulle note di \"Lasciatemi sognare\" (versione alternativa di \"Lasciatemi cantare\" di Toto Cutugno) persone diverse cantano che cosa sognano di fare se vinceranno al Superenalotto: da chi darebbe un futuro ai propri figli a chi aprirebbe la propria scuderia di Formula 1.In chiusura, dopo le parole \"sono un italiano\", l'indicazione \"Gioca il giusto\". Spot costruito su una forte idea di \"italianità\" (si veda anche lo spot di Gioco Digitale). L'azzardo non promette di vincere, ma permette il sogno.  Utilizzabile con altri spot per ragionare sulle rappresentazioni dell'azzardo."
+    "description": "LASCIATEMI SOGNARE. Sulle note di \"Lasciatemi sognare\" (versione alternativa di \"Lasciatemi cantare\" di Toto Cutugno) persone diverse cantano che cosa sognano di fare se vinceranno al Superenalotto: da chi darebbe un futuro ai propri figli a chi aprirebbe la propria scuderia di Formula 1.In chiusura, dopo le parole \"sono un italiano\", l'indicazione \"Gioca il giusto\". Spot costruito su una forte idea di \"italianità\" (si veda anche lo spot di Gioco Digitale). L'azzardo non promette di vincere, ma permette il sogno.  Utilizzabile con altri spot per ragionare sulle rappresentazioni dell'azzardo.",
+    "dataInserimento": "2025-06-28"
   },
   {
     "id": "HD1921-13",
@@ -5208,7 +5579,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "MAGO FOREST. Il Mago Forest si aggira per una casa rivolgendosi a noi spettatori: \"Allora è qui che vivi?\". Seguono osservazioni sullo stile di vita del padrone di casa (cioè noi): sempre cereali, al lavoro alla stessa ora, calcetto il martedì e \"giochi sempre sullo stesso sito\". \"Ma la vogliamo dare una scossa a questa vita?\", ovviamente sul sito Red32.it? Lo spot presenta l'azzardo online come il modo per rendere degna di essere vissuta una vita altrimente noiosa: la normalità è da perdenti, senza l'adrenalina dell'azzardo. Utilizzato con altri spot per ragionare sulle rappresentazioni dell'azzardo; oggi il testimonial (Mago Forest) rischia di apparire datato."
+    "description": "MAGO FOREST. Il Mago Forest si aggira per una casa rivolgendosi a noi spettatori: \"Allora è qui che vivi?\". Seguono osservazioni sullo stile di vita del padrone di casa (cioè noi): sempre cereali, al lavoro alla stessa ora, calcetto il martedì e \"giochi sempre sullo stesso sito\". \"Ma la vogliamo dare una scossa a questa vita?\", ovviamente sul sito Red32.it? Lo spot presenta l'azzardo online come il modo per rendere degna di essere vissuta una vita altrimente noiosa: la normalità è da perdenti, senza l'adrenalina dell'azzardo. Utilizzato con altri spot per ragionare sulle rappresentazioni dell'azzardo; oggi il testimonial (Mago Forest) rischia di apparire datato.",
+    "dataInserimento": "2024-04-26"
   },
   {
     "id": "HD1921-14",
@@ -5222,7 +5594,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "IL MUSEO. Il giovane custode di un museo gioca a poker online in mezzo alle statue. Sembra sul punto di perdere, poi per una combinazione fortunata fa poker di re e vince. La voce over spiega le possibilità offerte dal poker online di Gioco digitale. Lo spot insiste sulla possibilità del giocare ovunque: \"Ve li immaginate mille giocatori di poker qui dentro?\". L'azzardo diventa un'evasione dalla routine quotidiana, quasi un \"piacere proibito\"."
+    "description": "IL MUSEO. Il giovane custode di un museo gioca a poker online in mezzo alle statue. Sembra sul punto di perdere, poi per una combinazione fortunata fa poker di re e vince. La voce over spiega le possibilità offerte dal poker online di Gioco digitale. Lo spot insiste sulla possibilità del giocare ovunque: \"Ve li immaginate mille giocatori di poker qui dentro?\". L'azzardo diventa un'evasione dalla routine quotidiana, quasi un \"piacere proibito\".",
+    "dataInserimento": "2025-08-15"
   },
   {
     "id": "HD1921-15",
@@ -5236,7 +5609,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "UNISCITI AL CORO. Lo spot inizia con l'indicazione \"Il gioco può creare dipendenza\", posta in questo caso in apertura. Un giovane è a pranzo con la mamma: si alza ed esce di casa, cantando \"La scorsa settimana mi son giocato l'uno...\" Il motivo musicale è quello di un noto coro da stadio e in breve tempo tutto il paese si unisce alla canzone, radunandosi in piazza per l'urlo finale: \"Gioco? Digitale!!\". La messa in scena evoca i caratteri di \"italianità\" (il borgo, la mamma, la pasta...); il gioco diventa piccola comunità rassicurante (c'è anche il pompiere che ha salvato il gattino), alla quale partecipano tutti. L'azzardo è quotidiano, è una cosa di paese. Spot utilizzato in numerosi interventi per attività sulle rappresentazioni dell'azzardo."
+    "description": "UNISCITI AL CORO. Lo spot inizia con l'indicazione \"Il gioco può creare dipendenza\", posta in questo caso in apertura. Un giovane è a pranzo con la mamma: si alza ed esce di casa, cantando \"La scorsa settimana mi son giocato l'uno...\" Il motivo musicale è quello di un noto coro da stadio e in breve tempo tutto il paese si unisce alla canzone, radunandosi in piazza per l'urlo finale: \"Gioco? Digitale!!\". La messa in scena evoca i caratteri di \"italianità\" (il borgo, la mamma, la pasta...); il gioco diventa piccola comunità rassicurante (c'è anche il pompiere che ha salvato il gattino), alla quale partecipano tutti. L'azzardo è quotidiano, è una cosa di paese. Spot utilizzato in numerosi interventi per attività sulle rappresentazioni dell'azzardo.",
+    "dataInserimento": "2023-11-02"
   },
   {
     "id": "HD1921-16",
@@ -5250,7 +5624,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "PISCINA E NOIA. Una giovane coppia di annoia seduta a un tavolo a bordo piscina. Arriva un altro ragazzo che posa sul tavolo un cellulare: è Gioco Digitale, che si anima dando l'accesso a giochi, sfide, jackpot. Lo spot rappresenta l'azzardo come antidoto alla noia e alla routine: anche se la situazione di partenza è oggettivamente positiva (il relax in piscina), se non giochi non c'è divertimento. Si veda su questa rappresentazione anche lo spot di 32Red.it con Mago Forest."
+    "description": "PISCINA E NOIA. Una giovane coppia di annoia seduta a un tavolo a bordo piscina. Arriva un altro ragazzo che posa sul tavolo un cellulare: è Gioco Digitale, che si anima dando l'accesso a giochi, sfide, jackpot. Lo spot rappresenta l'azzardo come antidoto alla noia e alla routine: anche se la situazione di partenza è oggettivamente positiva (il relax in piscina), se non giochi non c'è divertimento. Si veda su questa rappresentazione anche lo spot di 32Red.it con Mago Forest.",
+    "dataInserimento": "2023-09-21"
   },
   {
     "id": "HD1921-17",
@@ -5264,7 +5639,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "NON SOLO SCOMMESSE. Un personaggio che non vediamo in volto esce di casa con una confezione di paste; la voce over ci dice che \"è arrivato il momento che aspettavi\" perché \"vai in cerca di entusiasmo e sai dove trovarlo\". Il protagonista apre una porta e... si ritrova tra gli amici della sala scommesse GoldBet. Il claim finale è \"Benvenuti in casa Goldbet\". Spot semi amatoriale che però rappresenta bene l'idea della sala scommesse come spazio di ritrovo sociale, luogo \"atteso\" dove trovare amici e divertimento, la vera \"casa\" in contrapposizione a quella solitaria iniziale. Utilizzabile per ragionare sulle rappresentazioni dell'azzardo."
+    "description": "NON SOLO SCOMMESSE. Un personaggio che non vediamo in volto esce di casa con una confezione di paste; la voce over ci dice che \"è arrivato il momento che aspettavi\" perché \"vai in cerca di entusiasmo e sai dove trovarlo\". Il protagonista apre una porta e... si ritrova tra gli amici della sala scommesse GoldBet. Il claim finale è \"Benvenuti in casa Goldbet\". Spot semi amatoriale che però rappresenta bene l'idea della sala scommesse come spazio di ritrovo sociale, luogo \"atteso\" dove trovare amici e divertimento, la vera \"casa\" in contrapposizione a quella solitaria iniziale. Utilizzabile per ragionare sulle rappresentazioni dell'azzardo.",
+    "dataInserimento": "2025-02-28"
   },
   {
     "id": "HD1921-18",
@@ -5278,7 +5654,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "RISTORANTE. Quattro signori benvestiti al tavolo di un ristorante orientale: al momento del conto mettono sul tavolo le rispettive carte di credito. Uno di loro ne gioca una come se fosse una carta da scopa e vince tutte le altre. Parte il jingle e il motto \"Ti piace vincere facile?\": il nuovo Vegas Casino permette vincite fino a due milioni di euro. Spot che insiste sulla facilità di vittoria, tema costante in tutte le pubblicità dei gratta e vinci. Utilizzabile per ragionare sulle rappresentazioni dell'azzardo."
+    "description": "RISTORANTE. Quattro signori benvestiti al tavolo di un ristorante orientale: al momento del conto mettono sul tavolo le rispettive carte di credito. Uno di loro ne gioca una come se fosse una carta da scopa e vince tutte le altre. Parte il jingle e il motto \"Ti piace vincere facile?\": il nuovo Vegas Casino permette vincite fino a due milioni di euro. Spot che insiste sulla facilità di vittoria, tema costante in tutte le pubblicità dei gratta e vinci. Utilizzabile per ragionare sulle rappresentazioni dell'azzardo.",
+    "dataInserimento": "2023-07-14"
   },
   {
     "id": "HD1921-19",
@@ -5292,7 +5669,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "MILIARDARIO CASELLE. Vediamo persone diverse che grattano via il grigio da quelle che sembrano finestre: l'immagine si allarga, svelando come tutti siano all'interno delle caselle di un biglietto Gratta e Vinci. Parte il jingle con il claim \"Ti piace vincere facile?\". Spot che insiste sulla facilità di vittoria, tema costante in tutte le pubblicità dei gratta e vinci. Qui le persone sono \"dentro\" il gioco: utilizzabile come metafora sul gioco d'azzardo problematico."
+    "description": "MILIARDARIO CASELLE. Vediamo persone diverse che grattano via il grigio da quelle che sembrano finestre: l'immagine si allarga, svelando come tutti siano all'interno delle caselle di un biglietto Gratta e Vinci. Parte il jingle con il claim \"Ti piace vincere facile?\". Spot che insiste sulla facilità di vittoria, tema costante in tutte le pubblicità dei gratta e vinci. Qui le persone sono \"dentro\" il gioco: utilizzabile come metafora sul gioco d'azzardo problematico.",
+    "dataInserimento": "2024-11-29"
   },
   {
     "id": "HD1921-20",
@@ -5306,7 +5684,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "CI AVREI SCOMMESSO. Mentre vediamo una serie di situazioni in cui, a posteriori, le persone si rendono conto che le loro previsioni erano azzeccate (allo stadio, a casa, al bar...), la voce over commenta: \"Quante volte avete detto Ci avrei scommesso?\". E' quindi il momento di scommettere veramente, sul sito di Eurobet.it (rappresentato come uno sportello con tanto di ragazza sorridente). Lo spot lavora sul pensiero magico e sulla presunta competenza di chi, a posteriori, ricorda le previsioni positive (mentre tendiamo a rimuovere quelle non vincenti). Spot utilizzato in diversi interventi, insieme ad altri, per ragionare sulle rappresentazioni mediatiche dell'azzardo."
+    "description": "CI AVREI SCOMMESSO. Mentre vediamo una serie di situazioni in cui, a posteriori, le persone si rendono conto che le loro previsioni erano azzeccate (allo stadio, a casa, al bar...), la voce over commenta: \"Quante volte avete detto Ci avrei scommesso?\". E' quindi il momento di scommettere veramente, sul sito di Eurobet.it (rappresentato come uno sportello con tanto di ragazza sorridente). Lo spot lavora sul pensiero magico e sulla presunta competenza di chi, a posteriori, ricorda le previsioni positive (mentre tendiamo a rimuovere quelle non vincenti). Spot utilizzato in diversi interventi, insieme ad altri, per ragionare sulle rappresentazioni mediatiche dell'azzardo.",
+    "dataInserimento": "2025-06-26"
   },
   {
     "id": "HD1921-21",
@@ -5320,7 +5699,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "PAROLE PASSIONE. Un montaggio di diversi situazioni in cui le persone scommettono, mentre la voce over scandisce parole legate al mondo dell'azzardo e delle scommesse sportive (intuizione, scaramanzia, rito, calcolo...). In una parola: passione. Lo spot rappresenta uno spaccato del mondo delle scommesse, presentando Eurobet come partecipe di questo mosaico di umanità (uomini, donne, giovani e anziani, diverse estrazioni sociali). Spot utilizzabile per ragionare sulle rappresentazioni dell'azzardo."
+    "description": "PAROLE PASSIONE. Un montaggio di diversi situazioni in cui le persone scommettono, mentre la voce over scandisce parole legate al mondo dell'azzardo e delle scommesse sportive (intuizione, scaramanzia, rito, calcolo...). In una parola: passione. Lo spot rappresenta uno spaccato del mondo delle scommesse, presentando Eurobet come partecipe di questo mosaico di umanità (uomini, donne, giovani e anziani, diverse estrazioni sociali). Spot utilizzabile per ragionare sulle rappresentazioni dell'azzardo.",
+    "dataInserimento": "2025-07-04"
   },
   {
     "id": "HD1921-22",
@@ -5334,7 +5714,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "10 ANNI. Un ragazzo inizia a suonare un tamburo fuori da un grosso condominio di periferia urbana. La voce over inizia il suo messaggio rivolto a tutti i giocatori, da quelli della vecchia scuola a quelli dell'ultimo minuto. Come nello spot del 2015 \"Parole Passione\", viene rappresentato uno spaccato del mondo dei \"giocatori\" che accomune gli anziani che giocano la schedina al manager che controlla i risultati su un doppio schermo di pc, fino alla ragazza che scommette occasionalmente (e si arrabbia). Spot utilizzabile per ragionare sulle rappresentazioni dell'azzardo."
+    "description": "10 ANNI. Un ragazzo inizia a suonare un tamburo fuori da un grosso condominio di periferia urbana. La voce over inizia il suo messaggio rivolto a tutti i giocatori, da quelli della vecchia scuola a quelli dell'ultimo minuto. Come nello spot del 2015 \"Parole Passione\", viene rappresentato uno spaccato del mondo dei \"giocatori\" che accomune gli anziani che giocano la schedina al manager che controlla i risultati su un doppio schermo di pc, fino alla ragazza che scommette occasionalmente (e si arrabbia). Spot utilizzabile per ragionare sulle rappresentazioni dell'azzardo.",
+    "dataInserimento": "2024-07-26"
   },
   {
     "id": "HD1921-23",
@@ -5348,7 +5729,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "SE VUOI DI PIU'. L'attore comico conosciuto sul web come Herbert Ballerina appare al tavolo di una roulette: la situazione sembra molto seria. Quando la pallina si ferma scopriamo che il gioco si svolge in casa, con altri anziani (anch'essi attori dei corti di Maccio Capatonda). Mentre l'inquadratura torna su Hebert, lo spot ci informa che se \"vogliamo di più\" possiamo giocare su Eurobet Casino. Lo spot lavora sulla rappresentazione dell'azzardo come un modo per evadere da una quotidianità rappresentata poco soddisfacente, in maniera analoga, ad esempio, a 32red.it. Herbert Ballerina compare in serie di brevi video per Youtube (ad esempio \"Ci avrei scommesso\", realizzati per Eurobet."
+    "description": "SE VUOI DI PIU'. L'attore comico conosciuto sul web come Herbert Ballerina appare al tavolo di una roulette: la situazione sembra molto seria. Quando la pallina si ferma scopriamo che il gioco si svolge in casa, con altri anziani (anch'essi attori dei corti di Maccio Capatonda). Mentre l'inquadratura torna su Hebert, lo spot ci informa che se \"vogliamo di più\" possiamo giocare su Eurobet Casino. Lo spot lavora sulla rappresentazione dell'azzardo come un modo per evadere da una quotidianità rappresentata poco soddisfacente, in maniera analoga, ad esempio, a 32red.it. Herbert Ballerina compare in serie di brevi video per Youtube (ad esempio \"Ci avrei scommesso\", realizzati per Eurobet.",
+    "dataInserimento": "2024-08-07"
   },
   {
     "id": "HD1921-24",
@@ -5362,7 +5744,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "#CIAVREISCOMMESSO EPISODIO 1. L'attore comico conosciuto sul web come Herbert Ballerina entra in un centro scommesse Eurobet: vorrebbe scommettere su una partita che è stata giocata il giorno prima, ma ovviamente non è possibile. Hebert cerca di convincere l'addetto ad accettare la sua scommessa: non era potuto venire perchè pioveva. Il video è il primo di una serie commissionata da Eurobet, sempre con protagonista Hebert Ballerina."
+    "description": "#CIAVREISCOMMESSO EPISODIO 1. L'attore comico conosciuto sul web come Herbert Ballerina entra in un centro scommesse Eurobet: vorrebbe scommettere su una partita che è stata giocata il giorno prima, ma ovviamente non è possibile. Hebert cerca di convincere l'addetto ad accettare la sua scommessa: non era potuto venire perchè pioveva. Il video è il primo di una serie commissionata da Eurobet, sempre con protagonista Hebert Ballerina.",
+    "dataInserimento": "2023-06-30"
   },
   {
     "id": "HD1921-25",
@@ -5376,7 +5759,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "EMOZIONI. Un giovane prova diversi sport estremi, ma dopo alcune scene ci accorgiamo che è tutto finto: la voce over infatti commenta \"Chi ha detto che provare nuove emozioni devi scomodarti così tanto?\". Con Intralot è possibile giocare d'azzardo dal proprio smartphone, strando seduto a bordo piscina. Lo spot lavora sull'associazione tra azzardo e adrenalina (analogamente a Betfair), sottolineando la possibilità di combinare emozioni e comodità. Il gioco è inserito in un contesto di relax e di successo sociale: il giocatore è circondata da amici e una giovane ragazza emerge dalla piscina per giocare con lui. Spot utilizzabile insieme ad altri per ragionare sulle rappresentazioni dell'azzardo."
+    "description": "EMOZIONI. Un giovane prova diversi sport estremi, ma dopo alcune scene ci accorgiamo che è tutto finto: la voce over infatti commenta \"Chi ha detto che provare nuove emozioni devi scomodarti così tanto?\". Con Intralot è possibile giocare d'azzardo dal proprio smartphone, strando seduto a bordo piscina. Lo spot lavora sull'associazione tra azzardo e adrenalina (analogamente a Betfair), sottolineando la possibilità di combinare emozioni e comodità. Il gioco è inserito in un contesto di relax e di successo sociale: il giocatore è circondata da amici e una giovane ragazza emerge dalla piscina per giocare con lui. Spot utilizzabile insieme ad altri per ragionare sulle rappresentazioni dell'azzardo.",
+    "dataInserimento": "2024-03-28"
   },
   {
     "id": "HD1921-26",
@@ -5390,7 +5774,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "SPIAGGIA. Una coppia (lui è l'attore comico Gianluca Impastato) prende il sole sui lettini di una spiaggia. Lei vuole andare a fare il bagno, ma lui continua a giocare con lo smartphone e trova continue scuse per rimandare. Alla fine anche lei si mette a giocare contenta. Lo spot vuole sottolineare il piacere del gioco su LeoVegas, ma può essere letto come una rappresentazione di perdita di controllo: il gioco monopolizza il tempo, anche in un contesto di vacanza. Utlizzabile per ragionare sulle rappresentazioni dell'azzardo e sui rischi ad esso correlati (l'inventare scuse è un possibile indicatore di azzardo problematico)."
+    "description": "SPIAGGIA. Una coppia (lui è l'attore comico Gianluca Impastato) prende il sole sui lettini di una spiaggia. Lei vuole andare a fare il bagno, ma lui continua a giocare con lo smartphone e trova continue scuse per rimandare. Alla fine anche lei si mette a giocare contenta. Lo spot vuole sottolineare il piacere del gioco su LeoVegas, ma può essere letto come una rappresentazione di perdita di controllo: il gioco monopolizza il tempo, anche in un contesto di vacanza. Utlizzabile per ragionare sulle rappresentazioni dell'azzardo e sui rischi ad esso correlati (l'inventare scuse è un possibile indicatore di azzardo problematico).",
+    "dataInserimento": "2025-06-08"
   },
   {
     "id": "HD1921-27",
@@ -5404,7 +5789,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "SHOPPING. Lei sta provandosi un vestito dietro l'altro; lui, annoiato ma sorridente, scommette di nascosto sullo smartphone con Paddy Power. Lo spot rappresenta l'azzardo come un'evasione da una situazione quotidiana poco gradita: si vedano anche 32red.it e Eurobet Casino con Herbert Ballerina. Utlizzabile per ragionare sulle rappresentazioni dell'azzardo, ma interessante anche per la rappresentazione di maschile e femminile."
+    "description": "SHOPPING. Lei sta provandosi un vestito dietro l'altro; lui, annoiato ma sorridente, scommette di nascosto sullo smartphone con Paddy Power. Lo spot rappresenta l'azzardo come un'evasione da una situazione quotidiana poco gradita: si vedano anche 32red.it e Eurobet Casino con Herbert Ballerina. Utlizzabile per ragionare sulle rappresentazioni dell'azzardo, ma interessante anche per la rappresentazione di maschile e femminile.",
+    "dataInserimento": "2023-09-09"
   },
   {
     "id": "HD1921-28",
@@ -5418,7 +5804,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "E STICAZZI. Un uomo seduto sulla tazza del WC scopre che la carta igienica è finita. \"A volte la vita gioca sporco\" commenta la voce over. \"E sti cazzi!\". L'uomo lascia perdere la carta igienica e prende in mano il computer portatile (lo spot è del 2013) per piazzare una scommessa sul \"casinò senza casini\" di Paddy Power. Spot di 15 secondi pensato per Youtube (in TV non verrebbe accettato). La messa in scena permette di ragionare sugli aspetti problematici del gioco; l'idea dell'azzardo come evasione da ciò che non va del quotidiano si ritrova anche in altre pubblicità, come 32Red.it e Paddy Power Shopping."
+    "description": "E STICAZZI. Un uomo seduto sulla tazza del WC scopre che la carta igienica è finita. \"A volte la vita gioca sporco\" commenta la voce over. \"E sti cazzi!\". L'uomo lascia perdere la carta igienica e prende in mano il computer portatile (lo spot è del 2013) per piazzare una scommessa sul \"casinò senza casini\" di Paddy Power. Spot di 15 secondi pensato per Youtube (in TV non verrebbe accettato). La messa in scena permette di ragionare sugli aspetti problematici del gioco; l'idea dell'azzardo come evasione da ciò che non va del quotidiano si ritrova anche in altre pubblicità, come 32Red.it e Paddy Power Shopping.",
+    "dataInserimento": "2025-12-15"
   },
   {
     "id": "HD1921-29",
@@ -5432,7 +5819,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "GESU'. In seguito al commento su Facebook di un certo Marco, che invoca un miracolo per ripulire il calcio, Paddy Power ha chiamato Gesù in persona a sistemare le cose: finti infortuni guariti, stadi riempiti e chi trucca le partite \"scacciato dal tempio\". Lo spot, che su Youtube si promuove come \"censurato in tv\", gioca con ironia su quel che non funziona nel calcio, ma anche sul fatto che Paddy Power \"ti ascolta\", è vicino ai commenti della gente."
+    "description": "GESU'. In seguito al commento su Facebook di un certo Marco, che invoca un miracolo per ripulire il calcio, Paddy Power ha chiamato Gesù in persona a sistemare le cose: finti infortuni guariti, stadi riempiti e chi trucca le partite \"scacciato dal tempio\". Lo spot, che su Youtube si promuove come \"censurato in tv\", gioca con ironia su quel che non funziona nel calcio, ma anche sul fatto che Paddy Power \"ti ascolta\", è vicino ai commenti della gente.",
+    "dataInserimento": "2025-04-01"
   },
   {
     "id": "HD1921-30",
@@ -5446,7 +5834,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "COLORI. Persone diverse durante le loro attività quotidiane (seduti al tavolino di un bar, mentre fanno shopping, a casa davanti alla tv) approfittano delle pause per tirare fuori lo smartphone e giocare con l'app di Tombola.it. Una cartella costa solo 2 centesimi. Lo spot insiste sulla possibilità di giocare ovunque e in qualsiasi momento: chi gioca viene \"colorato\" con tinte più accese, veicolando l'idea che scommettere rende il quotidiano più piacevole (si confrontino a proposito altri spot come 32red.it o Paddy Power shopping, che mette in scena una situazione analoga). L'azzardo diventa un passatempo \"interstiziale\", come i videogiochi \"casual games\". Tutti sorridono. Utilizzato in numerosi interventi, insieme ad altri spot, per ragionare sulle rappresentazioni dell'azzardo."
+    "description": "COLORI. Persone diverse durante le loro attività quotidiane (seduti al tavolino di un bar, mentre fanno shopping, a casa davanti alla tv) approfittano delle pause per tirare fuori lo smartphone e giocare con l'app di Tombola.it. Una cartella costa solo 2 centesimi. Lo spot insiste sulla possibilità di giocare ovunque e in qualsiasi momento: chi gioca viene \"colorato\" con tinte più accese, veicolando l'idea che scommettere rende il quotidiano più piacevole (si confrontino a proposito altri spot come 32red.it o Paddy Power shopping, che mette in scena una situazione analoga). L'azzardo diventa un passatempo \"interstiziale\", come i videogiochi \"casual games\". Tutti sorridono. Utilizzato in numerosi interventi, insieme ad altri spot, per ragionare sulle rappresentazioni dell'azzardo.",
+    "dataInserimento": "2024-12-25"
   },
   {
     "id": "HD1921-31",
@@ -5460,7 +5849,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "NEYMAR JR. Il noto giocatore di calcio Neymar Jr gioca a poker contro Ronaldo (non Cristiano) e vince con una coppia di re. Al termine, sul logo di Pokerstars, il giocatore dice in portoghese: \"Io sono Pokerstars\". Il sito di poker online si promuove con i calciatori come testimonial: l'azzardo viene esplicitamente collegato allo sport. Tutti sorridono, anche chi perde."
+    "description": "NEYMAR JR. Il noto giocatore di calcio Neymar Jr gioca a poker contro Ronaldo (non Cristiano) e vince con una coppia di re. Al termine, sul logo di Pokerstars, il giocatore dice in portoghese: \"Io sono Pokerstars\". Il sito di poker online si promuove con i calciatori come testimonial: l'azzardo viene esplicitamente collegato allo sport. Tutti sorridono, anche chi perde.",
+    "dataInserimento": "2025-02-13"
   },
   {
     "id": "HD1921-32",
@@ -5474,7 +5864,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "CRISTIANO RONALDO. Il noto giocatore di calcio Cristiano Ronaldo gioca a poker contro una ragazza e vince. Al termine, sul logo di Pokerstars, il giocatore dice in portoghese: \"Io sono Pokerstars\". Il sito di poker online si promuove con i calciatori come testimonial: l'azzardo viene esplicitamente collegato allo sport. Tutti sorridono, anche chi perde."
+    "description": "CRISTIANO RONALDO. Il noto giocatore di calcio Cristiano Ronaldo gioca a poker contro una ragazza e vince. Al termine, sul logo di Pokerstars, il giocatore dice in portoghese: \"Io sono Pokerstars\". Il sito di poker online si promuove con i calciatori come testimonial: l'azzardo viene esplicitamente collegato allo sport. Tutti sorridono, anche chi perde.",
+    "dataInserimento": "2025-01-20"
   },
   {
     "id": "HD1921-33",
@@ -5488,7 +5879,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "NACHO VS BRAZIL. Un giovane brasiliano, supportato da tutta la popolazione, gioca a poker contro il professionista Ignacio \"Nacho\" Barbero. Scommette tutto (all in), mentre l'adrenalina sale. La voce over parla in prima persona: \"Siamo 10.000 persone in Brasile con il fiato sospeso. Siamo soli, cacciatori, cacciati, benedetti, calmi... Siamo il poker\". Le immagini mostrano animali a caccia, persone che giocano al computer, una donna con un serpente come frusta che morde proprio quando viene detta la parola \"poker\". Il ragazzo vince, tutti esultano. Lo spot mette in scena l'adrenalina, l'aspetto animale che eccita (donna e serpente) nell'attimo prima che si svelino le carte: il piacere non è nella vittoria, ma nell'attesa. Il giocatore è uno, ma è una comunità di cui siamo già tutti parte (NOI siamo il poker). Utilizzato in alcuni interventi per ragionare sulle rappresentazioni dell'azzardo. Quanto conta l'abilità nel poker? (Spot presente in archivio in inglese con qualità migliore, in italiano in bassa qualità video)."
+    "description": "NACHO VS BRAZIL. Un giovane brasiliano, supportato da tutta la popolazione, gioca a poker contro il professionista Ignacio \"Nacho\" Barbero. Scommette tutto (all in), mentre l'adrenalina sale. La voce over parla in prima persona: \"Siamo 10.000 persone in Brasile con il fiato sospeso. Siamo soli, cacciatori, cacciati, benedetti, calmi... Siamo il poker\". Le immagini mostrano animali a caccia, persone che giocano al computer, una donna con un serpente come frusta che morde proprio quando viene detta la parola \"poker\". Il ragazzo vince, tutti esultano. Lo spot mette in scena l'adrenalina, l'aspetto animale che eccita (donna e serpente) nell'attimo prima che si svelino le carte: il piacere non è nella vittoria, ma nell'attesa. Il giocatore è uno, ma è una comunità di cui siamo già tutti parte (NOI siamo il poker). Utilizzato in alcuni interventi per ragionare sulle rappresentazioni dell'azzardo. Quanto conta l'abilità nel poker? (Spot presente in archivio in inglese con qualità migliore, in italiano in bassa qualità video).",
+    "dataInserimento": "2025-09-30"
   },
   {
     "id": "HD1921-34",
@@ -5502,7 +5894,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "SEI GIA' UN GIOCATORE. Un giovane siede ad un tavolo di poker in una partita domestica con un gruppo di amici. L'avversario rilancia, ma il giovane ricorda tutte le volte in cui l'\"amico\" ha bleffato al di fuori del gioco con promesse non mantenute, come \"la prossima volta pago io\". Questa volta non si lascia ingannare e punta i soldi, pregustando la vendetta con un sorriso. La voce over ci ricorda che \"tu sei già un giocatore di poker\". Lo spot lavora sul legame tra le competenze sociali che tutti noi sviluppiamo nel quotidiano e quelle utilizzabili sul tavolo da gioco: non dobbiamo temere il poker perchè siamo già in grado di giocarci. Lo stesso concetto viene sviluppato, estendendolo a tutto l'azzardo, nello spot di Unibet \"Messaggio da giocatori per giocatori\": non ci sono barriere d'ingresso perchè siamo già tutti dentro l'azzardo. L'elemento di fortuna viene taciuto, sottolineando le abilità necessarie per giocare."
+    "description": "SEI GIA' UN GIOCATORE. Un giovane siede ad un tavolo di poker in una partita domestica con un gruppo di amici. L'avversario rilancia, ma il giovane ricorda tutte le volte in cui l'\"amico\" ha bleffato al di fuori del gioco con promesse non mantenute, come \"la prossima volta pago io\". Questa volta non si lascia ingannare e punta i soldi, pregustando la vendetta con un sorriso. La voce over ci ricorda che \"tu sei già un giocatore di poker\". Lo spot lavora sul legame tra le competenze sociali che tutti noi sviluppiamo nel quotidiano e quelle utilizzabili sul tavolo da gioco: non dobbiamo temere il poker perchè siamo già in grado di giocarci. Lo stesso concetto viene sviluppato, estendendolo a tutto l'azzardo, nello spot di Unibet \"Messaggio da giocatori per giocatori\": non ci sono barriere d'ingresso perchè siamo già tutti dentro l'azzardo. L'elemento di fortuna viene taciuto, sottolineando le abilità necessarie per giocare.",
+    "dataInserimento": "2025-05-07"
   },
   {
     "id": "HD1921-35",
@@ -5516,7 +5909,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "SPIN AND GO. Una nuova modalità di gioco permessa da Pokerstars: con Spin and Go giochi contro altri 3 giocatori e puoi vincere fino a 10000 euro. Spot breve che mette in scena giocatori giovani, due maschi e una ragazza, che interagiscono a distanza. A differenza di altri spot, qui chi perde ci rimane male."
+    "description": "SPIN AND GO. Una nuova modalità di gioco permessa da Pokerstars: con Spin and Go giochi contro altri 3 giocatori e puoi vincere fino a 10000 euro. Spot breve che mette in scena giocatori giovani, due maschi e una ragazza, che interagiscono a distanza. A differenza di altri spot, qui chi perde ci rimane male.",
+    "dataInserimento": "2023-07-05"
   },
   {
     "id": "HD1921-36",
@@ -5530,7 +5924,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "UN ALTRO PIANETA. Una donna presenta un pianeta dove tutte le strade portano allo stadio, le giornate durano 90 minuti e non esistono nazioni, ma nazionali. E' il sito di scommesse Planetwin, dove tutti possiamo essere tifosi. Bonus di benvenuto da 200 euro. Claim finale: \"Il nostro gioco è di un altro pianeta\". Lo spot mette in scena un mondo in cui la scommessa sportiva permea ogni aspetto del quotidiano. I primi riferimenti sono al tempo (giornate da 90 minuti) e spazio (tutte le strade portano allo stadio): quanto le scommesse sportive possono diventare così totalizzanti? Utilizzabile per ragionare sulla dipendenza da gioco d'azzardo."
+    "description": "UN ALTRO PIANETA. Una donna presenta un pianeta dove tutte le strade portano allo stadio, le giornate durano 90 minuti e non esistono nazioni, ma nazionali. E' il sito di scommesse Planetwin, dove tutti possiamo essere tifosi. Bonus di benvenuto da 200 euro. Claim finale: \"Il nostro gioco è di un altro pianeta\". Lo spot mette in scena un mondo in cui la scommessa sportiva permea ogni aspetto del quotidiano. I primi riferimenti sono al tempo (giornate da 90 minuti) e spazio (tutte le strade portano allo stadio): quanto le scommesse sportive possono diventare così totalizzanti? Utilizzabile per ragionare sulla dipendenza da gioco d'azzardo.",
+    "dataInserimento": "2023-05-19"
   },
   {
     "id": "HD1921-37",
@@ -5544,7 +5939,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "CERVELLO IN UNA MANO. Un uomo ci racconta di essere l'unica persona al mondo nata con il cervello in una mano (quella destra). Quando scommette il suo cuore esulta, ma la sua mano rimane razionale e vince. Lo spot è costruito sul riforzo di un classico pensiero magico dei giocatori, ovvero sull'idea che l'azzardo possa essere controllato dalla ragione e che bastino autocontrollo e razionalità per vincere (\"ascolta il cuore ma gioca con la testa\"). La \"freddezza\" dello scommettitore è ribadita dai colori freddi (domina il blu) della fotografia. Utilizzato molte volte in interventi educativi e formativi per ragionare sulle rappresentazioni dell'azzardo."
+    "description": "CERVELLO IN UNA MANO. Un uomo ci racconta di essere l'unica persona al mondo nata con il cervello in una mano (quella destra). Quando scommette il suo cuore esulta, ma la sua mano rimane razionale e vince. Lo spot è costruito sul riforzo di un classico pensiero magico dei giocatori, ovvero sull'idea che l'azzardo possa essere controllato dalla ragione e che bastino autocontrollo e razionalità per vincere (\"ascolta il cuore ma gioca con la testa\"). La \"freddezza\" dello scommettitore è ribadita dai colori freddi (domina il blu) della fotografia. Utilizzato molte volte in interventi educativi e formativi per ragionare sulle rappresentazioni dell'azzardo.",
+    "dataInserimento": "2024-09-11"
   },
   {
     "id": "HD1921-38",
@@ -5558,7 +5954,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "HERO. Lo spot si apre su un uomo che cammina in un deserto, mentre una voce over maschile ci parla in prima persona: \"Sono nato in mezzo alla polvere… e ho conquistato nazioni, popoli, continenti. Io sono il calcio, e nessuno mi conosce meglio di William Hill\". Il calcio viene raccontato da musica, immagini e parole come una forza epica in grado di conquistare il mondo, impresa in cui Alessandro Magno e Napoleone hanno fallito. Lo scommettitore è parte di questo mondo: William Hill si promuove come agenzia antica e autorevole, fin dal logo che riporta \"In gioco dal 1934\". Spot utilizzato per ragionare sulle rappresentazioni dell'azzardo. E' anche possibile utilizzarlo insieme ad altri spot di William Hill, presenti in questo archivio, per ragionare sui diversi modi utilizzati dall'azienda per promuoversi; in alternativa può essere inserito in un blocco di pubblicità sulle scommesse sportive, per focalizzare il discorso su questo aspetto dell'azzardo."
+    "description": "HERO. Lo spot si apre su un uomo che cammina in un deserto, mentre una voce over maschile ci parla in prima persona: \"Sono nato in mezzo alla polvere… e ho conquistato nazioni, popoli, continenti. Io sono il calcio, e nessuno mi conosce meglio di William Hill\". Il calcio viene raccontato da musica, immagini e parole come una forza epica in grado di conquistare il mondo, impresa in cui Alessandro Magno e Napoleone hanno fallito. Lo scommettitore è parte di questo mondo: William Hill si promuove come agenzia antica e autorevole, fin dal logo che riporta \"In gioco dal 1934\". Spot utilizzato per ragionare sulle rappresentazioni dell'azzardo. E' anche possibile utilizzarlo insieme ad altri spot di William Hill, presenti in questo archivio, per ragionare sui diversi modi utilizzati dall'azienda per promuoversi; in alternativa può essere inserito in un blocco di pubblicità sulle scommesse sportive, per focalizzare il discorso su questo aspetto dell'azzardo.",
+    "dataInserimento": "2024-01-02"
   },
   {
     "id": "HD1921-39",
@@ -5572,7 +5969,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "CASINO'. Le immagini ci mostrano situazioni di gioco ai casinò di Las Vegas, mentre la voce over ci racconta che \"Un tempo la mia casa era qui, ma i tempi sono cambiati\". Ora, grazie all'online, il gioco è ovunque. \"Io sono il gioco, e nessuno mi conosce meglio di William Hill\". Lo spot utilizza la stessa strategia retorica dello spot \"Hero\" (presente in archivio): chi parla in prima persona è il gioco stesso, ovviamente d'azzardo. William Hill si propone come sito autorevole su cui scommettere. Viene ribadita la possibilità di giocare ovunque, con immagini classiche dei generi cinematografici americani (road movie e western) più associati all'idea di libertà. Utilizzabile per ragionare sulle rappresentazioni dell'azzardo online."
+    "description": "CASINO'. Le immagini ci mostrano situazioni di gioco ai casinò di Las Vegas, mentre la voce over ci racconta che \"Un tempo la mia casa era qui, ma i tempi sono cambiati\". Ora, grazie all'online, il gioco è ovunque. \"Io sono il gioco, e nessuno mi conosce meglio di William Hill\". Lo spot utilizza la stessa strategia retorica dello spot \"Hero\" (presente in archivio): chi parla in prima persona è il gioco stesso, ovviamente d'azzardo. William Hill si propone come sito autorevole su cui scommettere. Viene ribadita la possibilità di giocare ovunque, con immagini classiche dei generi cinematografici americani (road movie e western) più associati all'idea di libertà. Utilizzabile per ragionare sulle rappresentazioni dell'azzardo online.",
+    "dataInserimento": "2023-07-24"
   },
   {
     "id": "HD1921-40",
@@ -5586,7 +5984,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "NON VOGLIO CASINO'. Immagini e voce over in prima persona ci raccontano ciò che non vogliamo: musica rock scadente, luci artificiali, chiacchiere al bancone. Tutti aspetti legati al casinò tradizionali di Las Vegas. Il giocatore di oggi è un giovane ben vestito che cammina su un tavolo da gioco in computer grafica e scommette dallo smartphone: grazie al gioco online di William Hill \"io vado al cuore del gioco\". Lo spot prosegue sulla linea narrativa inaugurata dal precedente \"Casinò\" (presente in archivio): il gioco in presenza appartiene al passato, è vecchio e scadente, mentre il presente è l'azzardo smart sul proprio cellulare. Spot esemplare per ragionare sull'evoluzione dell'azzardo: socialità, luoghi e spazi rituali diventano il gioco \"essenziale\" in solitaria, sempre e ovunque dell'online. Utilizzabile anche in contesti formativi."
+    "description": "NON VOGLIO CASINO'. Immagini e voce over in prima persona ci raccontano ciò che non vogliamo: musica rock scadente, luci artificiali, chiacchiere al bancone. Tutti aspetti legati al casinò tradizionali di Las Vegas. Il giocatore di oggi è un giovane ben vestito che cammina su un tavolo da gioco in computer grafica e scommette dallo smartphone: grazie al gioco online di William Hill \"io vado al cuore del gioco\". Lo spot prosegue sulla linea narrativa inaugurata dal precedente \"Casinò\" (presente in archivio): il gioco in presenza appartiene al passato, è vecchio e scadente, mentre il presente è l'azzardo smart sul proprio cellulare. Spot esemplare per ragionare sull'evoluzione dell'azzardo: socialità, luoghi e spazi rituali diventano il gioco \"essenziale\" in solitaria, sempre e ovunque dell'online. Utilizzabile anche in contesti formativi.",
+    "dataInserimento": "2023-04-21"
   },
   {
     "id": "HD1921-41",
@@ -5600,7 +5999,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "ROULETTE COLOSSEO. Un uomo sale su un elicottero. E' William Hill. Sotto di lui viene allestita una gigantesca roulette, grande come il Colosseo: dall'elicottero William lancia una grande pallina nella roulette. \"Il numero 1 inglese del betting è arrivato\" ci spiega la voce over. \"Adesso si gioca in grande\". Spot che lavora sull'esagerazione per annunciare lo sbarco in Italia dell'importante società William Hill."
+    "description": "ROULETTE COLOSSEO. Un uomo sale su un elicottero. E' William Hill. Sotto di lui viene allestita una gigantesca roulette, grande come il Colosseo: dall'elicottero William lancia una grande pallina nella roulette. \"Il numero 1 inglese del betting è arrivato\" ci spiega la voce over. \"Adesso si gioca in grande\". Spot che lavora sull'esagerazione per annunciare lo sbarco in Italia dell'importante società William Hill.",
+    "dataInserimento": "2024-09-19"
   },
   {
     "id": "HD1921-42",
@@ -5614,7 +6014,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "PALLIDO. Immagini in bianco e nero di un uomo, visibilmente teso, seduto ad un tavolo di poker. Un ragazzo giovane, inquadrato a colori, gli domanda in tono rilassato: \"Tutto ok? Perché ti vedo un po'… pallido\". Poker Club è la poker room \"sicura\" di Lottomatica. Lo spot lavora sulla contrapposizione tra i due personaggi, leggibile a diversi livelli: insicurezza Vs tranquillità; pericolo Vs protezione (Lottomatica si promuove come un posto sicuro dove giocare); vecchio poker Vs nuovo gioco online. La contrapposizione tra vecchio e nuovo è presente anche negli spot di William Hill sul casinò (presenti in questo archivio). Spot utilizzato in alcuni interventi per ragionare sulle rappresentazioni dell'azzardo."
+    "description": "PALLIDO. Immagini in bianco e nero di un uomo, visibilmente teso, seduto ad un tavolo di poker. Un ragazzo giovane, inquadrato a colori, gli domanda in tono rilassato: \"Tutto ok? Perché ti vedo un po'… pallido\". Poker Club è la poker room \"sicura\" di Lottomatica. Lo spot lavora sulla contrapposizione tra i due personaggi, leggibile a diversi livelli: insicurezza Vs tranquillità; pericolo Vs protezione (Lottomatica si promuove come un posto sicuro dove giocare); vecchio poker Vs nuovo gioco online. La contrapposizione tra vecchio e nuovo è presente anche negli spot di William Hill sul casinò (presenti in questo archivio). Spot utilizzato in alcuni interventi per ragionare sulle rappresentazioni dell'azzardo.",
+    "dataInserimento": "2024-11-18"
   },
   {
     "id": "HD1921-43",
@@ -5628,7 +6029,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "LA CASA DEGLI ASSI. Le selezioni per partecipare al reality di Pokerstars La casa degli Assi sono state svolte, ma è ancora possibile fare domanda per partecipare. Lo spot mostra immagini degli aspiranti concorrenti e della villa dove si svolgerà il reality."
+    "description": "LA CASA DEGLI ASSI. Le selezioni per partecipare al reality di Pokerstars La casa degli Assi sono state svolte, ma è ancora possibile fare domanda per partecipare. Lo spot mostra immagini degli aspiranti concorrenti e della villa dove si svolgerà il reality.",
+    "dataInserimento": "2023-09-08"
   },
   {
     "id": "HD1921-44",
@@ -5642,7 +6044,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "DA GIOCATORI PER GIOCATORI. Mentre scorre un montaggio serrato di persone molto diverse (dall'artigiano all'operaio alla ragazza che fa boxe), che guardano tutte in macchina, la voce over recita: \"Questo è un messaggio da giocatori per giocatori\". Le parole compaiono scritte (favorendo la fruizione dello spot sui social). La voce è quella di Unibet, che ci spiega di conoscere i giocatori: sono intelligenti, aiutano gli altri, amano i riconoscimenti, non si riconoscono negli stereotipi. \"Capiamo i giocatori perchè noi siamo giocatori\". Lo spot amplia la rappresentazione già presente in Pokerstars - Sei gà un giocatore: l'azzardo è ovunque e tutti siamo già giocatori. Non si fa riferimento ad uno specifico ambito di scommesse, non si parla di azzardo; il riferimento ai soldi è risolto con una breve sequenza animata. Spot utilizzato in numerosi interventi per ragionare sulle rappresentazioni dell'azzardo."
+    "description": "DA GIOCATORI PER GIOCATORI. Mentre scorre un montaggio serrato di persone molto diverse (dall'artigiano all'operaio alla ragazza che fa boxe), che guardano tutte in macchina, la voce over recita: \"Questo è un messaggio da giocatori per giocatori\". Le parole compaiono scritte (favorendo la fruizione dello spot sui social). La voce è quella di Unibet, che ci spiega di conoscere i giocatori: sono intelligenti, aiutano gli altri, amano i riconoscimenti, non si riconoscono negli stereotipi. \"Capiamo i giocatori perchè noi siamo giocatori\". Lo spot amplia la rappresentazione già presente in Pokerstars - Sei gà un giocatore: l'azzardo è ovunque e tutti siamo già giocatori. Non si fa riferimento ad uno specifico ambito di scommesse, non si parla di azzardo; il riferimento ai soldi è risolto con una breve sequenza animata. Spot utilizzato in numerosi interventi per ragionare sulle rappresentazioni dell'azzardo.",
+    "dataInserimento": "2023-04-20"
   },
   {
     "id": "HD1921-45",
@@ -5656,7 +6059,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "SCOMMESSE SPORTIVE. Una serie di immagini animate sui colori blu e giallo ci mostrano diversi sport, mentre una voce over maschile recita: “Scommettiamo che vi piacerà Star Vegas Sport?”. Lo spot, di soli 15’’, promuove un sito di scommesse sportive che offre un bonus di benvenuto di 300 euro. Video segnalato da uno studente partecipante ai laboratori SteadyGAP 2021. Utilizzabile per introdurre il tema delle scommesse sportive."
+    "description": "SCOMMESSE SPORTIVE. Una serie di immagini animate sui colori blu e giallo ci mostrano diversi sport, mentre una voce over maschile recita: “Scommettiamo che vi piacerà Star Vegas Sport?”. Lo spot, di soli 15’’, promuove un sito di scommesse sportive che offre un bonus di benvenuto di 300 euro. Video segnalato da uno studente partecipante ai laboratori SteadyGAP 2021. Utilizzabile per introdurre il tema delle scommesse sportive.",
+    "dataInserimento": "2025-05-12"
   },
   {
     "id": "HD1921-46",
@@ -5670,7 +6074,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "CINCO. Una ragazza si libra sopra un divano mentre gioca e chatta con altri utenti della community di Cinco, il gioco della community di Tombola.it. Una voce over femminile spiega il gioco e invita: “Unisciti al divertimento!” Utilizzato insieme a spot non di azzardo (eToro, Bidoo ecc…) per ragionare sui messaggi promozionali che fanno leva su altri aspetti: in questo caso il messaggio non è di giocare per vincere soldi, ma per essere parte di una community e divertirsi."
+    "description": "CINCO. Una ragazza si libra sopra un divano mentre gioca e chatta con altri utenti della community di Cinco, il gioco della community di Tombola.it. Una voce over femminile spiega il gioco e invita: “Unisciti al divertimento!” Utilizzato insieme a spot non di azzardo (eToro, Bidoo ecc…) per ragionare sui messaggi promozionali che fanno leva su altri aspetti: in questo caso il messaggio non è di giocare per vincere soldi, ma per essere parte di una community e divertirsi.",
+    "dataInserimento": "2025-12-15"
   },
   {
     "id": "HD1921-47",
@@ -5684,7 +6089,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "SMORFIA IDEA SPOT. Un gruppo di persone di età diverse sono riunite in una stanza: la voce over femminile ci informa che sono tutti parte della community di Tombola.it e sono lì per ideare lo spot sulla Smorfia. Un uomo propone di mettere la “bella ragazza”, un altro la mamma; una signora conclude che “l’importante è divertirsi insieme”. Interessante per il target di riferimento: spot che vuole dare l’idea di inclusione, in cui la community dell’azzardo partecipa anche a creare la campagna promozionale. La parola chiave è “insieme”."
+    "description": "SMORFIA IDEA SPOT. Un gruppo di persone di età diverse sono riunite in una stanza: la voce over femminile ci informa che sono tutti parte della community di Tombola.it e sono lì per ideare lo spot sulla Smorfia. Un uomo propone di mettere la “bella ragazza”, un altro la mamma; una signora conclude che “l’importante è divertirsi insieme”. Interessante per il target di riferimento: spot che vuole dare l’idea di inclusione, in cui la community dell’azzardo partecipa anche a creare la campagna promozionale. La parola chiave è “insieme”.",
+    "dataInserimento": "2023-10-03"
   },
   {
     "id": "HD1921-48",
@@ -5698,7 +6104,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "IN ACQUA. Le riprese subacquee ci mostrano un uomo e una donna giocare al tavolo di blackjack, un calciatore che sta per eseguire una rovesciata e una tennista che sta per battere un servizio. La ripresa si alza e ci rivela lo schermo di uno smartphone dove vengono piazzate scommesse sportive, mentre la voce over ci invita a vivere “l’esperienza di gioco più fluida di sempre”. In chiusura compare il logo di Sky Bet – Scommesse e casinò. Lo spot lavora sull’idea di “fluidità”, come se le scommesse donassero libertà di movimento. Utilizzabile insieme ad altri spot commerciali per ragionare sulle rappresentazioni dell’azzardo."
+    "description": "IN ACQUA. Le riprese subacquee ci mostrano un uomo e una donna giocare al tavolo di blackjack, un calciatore che sta per eseguire una rovesciata e una tennista che sta per battere un servizio. La ripresa si alza e ci rivela lo schermo di uno smartphone dove vengono piazzate scommesse sportive, mentre la voce over ci invita a vivere “l’esperienza di gioco più fluida di sempre”. In chiusura compare il logo di Sky Bet – Scommesse e casinò. Lo spot lavora sull’idea di “fluidità”, come se le scommesse donassero libertà di movimento. Utilizzabile insieme ad altri spot commerciali per ragionare sulle rappresentazioni dell’azzardo.",
+    "dataInserimento": "2023-12-17"
   },
   {
     "id": "HD1921-49",
@@ -5712,7 +6119,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "IL NUOVO MODO DI VIVERE LO SPORT. Una ragazza vestita elegantemente scende dall’auto e cammina per la città. Intorno a lei le persone praticano in strada diversi sport, dal ciclismo al rugby, dal basket al tennis. La voce over femminile ci spiega che su StarCasino sport trovi “news, gossip, esperienze esclusive”. In chiusura, sul totale degli atleti che camminano dietro alla ragazza, compaiono logo e claim: “Starcasino.sport. Il nuovo modo di vivere lo sport”. Nello spot (come nel sito promosso, https://starcasino.sport/#) non c’è nessun accenno alle scommesse o ai giochi d’azzardo, implicito nel nome (strategia analoga a Eurobet Live e Sisal Tipster, presenti in questo archivio). La pubblicità si configura quindi come la promozione di un sito di notizie (non una testata giornalistica, come indicato sul sito stesso) e quindi elude il Decreto “Dignità” (poi legge 96 del 9 agosto 2018) e le linee guida dell’AGCOM, che vietano la pubblicità dell’azzardo ma permettono “l’utilizzo del marchio che identifichi, oltre ai servizi giochi con vincite in denaro o d’azzardo, ulteriori attività, aventi carattere autonomo”. La modella protagonista e i riferimenti al “gossip ed eventi esclusivi” inseriscono l’azzardo in un contesto evocato di glamour e fashion. Utilizzabile in un blocco di spot commerciali che promuovono l’azzardo e/o con altri spot che promuovono situazioni “al confine” come shopping, trading online, aste al ribasso."
+    "description": "IL NUOVO MODO DI VIVERE LO SPORT. Una ragazza vestita elegantemente scende dall’auto e cammina per la città. Intorno a lei le persone praticano in strada diversi sport, dal ciclismo al rugby, dal basket al tennis. La voce over femminile ci spiega che su StarCasino sport trovi “news, gossip, esperienze esclusive”. In chiusura, sul totale degli atleti che camminano dietro alla ragazza, compaiono logo e claim: “Starcasino.sport. Il nuovo modo di vivere lo sport”. Nello spot (come nel sito promosso, https://starcasino.sport/#) non c’è nessun accenno alle scommesse o ai giochi d’azzardo, implicito nel nome (strategia analoga a Eurobet Live e Sisal Tipster, presenti in questo archivio). La pubblicità si configura quindi come la promozione di un sito di notizie (non una testata giornalistica, come indicato sul sito stesso) e quindi elude il Decreto “Dignità” (poi legge 96 del 9 agosto 2018) e le linee guida dell’AGCOM, che vietano la pubblicità dell’azzardo ma permettono “l’utilizzo del marchio che identifichi, oltre ai servizi giochi con vincite in denaro o d’azzardo, ulteriori attività, aventi carattere autonomo”. La modella protagonista e i riferimenti al “gossip ed eventi esclusivi” inseriscono l’azzardo in un contesto evocato di glamour e fashion. Utilizzabile in un blocco di spot commerciali che promuovono l’azzardo e/o con altri spot che promuovono situazioni “al confine” come shopping, trading online, aste al ribasso.",
+    "dataInserimento": "2024-04-30"
   },
   {
     "id": "HD1921-50",
@@ -5726,7 +6134,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "ORA LO SO. La modella Ludovica Martini, vestita elegantemente di giallo, è seduta su un divano di fianco ad un uomo in giacca. Gli chiede: “A che cosa pensi?”, poi si alza e si muove in modo sensuale. L’uomo risponde: “A star Casinò!” E chi altro ha le slot migliori? Viene inquadrato lo smartphone con il sito Starcasinò.it. In chiusura il claim: “Starcasinò, ora lo so!”. Spot che utilizza in modo banale l’associazione tra fascino femminile e presunta bellezza del gioco."
+    "description": "ORA LO SO. La modella Ludovica Martini, vestita elegantemente di giallo, è seduta su un divano di fianco ad un uomo in giacca. Gli chiede: “A che cosa pensi?”, poi si alza e si muove in modo sensuale. L’uomo risponde: “A star Casinò!” E chi altro ha le slot migliori? Viene inquadrato lo smartphone con il sito Starcasinò.it. In chiusura il claim: “Starcasinò, ora lo so!”. Spot che utilizza in modo banale l’associazione tra fascino femminile e presunta bellezza del gioco.",
+    "dataInserimento": "2024-05-05"
   },
   {
     "id": "HD1921-51",
@@ -5740,7 +6149,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "CHI L’HA DETTO CHE E’ IMPOSSIBILE. “A volte un piccolo tocco può cambiarti la giornata”: così recita la voce over, mentre un uomo vestito con una camicia viola (il colore dell’app Intralot) cammina per una strada residenziale facendo accadere cose con il tocco sull’app: le finestre di una casa diventano una slot, una roulette gigante compare sull’asfalto, un carretto di fiori diventa una coppia di dadi. Alla fine l’uomo si allontana con la sua compagna verso un orizzonte radioso, mentre compare il logo Intralot e il claim “Vincenti si diventa”. Spot che fa leva sul senso di onnipotenza del giocatore, che plasma la realtà, e sul contesto quotidiano del gioco (tutto può diventare azzardo). Utilizzabile insieme ad altri spot commerciali per far emergere le rappresentazioni del marketing dell’azzardo."
+    "description": "CHI L’HA DETTO CHE E’ IMPOSSIBILE. “A volte un piccolo tocco può cambiarti la giornata”: così recita la voce over, mentre un uomo vestito con una camicia viola (il colore dell’app Intralot) cammina per una strada residenziale facendo accadere cose con il tocco sull’app: le finestre di una casa diventano una slot, una roulette gigante compare sull’asfalto, un carretto di fiori diventa una coppia di dadi. Alla fine l’uomo si allontana con la sua compagna verso un orizzonte radioso, mentre compare il logo Intralot e il claim “Vincenti si diventa”. Spot che fa leva sul senso di onnipotenza del giocatore, che plasma la realtà, e sul contesto quotidiano del gioco (tutto può diventare azzardo). Utilizzabile insieme ad altri spot commerciali per far emergere le rappresentazioni del marketing dell’azzardo.",
+    "dataInserimento": "2023-03-06"
   },
   {
     "id": "HD1921-52",
@@ -5754,7 +6164,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "LA NOSTRA PASSIONE NON SI FERMA. Un giovane alla fermata del bus prende lo smartphone e accede all’app Intralot: si ritrova sul campo da gioco di uno stadio, circondato da cheerleader che gli ballano intorno. La voce over spiega che quando si scommette su Intralot c’è un intero team che fa il tifo per te. In chiusura l’uomo sale sul bus, dove ritrova le cheerleader che continuano a supportarlo. Lo spot fa leva sul senso di community, come in “Gioco digitale – Unisciti al coro” (presente in archivio); qui però il “gruppo” è il team dell’azienda, che si presenta come solida e ramificata. La retorica è analoga a quella delle banche, che offrono sicurezza agli investitori."
+    "description": "LA NOSTRA PASSIONE NON SI FERMA. Un giovane alla fermata del bus prende lo smartphone e accede all’app Intralot: si ritrova sul campo da gioco di uno stadio, circondato da cheerleader che gli ballano intorno. La voce over spiega che quando si scommette su Intralot c’è un intero team che fa il tifo per te. In chiusura l’uomo sale sul bus, dove ritrova le cheerleader che continuano a supportarlo. Lo spot fa leva sul senso di community, come in “Gioco digitale – Unisciti al coro” (presente in archivio); qui però il “gruppo” è il team dell’azienda, che si presenta come solida e ramificata. La retorica è analoga a quella delle banche, che offrono sicurezza agli investitori.",
+    "dataInserimento": "2024-01-15"
   },
   {
     "id": "HD1921-53",
@@ -5768,7 +6179,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "CASINO’ ONLINE IN SVIZZERA. Una ragazza bionda inizia a giocare ad una slot machine online; man mano che gioca il suo abbigliamento cambia, diventando come quello della protagonista della slot “Lucky Lady Charm”. In chiusura lo slogan: “Il tuo momento magico”. Spot breve che mette in scena l’immersione nel gioco online, un “momento magico”. Il casino si dichiara “svizzero”, anche se il brand Starvegas è internazionale."
+    "description": "CASINO’ ONLINE IN SVIZZERA. Una ragazza bionda inizia a giocare ad una slot machine online; man mano che gioca il suo abbigliamento cambia, diventando come quello della protagonista della slot “Lucky Lady Charm”. In chiusura lo slogan: “Il tuo momento magico”. Spot breve che mette in scena l’immersione nel gioco online, un “momento magico”. Il casino si dichiara “svizzero”, anche se il brand Starvegas è internazionale.",
+    "dataInserimento": "2023-12-03"
   },
   {
     "id": "HD1921-54",
@@ -5782,7 +6194,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "AROUND THE WORLD ADVENTURE TOURNAMENT. Il video, in computer grafica, ci mostra le varie tappe dell’”avventura” che è possibile intraprendere durante l’estate 2022 nel casino online 1xBit.com. Registrati, entra nel torneo, gioca alle slot, visita i vari mondi, colleziona punti e raccogli il tuo premio: divertiti! L’azzardo viene narrato come un’avventura, con una musica a commento molto simile a quella dei Pirati dei Caraibi. Colori, grafica e struttura a mappa ricordano quella dei casual game per smartphone e tablet. Spot utilizzato in formazione per ragionare sui punti di contatto tra azzardo e gaming."
+    "description": "AROUND THE WORLD ADVENTURE TOURNAMENT. Il video, in computer grafica, ci mostra le varie tappe dell’”avventura” che è possibile intraprendere durante l’estate 2022 nel casino online 1xBit.com. Registrati, entra nel torneo, gioca alle slot, visita i vari mondi, colleziona punti e raccogli il tuo premio: divertiti! L’azzardo viene narrato come un’avventura, con una musica a commento molto simile a quella dei Pirati dei Caraibi. Colori, grafica e struttura a mappa ricordano quella dei casual game per smartphone e tablet. Spot utilizzato in formazione per ragionare sui punti di contatto tra azzardo e gaming.",
+    "dataInserimento": "2024-05-08"
   },
   {
     "id": "HD1921-55",
@@ -5796,7 +6209,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "FREE BETS. Il video, in inglese, combina scritte e parlato per promuovere la possibilità di fare scommesse gratuite sul sito 1xBit.com. Una volta creato l’account il giocatore, scommettendo, accumula punti, che può riscattare ottenendo le promozioni attive. In questo modo, ci dice lo spot, “Don’t worry about risks. Just enjoy playing!” (non preoccuparti per i rischi, gioca e divertiti!). Il sistema “gamificato” di accumulo punti fa percepire le scommesse come “sicure”, perché indipendentemente dal risultato si ottengono punti."
+    "description": "FREE BETS. Il video, in inglese, combina scritte e parlato per promuovere la possibilità di fare scommesse gratuite sul sito 1xBit.com. Una volta creato l’account il giocatore, scommettendo, accumula punti, che può riscattare ottenendo le promozioni attive. In questo modo, ci dice lo spot, “Don’t worry about risks. Just enjoy playing!” (non preoccuparti per i rischi, gioca e divertiti!). Il sistema “gamificato” di accumulo punti fa percepire le scommesse come “sicure”, perché indipendentemente dal risultato si ottengono punti.",
+    "dataInserimento": "2024-03-30"
   },
   {
     "id": "HD1921-56",
@@ -5810,7 +6224,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "T-QUALITY. “Guardare una partita è facile. Ma sai davvero analizzarla?”. Con queste parole Regina Baresi, ex calciatrice, introduce la presentazione di Sisal Tipster, la community dove un team di esperti (tra cui la Baresi e Fabio Caressa) analizzano nei dettagli gli eventi sportivi per farti raggiungere “il tuo personale T-Quality”, ovvero essere in grado di prevedere i risultati futuri. Il video, che promuove il servizio “Tipster” della SISAL (https://www.sisaltipster.it/), non fa accenno alle scommesse, proponendosi come una community di stampo informativo: la strategia è analoga a StarCasinò Sport e al sito EurobetLive, i cui spot sono presenti in questo archivio. Il messaggio implicito è: ti vendo certezze scientifiche, così la scommessa non è più azzardo. Al momento in cui scriviamo (agosto 2023) sul sito ufficiale Franca Baresi è stata sostituita dall’ex calciatore Massimo Ambrosini. Lo spot è stato utilizzato in classe e in formazione con altri spot che promuovono situazioni “al confine” come shopping, trading online, aste al ribasso, in una logica di gamblification."
+    "description": "T-QUALITY. “Guardare una partita è facile. Ma sai davvero analizzarla?”. Con queste parole Regina Baresi, ex calciatrice, introduce la presentazione di Sisal Tipster, la community dove un team di esperti (tra cui la Baresi e Fabio Caressa) analizzano nei dettagli gli eventi sportivi per farti raggiungere “il tuo personale T-Quality”, ovvero essere in grado di prevedere i risultati futuri. Il video, che promuove il servizio “Tipster” della SISAL (https://www.sisaltipster.it/), non fa accenno alle scommesse, proponendosi come una community di stampo informativo: la strategia è analoga a StarCasinò Sport e al sito EurobetLive, i cui spot sono presenti in questo archivio. Il messaggio implicito è: ti vendo certezze scientifiche, così la scommessa non è più azzardo. Al momento in cui scriviamo (agosto 2023) sul sito ufficiale Franca Baresi è stata sostituita dall’ex calciatore Massimo Ambrosini. Lo spot è stato utilizzato in classe e in formazione con altri spot che promuovono situazioni “al confine” come shopping, trading online, aste al ribasso, in una logica di gamblification.",
+    "dataInserimento": "2025-08-21"
   },
   {
     "id": "HD1921-57",
@@ -5824,7 +6239,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "LUCA TONI. Un giovane calvo entra in un cafè e si rivolge all’ex calciatore Luca Toni, seduto a un tavolino, chiedendogli: ma come fai ad essere sempre così aggiornato? Toni gli spiega che è grazie al sito Eurobet Live, dove per ogni partita ci sono dati, statistiche e risultati in tempo reale. Mentre Toni vediamo il ragazzo diventare capelluto ad ogni nuova inquadratura, fino a quando assume le sembianze del calciatore. Il claim finale, “Tira fuori l’esperto che è in te”, lavora sull’idea che le informazioni e le statistiche sportive rendono le scommesse più “sicure”: non è azzardo, è “esperienza” Come nel video di Sisal Tipster (presente in archivio) le scommesse non vengono mai nominate: non si parla di quote o di gioco, ma solo di informazione. Questo permette anche di aggirare le restrizioni legislative sulla pubblicità dell’azzardo. Utilizzabile in un blocco di spot commerciali che promuovono l’azzardo e/o con altri spot che promuovono situazioni “al confine” come shopping, trading online, aste al ribasso, in una logica di gamblification."
+    "description": "LUCA TONI. Un giovane calvo entra in un cafè e si rivolge all’ex calciatore Luca Toni, seduto a un tavolino, chiedendogli: ma come fai ad essere sempre così aggiornato? Toni gli spiega che è grazie al sito Eurobet Live, dove per ogni partita ci sono dati, statistiche e risultati in tempo reale. Mentre Toni vediamo il ragazzo diventare capelluto ad ogni nuova inquadratura, fino a quando assume le sembianze del calciatore. Il claim finale, “Tira fuori l’esperto che è in te”, lavora sull’idea che le informazioni e le statistiche sportive rendono le scommesse più “sicure”: non è azzardo, è “esperienza” Come nel video di Sisal Tipster (presente in archivio) le scommesse non vengono mai nominate: non si parla di quote o di gioco, ma solo di informazione. Questo permette anche di aggirare le restrizioni legislative sulla pubblicità dell’azzardo. Utilizzabile in un blocco di spot commerciali che promuovono l’azzardo e/o con altri spot che promuovono situazioni “al confine” come shopping, trading online, aste al ribasso, in una logica di gamblification.",
+    "dataInserimento": "2024-11-04"
   },
   {
     "id": "HD1921-58",
@@ -5838,7 +6254,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "IL NUOVO MODO DI VIVERE IL CALCIO. Su una musica rock vediamo immagini di azioni calcistiche (dribbling, passaggi, rigori), mentre le scritte ci spiegano che StarCasino Sport è nato per “offririti il meglio”, “darti emozioni”, accompagnarti nella giornata con statistiche, aggiornamenti, quiz, contenuti esclusivi. E’ il “nuovo modo di vivere il calcio”. Lo spot si chiude con il nome del sito; non ci sono voci. Nello spot (come nel sito promosso, https://starcasino.sport/#) non c’è nessun accenno alle scommesse o ai giochi d’azzardo, implicito nel nome (strategia analoga a Eurobet Live e Sisal Tipster, presenti in questo archivio). La pubblicità si configura quindi come la promozione di un sito di notizie (non una testata giornalistica, come indicato sul sito stesso) e quindi elude il Decreto “Dignità” (poi legge 96 del 9 agosto 2018) e le linee guida dell’AGCOM, che vietano la pubblicità dell’azzardo. Utilizzabile in un blocco di spot commerciali che promuovono l’azzardo e/o con altri spot che promuovono situazioni “al confine” come shopping, trading online, aste al ribasso, in una logica di gamblification."
+    "description": "IL NUOVO MODO DI VIVERE IL CALCIO. Su una musica rock vediamo immagini di azioni calcistiche (dribbling, passaggi, rigori), mentre le scritte ci spiegano che StarCasino Sport è nato per “offririti il meglio”, “darti emozioni”, accompagnarti nella giornata con statistiche, aggiornamenti, quiz, contenuti esclusivi. E’ il “nuovo modo di vivere il calcio”. Lo spot si chiude con il nome del sito; non ci sono voci. Nello spot (come nel sito promosso, https://starcasino.sport/#) non c’è nessun accenno alle scommesse o ai giochi d’azzardo, implicito nel nome (strategia analoga a Eurobet Live e Sisal Tipster, presenti in questo archivio). La pubblicità si configura quindi come la promozione di un sito di notizie (non una testata giornalistica, come indicato sul sito stesso) e quindi elude il Decreto “Dignità” (poi legge 96 del 9 agosto 2018) e le linee guida dell’AGCOM, che vietano la pubblicità dell’azzardo. Utilizzabile in un blocco di spot commerciali che promuovono l’azzardo e/o con altri spot che promuovono situazioni “al confine” come shopping, trading online, aste al ribasso, in una logica di gamblification.",
+    "dataInserimento": "2025-10-12"
   },
   {
     "id": "HD1921-59",
@@ -5852,7 +6269,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "EARLY ADOPTERS. Spot interamente in inglese, con sottotitoli in inglese su Youtube. Un gruppo di uomini primitivi reagisce in modo diverso alle invenzioni che portano alla ruota: alcuni la supportano, altri la denigrano, ritenendola “innaturale” o dicendo di non volesri far catturare dall’hype. Le innovazioni, intanto, proseguono: dalle palle di pietra alla ruota singola, a due ruote attaccate da un palo, fino, nel finale, ad un prototipo di veicolo a quattro ruote. In chiusura una voce over maschile ci ricorda che a volte il futuro è proprio davanti a te, se sei pronto per esso. Su queste parole compare la scritta “Wealthsimple Crypto”. Si tratta di una pubblicità di un’agenzia finanziaria che propone investimenti in cryptovalute. Non si tratta quindi di azzardo, ma di un investimento che viene promosso con il messaggio che, se non aderisci, rimarrai fuori dal progresso. Lo spot è stato utilizzato in formazione e in classe insieme ad altre pubblicità che promuovono situazioni “al confine” con l’azzardo come shopping, trading online, aste al ribasso, in una logica di gamblification."
+    "description": "EARLY ADOPTERS. Spot interamente in inglese, con sottotitoli in inglese su Youtube. Un gruppo di uomini primitivi reagisce in modo diverso alle invenzioni che portano alla ruota: alcuni la supportano, altri la denigrano, ritenendola “innaturale” o dicendo di non volesri far catturare dall’hype. Le innovazioni, intanto, proseguono: dalle palle di pietra alla ruota singola, a due ruote attaccate da un palo, fino, nel finale, ad un prototipo di veicolo a quattro ruote. In chiusura una voce over maschile ci ricorda che a volte il futuro è proprio davanti a te, se sei pronto per esso. Su queste parole compare la scritta “Wealthsimple Crypto”. Si tratta di una pubblicità di un’agenzia finanziaria che propone investimenti in cryptovalute. Non si tratta quindi di azzardo, ma di un investimento che viene promosso con il messaggio che, se non aderisci, rimarrai fuori dal progresso. Lo spot è stato utilizzato in formazione e in classe insieme ad altre pubblicità che promuovono situazioni “al confine” con l’azzardo come shopping, trading online, aste al ribasso, in una logica di gamblification.",
+    "dataInserimento": "2025-09-17"
   },
   {
     "id": "HD1921-60",
@@ -5866,7 +6284,8 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "COPY TRADING COME LUCA Luca e Marco usano entrambi eToro per investire: la differenza è che Luca conosce il mercato, invece Marco si occupa di giocare ai videogiochi e guardare serie tv. Eppure guadagnano allo stesso modo. Perchè? Perchè Marco ha usato la funzione “copy trading” di eToro, che replica tutti gli investimenti di Luca: così quando questi guadagna vince anche Marco. La pubblicità presenta il trading come un mondo dove guadagnare facilmente, anche senza alcuna competenza. La messa in scena è contraddetta dalla scritta in sovraimpressione che compare per gli ultimi dieci secondi dello spot, che ci avvisa che il 66% degli investitori perde soldi con questi strumenti. Non si tratta quindi di azzardo, ma di un investimento altamente rischioso promosso come “vincere facile”. Lo spot è stato utilizzato in formazione e in classe insieme ad altre pubblicità che promuovono situazioni “al confine” con l’azzardo come shopping, cryptovalute, aste al ribasso, in una logica di gamblification."
+    "description": "COPY TRADING COME LUCA Luca e Marco usano entrambi eToro per investire: la differenza è che Luca conosce il mercato, invece Marco si occupa di giocare ai videogiochi e guardare serie tv. Eppure guadagnano allo stesso modo. Perchè? Perchè Marco ha usato la funzione “copy trading” di eToro, che replica tutti gli investimenti di Luca: così quando questi guadagna vince anche Marco. La pubblicità presenta il trading come un mondo dove guadagnare facilmente, anche senza alcuna competenza. La messa in scena è contraddetta dalla scritta in sovraimpressione che compare per gli ultimi dieci secondi dello spot, che ci avvisa che il 66% degli investitori perde soldi con questi strumenti. Non si tratta quindi di azzardo, ma di un investimento altamente rischioso promosso come “vincere facile”. Lo spot è stato utilizzato in formazione e in classe insieme ad altre pubblicità che promuovono situazioni “al confine” con l’azzardo come shopping, cryptovalute, aste al ribasso, in una logica di gamblification.",
+    "dataInserimento": "2024-07-16"
   },
   {
     "id": "HD1921-61",
@@ -5880,6 +6299,7 @@ export const videos = [
     "tema": "Azzardo",
     "natura": "Spot commerciale",
     "prodottoScuola": false,
-    "description": "LUCA TONI EUROPEI 2024. Luca Toni si dirige verso gli spogliatoi di un impianto sportivo, ma viene fermato due volte da persone che gli chiedono un parere sugli Europei 2024. Anche durante la partita l'arbitro interrompe il gioco per chiedergli \"Come la vedi la finale\". Toni ribatte che \"i veri appassionati vanno su Eurobet.live\", dove per ogni partita è possibile trovare informazioni e statistiche in tempo reale. Il claim finale, “Tira fuori l’esperto che è in te”, lavora sull’idea che le informazioni e le statistiche sportive rendono le scommesse più “sicure”: non è azzardo, è “esperienza” Come nel precedente spot con Luca Toni e il video di Sisal Tipster (entrambi presenti in archivio) le scommesse non vengono mai nominate: non si parla di quote o di gioco, ma solo di informazione. Questo permette anche di aggirare le restrizioni legislative sulla pubblicità dell’azzardo. Utilizzabile in un blocco di spot commerciali che promuovono l’azzardo e/o con altri spot che promuovono situazioni “al confine” come shopping, trading online, aste al ribasso, in una logica di gamblification."
+    "description": "LUCA TONI EUROPEI 2024. Luca Toni si dirige verso gli spogliatoi di un impianto sportivo, ma viene fermato due volte da persone che gli chiedono un parere sugli Europei 2024. Anche durante la partita l'arbitro interrompe il gioco per chiedergli \"Come la vedi la finale\". Toni ribatte che \"i veri appassionati vanno su Eurobet.live\", dove per ogni partita è possibile trovare informazioni e statistiche in tempo reale. Il claim finale, “Tira fuori l’esperto che è in te”, lavora sull’idea che le informazioni e le statistiche sportive rendono le scommesse più “sicure”: non è azzardo, è “esperienza” Come nel precedente spot con Luca Toni e il video di Sisal Tipster (entrambi presenti in archivio) le scommesse non vengono mai nominate: non si parla di quote o di gioco, ma solo di informazione. Questo permette anche di aggirare le restrizioni legislative sulla pubblicità dell’azzardo. Utilizzabile in un blocco di spot commerciali che promuovono l’azzardo e/o con altri spot che promuovono situazioni “al confine” come shopping, trading online, aste al ribasso, in una logica di gamblification.",
+    "dataInserimento": "2024-07-21"
   }
 ];

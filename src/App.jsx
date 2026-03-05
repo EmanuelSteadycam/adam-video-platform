@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Zap, Sparkles } from 'lucide-react';
+import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Zap, Sparkles, ArrowUpDown } from 'lucide-react';
 import Lottie from 'lottie-react';
 import { videos as videosData } from './videosData';
 
@@ -19,6 +19,24 @@ styles.textContent = `
   }
   .modal-scrollbar::-webkit-scrollbar-thumb:hover {
     opacity: 0.8;
+  }
+  @keyframes drawArrow {
+    from { stroke-dashoffset: 40; }
+    to   { stroke-dashoffset: 0; }
+  }
+  .shuffle-anim svg * {
+    stroke-dasharray: 40;
+    stroke-dashoffset: 40;
+    stroke: var(--arrow-color) !important;
+  }
+  .shuffle-anim svg :nth-child(1),
+  .shuffle-anim svg :nth-child(2) {
+    animation: drawArrow 0.6s linear forwards;
+  }
+  .shuffle-anim svg :nth-child(3),
+  .shuffle-anim svg :nth-child(4),
+  .shuffle-anim svg :nth-child(5) {
+    animation: drawArrow 0.6s linear 0.6s forwards;
   }
 `;
 document.head.appendChild(styles);
@@ -106,7 +124,11 @@ const HeroSection = ({ onVideoClick }) => {
           allowFullScreen
         />
       </div>
-      <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-black from-0% via-black via-70% to-transparent to-100%">
+      {/* Gradiente bottom */}
+      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black to-transparent" />
+      {/* Gradiente left — nero pieno sul logo, si dissolve dopo */}
+      <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-black from-50% to-transparent" />
+      <div className="absolute inset-0">
   {logoAnim && (
     <div className="absolute left-4 md:left-8 top-[20%] -translate-y-1/2 w-48 md:w-80">
   <Lottie 
@@ -122,12 +144,12 @@ const HeroSection = ({ onVideoClick }) => {
   />
 </div>
   )}
-</div>
+      </div>
     </div>
   );
 };
 
-const InspireSection = ({ onVideoClick }) => {
+const InspireSection = ({ onVideoClick, onAddToPlaylist, isInPlaylist }) => {
   const [inspireVideo, setInspireVideo] = useState(null);
   
   const getRandomVideo = () => {
@@ -164,7 +186,7 @@ const getTemaColor = (tema) => {
 
 return (
     <div className="w-full mb-8">
-      <div className="bg-zinc-900 rounded-xl">
+      <div className="bg-black rounded-xl">
         <div className="grid grid-cols-1 lg:grid-cols-2">
           <div className={`aspect-video overflow-hidden border-2 rounded-xl ${getBorderColor(inspireVideo.tema)}`}>
   <iframe
@@ -178,16 +200,41 @@ return (
           </div>
           <div className="flex flex-col items-center justify-center p-8">
             <h2 className="text-2xl md:text-3xl font-bold text-white">Lasciati Ispirare</h2>
-            <button 
+            <button
               onClick={getRandomVideo}
-              className="bg-zinc-800 text-zinc-300 p-4 rounded-full font-semibold hover:bg-zinc-700 hover:text-white transition-all mt-12 mb-5"
+              className="bg-zinc-800 p-4 rounded-full font-semibold hover:bg-zinc-700 transition-all mt-12 mb-5"
             >
-              <Shuffle size={32} />
+              <div className="relative" style={{ width: 32, height: 32 }}>
+                {/* Frecce grigie sempre visibili */}
+                <Shuffle size={32} className="text-zinc-500" />
+                {/* Frecce colorate animate sopra */}
+                <div
+                  key={inspireVideo.id}
+                  className="shuffle-anim absolute inset-0"
+                  style={{ '--arrow-color': getTemaColor(inspireVideo.tema) }}
+                >
+                  <Shuffle size={32} />
+                </div>
+              </div>
             </button>
-            <div className="mt-[30px]">
-              <span className={`${getTemaColor(inspireVideo.tema)} text-white text-xs px-3 py-1 rounded-full font-medium`}>
+            <div className="mt-[30px] flex flex-col items-center gap-4">
+              <span
+                className="text-white text-xs px-3 py-1 rounded-full font-semibold"
+                style={{ backgroundColor: getTemaColor(inspireVideo.tema) }}
+              >
                 {inspireVideo.tema}
               </span>
+              <button
+                onClick={() => onAddToPlaylist(inspireVideo)}
+                className="p-2 rounded-full transition-all"
+                style={{
+                  backgroundColor: isInPlaylist(inspireVideo.id) ? '#FFDA2A' : '#27272a',
+                  color: isInPlaylist(inspireVideo.id) ? '#000' : '#d4d4d8',
+                }}
+                title={isInPlaylist(inspireVideo.id) ? 'In playlist' : 'Aggiungi a playlist'}
+              >
+                {isInPlaylist(inspireVideo.id) ? <Check size={20} /> : <Plus size={20} />}
+              </button>
             </div>
           </div>
         </div>
@@ -204,9 +251,9 @@ const TEMA_COLORS = {
 };
 
 const FiltersSection = ({ onFilterChange, currentFilters }) => {
-  const temi = ['Tutti', 'Alcool', 'Azzardo', 'Digitale', 'Sostanze'];
   const nature = ['Tutte', 'Cortometraggio', 'Film', 'Info', 'Sequenza', 'Spot commerciale', 'Spot sociale', 'Videoclip', 'Web e social'];
   const years = ['Tutti', ...new Set(mockVideos.map(v => v.year).sort((a, b) => b - a))];
+  const [hoveredTema, setHoveredTema] = useState(null);
 
   const activeTema = currentFilters.tema;
   const activeBorderColor = TEMA_COLORS[activeTema]?.border || '#3f3f46';
@@ -222,9 +269,11 @@ const FiltersSection = ({ onFilterChange, currentFilters }) => {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => onFilterChange({ ...currentFilters, tema: 'Tutti' })}
+            onMouseEnter={() => setHoveredTema('Tutti')}
+            onMouseLeave={() => setHoveredTema(null)}
             className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-white"
             style={{
-              backgroundColor: activeTema === 'Tutti' ? '#52525b' : 'transparent',
+              backgroundColor: hoveredTema === 'Tutti' ? '#52525b' : 'transparent',
               border: '2px solid #52525b',
             }}
           >
@@ -232,15 +281,16 @@ const FiltersSection = ({ onFilterChange, currentFilters }) => {
           </button>
           {['Alcool', 'Azzardo', 'Digitale', 'Sostanze'].map(tema => {
             const c = TEMA_COLORS[tema];
-            const isActive = activeTema === tema;
             const noVideos = tema === 'Sostanze';
             return (
               <button
                 key={tema}
                 onClick={() => onFilterChange({ ...currentFilters, tema })}
+                onMouseEnter={() => setHoveredTema(tema)}
+                onMouseLeave={() => setHoveredTema(null)}
                 className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-white"
                 style={{
-                  backgroundColor: isActive ? c.solid : c.dim,
+                  backgroundColor: activeTema === tema ? c.solid : hoveredTema === tema ? c.dim : 'transparent',
                   border: `2px solid ${c.border}`,
                 }}
                 title={noVideos ? 'Nessun video disponibile' : ''}
@@ -291,10 +341,10 @@ const FiltersSection = ({ onFilterChange, currentFilters }) => {
   );
 };
 
-const NatureCarousel = ({ onSelectNature }) => {
+const NatureCarousel = ({ onSelectNature, selectedNatura }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-const natureData = [
+  const natureData = [
     { name: 'Cortometraggio', image: '/images/nature/cortometraggio.jpg', key: 'Cortometraggio' },
     { name: 'Film', image: '/images/nature/film.jpg', key: 'Film' },
     { name: 'Info', image: '/images/nature/info.jpg', key: 'Info' },
@@ -316,6 +366,57 @@ const natureData = [
   const nextSlide = () => setCurrentSlide(prev => (prev + 1) % 2);
   const prevSlide = () => setCurrentSlide(prev => (prev - 1 + 2) % 2);
 
+  // Vista con formato selezionato: tutte le card piccole, attiva evidenziata
+  if (selectedNatura && selectedNatura !== 'Tutte') {
+    return (
+      <div className="mb-8">
+        <div className="flex items-center gap-4 mb-5">
+          <button
+            onClick={() => onSelectNature('Tutte')}
+            className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
+          >
+            <ChevronLeft size={20} />
+            <span className="text-sm">Tutti i Formati</span>
+          </button>
+          <h2 className="text-2xl font-bold text-white">
+            {natureData.find(n => n.key === selectedNatura)?.name}
+          </h2>
+        </div>
+        <div className="flex gap-3 overflow-x-auto py-3 px-1">
+          {natureData.map((nat) => {
+            const isActive = nat.key === selectedNatura;
+            return (
+              <div
+                key={nat.key}
+                onClick={() => onSelectNature(nat.key)}
+                className="flex-shrink-0 cursor-pointer rounded-xl overflow-hidden transition-all duration-300 hover:scale-110"
+                style={{
+                  width: '80px',
+                  outline: isActive ? '2px solid #FFDA2A' : '2px solid transparent',
+                  opacity: isActive ? 1 : 0.45,
+                }}
+              >
+                <div className="relative aspect-[9/16]">
+                  <img src={nat.image} alt={nat.name} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                  <div className="absolute bottom-2 left-1 right-1">
+                    <p className="text-white font-semibold text-[10px] text-center leading-tight">{nat.name}</p>
+                  </div>
+                  {isActive && (
+                    <div className="absolute top-1.5 left-1.5 bg-[#FFDA2A] text-black text-[9px] px-1.5 py-0.5 rounded-full font-bold">
+                      {videoCounts[nat.key] || 0}
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // Vista carosello normale
   return (
     <div className="mb-12">
       <h2 className="text-2xl font-bold text-white mb-6">I Formati ADAM</h2>
@@ -329,13 +430,13 @@ const natureData = [
               <div key={slideIndex} className="min-w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 px-4 md:px-12">
                 {natureData.slice(slideIndex * 4, slideIndex * 4 + 4).map((nat) => (
                   <div key={nat.key} onClick={() => onSelectNature(nat.key)} className="group cursor-pointer bg-zinc-900 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl">
-  <div className="relative aspect-[9/16]">
+                    <div className="relative aspect-[9/16]">
                       <img src={nat.image} alt={nat.name} className="w-full h-full object-cover" />
                       <div className="absolute top-3 left-3 bg-[#FFDA2A] text-black text-xs px-3 py-1 rounded-full font-bold">{videoCounts[nat.key] || 0} video</div>
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                       <div className="absolute bottom-4 left-4 right-4">
-  <h3 className="text-white font-semibold text-lg md:text-[32px] text-center">{nat.name}</h3>
-</div>
+                        <h3 className="text-white font-semibold text-lg md:text-[32px] text-center">{nat.name}</h3>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -523,9 +624,9 @@ const VideoModal = ({ video, onClose }) => {
             <span
               className="px-3 py-1.5 rounded-full text-sm font-semibold"
               style={{
-                backgroundColor: TEMA_COLORS[video.tema]?.dim || 'rgba(255,218,42,0.15)',
-                color: TEMA_COLORS[video.tema]?.border || '#FFDA2A',
-                border: `1.5px solid ${TEMA_COLORS[video.tema]?.border || '#FFDA2A'}`,
+                backgroundColor: TEMA_COLORS[video.tema]?.solid || '#FFDA2A',
+                color: '#ffffff',
+                border: 'none',
               }}
             >{video.tema}</span>
             <span className="bg-blue-600/20 text-blue-400 px-3 py-1.5 rounded-full text-sm font-medium border border-blue-600/30">{video.natura}</span>
@@ -824,6 +925,7 @@ function App() {
   const [selectedTemaTag, setSelectedTemaTag] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedNatura, setSelectedNatura] = useState('Tutte');
+  const [schoolsSort, setSchoolsSort] = useState('date'); // 'date' | 'views'
   const [filters, setFilters] = useState({
     tema: 'Tutti',
     natura: 'Tutte',
@@ -878,12 +980,21 @@ function App() {
     return playlist.some(v => v.id === videoId);
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activeSection]);
+
   const filteredVideos = useMemo(() => {
     let filtered = mockVideos;
     if (searchQuery) filtered = filtered.filter(video => video.title.toLowerCase().includes(searchQuery.toLowerCase()));
     if (activeSection === 'most-viewed') filtered = [...filtered].sort((a, b) => b.views - a.views).slice(0, 20);
-    else if (activeSection === 'recent') filtered = [...filtered].slice(0, 5);
-    else if (activeSection === 'schools') filtered = filtered.filter(v => v.prodottoScuola);
+    else if (activeSection === 'recent') filtered = [...filtered].sort((a, b) => new Date(b.dataInserimento) - new Date(a.dataInserimento)).slice(0, 12);
+    else if (activeSection === 'schools') {
+      filtered = filtered.filter(v => v.prodottoScuola);
+      filtered = schoolsSort === 'views'
+        ? [...filtered].sort((a, b) => b.views - a.views)
+        : [...filtered].sort((a, b) => new Date(b.dataInserimento) - new Date(a.dataInserimento));
+    }
     if (selectedNatura !== 'Tutte') filtered = filtered.filter(v => v.natura === selectedNatura);
     
     // Applica filtri avanzati
@@ -894,7 +1005,7 @@ function App() {
     else if (filters.scuola === 'Altri') filtered = filtered.filter(v => !v.prodottoScuola);
     
     return filtered;
-  }, [searchQuery, activeSection, selectedNatura, filters]);
+  }, [searchQuery, activeSection, selectedNatura, filters, schoolsSort]);
 
   if (!isLoggedIn) {
     return (
@@ -948,7 +1059,7 @@ function App() {
       ].map(({ section, label, icon: Icon }) => (
         <li key={section}>
           <button
-            onClick={() => { setActiveSection(section); setSelectedNatura('Tutte'); setIsMobileMenuOpen(false); }}
+            onClick={() => { setActiveSection(section); setSelectedNatura('Tutte'); setFilters(f => ({ ...f, tema: 'Tutti' })); setSelectedTemaTag(null); setIsMobileMenuOpen(false); }}
             className={`w-full text-left px-4 py-3 rounded-lg transition-colors flex items-center gap-3 ${activeSection === section ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'}`}
           >
             <Icon size={18} className="flex-shrink-0" />
@@ -1219,18 +1330,42 @@ function App() {
     <FiltersSection onFilterChange={setFilters} currentFilters={filters} />
   </>
 )}
-{activeSection === 'formats' && <NatureCarousel onSelectNature={(natura) => { setSelectedNatura(natura); setActiveSection('all'); }} />}
-          {activeSection === 'inspire' && <InspireSection onVideoClick={setSelectedVideo} />}
+{activeSection === 'formats' && <NatureCarousel onSelectNature={(natura) => setSelectedNatura(natura)} selectedNatura={selectedNatura} />}
+          {activeSection === 'inspire' && <InspireSection onVideoClick={setSelectedVideo} onAddToPlaylist={addToPlaylist} isInPlaylist={isInPlaylist} />}
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-white">
-              {activeSection === 'home' && 'Esplora i Video'}
-              {activeSection === 'most-viewed' && 'I Più Visti'}
-              {activeSection === 'recent' && 'Nuovi Inseriti'}
-              {activeSection === 'schools' && 'Prodotti dalle Scuole'}
-              {activeSection === 'inspire' && 'Lasciati Ispirare'}
-              {(activeSection === 'all' || activeSection === 'formats') && selectedNatura !== 'Tutte' && selectedNatura}
-              {activeSection === 'all' && selectedNatura === 'Tutte' && 'Tutti i Video'}
-            </h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-white">
+                {activeSection === 'home' && 'Esplora i Video'}
+                {activeSection === 'most-viewed' && 'I Più Visti'}
+                {activeSection === 'recent' && 'Nuovi Inseriti'}
+                {activeSection === 'schools' && 'Prodotti dalle Scuole'}
+                {activeSection === 'inspire' && 'Lasciati Ispirare'}
+                {activeSection === 'formats' && selectedNatura !== 'Tutte' && `Formato dei video: ${selectedNatura}`}
+                {activeSection === 'formats' && selectedNatura === 'Tutte' && 'Tutti i Video'}
+                {activeSection === 'all' && selectedNatura !== 'Tutte' && selectedNatura}
+                {activeSection === 'all' && selectedNatura === 'Tutte' && 'Tutti i Video'}
+              </h2>
+              {activeSection === 'schools' && (
+                <div className="flex items-center gap-1 bg-zinc-900 p-1 rounded-lg">
+                  <button
+                    onClick={() => setSchoolsSort('date')}
+                    className="p-2 rounded-md transition-all"
+                    style={{ color: schoolsSort === 'date' ? '#FFDA2A' : '#71717a' }}
+                    title="Ordina per data inserimento"
+                  >
+                    <Clock size={18} />
+                  </button>
+                  <button
+                    onClick={() => setSchoolsSort('views')}
+                    className="p-2 rounded-md transition-all"
+                    style={{ color: schoolsSort === 'views' ? '#FFDA2A' : '#71717a' }}
+                    title="Ordina per visualizzazioni"
+                  >
+                    <Eye size={18} />
+                  </button>
+                </div>
+              )}
+            </div>
             <p className="text-zinc-400 mt-2">{filteredVideos.length} video trovati</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
