@@ -174,9 +174,9 @@ const HeroSection = ({ onVideoClick }) => {
       <div className="absolute inset-0">
   {logoAnim && (
     <div className="absolute left-4 md:left-8 top-[20%] -translate-y-1/2 w-48 md:w-80">
-  <Lottie 
-    animationData={logoAnim} 
-    loop={true} 
+  <Lottie
+    animationData={logoAnim}
+    loop={true}
     autoplay={true}
     lottieRef={lottieRef}
     onComplete={() => {
@@ -185,6 +185,13 @@ const HeroSection = ({ onVideoClick }) => {
       }
     }}
   />
+  <div className="mt-2 pl-1 flex flex-col gap-0.5">
+    {['ARCHIVIO', 'DIGITALE', 'ADDICTION E', 'MEDIA'].map((word) => (
+      <span key={word} className="text-white/50 text-[11px] md:text-[13px] tracking-[0.25em] uppercase leading-tight font-light">
+        <span style={{ color: '#FFDA2A' }}>{word[0]}</span>{word.slice(1)}
+      </span>
+    ))}
+  </div>
 </div>
   )}
       </div>
@@ -431,8 +438,8 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
 
   return (
     <div
-      className="bg-zinc-900 rounded-xl p-6 mb-8 transition-all duration-300"
-      style={{ borderTop: `3px solid ${activeTema !== 'Tutti' ? activeBorderColor : 'transparent'}` }}
+      className="bg-zinc-900 rounded-xl p-6 mb-8 transition-all duration-300 sticky z-30"
+      style={{ top: 64, borderTop: `3px solid ${activeTema !== 'Tutti' ? activeBorderColor : 'transparent'}` }}
     >
       {/* Campo di ricerca libera */}
       <div className="relative mb-5">
@@ -1205,6 +1212,8 @@ function App() {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [selectedTemaTag, setSelectedTemaTag] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [headerSearchVisible, setHeaderSearchVisible] = useState(true);
+  const carouselRef = useRef(null);
   const [selectedNatura, setSelectedNatura] = useState('Tutte');
   const [schoolsSort, setSchoolsSort] = useState('date'); // 'date' | 'views'
   const [filters, setFilters] = useState({
@@ -1265,6 +1274,17 @@ function App() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, [activeSection]);
+
+  useEffect(() => {
+    if (activeSection !== 'home') { setHeaderSearchVisible(true); return; }
+    const onScroll = () => {
+      const el = carouselRef.current;
+      const threshold = el ? el.offsetTop + el.offsetHeight / 2 : 400;
+      setHeaderSearchVisible(window.scrollY < threshold);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, [activeSection]);
 
   const filteredVideos = useMemo(() => {
@@ -1344,7 +1364,7 @@ function App() {
       <div className="bg-zinc-800 text-zinc-300 p-2 rounded-xl"><PlayCircle size={28} strokeWidth={1.5} /></div>
       <div>
         <h1 className="text-2xl font-bold text-white">ADAM</h1>
-        <p className="text-[10px] text-zinc-400">Archivio Digitale Addiction e Media</p>
+        <p className="text-[10px] text-zinc-400 tracking-wide uppercase leading-tight">Archivio Digitale<br/>Addiction e Media</p>
       </div>
     </div>
   </div>
@@ -1374,14 +1394,17 @@ function App() {
 </aside>
       <div className="lg:ml-64 flex-1">
         <header className="bg-black sticky top-0 z-40">
-  <div className="px-4 lg:px-8 py-4 flex items-center justify-between gap-2 lg:gap-6">
+  <div className="px-4 lg:px-8 py-4 flex items-center justify-between gap-2 lg:gap-6 relative">
     <button 
   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
   className="lg:hidden text-white p-2"
 >
   <Menu size={24} />
 </button>
-          <div className="flex-1 max-w-2xl hidden md:block">
+          <div
+            className="flex-1 max-w-2xl hidden md:block transition-all duration-500"
+            style={{ opacity: headerSearchVisible ? 1 : 0, pointerEvents: headerSearchVisible ? 'auto' : 'none' }}
+          >
   <div className="relative">
     {isSearchFocused && (
       <div className="absolute top-full left-0 mt-2 bg-zinc-900 rounded-lg shadow-xl py-2 min-w-[150px] z-50">
@@ -1628,7 +1651,7 @@ function App() {
         </div>
       </div>
     </div>
-    <NatureCarousel onSelectNature={(natura) => { setSelectedNatura(natura); setActiveSection('all'); }} />
+    <div ref={carouselRef}><NatureCarousel onSelectNature={(natura) => { setSelectedNatura(natura); setActiveSection('all'); }} /></div>
     <FiltersSection onFilterChange={setFilters} currentFilters={filters} searchQuery={searchQuery} onSearchChange={setSearchQuery} />
   </>
 )}
