@@ -38,6 +38,22 @@ styles.textContent = `
   .shuffle-anim svg :nth-child(5) {
     animation: drawArrow 0.6s linear 0.6s forwards;
   }
+  .dur-range {
+    -webkit-appearance: none;
+    appearance: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    cursor: pointer;
+  }
+  .dur-range:focus { outline: none; }
+  .dur-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 0; height: 0;
+  }
+  .dur-range::-webkit-slider-runnable-track { background: transparent; }
 `;
 document.head.appendChild(styles);
 
@@ -94,6 +110,33 @@ const addRandomViews = (videos) => {
 };
 
 const mockVideos = addRandomViews(videosData);
+
+const parseDuration = (dur) => {
+  if (!dur) return 0;
+  const parts = dur.split(':');
+  return parseInt(parts[0]) * 60 + (parseInt(parts[1]) || 0);
+};
+const formatDuration = (secs) => {
+  if (secs < 60) return `${secs}s`;
+  const m = Math.floor(secs / 60);
+  const s = secs % 60;
+  if (m >= 10 || s === 0) return `${m}m`;
+  return `${m}m ${s}s`;
+};
+const _allDur = mockVideos.map(v => parseDuration(v.duration)).filter(d => d > 0);
+const DUR_MAX = Math.max(..._allDur);
+
+// ID del video placeholder "non disponibile" (usato per ~19 video censurati)
+const PLACEHOLDER_VIDEO_ID = 'IbHF-SOVYJU';
+
+// Snap points dello slider: 15s step fino a 1m, 30s step fino a 10m, 1m step oltre
+const SNAP_POINTS = (() => {
+  const pts = [15, 30, 45, 60];
+  for (let s = 90; s <= Math.min(600, DUR_MAX); s += 30) pts.push(s);
+  for (let s = 660; s <= DUR_MAX; s += 60) pts.push(s);
+  if (pts[pts.length - 1] < DUR_MAX) pts.push(DUR_MAX);
+  return pts;
+})();
 
 const HeroSection = ({ onVideoClick }) => {
   const [heroVideo, setHeroVideo] = useState(null);
@@ -250,7 +293,64 @@ const TEMA_COLORS = {
   'Sostanze': { solid: '#065f46', border: '#10b981', dim: 'rgba(16,185,129,0.15)' },
 };
 
-const CustomSelect = ({ value, onChange, options }) => {
+const DualRangeSlider = ({ min, max, valueMin, valueMax, onChange, accentColor = '#FFDA2A' }) => {
+  const trackRef = useRef(null);
+  const draggingRef = useRef(null);
+  const valuesRef = useRef({ valueMin, valueMax, onChange, min, max });
+  useEffect(() => { valuesRef.current = { valueMin, valueMax, onChange, min, max }; });
+
+  const getVal = (clientX) => {
+    const rect = trackRef.current.getBoundingClientRect();
+    const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    const { min, max } = valuesRef.current;
+    return Math.round(min + ratio * (max - min));
+  };
+
+  const apply = (val) => {
+    const { valueMin, valueMax, onChange } = valuesRef.current;
+    if (draggingRef.current === 'min') onChange(Math.min(val, valueMax - 1), valueMax);
+    else onChange(valueMin, Math.max(val, valueMin + 1));
+  };
+
+  const onPointerDown = (e) => {
+    const val = getVal(e.clientX);
+    const { valueMin, valueMax } = valuesRef.current;
+    draggingRef.current = Math.abs(val - valueMin) <= Math.abs(val - valueMax) ? 'min' : 'max';
+    apply(val);
+    e.preventDefault();
+  };
+
+  useEffect(() => {
+    const onMove = (e) => { if (draggingRef.current) apply(getVal(e.clientX)); };
+    const onUp = () => { draggingRef.current = null; };
+    document.addEventListener('pointermove', onMove);
+    document.addEventListener('pointerup', onUp);
+    return () => { document.removeEventListener('pointermove', onMove); document.removeEventListener('pointerup', onUp); };
+  }, []);
+
+  const pct = (v) => ((v - min) / (max - min)) * 100;
+  const minPct = pct(valueMin);
+  const maxPct = pct(valueMax);
+
+  return (
+    <div
+      ref={trackRef}
+      className="relative select-none"
+      style={{ height: 28, cursor: 'pointer', touchAction: 'none' }}
+      onPointerDown={onPointerDown}
+    >
+      <div className="absolute top-1/2 -translate-y-1/2 w-full h-1 bg-zinc-700 rounded-full" />
+      <div
+        className="absolute top-1/2 -translate-y-1/2 h-1 rounded-full"
+        style={{ left: `${minPct}%`, right: `${100 - maxPct}%`, backgroundColor: accentColor }}
+      />
+      <div className="absolute top-1/2 -translate-y-1/2 w-4 h-4 border-2 border-zinc-900 rounded-full pointer-events-none" style={{ left: `calc(${minPct}% - 8px)`, backgroundColor: accentColor }} />
+      <div className="absolute top-1/2 -translate-y-1/2 w-4 h-4 border-2 border-zinc-900 rounded-full pointer-events-none" style={{ left: `calc(${maxPct}% - 8px)`, backgroundColor: accentColor }} />
+    </div>
+  );
+};
+
+const CustomSelect = ({ value, onChange, options, accentColor = '#FFDA2A' }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -284,7 +384,7 @@ const CustomSelect = ({ value, onChange, options }) => {
               key={o.value}
               onClick={() => { onChange(o.value); setOpen(false); }}
               className="w-full text-left px-4 py-2.5 text-sm hover:bg-zinc-700 transition-colors flex items-center justify-between"
-              style={{ color: o.value === value ? '#FFDA2A' : '#ffffff' }}
+              style={{ color: o.value === value ? accentColor : '#ffffff' }}
             >
               {o.label}
               {o.value === value && <Check size={14} className="flex-shrink-0" />}
@@ -296,7 +396,7 @@ const CustomSelect = ({ value, onChange, options }) => {
   );
 };
 
-const FiltersSection = ({ onFilterChange, currentFilters }) => {
+const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchChange }) => {
   const nature = ['Tutte', 'Cortometraggio', 'Film', 'Info', 'Sequenza', 'Spot commerciale', 'Spot sociale', 'Videoclip', 'Web e social'];
   const years = ['Tutti', ...new Set(mockVideos.map(v => v.year).sort((a, b) => b - a))];
   const [hoveredTema, setHoveredTema] = useState(null);
@@ -304,19 +404,53 @@ const FiltersSection = ({ onFilterChange, currentFilters }) => {
 
   const activeTema = currentFilters.tema;
   const activeBorderColor = TEMA_COLORS[activeTema]?.border || '#3f3f46';
+  const accentColor = TEMA_COLORS[activeTema]?.border ?? '#FFDA2A';
 
   // Conta filtri avanzati attivi
+  const durActive = currentFilters.durationMin !== SNAP_POINTS[0] || currentFilters.durationMax !== SNAP_POINTS[SNAP_POINTS.length - 1];
   const advancedCount = [
     currentFilters.natura !== 'Tutte',
     currentFilters.year !== 'Tutti',
     currentFilters.scuola !== 'Tutti',
+    durActive,
   ].filter(Boolean).length;
+
+  const hasAnyFilter = activeTema !== 'Tutti' || advancedCount > 0 || searchQuery;
+
+  const resetAll = () => {
+    onFilterChange({ tema: 'Tutti', natura: 'Tutte', year: 'Tutti', scuola: 'Tutti', durationMin: SNAP_POINTS[0], durationMax: SNAP_POINTS[SNAP_POINTS.length - 1] });
+    onSearchChange('');
+  };
+
+  // Chips filtri avanzati attivi (visibili anche col pannello chiuso)
+  const activeChips = [];
+  if (currentFilters.natura !== 'Tutte') activeChips.push({ label: currentFilters.natura, clear: () => onFilterChange({ ...currentFilters, natura: 'Tutte' }) });
+  if (currentFilters.year !== 'Tutti') activeChips.push({ label: `Anno: ${currentFilters.year}`, clear: () => onFilterChange({ ...currentFilters, year: 'Tutti' }) });
+  if (currentFilters.scuola !== 'Tutti') activeChips.push({ label: currentFilters.scuola === 'Scuole' ? 'Solo Scuole' : 'Escl. Scuole', clear: () => onFilterChange({ ...currentFilters, scuola: 'Tutti' }) });
+  if (durActive) activeChips.push({ label: `${formatDuration(currentFilters.durationMin)} – ${formatDuration(currentFilters.durationMax)}`, clear: () => onFilterChange({ ...currentFilters, durationMin: SNAP_POINTS[0], durationMax: SNAP_POINTS[SNAP_POINTS.length - 1] }) });
 
   return (
     <div
       className="bg-zinc-900 rounded-xl p-6 mb-8 transition-all duration-300"
       style={{ borderTop: `3px solid ${activeTema !== 'Tutti' ? activeBorderColor : 'transparent'}` }}
     >
+      {/* Campo di ricerca libera */}
+      <div className="relative mb-5">
+        <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" />
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => onSearchChange(e.target.value)}
+          placeholder="Cerca video"
+          className="w-full bg-zinc-800 border border-zinc-700 rounded-lg pl-11 pr-10 py-2.5 text-sm text-white placeholder-zinc-500 outline-none focus:border-zinc-500 transition-colors"
+        />
+        {searchQuery && (
+          <button onClick={() => onSearchChange('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors">
+            <X size={16} />
+          </button>
+        )}
+      </div>
+
       {/* Tema + toggle filtri avanzati sulla stessa riga */}
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div className="flex flex-wrap gap-2">
@@ -326,7 +460,7 @@ const FiltersSection = ({ onFilterChange, currentFilters }) => {
             onMouseLeave={() => setHoveredTema(null)}
             className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-white"
             style={{
-              backgroundColor: hoveredTema === 'Tutti' ? '#52525b' : 'transparent',
+              backgroundColor: activeTema === 'Tutti' ? '#52525b' : hoveredTema === 'Tutti' ? '#3f3f46' : 'transparent',
               border: '2px solid #52525b',
             }}
           >
@@ -354,55 +488,134 @@ const FiltersSection = ({ onFilterChange, currentFilters }) => {
           })}
         </div>
 
-        {/* Bottone Filtri avanzati */}
-        <button
-          onClick={() => setShowAdvanced(v => !v)}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 relative"
-          style={{
-            backgroundColor: showAdvanced || advancedCount > 0 ? '#27272a' : 'transparent',
-            border: '2px solid #3f3f46',
-            color: advancedCount > 0 ? '#FFDA2A' : '#a1a1aa',
-          }}
-        >
-          <SlidersHorizontal size={16} />
-          <span>Filtri avanzati</span>
-          {advancedCount > 0 && (
-            <span className="bg-[#FFDA2A] text-black text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
-              {advancedCount}
-            </span>
+        <div className="flex items-center gap-2">
+          {/* Bottone Filtri avanzati */}
+          <button
+            onClick={() => setShowAdvanced(v => !v)}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200"
+            style={{
+              backgroundColor: showAdvanced || advancedCount > 0 ? '#27272a' : 'transparent',
+              border: '2px solid #3f3f46',
+              color: '#a1a1aa',
+            }}
+          >
+            <SlidersHorizontal size={16} style={{ color: showAdvanced ? accentColor : 'inherit' }} />
+            <span>Filtri avanzati</span>
+            {advancedCount > 0 && (
+              <span className="text-black text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: accentColor }}>
+                {advancedCount}
+              </span>
+            )}
+            <ChevronDown size={14} className="transition-transform duration-200" style={{ transform: showAdvanced ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          </button>
+
+          {/* Azzera tutto */}
+          {hasAnyFilter && (
+            <button
+              onClick={resetAll}
+              className="flex items-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-medium text-zinc-400 transition-colors"
+              style={{ border: '2px solid #3f3f46' }}
+            >
+              <X size={14} style={{ color: accentColor }} />
+              Azzera
+            </button>
           )}
-          <ChevronDown size={14} className="transition-transform duration-200" style={{ transform: showAdvanced ? 'rotate(180deg)' : 'rotate(0deg)' }} />
-        </button>
+        </div>
       </div>
+
+      {/* Chips filtri avanzati attivi */}
+      {activeChips.length > 0 && (
+        <div className="flex flex-wrap gap-2 mt-3">
+          {activeChips.map((chip) => (
+            <span
+              key={chip.label}
+              className="flex items-center gap-1.5 text-xs px-3 py-1 rounded-full bg-zinc-800 border border-zinc-700"
+              style={{ color: accentColor }}
+            >
+              {chip.label}
+              <button onClick={chip.clear} className="hover:text-white transition-colors">
+                <X size={12} />
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
 
       {/* Filtri avanzati espandibili */}
       {showAdvanced && (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-5 pt-5 border-t border-zinc-800">
-          {[
-            {
-              label: 'Formato',
-              value: currentFilters.natura,
-              onChange: (v) => onFilterChange({ ...currentFilters, natura: v }),
-              options: nature.map(n => ({ value: n, label: n })),
-            },
-            {
-              label: 'Anno',
-              value: currentFilters.year,
-              onChange: (v) => onFilterChange({ ...currentFilters, year: v }),
-              options: years.map(y => ({ value: y, label: y })),
-            },
-            {
-              label: 'Prodotto da',
-              value: currentFilters.scuola,
-              onChange: (v) => onFilterChange({ ...currentFilters, scuola: v }),
-              options: [{ value: 'Tutti', label: 'Tutti' }, { value: 'Scuole', label: 'Solo Scuole' }, { value: 'Altri', label: 'Altri' }],
-            },
-          ].map(({ label, value, onChange, options }) => (
-            <div key={label}>
-              <label className="block text-sm font-medium text-zinc-400 mb-2">{label}</label>
-              <CustomSelect value={value} onChange={onChange} options={options} />
+        <div className="mt-5 pt-5 border-t border-zinc-800 space-y-5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {[
+              {
+                label: 'Formato',
+                value: currentFilters.natura,
+                onChange: (v) => onFilterChange({ ...currentFilters, natura: v }),
+                options: nature.map(n => ({ value: n, label: n })),
+              },
+              {
+                label: 'Anno',
+                value: currentFilters.year,
+                onChange: (v) => onFilterChange({ ...currentFilters, year: v }),
+                options: years.map(y => ({ value: y, label: y })),
+              },
+            ].map(({ label, value, onChange, options }) => (
+              <div key={label}>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">{label}</label>
+                <CustomSelect value={value} onChange={onChange} options={options} accentColor={accentColor} />
+              </div>
+            ))}
+
+            {/* Prodotto dalle scuole — toggle visivo */}
+            <div>
+              <label className="block text-sm font-medium text-zinc-400 mb-2">Prodotto dalle scuole</label>
+              <div className="flex gap-2">
+                {[
+                  { value: 'Tutti', label: 'Tutti' },
+                  { value: 'Scuole', label: 'Sì', icon: <School size={14} /> },
+                  { value: 'Altri', label: 'No', icon: <School size={14} className="opacity-40" /> },
+                ].map(({ value, label, icon }) => {
+                  const active = currentFilters.scuola === value;
+                  return (
+                    <button
+                      key={value}
+                      onClick={() => onFilterChange({ ...currentFilters, scuola: value })}
+                      className="flex items-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200"
+                      style={{
+                        backgroundColor: active ? '#27272a' : 'transparent',
+                        border: `2px solid ${active ? accentColor : '#3f3f46'}`,
+                        color: active ? accentColor : '#a1a1aa',
+                      }}
+                    >
+                      {icon}
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          ))}
+          </div>
+
+          {/* Slider durata */}
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <label className="text-sm font-medium text-zinc-400">Durata</label>
+              <span className="text-sm font-medium" style={{ color: accentColor }}>
+                {formatDuration(currentFilters.durationMin)} – {formatDuration(currentFilters.durationMax)}
+              </span>
+            </div>
+            <DualRangeSlider
+              min={0}
+              max={SNAP_POINTS.length - 1}
+              valueMin={Math.max(0, SNAP_POINTS.indexOf(currentFilters.durationMin))}
+              valueMax={SNAP_POINTS.indexOf(currentFilters.durationMax) === -1 ? SNAP_POINTS.length - 1 : SNAP_POINTS.indexOf(currentFilters.durationMax)}
+              onChange={(mn, mx) => onFilterChange({ ...currentFilters, durationMin: SNAP_POINTS[mn], durationMax: SNAP_POINTS[mx] })}
+              accentColor={accentColor}
+            />
+            <div className="flex justify-between mt-2 text-xs text-zinc-500">
+              <span>{formatDuration(SNAP_POINTS[0])}</span>
+              <span>{formatDuration(SNAP_POINTS[SNAP_POINTS.length - 1])}</span>
+            </div>
+          </div>
         </div>
       )}
     </div>
@@ -998,7 +1211,9 @@ function App() {
     tema: 'Tutti',
     natura: 'Tutte',
     year: 'Tutti',
-    scuola: 'Tutti'
+    scuola: 'Tutti',
+    durationMin: SNAP_POINTS[0],
+    durationMax: SNAP_POINTS[SNAP_POINTS.length - 1],
   });
   const [playlist, setPlaylist] = useState([]);
   const [showPlaylist, setShowPlaylist] = useState(false);
@@ -1054,7 +1269,13 @@ function App() {
 
   const filteredVideos = useMemo(() => {
     let filtered = mockVideos;
-    if (searchQuery) filtered = filtered.filter(video => video.title.toLowerCase().includes(searchQuery.toLowerCase()));
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      filtered = filtered.filter(video =>
+        video.title.toLowerCase().includes(q) ||
+        (video.description && video.description.toLowerCase().includes(q))
+      );
+    }
     if (activeSection === 'most-viewed') filtered = [...filtered].sort((a, b) => b.views - a.views).slice(0, 20);
     else if (activeSection === 'recent') filtered = [...filtered].sort((a, b) => new Date(b.dataInserimento) - new Date(a.dataInserimento)).slice(0, 12);
     else if (activeSection === 'schools') {
@@ -1071,7 +1292,20 @@ function App() {
     if (filters.year !== 'Tutti') filtered = filtered.filter(v => v.year === parseInt(filters.year));
     if (filters.scuola === 'Scuole') filtered = filtered.filter(v => v.prodottoScuola);
     else if (filters.scuola === 'Altri') filtered = filtered.filter(v => !v.prodottoScuola);
-    
+    const durMinActive = filters.durationMin > SNAP_POINTS[0];
+    const durMaxActive = filters.durationMax < SNAP_POINTS[SNAP_POINTS.length - 1];
+    if (durMinActive || durMaxActive) {
+      filtered = filtered.filter(v => {
+        const d = parseDuration(v.duration);
+        if (d === 0) return false; // durata 0:00 = video eliminato/privato
+        if (getYouTubeID(v.youtubeUrl) === PLACEHOLDER_VIDEO_ID) return false; // video non disponibile
+        if (durMinActive && d < filters.durationMin) return false;
+        if (durMaxActive && d > filters.durationMax) return false;
+        return true;
+      });
+      filtered = [...filtered].sort((a, b) => parseDuration(a.duration) - parseDuration(b.duration));
+    }
+
     return filtered;
   }, [searchQuery, activeSection, selectedNatura, filters, schoolsSort]);
 
@@ -1395,7 +1629,7 @@ function App() {
       </div>
     </div>
     <NatureCarousel onSelectNature={(natura) => { setSelectedNatura(natura); setActiveSection('all'); }} />
-    <FiltersSection onFilterChange={setFilters} currentFilters={filters} />
+    <FiltersSection onFilterChange={setFilters} currentFilters={filters} searchQuery={searchQuery} onSearchChange={setSearchQuery} />
   </>
 )}
 {activeSection === 'formats' && <NatureCarousel onSelectNature={(natura) => setSelectedNatura(natura)} selectedNatura={selectedNatura} />}
