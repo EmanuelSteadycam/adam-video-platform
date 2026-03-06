@@ -415,11 +415,22 @@ const CustomSelect = ({ value, onChange, options, accentColor = '#FFDA2A' }) => 
   );
 };
 
-const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchChange }) => {
+const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchChange, onSearchSubmit }) => {
   const nature = ['Tutte', 'Cortometraggio', 'Film', 'Info', 'Sequenza', 'Spot commerciale', 'Spot sociale', 'Videoclip', 'Web e social'];
   const years = ['Tutti', ...new Set(mockVideos.map(v => v.year).sort((a, b) => b - a))];
   const [hoveredTema, setHoveredTema] = useState(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [stickyTop, setStickyTop] = useState(72);
+
+  useEffect(() => {
+    const measure = () => {
+      const h = document.querySelector('header')?.offsetHeight;
+      if (h) setStickyTop(h);
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, []);
 
   const activeTema = currentFilters.tema;
   const activeBorderColor = TEMA_COLORS[activeTema]?.border || '#3f3f46';
@@ -450,9 +461,14 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
 
   return (
     <div
-      className="bg-zinc-900 rounded-xl p-6 mb-8 transition-all duration-300 sticky z-30"
-      style={{ top: 64, borderTop: `3px solid ${activeTema !== 'Tutti' ? activeBorderColor : 'transparent'}` }}
+      data-filters-section
+      className="sticky z-30 bg-black mb-8"
+      style={{ top: stickyTop }}
     >
+      <div className="bg-zinc-900 rounded-xl overflow-hidden transition-all duration-300">
+      {/* Striscia colorata tema */}
+      <div className="h-[3px] transition-colors duration-300" style={{ backgroundColor: activeTema !== 'Tutti' ? activeBorderColor : 'transparent' }} />
+      <div className="p-6">
       {/* Campo di ricerca libera */}
       <div className="relative mb-5">
         <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" />
@@ -460,6 +476,7 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
           type="text"
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
+          onKeyDown={(e) => { if (e.key === 'Enter') onSearchSubmit?.(); }}
           placeholder="Cerca video"
           className="w-full bg-zinc-800 border border-zinc-700 rounded-lg pl-11 pr-10 py-2.5 text-sm text-white placeholder-zinc-500 outline-none focus:border-zinc-500 transition-colors"
         />
@@ -637,6 +654,8 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
           </div>
         </div>
       )}
+      </div>
+      </div>
     </div>
   );
 };
@@ -1227,6 +1246,7 @@ function App() {
   const headerSearchRef = useRef(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const carouselRef = useRef(null);
+  const resultsRef = useRef(null);
   const [selectedNatura, setSelectedNatura] = useState('Tutte');
   const [schoolsSort, setSchoolsSort] = useState('date'); // 'date' | 'views'
   const [filters, setFilters] = useState({
@@ -1241,6 +1261,30 @@ function App() {
   const [showPlaylist, setShowPlaylist] = useState(false);
   const [playingPlaylist, setPlayingPlaylist] = useState(false);
   const [currentPlaylistIndex, setCurrentPlaylistIndex] = useState(0);
+
+  // Scroll ai risultati — posizione calcolata dinamicamente sotto header + FiltersSection sticky
+  const scrollToResults = () => {
+    if (!resultsRef.current) return;
+    const headerH = document.querySelector('header')?.offsetHeight ?? 72;
+    const filterSection = document.querySelector('[data-filters-section]');
+    const filterHeight = filterSection?.offsetHeight ?? 160;
+    const offset = headerH + filterHeight + 8; // header fisso + sezione filtri sticky + gap
+    const elementTop = resultsRef.current.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top: elementTop - offset, behavior: 'smooth' });
+  };
+
+  // Scolla ai risultati solo quando cambiano i filtri (bottoni/dropdown), NON ad ogni carattere digitato
+  useEffect(() => {
+    if (activeSection !== 'home') return;
+    const hasActiveFilter =
+      filters.tema !== 'Tutti' ||
+      filters.natura !== 'Tutte' ||
+      filters.year !== 'Tutti' ||
+      filters.scuola !== 'Tutti' ||
+      filters.durationMin !== SNAP_POINTS[0] ||
+      filters.durationMax !== SNAP_POINTS[SNAP_POINTS.length - 1];
+    if (hasActiveFilter) setTimeout(scrollToResults, 50);
+  }, [filters]);
 
   // Carica playlist all'avvio
   useEffect(() => {
@@ -1499,13 +1543,13 @@ function App() {
           {activeSection === 'home' && (
   <>
     <HeroSection onVideoClick={setSelectedVideo} />
-    <FiltersSection onFilterChange={setFilters} currentFilters={filters} searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+    <FiltersSection onFilterChange={setFilters} currentFilters={filters} searchQuery={searchQuery} onSearchChange={setSearchQuery} onSearchSubmit={scrollToResults} />
     <div ref={carouselRef}><NatureCarousel onSelectNature={(natura) => { setSelectedNatura(natura); setActiveSection('all'); }} /></div>
   </>
 )}
 {activeSection === 'formats' && <NatureCarousel onSelectNature={(natura) => setSelectedNatura(natura)} selectedNatura={selectedNatura} />}
           {activeSection === 'inspire' && <InspireSection onVideoClick={setSelectedVideo} onAddToPlaylist={addToPlaylist} isInPlaylist={isInPlaylist} />}
-          <div className="mb-6">
+          <div ref={resultsRef} className="mb-6">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-white">
                 {activeSection === 'home' && 'Esplora i Video'}
@@ -1541,7 +1585,7 @@ function App() {
             </div>
             <p className="text-zinc-400 mt-2">{filteredVideos.length} video trovati</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" style={{ minHeight: '60vh' }}>
             {filteredVideos.map(video => <VideoCard key={video.id} video={video} onClick={() => setSelectedVideo(video)} onAddToPlaylist={addToPlaylist} isInPlaylist={isInPlaylist(video.id)} />)}
           </div>
           {filteredVideos.length === 0 && (
