@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Zap, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown, Send, ShieldCheck, AlertCircle, Loader2, LogIn, Film, BookOpen, Pencil, Trash2, Save, RotateCcw, Archive } from 'lucide-react';
 import Lottie from 'lottie-react';
-import { videos as videosData } from './videosData';
 import { supabase } from './supabase';
 
 // Aggiungi gli stili per la scrollbar custom
@@ -118,8 +117,6 @@ const addRandomViews = (videos) => {
   }));
 };
 
-const mockVideos = addRandomViews(videosData);
-
 const extractYouTubeId = (url) => {
   if (!url) return null;
   const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([^&\n?#]+)/);
@@ -155,8 +152,7 @@ const formatDuration = (secs) => {
   if (m >= 10 || s === 0) return `${m}m`;
   return `${m}m ${s}s`;
 };
-const _allDur = mockVideos.map(v => parseDuration(v.duration)).filter(d => d > 0);
-const DUR_MAX = Math.max(..._allDur);
+const DUR_MAX = 5400; // 90 minuti — copre il massimo del dataset (film ~88 min)
 
 // ID del video placeholder "non disponibile" (usato per ~19 video censurati)
 const PLACEHOLDER_VIDEO_ID = 'IbHF-SOVYJU';
@@ -170,18 +166,21 @@ const SNAP_POINTS = (() => {
   return pts;
 })();
 
-const HeroSection = ({ onVideoClick }) => {
+const HeroSection = ({ onVideoClick, videos = [] }) => {
   const [heroVideo, setHeroVideo] = useState(null);
   const [logoAnim, setLogoAnim] = useState(null);
   const lottieRef = useRef(null);
-  
+
   useEffect(() => {
-    setHeroVideo(mockVideos[Math.floor(Math.random() * mockVideos.length)]);
     fetch('/logo-animation.json')
       .then(response => response.json())
       .then(data => setLogoAnim(data))
       .catch(err => console.error('Errore caricamento logo:', err));
   }, []);
+
+  useEffect(() => {
+    if (!heroVideo && videos.length > 0) setHeroVideo(videos[Math.floor(Math.random() * videos.length)]);
+  }, [videos.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!heroVideo) return null;
 
@@ -235,16 +234,16 @@ const HeroSection = ({ onVideoClick }) => {
   );
 };
 
-const InspireSection = ({ onVideoClick, onAddToPlaylist, isInPlaylist }) => {
+const InspireSection = ({ onVideoClick, onAddToPlaylist, isInPlaylist, videos = [] }) => {
   const [inspireVideo, setInspireVideo] = useState(null);
-  
+
   const getRandomVideo = () => {
-    setInspireVideo(mockVideos[Math.floor(Math.random() * mockVideos.length)]);
+    if (videos.length > 0) setInspireVideo(videos[Math.floor(Math.random() * videos.length)]);
   };
 
   useEffect(() => {
-    getRandomVideo();
-  }, []);
+    if (!inspireVideo && videos.length > 0) getRandomVideo();
+  }, [videos.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!inspireVideo) return null;
 
@@ -439,7 +438,7 @@ const CustomSelect = ({ value, onChange, options, accentColor = '#FFDA2A' }) => 
   );
 };
 
-const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchChange, onSearchSubmit, videos = mockVideos }) => {
+const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchChange, onSearchSubmit, videos = [] }) => {
   const nature = ['Tutte', 'Cortometraggio', 'Film', 'Info', 'Sequenza', 'Spot commerciale', 'Spot sociale', 'Videoclip', 'Web e social'];
   const years = ['Tutti', ...new Set(videos.map(v => v.year).filter(Boolean).sort((a, b) => b - a))];
   const [hoveredTema, setHoveredTema] = useState(null);
@@ -684,7 +683,7 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
   );
 };
 
-const NatureCarousel = ({ onSelectNature, selectedNatura, videos = mockVideos }) => {
+const NatureCarousel = ({ onSelectNature, selectedNatura, videos = [] }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const natureData = [
@@ -1730,6 +1729,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const [expandedId, setExpandedId] = useState(null);
   const [editForms, setEditForms] = useState({});
   const [actionLoading, setActionLoading] = useState(null);
+  const [approveError, setApproveError] = useState(null);
 
   // Tab
   const [activeTab, setActiveTab] = useState('pending');
@@ -1820,29 +1820,37 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
 
   const handleApprove = async (sub) => {
     const edited = { ...sub, ...(editForms[sub.id] || {}) };
-    if (!edited.codice?.trim()) return; // codice obbligatorio
+    if (!edited.codice?.trim()) { setApproveError(sub.id + ':Il campo Codice è obbligatorio'); return; }
     const ytId = extractYouTubeId(edited.youtube_url);
     setActionLoading(sub.id + '_approve');
-    const [{ error: subErr }, { error: vidErr }] = await Promise.all([
-      supabase.from('video_submissions').update({ status: 'approved' }).eq('id', sub.id),
-      supabase.from('videos').insert({
-        id: edited.codice.trim(),
-        title: edited.title,
-        youtube_url: edited.youtube_url || null,
-        thumbnail: ytId ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` : null,
-        duration: edited.duration || '0:00',
-        year: edited.year ? parseInt(edited.year) : null,
-        views: 0,
-        formato: edited.formato || 'orizzontale',
-        tema: edited.tema || null,
-        natura: edited.natura || null,
-        prodotto_scuola: edited.prodotto_scuola || false,
-        description: edited.description || null,
-        codice: edited.codice.trim(),
-        data_inserimento: new Date().toISOString().split('T')[0],
-      }),
-    ]);
-    if (!subErr && !vidErr) {
+    setApproveError(null);
+    // 1. Inserisci il video
+    const { error: vidErr } = await supabase.from('videos').upsert({
+      id: edited.codice.trim(),
+      title: edited.title,
+      youtube_url: edited.youtube_url || null,
+      thumbnail: ytId ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` : null,
+      duration: edited.duration || '0:00',
+      year: edited.year ? parseInt(edited.year) : null,
+      views: 0,
+      formato: edited.formato || 'orizzontale',
+      tema: edited.tema || null,
+      natura: edited.natura || null,
+      prodotto_scuola: edited.prodotto_scuola || false,
+      description: edited.description || null,
+      codice: edited.codice.trim(),
+      data_inserimento: new Date().toISOString().split('T')[0],
+    });
+    if (vidErr) {
+      setApproveError(sub.id + ':Errore inserimento video: ' + vidErr.message);
+      setActionLoading(null);
+      return;
+    }
+    // 2. Solo se il video è stato salvato, aggiorna lo status della segnalazione
+    const { error: subErr } = await supabase.from('video_submissions').update({ status: 'approved' }).eq('id', sub.id);
+    if (subErr) {
+      setApproveError(sub.id + ':Video salvato, ma errore aggiornamento segnalazione: ' + subErr.message);
+    } else {
       setSubmissions(prev => prev.filter(s => s.id !== sub.id));
       onVideoApproved?.();
     }
@@ -2170,13 +2178,18 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                             {(() => {
                               const hasCodice = (subForm.codice ?? '').trim().length > 0;
                               return (
-                                <button onClick={() => handleApprove(sub)}
-                                  disabled={actionLoading === sub.id + '_approve' || !hasCodice}
-                                  title={!hasCodice ? 'Imposta il Codice file fisico nel form di modifica prima di approvare' : ''}
-                                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-[#FFDA2A] text-white hover:bg-[#FFDA2A]/10 transition-all disabled:opacity-40 disabled:cursor-not-allowed">
-                                  {actionLoading === sub.id + '_approve' ? <Loader2 size={12} className="animate-spin text-[#FFDA2A]" /> : <Check size={12} className="text-[#FFDA2A]" />}
-                                  Approva{!hasCodice && <span className="text-[10px] text-zinc-500 ml-0.5">(codice mancante)</span>}
-                                </button>
+                                <>
+                                  <button onClick={() => handleApprove(sub)}
+                                    disabled={actionLoading === sub.id + '_approve' || !hasCodice}
+                                    title={!hasCodice ? 'Imposta il Codice file fisico nel form di modifica prima di approvare' : ''}
+                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-[#FFDA2A] text-white hover:bg-[#FFDA2A]/10 transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                                    {actionLoading === sub.id + '_approve' ? <Loader2 size={12} className="animate-spin text-[#FFDA2A]" /> : <Check size={12} className="text-[#FFDA2A]" />}
+                                    Approva{!hasCodice && <span className="text-[10px] text-zinc-500 ml-0.5">(codice mancante)</span>}
+                                  </button>
+                                  {approveError?.startsWith(sub.id + ':') && (
+                                    <span className="text-xs text-red-400 ml-1">{approveError.slice(sub.id.length + 1)}</span>
+                                  )}
+                                </>
                               );
                             })()}
                             <button onClick={() => { setExpandedId(isExpanded ? null : sub.id); if (!editForms[sub.id]) setEditForms(prev => ({ ...prev, [sub.id]: {} })); }}
@@ -2686,8 +2699,7 @@ function App() {
 
   useEffect(() => { loadVideos(); }, []);
 
-  // Fallback ai dati statici durante il caricamento iniziale
-  const allVideos = useMemo(() => dbVideos.length > 0 ? dbVideos : mockVideos, [dbVideos]);
+  const allVideos = useMemo(() => dbVideos, [dbVideos]);
 
   // ─── Auth Supabase ────────────────────────────────────────────────────────────
   const loadProfile = async (userId) => {
@@ -3058,13 +3070,13 @@ function App() {
         <main className="p-4 md:p-8 bg-black">
           {activeSection === 'home' && (
   <>
-    <HeroSection onVideoClick={setSelectedVideo} />
+    <HeroSection onVideoClick={setSelectedVideo} videos={allVideos} />
     <FiltersSection onFilterChange={setFilters} currentFilters={filters} searchQuery={searchQuery} onSearchChange={setSearchQuery} onSearchSubmit={scrollToResults} videos={allVideos} />
     <div ref={carouselRef}><NatureCarousel onSelectNature={(natura) => { setSelectedNatura(natura); setActiveSection('all'); }} videos={allVideos} /></div>
   </>
 )}
 {activeSection === 'formats' && <NatureCarousel onSelectNature={(natura) => setSelectedNatura(natura)} selectedNatura={selectedNatura} videos={allVideos} />}
-          {activeSection === 'inspire' && <InspireSection onVideoClick={setSelectedVideo} onAddToPlaylist={handleAddToPlaylist} isInPlaylist={isInPlaylist} />}
+          {activeSection === 'inspire' && <InspireSection onVideoClick={setSelectedVideo} onAddToPlaylist={handleAddToPlaylist} isInPlaylist={isInPlaylist} videos={allVideos} />}
           {activeSection === 'submit' && <SubmitVideoSection user={user} userProfile={userProfile} onOpenAuth={() => { setAuthMode('login'); setShowAuthModal(true); }} onBack={() => setActiveSection('home')} />}
           {activeSection === 'admin' && <AdminSection userProfile={userProfile} onVideoApproved={loadVideos} allVideos={allVideos} />}
           {activeSection !== 'submit' && activeSection !== 'admin' && (
