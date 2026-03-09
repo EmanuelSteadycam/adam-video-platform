@@ -11,8 +11,9 @@ Piattaforma video per educatori sociali. Archivio di video (spot, cortometraggi,
 - **Tailwind CSS** per lo styling
 - **lucide-react** per le icone
 - **lottie-react** per l'animazione del logo nell'hero
+- **Supabase** per auth, database e storage
 - Tutto il codice è in **un unico file**: `src/App.jsx`
-- I dati video sono in `src/videosData.js` (420 video, generato automaticamente)
+- I dati video statici sono in `src/videosData.js` (420 video, generato automaticamente)
 - CSS custom iniettato via `document.createElement('style')` all'inizio di App.jsx
 
 ---
@@ -23,6 +24,7 @@ Piattaforma video per educatori sociali. Archivio di video (spot, cortometraggi,
 src/
   App.jsx          — tutto il codice React (componenti, stato, logica)
   videosData.js    — array di 420 oggetti video (generato automaticamente)
+  supabase.js      — client Supabase (createClient con env vars)
   index.css        — stili base Tailwind
   main.jsx         — entry point React
 
@@ -31,17 +33,83 @@ public/
   images/nature/             — immagini delle 8 tipologie di formato video
     cortometraggio.jpg, film.jpg, info.jpg, sequenza.jpg,
     spot-adv.jpg, spot-sociale.jpg, videoclip.jpg, web-social.jpg
+
+.env                         — VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY
+scripts/                     — script di migrazione dati
 ```
+
+---
+
+## Supabase — Backend
+
+### Variabili d'ambiente (`.env`)
+```
+VITE_SUPABASE_URL=...
+VITE_SUPABASE_ANON_KEY=...
+```
+
+### Tabelle
+
+**`profiles`**
+| Colonna | Tipo | Note |
+|---|---|---|
+| id | uuid (FK auth.users) | PK |
+| role | text | `'user'` \| `'admin'` |
+| nome | text | nome visualizzato |
+| organizzazione | text | ente/scuola |
+
+**`video_submissions`** — segnalazioni video da utenti
+| Colonna | Tipo | Note |
+|---|---|---|
+| id | uuid | PK auto |
+| user_id | uuid (FK profiles) | chi ha segnalato |
+| youtube_url | text | |
+| title | text | |
+| tema | text | |
+| natura | text | |
+| anno | int | |
+| durata | text | |
+| formato | text | |
+| descrizione | text | |
+| prodotto_scuola | bool | |
+| status | text | `'pending'` \| `'approved'` \| `'rejected'` |
+| created_at | timestamptz | |
+
+**`videos`** — tutti i video approvati (include i 420 migrati da videosData.js)
+| Colonna | Tipo | Note |
+|---|---|---|
+| id | text | PK — corrisponde al `codice` fisico (es. "HD245") |
+| codice | text | riferimento file fisico in archivio locale |
+| title | text | |
+| youtube_url | text | |
+| thumbnail | text | URL thumbnail YouTube |
+| duration | text | formato "M:SS" |
+| year | int | |
+| tema | text | |
+| natura | text | |
+| formato | text | `'orizzontale'` \| `'verticale'` |
+| prodotto_scuola | bool | |
+| description | text | |
+| data_inserimento | text | formato "YYYY-MM-DD" |
+
+### Campo `codice`
+Il `codice` è il riferimento al file fisico nell'archivio locale (es. `"HD1931-01"`, `"HD245"`). È **obbligatorio** e funge da `id` primario in Supabase. Per i 420 video migrati da `videosData.js`, `codice = id` originale del record. Per i nuovi video approvati/inseriti dall'admin, l'admin inserisce il codice manualmente prima di approvare.
+
+### Auth
+- Email/password via Supabase Auth
+- RLS attivo su tutte le tabelle
+- Ruolo admin: `profiles.role = 'admin'`
 
 ---
 
 ## Struttura Dati Video (`videosData.js`)
 
-Ogni video ha questi campi:
+Ogni video ha questi campi (formato camelCase — lato app React):
 
 ```js
 {
-  id: "HD1931-01",           // identificatore unico
+  id: "HD1931-01",           // identificatore unico = codice fisico
+  codice: "HD1931-01",       // riferimento file fisico (uguale a id per record statici)
   title: "Titolo video",
   youtubeUrl: "https://youtu.be/...",
   thumbnail: "https://img.youtube.com/vi/ID/maxresdefault.jpg",
@@ -61,6 +129,46 @@ Ogni video ha questi campi:
 
 **IMPORTANTE — Video placeholder:** ~19 video puntano tutti allo stesso YouTube ID `IbHF-SOVYJU` (video non disponibile). Costante: `PLACEHOLDER_VIDEO_ID = 'IbHF-SOVYJU'`. Questi video hanno `duration: "0:11"`. Vanno esclusi dal filtro durata (ma non dall'archivio generale).
 
+### Conversioni formato dati
+
+**`mapDbVideo(v)`** — da Supabase (snake_case) a camelCase per l'app:
+```js
+const mapDbVideo = (v) => ({
+  id: v.id,
+  codice: v.codice || '',
+  title: v.title,
+  youtubeUrl: v.youtube_url,
+  thumbnail: v.thumbnail || `https://img.youtube.com/vi/${extractYouTubeId(v.youtube_url)}/maxresdefault.jpg`,
+  duration: v.duration || '0:00',
+  year: v.year,
+  format: v.formato || 'orizzontale',
+  tema: v.tema,
+  natura: v.natura,
+  prodottoScuola: v.prodotto_scuola || false,
+  description: v.description || '',
+  dataInserimento: v.data_inserimento || '',
+});
+```
+
+**`toArchiveFormat(v)`** — da camelCase a snake_case per AdminSection Archivio:
+```js
+const toArchiveFormat = (v) => ({
+  id: v.id,
+  codice: v.codice || v.id || '',
+  youtube_url: v.youtubeUrl || '',
+  thumbnail: v.thumbnail || '',
+  title: v.title || '',
+  tema: v.tema || '',
+  natura: v.natura || '',
+  formato: v.format || v.formato || 'orizzontale',
+  year: v.year || '',
+  duration: v.duration || '',
+  prodotto_scuola: v.prodottoScuola ?? v.prodotto_scuola ?? false,
+  description: v.description || '',
+  data_inserimento: v.dataInserimento || v.data_inserimento || '',
+});
+```
+
 ---
 
 ## Sezioni del Sito (menu laterale)
@@ -74,10 +182,90 @@ Ogni video ha questi campi:
 | Prodotti dalle Scuole | `'schools'` | Solo video con `prodottoScuola: true` |
 | Lasciati Ispirare | `'inspire'` | Player random + shuffle + griglia |
 | WOW | `'wow'` | (sezione futura, contenuto da definire) |
+| Segnala Video | `'submit'` | Form segnalazione video (utenti loggati) |
+| Admin | `'admin'` | Pannello admin (solo role='admin') |
 
 ---
 
 ## Componenti Principali
+
+### `AuthModal`
+- Login/registrazione via Supabase Auth (email + password)
+- Dopo login: carica profilo da `profiles`, setta `userProfile`
+- Nuovo utente → insert in `profiles` con `role: 'user'`
+
+### `SubmitVideoSection`
+- Form per segnalare un video YouTube all'admin
+- Insert in `video_submissions` con `status: 'pending'`
+- Solo per utenti loggati
+
+### `AdminSection`
+Pannello admin con **4 tab**. Riceve prop: `userProfile`, `onVideoApproved`, `allVideos`.
+
+#### Tab "Aggiungi" (`activeTab === 'add'`)
+- Form per inserire direttamente un video nell'archivio (senza passare da submissions)
+- Campi: codice (obbligatorio), link YouTube, titolo, tema, natura, anno, durata, formato, descrizione, prodotto_scuola
+- Insert diretto in tabella `videos` con `id = codice`
+- Chiama `onVideoApproved()` dopo salvataggio
+
+#### Tab "In attesa" (`activeTab === 'pending'`)
+- Lista `video_submissions` con `status = 'pending'`
+- Azioni per ogni segnalazione:
+  - **Approva**: apre form inline per compilare/correggere i dati (incluso codice obbligatorio) → insert in `videos` + update `status = 'approved'`
+  - **Rifiuta**: primo click → conferma inline "Confermi il rifiuto? [Sì] [No]" → update `status = 'rejected'`
+- Stato: `rejectConfirmId` per gestire la conferma inline
+
+#### Tab "Rifiutati" (`activeTab === 'rejected'`)
+- Lista `video_submissions` con `status = 'rejected'`
+- Selezione multipla (checkbox gialle) + "Seleziona tutti"
+- **Elimina selezionati**: conferma inline → delete permanente da `video_submissions`
+- **Ripristina**: update `status = 'pending'`, sposta in tab "In attesa"
+- Stato: `rejectedSubs`, `selectedRejected` (Set), `deleteRejectedConfirm`
+
+#### Tab "Archivio" (`activeTab === 'archive'`)
+- Lista completa di tutti i video (`allVideos` prop, convertiti con `toArchiveFormat`)
+- **Lazy load**: caricato al primo accesso al tab
+- **Filtri**: ricerca testo + bottoni tema (Tutti/Alcool/Azzardo/Digitale/Sostanze con stile home) + `CustomSelect` natura + bottone "Prodotto dalle scuole"
+- **Sort toggle**: pulsante ↕ alterna ordine cronologico crescente/decrescente (`archiveSortDesc`)
+- **Selezione multipla**: checkbox gialle + "Seleziona tutti" + "Elimina selezionati (N)" con conferma
+- Ogni riga: thumbnail 60×45 stretch | ID (giallo) | titolo + link YouTube | badges tema/natura/anno/scuola | [✎ Modifica] [🗑 Elimina]
+- **Modifica inline**: form espandibile con tutti i campi + [Salva] [Annulla] → Supabase `upsert`
+- **Elimina**: conferma inline → delete da `videos` + aggiorna lista locale
+- Scrollbar gialla (`modal-scrollbar` + `--scrollbar-color: #FFDA2A`)
+
+#### Stato AdminSection
+```js
+const [activeTab, setActiveTab] = useState('pending');
+// Pending
+const [submissions, setSubmissions] = useState([]);
+const [loading, setLoading] = useState(true);
+const [approvingId, setApprovingId] = useState(null);
+const [editedSubmissions, setEditedSubmissions] = useState({});
+const [rejectConfirmId, setRejectConfirmId] = useState(null);
+// Rejected
+const [rejectedSubs, setRejectedSubs] = useState([]);
+const [loadingRejected, setLoadingRejected] = useState(false);
+const [selectedRejected, setSelectedRejected] = useState(new Set());
+const [deleteRejectedConfirm, setDeleteRejectedConfirm] = useState(false);
+const [deletingRejected, setDeletingRejected] = useState(false);
+// Archive
+const [archiveVideos, setArchiveVideos] = useState([]);
+const [archiveLoading, setArchiveLoading] = useState(false);
+const [archiveLoaded, setArchiveLoaded] = useState(false);
+const [archiveSearch, setArchiveSearch] = useState('');
+const [archiveTema, setArchiveTema] = useState('');
+const [archiveNatura, setArchiveNatura] = useState('');
+const [archiveScuola, setArchiveScuola] = useState(false);
+const [archiveSortDesc, setArchiveSortDesc] = useState(true);
+const [editingVideoId, setEditingVideoId] = useState(null);
+const [editVideoForms, setEditVideoForms] = useState({});
+const [deleteConfirmId, setDeleteConfirmId] = useState(null);
+const [savingVideoId, setSavingVideoId] = useState(null);
+const [deletingVideoId, setDeletingVideoId] = useState(null);
+const [selectedArchive, setSelectedArchive] = useState(new Set());
+const [deleteArchiveConfirm, setDeleteArchiveConfirm] = useState(false);
+const [deletingArchive, setDeletingArchive] = useState(false);
+```
 
 ### `HeroSection`
 - Video YouTube autoplay muted in background (video casuale)
@@ -198,6 +386,24 @@ Entrambe le altezze sono lette dal DOM in tempo reale — nessun valore hardcode
 
 ---
 
+## Caricamento Video (App)
+
+```js
+// allVideos = Supabase videos (se disponibili) + fallback a videosData.js statici
+const loadVideos = async () => {
+  const { data } = await supabase.from('videos').select('*');
+  if (data?.length > 0) {
+    setAllVideos(addRandomViews(data.map(mapDbVideo)));
+  } else {
+    setAllVideos(addRandomViews(videosData)); // fallback statico
+  }
+};
+```
+
+`AdminSection` riceve `allVideos` come prop per il tab Archivio — non fa query Supabase diretta per i video, usa i dati già in memoria nell'app.
+
+---
+
 ## Comandi Dev
 
 ```bash
@@ -217,4 +423,6 @@ npm run preview  # preview build
 - **NON usare `borderTop` sul div sticky** per la striscia colorata — viene nascosta dall'header (z-40 > z-30); usare un div figlio come primo elemento dentro il card
 - La sezione **Sostanze** non ha video nell'archivio attuale
 - I `views` sono randomizzati al caricamento (`addRandomViews`) — non sono dati reali
-- Il progetto non ha backend — tutti i dati sono statici in `videosData.js`
+- Il campo **`codice`** è obbligatorio e non va mai lasciato vuoto — è il riferimento al file fisico locale
+- La tabella **`videos`** su Supabase contiene gli stessi 420 record di `videosData.js` (migrati) più i nuovi approvati/inseriti dall'admin
+- Il tab Archivio usa `allVideos` prop (già in memoria nell'app) — non fa query Supabase separata
