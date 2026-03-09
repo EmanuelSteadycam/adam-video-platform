@@ -2,6 +2,7 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Zap, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown, Send, ShieldCheck, AlertCircle, Loader2, LogIn, Film, BookOpen, Pencil, Trash2, Save, RotateCcw, Archive } from 'lucide-react';
 import Lottie from 'lottie-react';
 import { supabase } from './supabase';
+import { videos as videosData } from './videosData';
 
 // Aggiungi gli stili per la scrollbar custom
 const styles = document.createElement('style');
@@ -116,6 +117,8 @@ const addRandomViews = (videos) => {
     views: video.views || Math.floor(Math.random() * 500) + 50
   }));
 };
+
+const mockVideos = addRandomViews(videosData);
 
 const extractYouTubeId = (url) => {
   if (!url) return null;
@@ -2699,7 +2702,7 @@ function App() {
 
   useEffect(() => { loadVideos(); }, []);
 
-  const allVideos = useMemo(() => dbVideos, [dbVideos]);
+  const allVideos = useMemo(() => dbVideos.length > 0 ? dbVideos : mockVideos, [dbVideos]);
 
   // ─── Auth Supabase ────────────────────────────────────────────────────────────
   const loadProfile = async (userId) => {

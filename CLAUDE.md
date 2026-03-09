@@ -13,7 +13,7 @@ Piattaforma video per educatori sociali. Archivio di video (spot, cortometraggi,
 - **lottie-react** per l'animazione del logo nell'hero
 - **Supabase** per auth, database e storage
 - Tutto il codice è in **un unico file**: `src/App.jsx`
-- I dati video statici sono in `src/videosData.js` (420 video, generato automaticamente)
+- `src/videosData.js` usato solo come **fallback** se Supabase non risponde (420 video statici)
 - CSS custom iniettato via `document.createElement('style')` all'inizio di App.jsx
 
 ---
@@ -23,7 +23,7 @@ Piattaforma video per educatori sociali. Archivio di video (spot, cortometraggi,
 ```
 src/
   App.jsx          — tutto il codice React (componenti, stato, logica)
-  videosData.js    — array di 420 oggetti video (generato automaticamente)
+  videosData.js    — array di 420 oggetti video (fallback statico, fonte primaria è Supabase)
   supabase.js      — client Supabase (createClient con env vars)
   index.css        — stili base Tailwind
   main.jsx         — entry point React
@@ -46,6 +46,7 @@ scripts/                     — script di migrazione dati
 ```
 VITE_SUPABASE_URL=...
 VITE_SUPABASE_ANON_KEY=...
+SUPABASE_SERVICE_KEY=...   # solo per script seed, NON esposta al browser
 ```
 
 ### Tabelle
@@ -75,7 +76,7 @@ VITE_SUPABASE_ANON_KEY=...
 | status | text | `'pending'` \| `'approved'` \| `'rejected'` |
 | created_at | timestamptz | |
 
-**`videos`** — tutti i video approvati (include i 420 migrati da videosData.js)
+**`videos`** — tutti i video (420 migrati + nuovi approvati/inseriti dall'admin)
 | Colonna | Tipo | Note |
 |---|---|---|
 | id | text | PK — corrisponde al `codice` fisico (es. "HD245") |
@@ -94,6 +95,38 @@ VITE_SUPABASE_ANON_KEY=...
 
 ### Campo `codice`
 Il `codice` è il riferimento al file fisico nell'archivio locale (es. `"HD1931-01"`, `"HD245"`). È **obbligatorio** e funge da `id` primario in Supabase. Per i 420 video migrati da `videosData.js`, `codice = id` originale del record. Per i nuovi video approvati/inseriti dall'admin, l'admin inserisce il codice manualmente prima di approvare.
+
+### Setup tabella `videos` (SQL da eseguire una volta)
+```sql
+create table videos (
+  id text primary key,
+  codice text,
+  title text,
+  youtube_url text,
+  thumbnail text,
+  duration text default '0:00',
+  year int,
+  views int default 0,
+  formato text default 'orizzontale',
+  tema text,
+  natura text,
+  prodotto_scuola boolean default false,
+  description text,
+  data_inserimento text
+);
+alter table videos enable row level security;
+create policy "Public read" on videos for select using (true);
+create policy "Admin write" on videos for all using (auth.role() = 'authenticated');
+
+-- Dopo il seed, popola il campo codice:
+UPDATE videos SET codice = id WHERE codice IS NULL;
+```
+
+### Seed dati (da eseguire una volta dopo aver creato la tabella)
+```bash
+node --env-file=.env scripts/seed-videos.mjs
+```
+Richiede `SUPABASE_SERVICE_KEY` nel `.env` (service_role key da Supabase Dashboard → Settings → API).
 
 ### Auth
 - Email/password via Supabase Auth
@@ -339,7 +372,7 @@ Regola `formatDuration`: se `m >= 10` o `s === 0` → mostra solo minuti (es. "1
 - 15s, 30s, 45s, 60s
 - poi step da 30s fino a 10m
 - poi step da 1m fino al massimo
-- Il massimo (`DUR_MAX`) è calcolato dinamicamente dai dati
+- Il massimo (`DUR_MAX`) è **hardcoded a 5400s** (90 min — copre il massimo del dataset)
 
 ---
 
@@ -389,18 +422,17 @@ Entrambe le altezze sono lette dal DOM in tempo reale — nessun valore hardcode
 ## Caricamento Video (App)
 
 ```js
-// allVideos = Supabase videos (se disponibili) + fallback a videosData.js statici
+// Fonte primaria: Supabase. Fallback a videosData.js se Supabase non risponde.
 const loadVideos = async () => {
   const { data } = await supabase.from('videos').select('*');
-  if (data?.length > 0) {
-    setAllVideos(addRandomViews(data.map(mapDbVideo)));
-  } else {
-    setAllVideos(addRandomViews(videosData)); // fallback statico
-  }
+  if (data?.length) setDbVideos(data.map(mapDbVideo));
 };
+const allVideos = useMemo(() => dbVideos.length > 0 ? dbVideos : mockVideos, [dbVideos]);
 ```
 
-`AdminSection` riceve `allVideos` come prop per il tab Archivio — non fa query Supabase diretta per i video, usa i dati già in memoria nell'app.
+- `HeroSection` e `InspireSection` ricevono `videos={allVideos}` come prop (scelgono video random al caricamento)
+- `AdminSection` riceve `allVideos` come prop per il tab Archivio — non fa query Supabase diretta
+- `DUR_MAX = 5400` (90 min) hardcoded — non più calcolato dai dati statici
 
 ---
 
