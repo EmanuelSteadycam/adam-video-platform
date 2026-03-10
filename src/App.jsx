@@ -1695,7 +1695,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack }) => {
 
         <div>
           <label className="block text-sm font-medium text-zinc-300 mb-1.5">Descrizione <span className="text-zinc-500 font-normal">(opzionale)</span></label>
-          <textarea value={form.description} onChange={e => f('description', e.target.value)} rows={3} placeholder="Descrivi brevemente il contenuto..." className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500 resize-none" />
+          <textarea value={form.description} onChange={e => f('description', e.target.value)} rows={6} placeholder="Descrivi brevemente il contenuto..." className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500 resize-none" />
         </div>
 
         <div>
@@ -1823,7 +1823,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
 
   const handleApprove = async (sub) => {
     const edited = { ...sub, ...(editForms[sub.id] || {}) };
-    if (!edited.codice?.trim()) { setApproveError(sub.id + ':Il campo Codice è obbligatorio'); return; }
+    console.log('[handleApprove] edited:', edited);
+    if (!edited.codice?.trim()) { setApproveError(sub.id + ':Il campo Codice ID è obbligatorio'); return; }
     const ytId = extractYouTubeId(edited.youtube_url);
     setActionLoading(sub.id + '_approve');
     setApproveError(null);
@@ -2100,10 +2101,10 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
             </div>
             <div>
               <label className="block text-sm font-medium text-zinc-300 mb-1.5">Descrizione</label>
-              <textarea value={form.description} onChange={e => f('description', e.target.value)} rows={3} placeholder="Descrizione del video..." className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500 resize-none" />
+              <textarea value={form.description} onChange={e => f('description', e.target.value)} rows={6} placeholder="Descrizione del video..." className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500 resize-none" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1.5">Codice file fisico (es. HD245)</label>
+              <label className="block text-sm font-medium text-zinc-300 mb-1.5">Codice ID</label>
               <input type="text" value={form.codice} onChange={e => f('codice', e.target.value)} placeholder="es. HD245"
                 className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm font-mono placeholder-zinc-500 outline-none focus:border-[#FFDA2A]" />
             </div>
@@ -2189,9 +2190,6 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                                     {actionLoading === sub.id + '_approve' ? <Loader2 size={12} className="animate-spin text-[#FFDA2A]" /> : <Check size={12} className="text-[#FFDA2A]" />}
                                     Approva{!hasCodice && <span className="text-[10px] text-zinc-500 ml-0.5">(codice mancante)</span>}
                                   </button>
-                                  {approveError?.startsWith(sub.id + ':') && (
-                                    <span className="text-xs text-red-400 ml-1">{approveError.slice(sub.id.length + 1)}</span>
-                                  )}
                                 </>
                               );
                             })()}
@@ -2253,17 +2251,22 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                         <div>
                           <label className="block text-xs font-medium text-zinc-400 mb-1">Descrizione</label>
                           <textarea value={subForm.description ?? sub.description ?? ''} onChange={e => ef(sub.id, 'description', e.target.value)}
-                            rows={3} className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500 resize-none" />
+                            rows={6} className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500 resize-none" />
                         </div>
                         <div>
                           <label className="block text-xs font-medium text-zinc-400 mb-1">
-                            Codice file fisico <span className="text-red-400">*</span>
+                            Codice ID <span className="text-red-400">*</span>
                           </label>
                           <input type="text" value={subForm.codice ?? ''} onChange={e => ef(sub.id, 'codice', e.target.value)}
                             placeholder="es. HD245 — obbligatorio per approvare"
                             className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm font-mono placeholder-zinc-500 outline-none focus:border-[#FFDA2A]"
                             style={{ borderColor: (subForm.codice ?? '').trim() ? '#3f3f46' : '#7f1d1d' }} />
                         </div>
+                        {approveError?.startsWith(sub.id + ':') && (
+                          <div className="text-xs text-red-400 bg-red-900/20 border border-red-800/40 rounded-lg px-3 py-2">
+                            {approveError.slice(sub.id.length + 1)}
+                          </div>
+                        )}
                         <div className="flex items-center justify-between">
                           <button type="button" onClick={() => ef(sub.id, 'prodotto_scuola', !(subForm.prodotto_scuola ?? sub.prodotto_scuola))}
                             className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all border-2"
@@ -2601,11 +2604,11 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                         <div>
                           <label className="block text-xs font-medium text-zinc-400 mb-1">Descrizione</label>
                           <textarea value={vf.description ?? video.description ?? ''} onChange={e => evf(video.id, 'description', e.target.value)}
-                            rows={2} className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500 resize-none" />
+                            rows={6} className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500 resize-none" />
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                           <div>
-                            <label className="block text-xs font-medium text-zinc-400 mb-1">Codice file fisico (es. HD245)</label>
+                            <label className="block text-xs font-medium text-zinc-400 mb-1">Codice ID</label>
                             <input type="text" value={vf.codice ?? video.codice ?? ''} onChange={e => evf(video.id, 'codice', e.target.value)}
                               placeholder="es. HD245" className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm font-mono placeholder-zinc-500 outline-none focus:border-[#FFDA2A]" />
                           </div>
