@@ -2702,6 +2702,16 @@ function App() {
 
   useEffect(() => { loadVideos(); }, []);
 
+  // ─── Apre il modal e incrementa le visualizzazioni ────────────────────────────
+  const handleVideoClick = (video) => {
+    setSelectedVideo(video);
+    const newViews = (video.views || 0) + 1;
+    // Aggiornamento ottimistico locale
+    setDbVideos(prev => prev.map(v => v.id === video.id ? { ...v, views: newViews } : v));
+    // Persist su Supabase (fire and forget)
+    supabase.from('videos').update({ views: newViews }).eq('id', video.id);
+  };
+
   const allVideos = useMemo(() => dbVideos.length > 0 ? dbVideos : mockVideos, [dbVideos]);
 
   // ─── Auth Supabase ────────────────────────────────────────────────────────────
@@ -3073,13 +3083,13 @@ function App() {
         <main className="p-4 md:p-8 bg-black">
           {activeSection === 'home' && (
   <>
-    <HeroSection onVideoClick={setSelectedVideo} videos={allVideos} />
+    <HeroSection onVideoClick={handleVideoClick} videos={allVideos} />
     <FiltersSection onFilterChange={setFilters} currentFilters={filters} searchQuery={searchQuery} onSearchChange={setSearchQuery} onSearchSubmit={scrollToResults} videos={allVideos} />
     <div ref={carouselRef}><NatureCarousel onSelectNature={(natura) => { setSelectedNatura(natura); setActiveSection('all'); }} videos={allVideos} /></div>
   </>
 )}
 {activeSection === 'formats' && <NatureCarousel onSelectNature={(natura) => setSelectedNatura(natura)} selectedNatura={selectedNatura} videos={allVideos} />}
-          {activeSection === 'inspire' && <InspireSection onVideoClick={setSelectedVideo} onAddToPlaylist={handleAddToPlaylist} isInPlaylist={isInPlaylist} videos={allVideos} />}
+          {activeSection === 'inspire' && <InspireSection onVideoClick={handleVideoClick} onAddToPlaylist={handleAddToPlaylist} isInPlaylist={isInPlaylist} videos={allVideos} />}
           {activeSection === 'submit' && <SubmitVideoSection user={user} userProfile={userProfile} onOpenAuth={() => { setAuthMode('login'); setShowAuthModal(true); }} onBack={() => setActiveSection('home')} />}
           {activeSection === 'admin' && <AdminSection userProfile={userProfile} onVideoApproved={loadVideos} allVideos={allVideos} />}
           {activeSection !== 'submit' && activeSection !== 'admin' && (
@@ -3121,7 +3131,7 @@ function App() {
             <p className="text-zinc-400 mt-2">{filteredVideos.length} video trovati</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" style={{ minHeight: '60vh' }}>
-            {filteredVideos.map(video => <VideoCard key={video.id} video={video} onClick={() => setSelectedVideo(video)} onAddToPlaylist={handleAddToPlaylist} isInPlaylist={isInPlaylist(video.id)} />)}
+            {filteredVideos.map(video => <VideoCard key={video.id} video={video} onClick={() => handleVideoClick(video)} onAddToPlaylist={handleAddToPlaylist} isInPlaylist={isInPlaylist(video.id)} />)}
           </div>
           {filteredVideos.length === 0 && (
             <div className="text-center py-20">
