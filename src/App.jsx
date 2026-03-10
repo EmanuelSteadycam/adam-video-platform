@@ -2747,6 +2747,7 @@ function App() {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setShowUserMenu(false);
+    setActiveSection('home');
   };
   // ─── Fine Auth ────────────────────────────────────────────────────────────────
 
