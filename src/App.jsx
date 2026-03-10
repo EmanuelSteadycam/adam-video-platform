@@ -63,6 +63,23 @@ styles.textContent = `
     width: 0; height: 0;
   }
   .dur-range::-webkit-slider-runnable-track { background: transparent; }
+  .btn-aggiungi-adam {
+    background-color: #FFDA2A;
+    color: #000;
+  }
+  .btn-aggiungi-adam span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: transform 0.15s ease;
+  }
+  .btn-aggiungi-adam:hover:not(:disabled) span {
+    transform: scale(1.06);
+  }
+  .btn-aggiungi-adam:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 `;
 document.head.appendChild(styles);
 
@@ -2018,7 +2035,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const [approveError, setApproveError] = useState(null);
 
   // Tab
-  const [activeTab, setActiveTab] = useState('pending');
+  const [activeTab, setActiveTab] = useState('add');
 
   // Rifiutati
   const [rejectedSubs, setRejectedSubs] = useState([]);
@@ -2065,7 +2082,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
 
   useEffect(() => {
     if (userProfile?.role !== 'admin') return;
-    supabase.from('video_submissions').select('*').eq('status', 'pending').order('submitted_at', { ascending: false })
+    supabase.from('video_submissions').select('*').in('status', ['pending', 'admin_draft']).order('submitted_at', { ascending: false })
       .then(({ data }) => { setSubmissions(data || []); setLoadingSubs(false); });
   }, [userProfile]);
 
@@ -2111,7 +2128,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
 
   const loadPending = async () => {
     setLoadingSubs(true);
-    const { data } = await supabase.from('video_submissions').select('*').eq('status', 'pending').order('submitted_at', { ascending: false });
+    const { data } = await supabase.from('video_submissions').select('*').in('status', ['pending', 'admin_draft']).order('submitted_at', { ascending: false });
     setSubmissions(data || []);
     setLoadingSubs(false);
   };
@@ -2334,7 +2351,13 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const handleDirectSubmit = async (e) => {
     e.preventDefault();
     if (!form.title.trim()) { setSaveMsg({ type: 'error', text: 'Titolo obbligatorio.' }); return; }
-    if (!form.codice.trim()) { setSaveMsg({ type: 'error', text: 'Codice file fisico obbligatorio.' }); return; }
+    if (!form.codice.trim()) { setSaveMsg({ type: 'error', text: 'Codice ID obbligatorio.' }); return; }
+    if (!form.youtube_url.trim()) { setSaveMsg({ type: 'error', text: 'URL YouTube obbligatorio.' }); return; }
+    if (!form.tema) { setSaveMsg({ type: 'error', text: 'Tema obbligatorio.' }); return; }
+    if (!form.natura) { setSaveMsg({ type: 'error', text: 'Natura obbligatoria.' }); return; }
+    if (!form.year) { setSaveMsg({ type: 'error', text: 'Anno obbligatorio.' }); return; }
+    if (!form.duration.trim()) { setSaveMsg({ type: 'error', text: 'Durata obbligatoria.' }); return; }
+    if (!form.description.trim()) { setSaveMsg({ type: 'error', text: 'Descrizione obbligatoria.' }); return; }
     setSaving(true);
     setSaveMsg(null);
     const ytId = extractYouTubeId(form.youtube_url.trim());
@@ -2361,6 +2384,34 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       onVideoApproved?.();
     }
     setSaving(false);
+  };
+
+  const handleSaveForLater = async () => {
+    if (!form.title.trim()) { setSaveMsg({ type: 'error', text: 'Titolo obbligatorio per salvare la bozza.' }); return; }
+    setSaving(true);
+    setSaveMsg(null);
+    const { error } = await supabase.from('video_submissions').insert({
+      user_id: userProfile.id,
+      title: form.title.trim(),
+      youtube_url: form.youtube_url.trim() || null,
+      tema: form.tema || null,
+      natura: form.natura || null,
+      year: form.year ? parseInt(form.year) : null,
+      description: form.description.trim() || null,
+      prodotto_scuola: form.prodotto_scuola,
+      codice: form.codice.trim() || null,
+      status: 'admin_draft',
+      submitted_at: new Date().toISOString(),
+    });
+    if (error) {
+      setSaveMsg({ type: 'error', text: error.message });
+      setSaving(false);
+    } else {
+      setForm({ title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: '' });
+      setActiveTab('pending');
+      loadPending();
+      setSaving(false);
+    }
   };
 
   if (userProfile?.role !== 'admin') {
@@ -2417,33 +2468,67 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                 {saveMsg.type === 'error' ? <AlertCircle size={16} /> : <Check size={16} />}{saveMsg.text}
               </div>
             )}
+            {/* Row 1: Prodotto da scuola + Codice ID */}
+            <div className="grid grid-cols-2 gap-4 items-end">
+              <div>
+                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Tipo</label>
+                <button type="button" onClick={() => f('prodotto_scuola', !form.prodotto_scuola)}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-sm font-medium transition-all border-2"
+                  style={{ backgroundColor: form.prodotto_scuola ? '#27272a' : 'transparent', borderColor: form.prodotto_scuola ? '#FFDA2A' : '#3f3f46', color: form.prodotto_scuola ? '#FFDA2A' : '#a1a1aa' }}>
+                  <School size={16} /> Prodotto da scuola
+                  {form.prodotto_scuola && <Check size={14} />}
+                </button>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Codice ID *</label>
+                <input type="text" value={form.codice} onChange={e => f('codice', e.target.value)} placeholder="es. HD245"
+                  className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm font-mono placeholder-zinc-500 outline-none focus:border-[#FFDA2A]" />
+              </div>
+            </div>
+            {/* Row 2: URL YouTube */}
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1.5">URL YouTube</label>
+              <label className="block text-sm font-medium text-zinc-300 mb-1.5">URL YouTube *</label>
               <input type="url" value={form.youtube_url} onChange={e => f('youtube_url', e.target.value)} placeholder="https://youtu.be/..." className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
             </div>
+            {/* Row 3: Titolo */}
             <div>
               <label className="block text-sm font-medium text-zinc-300 mb-1.5">Titolo *</label>
               <input type="text" value={form.title} onChange={e => f('title', e.target.value)} required placeholder="Titolo del video" className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            {/* Row 4: Tema buttons + Natura */}
+            <div className="grid gap-4" style={{ gridTemplateColumns: 'auto 1fr' }}>
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Tema</label>
-                <CustomSelect value={form.tema || ''} onChange={v => f('tema', v)} accentColor="#FFDA2A"
-                  options={[{ value: '', label: 'Non specificato' }, ...TEMI_OPTIONS.map(t => ({ value: t, label: t }))]} />
+                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Tema *</label>
+                <div className="flex gap-1.5">
+                  {TEMI_OPTIONS.map(t => {
+                    const c = TEMA_COLORS[t];
+                    const isSelected = form.tema === t;
+                    return (
+                      <button key={t} type="button" onClick={() => f('tema', isSelected ? '' : t)}
+                        className="px-3 py-2 rounded-lg text-xs font-semibold transition-all border-2"
+                        style={isSelected
+                          ? { backgroundColor: c.solid, borderColor: c.solid, color: '#fff' }
+                          : { backgroundColor: 'transparent', borderColor: c.border, color: '#fff', opacity: 0.6 }}>
+                        {t}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Natura</label>
+                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Natura *</label>
                 <CustomSelect value={form.natura || ''} onChange={v => f('natura', v)} accentColor="#FFDA2A"
                   options={[{ value: '', label: 'Non specificato' }, ...NATURE_OPTIONS.map(n => ({ value: n, label: n }))]} />
               </div>
             </div>
+            {/* Row 5: Anno + Durata + Formato */}
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Anno</label>
+                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Anno *</label>
                 <input type="number" value={form.year} onChange={e => f('year', e.target.value)} min="1990" max={new Date().getFullYear()} className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm outline-none focus:border-zinc-500" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Durata (MM:SS)</label>
+                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Durata * (MM:SS)</label>
                 <input type="text" value={form.duration} onChange={e => f('duration', e.target.value)} placeholder="es. 2:13" className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
               </div>
               <div>
@@ -2452,29 +2537,21 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                   options={[{ value: 'orizzontale', label: 'Orizzontale' }, { value: 'verticale', label: 'Verticale' }]} />
               </div>
             </div>
+            {/* Row 6: Descrizione */}
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1.5">Descrizione</label>
-              <textarea value={form.description} onChange={e => f('description', e.target.value)} rows={6} placeholder="Descrizione del video..." className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500 resize-none" />
+              <label className="block text-sm font-medium text-zinc-300 mb-1.5">Descrizione *</label>
+              <textarea value={form.description} onChange={e => f('description', e.target.value)} rows={5} placeholder="Descrizione del video..." className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500 resize-none" />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1.5">Codice ID</label>
-              <input type="text" value={form.codice} onChange={e => f('codice', e.target.value)} placeholder="es. HD245"
-                className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm font-mono placeholder-zinc-500 outline-none focus:border-[#FFDA2A]" />
-            </div>
-            <div className="flex items-center gap-3">
-              <button type="button" onClick={() => f('prodotto_scuola', !form.prodotto_scuola)}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all border-2"
-                style={{ backgroundColor: form.prodotto_scuola ? '#27272a' : 'transparent', borderColor: form.prodotto_scuola ? '#FFDA2A' : '#3f3f46', color: form.prodotto_scuola ? '#FFDA2A' : '#a1a1aa' }}>
-                <School size={16} /> Prodotto da scuola
-                {form.prodotto_scuola && <Check size={14} />}
+            {/* Row 7: Action buttons */}
+            <div className="flex gap-3 pt-1">
+              <button type="submit" disabled={saving} className="btn-aggiungi-adam flex-1 flex items-center justify-center py-3 rounded-lg font-semibold">
+                <span>{saving ? <Loader2 size={18} className="animate-spin" /> : <Plus size={18} />} Aggiungi ad ADAM</span>
+              </button>
+              <button type="button" disabled={saving} onClick={handleSaveForLater}
+                className="flex items-center justify-center gap-2 px-5 py-3 rounded-lg text-sm font-semibold border-2 border-zinc-600 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all disabled:opacity-50">
+                <BookOpen size={16} /> Salva per dopo
               </button>
             </div>
-            <button type="submit" disabled={saving}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-lg font-semibold text-black hover:brightness-110 transition-all disabled:opacity-50"
-              style={{ backgroundColor: '#FFDA2A' }}>
-              {saving ? <Loader2 size={18} className="animate-spin" /> : <Plus size={18} />}
-              Aggiungi con stato "approvato"
-            </button>
           </form>
         </div>
       )}
@@ -2501,7 +2578,15 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                     <div className="p-4">
                       <div className="flex items-start justify-between gap-3 mb-3">
                         <div className="flex-1 min-w-0">
-                          <p className="text-white font-semibold text-sm mb-1">{subForm.title ?? sub.title}</p>
+                          <div className="flex items-center gap-2 mb-1 flex-wrap">
+                            <p className="text-white font-semibold text-sm">{subForm.title ?? sub.title}</p>
+                            {sub.status === 'admin_draft' && (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold border"
+                                style={{ backgroundColor: 'rgba(255,218,42,0.12)', borderColor: 'rgba(255,218,42,0.4)', color: '#FFDA2A' }}>
+                                <Pencil size={9} /> Bozza Admin
+                              </span>
+                            )}
+                          </div>
                           <div className="flex flex-wrap gap-2 text-xs">
                             {(subForm.tema ?? sub.tema) && (() => { const c = TEMA_COLORS[subForm.tema ?? sub.tema]; return (
                               <span className="px-2 py-0.5 rounded font-semibold" style={{ backgroundColor: c?.solid || '#52525b', color: '#fff' }}>{subForm.tema ?? sub.tema}</span>
@@ -2820,7 +2905,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                   )
                 )}
               </div>
-              <div className="modal-scrollbar space-y-2 max-h-[560px] overflow-y-auto pr-1" style={{ '--scrollbar-color': '#FFDA2A' }}>
+              <div className="space-y-2">
               {filteredArchive.map(video => {
                 const isEditing = editingVideoId === video.id;
                 const vf = editVideoForms[video.id] || {};
@@ -2844,13 +2929,26 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                           {isSelected && <Check size={10} className="text-black" strokeWidth={3} />}
                         </div>
                       </label>
-                      {video.thumbnail ? (
-                        <img src={video.thumbnail} alt="" className="w-[90px] object-cover rounded flex-shrink-0 bg-zinc-700" />
-                      ) : (
-                        <div className="w-[90px] rounded flex-shrink-0 bg-zinc-700 flex items-center justify-center">
-                          <Video size={16} className="text-zinc-500" />
-                        </div>
-                      )}
+                      {(() => {
+                        const ytId = extractYouTubeId(video.youtube_url);
+                        if (!ytId) return (
+                          <div className="w-[90px] h-[67px] rounded flex-shrink-0 bg-zinc-700 flex items-center justify-center">
+                            <Video size={16} className="text-zinc-500" />
+                          </div>
+                        );
+                        return (
+                          <img
+                            src={`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`}
+                            alt=""
+                            className="w-[90px] object-cover rounded flex-shrink-0 bg-zinc-700"
+                            onError={e => {
+                              if (e.target.src.includes('hqdefault')) e.target.src = `https://img.youtube.com/vi/${ytId}/mqdefault.jpg`;
+                              else if (e.target.src.includes('mqdefault')) e.target.src = `https://img.youtube.com/vi/${ytId}/default.jpg`;
+                              else { e.target.style.display = 'none'; }
+                            }}
+                          />
+                        );
+                      })()}
                       <div className="flex-1 min-w-0 flex flex-col justify-between gap-1 py-0.5">
                         <div>
                           <div className="flex items-center gap-2 mb-1">
@@ -2915,16 +3013,35 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                     {/* Inline edit form */}
                     {isEditing && (
                       <div className="border-t border-zinc-700 bg-zinc-900 p-4 space-y-3">
+                        {/* Row 1: Prodotto scuola + Codice ID */}
+                        <div className="grid grid-cols-2 gap-3 items-end">
+                          <div>
+                            <label className="block text-xs font-medium text-zinc-400 mb-1">Tipo</label>
+                            <button type="button" onClick={() => evf(video.id, 'prodotto_scuola', !(vf.prodotto_scuola ?? video.prodotto_scuola))}
+                              className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all border-2"
+                              style={{ borderColor: (vf.prodotto_scuola ?? video.prodotto_scuola) ? '#FFDA2A' : '#3f3f46', color: (vf.prodotto_scuola ?? video.prodotto_scuola) ? '#FFDA2A' : '#a1a1aa' }}>
+                              <School size={13} /> Prodotto da scuola {(vf.prodotto_scuola ?? video.prodotto_scuola) && <Check size={11} />}
+                            </button>
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-zinc-400 mb-1">Codice ID</label>
+                            <input type="text" value={vf.codice ?? video.codice ?? ''} onChange={e => evf(video.id, 'codice', e.target.value)}
+                              placeholder="es. HD245" className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm font-mono placeholder-zinc-500 outline-none focus:border-[#FFDA2A]" />
+                          </div>
+                        </div>
+                        {/* Row 2: URL YouTube */}
                         <div>
                           <label className="block text-xs font-medium text-zinc-400 mb-1">URL YouTube</label>
                           <input type="url" value={vf.youtube_url ?? video.youtube_url ?? ''} onChange={e => evf(video.id, 'youtube_url', e.target.value)}
                             placeholder="https://youtu.be/..." className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
                         </div>
+                        {/* Row 3: Titolo */}
                         <div>
                           <label className="block text-xs font-medium text-zinc-400 mb-1">Titolo</label>
                           <input type="text" value={vf.title ?? video.title ?? ''} onChange={e => evf(video.id, 'title', e.target.value)}
                             className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500" />
                         </div>
+                        {/* Row 4: Tema + Natura */}
                         <div className="grid grid-cols-2 gap-3">
                           <div>
                             <label className="block text-xs font-medium text-zinc-400 mb-1">Tema</label>
@@ -2937,6 +3054,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                               options={[{ value: '', label: 'Non specificato' }, ...NATURE_OPTIONS.map(n => ({ value: n, label: n }))]} />
                           </div>
                         </div>
+                        {/* Row 5: Anno + Durata + Formato */}
                         <div className="grid grid-cols-3 gap-3">
                           <div>
                             <label className="block text-xs font-medium text-zinc-400 mb-1">Anno</label>
@@ -2954,17 +3072,14 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                               options={[{ value: 'orizzontale', label: 'Orizzontale' }, { value: 'verticale', label: 'Verticale' }]} />
                           </div>
                         </div>
+                        {/* Row 6: Descrizione */}
                         <div>
                           <label className="block text-xs font-medium text-zinc-400 mb-1">Descrizione</label>
                           <textarea value={vf.description ?? video.description ?? ''} onChange={e => evf(video.id, 'description', e.target.value)}
-                            rows={6} className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500 resize-none" />
+                            rows={5} className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500 resize-none" />
                         </div>
+                        {/* Row 7: Data inserimento + Visualizzazioni */}
                         <div className="grid grid-cols-2 gap-3">
-                          <div>
-                            <label className="block text-xs font-medium text-zinc-400 mb-1">Codice ID</label>
-                            <input type="text" value={vf.codice ?? video.codice ?? ''} onChange={e => evf(video.id, 'codice', e.target.value)}
-                              placeholder="es. HD245" className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm font-mono placeholder-zinc-500 outline-none focus:border-[#FFDA2A]" />
-                          </div>
                           <div>
                             <label className="block text-xs font-medium text-zinc-400 mb-1">Data inserimento</label>
                             <input type="date" value={vf.data_inserimento ?? video.data_inserimento ?? ''} onChange={e => evf(video.id, 'data_inserimento', e.target.value)}
@@ -2976,23 +3091,17 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                               className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-[#FFDA2A]" />
                           </div>
                         </div>
-                        <div className="flex items-center justify-between">
-                          <button type="button" onClick={() => evf(video.id, 'prodotto_scuola', !(vf.prodotto_scuola ?? video.prodotto_scuola))}
-                            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all border-2"
-                            style={{ borderColor: (vf.prodotto_scuola ?? video.prodotto_scuola) ? '#FFDA2A' : '#3f3f46', color: (vf.prodotto_scuola ?? video.prodotto_scuola) ? '#FFDA2A' : '#a1a1aa' }}>
-                            <School size={14} /> Prodotto da scuola {(vf.prodotto_scuola ?? video.prodotto_scuola) && <Check size={12} />}
+                        {/* Row 8: Buttons */}
+                        <div className="flex gap-2 justify-end pt-1">
+                          <button onClick={() => { setEditingVideoId(null); setEditVideoForms(prev => { const n = { ...prev }; delete n[video.id]; return n; }); }}
+                            className="px-4 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 transition-all">
+                            Annulla
                           </button>
-                          <div className="flex gap-2">
-                            <button onClick={() => { setEditingVideoId(null); setEditVideoForms(prev => { const n = { ...prev }; delete n[video.id]; return n; }); }}
-                              className="px-3 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 transition-all">
-                              Annulla
-                            </button>
-                            <button onClick={() => handleSaveVideo(video)} disabled={savingVideoId === video.id}
-                              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold text-black disabled:opacity-50 transition-all"
-                              style={{ backgroundColor: '#FFDA2A' }}>
-                              {savingVideoId === video.id ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />} Salva
-                            </button>
-                          </div>
+                          <button onClick={() => handleSaveVideo(video)} disabled={savingVideoId === video.id}
+                            className="flex items-center gap-1.5 px-5 py-2 rounded-lg text-xs font-semibold text-black disabled:opacity-50 transition-all"
+                            style={{ backgroundColor: '#FFDA2A' }}>
+                            {savingVideoId === video.id ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />} Salva
+                          </button>
                         </div>
                       </div>
                     )}

@@ -69,13 +69,14 @@ SUPABASE_SERVICE_KEY=...   # solo per script seed, NON esposta al browser
 | title | text | |
 | tema | text | |
 | natura | text | |
-| anno | int | |
-| durata | text | |
+| year | int | |
+| duration | text | |
 | formato | text | |
-| descrizione | text | |
+| description | text | |
 | prodotto_scuola | bool | |
-| status | text | `'draft'` \| `'pending'` \| `'approved'` \| `'rejected'` |
-| created_at | timestamptz | |
+| codice | text | solo per admin_draft |
+| status | text | `'draft'` \| `'pending'` \| `'approved'` \| `'rejected'` \| `'admin_draft'` |
+| submitted_at | timestamptz | |
 
 **`videos`** — tutti i video (420 migrati + nuovi approvati/inseriti dall'admin)
 | Colonna | Tipo | Note |
@@ -181,9 +182,12 @@ CREATE POLICY "Admin delete playlists"
 
 ### Check constraint su video_submissions.status
 ```sql
-ALTER TABLE video_submissions DROP CONSTRAINT video_submissions_status_check;
+ALTER TABLE video_submissions DROP CONSTRAINT IF EXISTS video_submissions_status_check;
 ALTER TABLE video_submissions ADD CONSTRAINT video_submissions_status_check
-  CHECK (status IN ('pending', 'approved', 'rejected', 'draft'));
+  CHECK (status IN ('pending', 'approved', 'rejected', 'draft', 'admin_draft'));
+
+-- Colonna codice per bozze admin
+ALTER TABLE video_submissions ADD COLUMN IF NOT EXISTS codice text;
 ```
 
 ### Colonna email su profiles
@@ -304,14 +308,19 @@ const toArchiveFormat = (v) => ({
 ### `AdminSection`
 Pannello admin con **5 tab**. Riceve prop: `userProfile`, `onVideoApproved`, `allVideos`.
 
-#### Tab "Aggiungi" (`activeTab === 'add'`)
+#### Tab "Aggiungi" (`activeTab === 'add'`) — **tab di default all'apertura**
 - Form per inserire direttamente un video nell'archivio (senza passare da submissions)
-- Campi: codice (obbligatorio), link YouTube, titolo, tema, natura, anno, durata, formato, descrizione, prodotto_scuola
-- Insert diretto in tabella `videos` con `id = codice`
+- **Ordine campi**: Prodotto scuola + Codice ID | URL YouTube | Titolo | Tema (4 bottoni colorati) + Natura | Anno + Durata + Formato | Descrizione
+- **Tutti i campi sono obbligatori** (url, titolo, codice, tema, natura, anno, durata, descrizione)
+- Bottone **"Aggiungi ad ADAM"** (classe `.btn-aggiungi-adam`): sfondo giallo, hover = zoom leggero del testo
+- Bottone **"Salva per dopo"**: salva in `video_submissions` con `status: 'admin_draft'` + redirect a tab "In attesa"
+- `handleSaveForLater()` — inserisce in video_submissions con user_id, codice, admin_draft
+- Insert diretto in tabella `videos` con `id = codice` per "Aggiungi ad ADAM"
 - Chiama `onVideoApproved()` dopo salvataggio
 
 #### Tab "In attesa" (`activeTab === 'pending'`)
-- Lista `video_submissions` con `status = 'pending'`
+- Lista `video_submissions` con `status IN ('pending', 'admin_draft')`
+- Record `admin_draft` mostrano badge giallo **"Bozza Admin"** (visibili solo agli admin)
 - Azioni per ogni segnalazione:
   - **Approva**: apre form inline per compilare/correggere i dati (incluso codice obbligatorio) → insert in `videos` + update `status = 'approved'`
   - **Rifiuta**: primo click → conferma inline "Confermi il rifiuto? [Sì] [No]" → update `status = 'rejected'`
@@ -338,10 +347,11 @@ Pannello admin con **5 tab**. Riceve prop: `userProfile`, `onVideoApproved`, `al
 - **Filtri**: ricerca testo + bottoni tema (Tutti/Alcool/Azzardo/Digitale/Sostanze con stile home) + `CustomSelect` natura + bottone "Prodotto dalle scuole"
 - **Sort toggle**: pulsante ↕ alterna ordine cronologico crescente/decrescente (`archiveSortDesc`)
 - **Selezione multipla**: checkbox gialle + "Seleziona tutti" + "Elimina selezionati (N)" con conferma
-- Ogni riga: thumbnail 60×45 stretch | ID (giallo) | titolo + link YouTube | badges tema/natura/anno/scuola | [✎ Modifica] [🗑 Elimina]
-- **Modifica inline**: form espandibile con tutti i campi + [Salva] [Annulla] → Supabase `upsert`
+- Ogni riga: thumbnail | ID (giallo) | titolo + link YouTube | badges tema/natura/anno/scuola | [✎ Modifica] [🗑 Elimina]
+- **Thumbnail**: costruita dinamicamente da `extractYouTubeId(youtube_url)` con fallback `hqdefault → mqdefault → default.jpg` (non dipende dal campo `thumbnail` del DB)
+- **Lista senza max-height**: scorre con la pagina (rimosso `max-h-[560px]`)
+- **Modifica inline**: stesso ordine del tab "+ Aggiungi" (Tipo+Codice | URL | Titolo | Tema+Natura | Anno+Durata+Formato | Descrizione | Data+Views) + [Annulla] [Salva] → Supabase `upsert`
 - **Elimina**: conferma inline → delete da `videos` + aggiorna lista locale
-- Scrollbar gialla (`modal-scrollbar` + `--scrollbar-color: #FFDA2A`)
 
 #### `handleTabChange` — logica di caricamento lazy
 - `pending` → `loadPending()` sempre (dati freschi ad ogni visita)
@@ -351,7 +361,7 @@ Pannello admin con **5 tab**. Riceve prop: `userProfile`, `onVideoApproved`, `al
 
 #### Stato AdminSection
 ```js
-const [activeTab, setActiveTab] = useState('pending');
+const [activeTab, setActiveTab] = useState('add'); // default: tab Aggiungi
 // Pending
 const [submissions, setSubmissions] = useState([]);
 const [loadingSubs, setLoadingSubs] = useState(true);
