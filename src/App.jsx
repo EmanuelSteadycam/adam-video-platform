@@ -2180,7 +2180,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                         ) : (
                           <>
                             {(() => {
-                              const hasCodice = (subForm.codice ?? '').trim().length > 0;
+                              const hasCodice = (subForm.codice ?? sub.codice ?? '').trim().length > 0;
                               return (
                                 <>
                                   <button onClick={() => handleApprove(sub)}
