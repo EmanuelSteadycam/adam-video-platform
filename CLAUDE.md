@@ -58,12 +58,13 @@ SUPABASE_SERVICE_KEY=...   # solo per script seed, NON esposta al browser
 | role | text | `'user'` \| `'admin'` |
 | nome | text | nome visualizzato |
 | organizzazione | text | ente/scuola |
+| email | text | email (backfill da auth.users al login) |
 
 **`video_submissions`** — segnalazioni video da utenti
 | Colonna | Tipo | Note |
 |---|---|---|
 | id | uuid | PK auto |
-| user_id | uuid (FK profiles) | chi ha segnalato |
+| user_id | uuid (FK auth.users) | chi ha segnalato |
 | youtube_url | text | |
 | title | text | |
 | tema | text | |
@@ -73,7 +74,7 @@ SUPABASE_SERVICE_KEY=...   # solo per script seed, NON esposta al browser
 | formato | text | |
 | descrizione | text | |
 | prodotto_scuola | bool | |
-| status | text | `'pending'` \| `'approved'` \| `'rejected'` |
+| status | text | `'draft'` \| `'pending'` \| `'approved'` \| `'rejected'` |
 | created_at | timestamptz | |
 
 **`videos`** — tutti i video (420 migrati + nuovi approvati/inseriti dall'admin)
@@ -132,6 +133,65 @@ Richiede `SUPABASE_SERVICE_KEY` nel `.env` (service_role key da Supabase Dashboa
 - Email/password via Supabase Auth
 - RLS attivo su tutte le tabelle
 - Ruolo admin: `profiles.role = 'admin'`
+- `loadProfile(userId, userEmail)` — backfilla `profiles.email` se mancante al login
+- `handleRegister` usa `upsert` su `profiles` (non update) per gestire profili non ancora esistenti
+
+### RLS Policies (tutte le policy da creare su Supabase)
+
+```sql
+-- profiles
+CREATE POLICY "Authenticated read all profiles"
+  ON profiles FOR SELECT USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Users update own profile"
+  ON profiles FOR UPDATE
+  USING (auth.uid() = id) WITH CHECK (auth.uid() = id);
+
+CREATE POLICY "Admin update all profiles"
+  ON profiles FOR UPDATE
+  USING (EXISTS (SELECT 1 FROM profiles p2 WHERE p2.id = auth.uid() AND p2.role = 'admin'))
+  WITH CHECK (EXISTS (SELECT 1 FROM profiles p2 WHERE p2.id = auth.uid() AND p2.role = 'admin'));
+
+-- video_submissions
+CREATE POLICY "Users read own submissions"
+  ON video_submissions FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Admin read all submissions"
+  ON video_submissions FOR SELECT
+  USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+
+CREATE POLICY "Users update own drafts"
+  ON video_submissions FOR UPDATE
+  USING (auth.uid() = user_id AND status = 'draft')
+  WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users delete own drafts"
+  ON video_submissions FOR DELETE
+  USING (auth.uid() = user_id AND status = 'draft');
+
+CREATE POLICY "Admin delete submissions"
+  ON video_submissions FOR DELETE
+  USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+
+-- playlists
+CREATE POLICY "Admin delete playlists"
+  ON playlists FOR DELETE
+  USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+```
+
+### Check constraint su video_submissions.status
+```sql
+ALTER TABLE video_submissions DROP CONSTRAINT video_submissions_status_check;
+ALTER TABLE video_submissions ADD CONSTRAINT video_submissions_status_check
+  CHECK (status IN ('pending', 'approved', 'rejected', 'draft'));
+```
+
+### Colonna email su profiles
+```sql
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS email text;
+-- Backfill da auth.users
+UPDATE profiles p SET email = u.email FROM auth.users u WHERE p.id = u.id AND p.email IS NULL;
+```
 
 ---
 
@@ -216,6 +276,7 @@ const toArchiveFormat = (v) => ({
 | Lasciati Ispirare | `'inspire'` | Player random + shuffle + griglia |
 | WOW | `'wow'` | (sezione futura, contenuto da definire) |
 | Segnala Video | `'submit'` | Form segnalazione video (utenti loggati) |
+| I miei video | `'myvideos'` | Segnalazioni proprie dell'utente loggato |
 | Admin | `'admin'` | Pannello admin (solo role='admin') |
 
 ---
@@ -225,15 +286,23 @@ const toArchiveFormat = (v) => ({
 ### `AuthModal`
 - Login/registrazione via Supabase Auth (email + password)
 - Dopo login: carica profilo da `profiles`, setta `userProfile`
-- Nuovo utente → insert in `profiles` con `role: 'user'`
+- Nuovo utente → `upsert` in `profiles` con `role: 'user'`, `nome`, `organizzazione`, `email`
 
 ### `SubmitVideoSection`
 - Form per segnalare un video YouTube all'admin
-- Insert in `video_submissions` con `status: 'pending'`
+- Due azioni: **"Invia all'admin"** (`status: 'pending'`) e **"Salva bozza"** (`status: 'draft'`)
+- "Salva bozza" → redirect automatico a `'myvideos'` via prop `onDraftSaved`
 - Solo per utenti loggati
 
+### `MyVideosSection`
+- Sezione `activeSection === 'myvideos'` — visibile solo agli utenti loggati
+- Query: `video_submissions` filtrata per `user_id = user.id`
+- Raggruppa per status: **Bozze** / **In attesa** / **Approvati** / **Rifiutati**
+- Azioni sulle bozze: Modifica (form inline) | Invia (→ pending) | Elimina (con confirm)
+- Le segnalazioni in pending/approved/rejected sono read-only
+
 ### `AdminSection`
-Pannello admin con **4 tab**. Riceve prop: `userProfile`, `onVideoApproved`, `allVideos`.
+Pannello admin con **5 tab**. Riceve prop: `userProfile`, `onVideoApproved`, `allVideos`.
 
 #### Tab "Aggiungi" (`activeTab === 'add'`)
 - Form per inserire direttamente un video nell'archivio (senza passare da submissions)
@@ -255,6 +324,14 @@ Pannello admin con **4 tab**. Riceve prop: `userProfile`, `onVideoApproved`, `al
 - **Ripristina**: update `status = 'pending'`, sposta in tab "In attesa"
 - Stato: `rejectedSubs`, `selectedRejected` (Set), `deleteRejectedConfirm`
 
+#### Tab "Utenti" (`activeTab === 'users'`)
+- Lista tutti i profili da `profiles` (lazy load al primo accesso)
+- Ogni riga: avatar iniziali | nome | email | organizzazione | badge ruolo | [✎ Modifica] [Cambia ruolo] [🗑 Elimina]
+- **Modifica inline**: form con Nome, Email, Organizzazione → `profiles.update`
+- **Cambia ruolo**: toggle `user` ↔ `admin` (disabilitato sull'utente corrente)
+- **Elimina**: confirm inline → cancella submissions + playlists + profilo in cascata (l'utente in `auth.users` va rimosso manualmente dal Dashboard Supabase)
+- Stato: `users`, `loadingUsers`, `usersLoaded`, `changingRoleId`, `deleteUserConfirmId`, `deletingUserId`, `editingUserId`, `editUserForms`, `savingUserId`
+
 #### Tab "Archivio" (`activeTab === 'archive'`)
 - Lista completa di tutti i video (`allVideos` prop, convertiti con `toArchiveFormat`)
 - **Lazy load**: caricato al primo accesso al tab
@@ -266,14 +343,18 @@ Pannello admin con **4 tab**. Riceve prop: `userProfile`, `onVideoApproved`, `al
 - **Elimina**: conferma inline → delete da `videos` + aggiorna lista locale
 - Scrollbar gialla (`modal-scrollbar` + `--scrollbar-color: #FFDA2A`)
 
+#### `handleTabChange` — logica di caricamento lazy
+- `pending` → `loadPending()` sempre (dati freschi ad ogni visita)
+- `rejected` → `loadRejected()` sempre
+- `archive` → `loadArchive()` solo se `!archiveLoaded`
+- `users` → `loadUsers()` solo se `!usersLoaded`
+
 #### Stato AdminSection
 ```js
 const [activeTab, setActiveTab] = useState('pending');
 // Pending
 const [submissions, setSubmissions] = useState([]);
-const [loading, setLoading] = useState(true);
-const [approvingId, setApprovingId] = useState(null);
-const [editedSubmissions, setEditedSubmissions] = useState({});
+const [loadingSubs, setLoadingSubs] = useState(true);
 const [rejectConfirmId, setRejectConfirmId] = useState(null);
 // Rejected
 const [rejectedSubs, setRejectedSubs] = useState([]);
@@ -298,6 +379,16 @@ const [deletingVideoId, setDeletingVideoId] = useState(null);
 const [selectedArchive, setSelectedArchive] = useState(new Set());
 const [deleteArchiveConfirm, setDeleteArchiveConfirm] = useState(false);
 const [deletingArchive, setDeletingArchive] = useState(false);
+// Utenti
+const [users, setUsers] = useState([]);
+const [loadingUsers, setLoadingUsers] = useState(false);
+const [usersLoaded, setUsersLoaded] = useState(false);
+const [changingRoleId, setChangingRoleId] = useState(null);
+const [deleteUserConfirmId, setDeleteUserConfirmId] = useState(null);
+const [deletingUserId, setDeletingUserId] = useState(null);
+const [editingUserId, setEditingUserId] = useState(null);
+const [editUserForms, setEditUserForms] = useState({});
+const [savingUserId, setSavingUserId] = useState(null);
 ```
 
 ### `HeroSection`

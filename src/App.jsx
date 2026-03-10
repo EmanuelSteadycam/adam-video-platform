@@ -1502,8 +1502,8 @@ const AuthModal = ({ mode: initialMode, onClose }) => {
     if (error) {
       setError(error.message);
     } else {
-      if (data.user && nome) {
-        await supabase.from('profiles').update({ nome, organizzazione: org }).eq('id', data.user.id);
+      if (data.user) {
+        await supabase.from('profiles').upsert({ id: data.user.id, nome: nome || null, organizzazione: org || null, email: data.user.email }, { onConflict: 'id' });
       }
       setRegistered(true);
     }
@@ -1584,20 +1584,20 @@ const AuthModal = ({ mode: initialMode, onClose }) => {
 const NATURE_OPTIONS = ['Cortometraggio', 'Film', 'Info', 'Sequenza', 'Spot commerciale', 'Spot sociale', 'Videoclip', 'Web e social'];
 const TEMI_OPTIONS = ['Alcool', 'Azzardo', 'Digitale', 'Sostanze'];
 
-const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack }) => {
+const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSaved }) => {
   const [form, setForm] = useState({ title: '', youtube_url: '', tema: '', description: '', prodotto_scuola: false });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [successType, setSuccessType] = useState('pending');
   const [error, setError] = useState(null);
 
   const f = (field, val) => setForm(prev => ({ ...prev, [field]: val }));
   const resetForm = () => setForm({ title: '', youtube_url: '', tema: '', description: '', prodotto_scuola: false });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (statusTarget) => {
     if (!form.youtube_url.trim()) { setError('Il link YouTube è obbligatorio.'); return; }
     if (!form.title.trim()) { setError('Il titolo è obbligatorio.'); return; }
-    if (!form.tema) { setError('Seleziona un tema.'); return; }
+    if (statusTarget === 'pending' && !form.tema) { setError('Seleziona un tema.'); return; }
     setLoading(true);
     setError(null);
     const { error: err } = await supabase.from('video_submissions').insert({
@@ -1605,12 +1605,20 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack }) => {
       tipo: 'youtube',
       title: form.title.trim(),
       youtube_url: form.youtube_url.trim(),
-      tema: form.tema,
+      tema: form.tema || null,
       description: form.description.trim() || null,
       prodotto_scuola: form.prodotto_scuola,
+      status: statusTarget,
     });
     if (err) setError(err.message);
-    else setSuccess(true);
+    else {
+      setSuccessType(statusTarget);
+      if (statusTarget === 'draft') {
+        onDraftSaved?.();
+      } else {
+        setSuccess(true);
+      }
+    }
     setLoading(false);
   };
 
@@ -1651,7 +1659,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack }) => {
         <p className="text-zinc-400">Condividi un video YouTube utile per l'educazione — lo esamineremo e, se appropriato, lo aggiungeremo all'archivio.</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={e => { e.preventDefault(); handleSubmit('pending'); }} className="space-y-5">
         {error && (
           <div className="flex items-center gap-2 bg-red-900/30 border border-red-800 text-red-400 px-4 py-3 rounded-lg text-sm">
             <AlertCircle size={16} className="flex-shrink-0" />{error}
@@ -1707,13 +1715,288 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack }) => {
           </button>
         </div>
 
-        <button type="submit" disabled={loading}
-          className="w-full flex items-center justify-center gap-2 py-3 rounded-lg font-semibold text-black hover:brightness-110 transition-all disabled:opacity-50"
-          style={{ backgroundColor: '#FFDA2A' }}>
-          {loading ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
-          Invia segnalazione
-        </button>
+        <div className="flex gap-3">
+          <button type="button" onClick={() => handleSubmit('draft')} disabled={loading}
+            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg font-semibold text-zinc-300 border border-zinc-600 hover:bg-zinc-800 transition-all disabled:opacity-50">
+            {loading ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
+            Salva bozza
+          </button>
+          <button type="submit" disabled={loading}
+            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg font-semibold text-black hover:brightness-110 transition-all disabled:opacity-50"
+            style={{ backgroundColor: '#FFDA2A' }}>
+            {loading ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
+            Invia all'admin
+          </button>
+        </div>
       </form>
+    </div>
+  );
+};
+
+// ─── MyVideosSection ───────────────────────────────────────────────────────────
+const MyVideosSection = ({ user, onNewVideo }) => {
+  const [mySubmissions, setMySubmissions] = useState([]);
+  const [myLoading, setMyLoading] = useState(true);
+  const [myEditForms, setMyEditForms] = useState({});
+  const [myEditingId, setMyEditingId] = useState(null);
+  const [mySendError, setMySendError] = useState(null);
+  const [myDeleteConfirmId, setMyDeleteConfirmId] = useState(null);
+  const [mySavingId, setMySavingId] = useState(null);
+  const [myDeletingId, setMyDeletingId] = useState(null);
+  const [mySendingId, setMySendingId] = useState(null);
+
+  const mef = (id, field, val) => setMyEditForms(prev => ({ ...prev, [id]: { ...(prev[id] || {}), [field]: val } }));
+
+  useEffect(() => {
+    if (!user) return;
+    supabase.from('video_submissions').select('*')
+      .eq('user_id', user.id)
+      .order('submitted_at', { ascending: false })
+      .then(({ data }) => { setMySubmissions(data || []); setMyLoading(false); });
+  }, [user]);
+
+  const handleSaveDraft = async (sub) => {
+    const ef = myEditForms[sub.id] || {};
+    setMySavingId(sub.id);
+    const { error } = await supabase.from('video_submissions').update({
+      youtube_url: ef.youtube_url ?? sub.youtube_url,
+      title: ef.title ?? sub.title,
+      tema: ef.tema ?? sub.tema,
+      description: ef.description ?? sub.description,
+      prodotto_scuola: ef.prodotto_scuola ?? sub.prodotto_scuola,
+    }).eq('id', sub.id).eq('status', 'draft');
+    if (!error) {
+      setMySubmissions(prev => prev.map(s => s.id === sub.id ? { ...s, ...ef } : s));
+      setMyEditingId(null);
+      setMyEditForms(prev => { const n = { ...prev }; delete n[sub.id]; return n; });
+    }
+    setMySavingId(null);
+  };
+
+  const handleSendDraft = async (sub) => {
+    setMySendingId(sub.id);
+    setMySendError(null);
+    const { error } = await supabase.from('video_submissions').update({ status: 'pending' }).eq('id', sub.id);
+    if (!error) setMySubmissions(prev => prev.map(s => s.id === sub.id ? { ...s, status: 'pending' } : s));
+    else setMySendError(sub.id + ':' + error.message);
+    setMySendingId(null);
+  };
+
+  const handleDeleteDraft = async (sub) => {
+    setMyDeletingId(sub.id);
+    const { error } = await supabase.from('video_submissions').delete().eq('id', sub.id);
+    if (!error) {
+      setMySubmissions(prev => prev.filter(s => s.id !== sub.id));
+      setMyDeleteConfirmId(null);
+    }
+    setMyDeletingId(null);
+  };
+
+  if (myLoading) return (
+    <div className="flex items-center justify-center py-20"><Loader2 size={28} className="animate-spin text-zinc-500" /></div>
+  );
+
+  const STATUS_BADGE = {
+    draft:    { label: 'Bozza',     color: '#a1a1aa', bg: '#27272a' },
+    pending:  { label: 'In attesa', color: '#FFDA2A', bg: 'rgba(255,218,42,0.12)' },
+    approved: { label: 'Approvato', color: '#10b981', bg: 'rgba(16,185,129,0.12)' },
+    rejected: { label: 'Rifiutato', color: '#ef4444', bg: 'rgba(239,68,68,0.12)' },
+  };
+
+  const renderCard = (sub, isDraft) => {
+    const isEditing = myEditingId === sub.id;
+    const ef = myEditForms[sub.id] || {};
+    const isDeleteConfirm = myDeleteConfirmId === sub.id;
+    const ytId = extractYouTubeId(sub.youtube_url);
+    const badge = STATUS_BADGE[sub.status] || { label: sub.status, color: '#a1a1aa', bg: '#27272a' };
+
+    return (
+      <div key={sub.id} className="bg-zinc-800 rounded-xl overflow-hidden border border-zinc-700">
+        <div className="p-4">
+          <div className="flex items-start gap-3">
+            {ytId && (
+              <div className="flex-shrink-0 w-20 h-14 rounded overflow-hidden">
+                <img src={`https://img.youtube.com/vi/${ytId}/mqdefault.jpg`} alt={sub.title} className="w-full h-full object-cover" />
+              </div>
+            )}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-start justify-between gap-2 mb-1">
+                <p className="text-white font-semibold text-sm">{sub.title || '(senza titolo)'}</p>
+                <span className="text-xs px-2 py-0.5 rounded-full font-semibold flex-shrink-0"
+                  style={{ color: badge.color, backgroundColor: badge.bg }}>{badge.label}</span>
+              </div>
+              {sub.tema && (() => { const c = TEMA_COLORS[sub.tema]; return (
+                <span className="inline-block text-xs px-2 py-0.5 rounded font-semibold mr-1" style={{ backgroundColor: c?.solid || '#52525b', color: '#fff' }}>{sub.tema}</span>
+              ); })()}
+              {sub.youtube_url && (
+                <a href={sub.youtube_url} target="_blank" rel="noopener noreferrer"
+                  className="text-xs text-blue-400 hover:underline mt-1 block truncate">{sub.youtube_url}</a>
+              )}
+              <p className="text-xs text-zinc-500 mt-1">{new Date(sub.submitted_at).toLocaleDateString('it-IT')}</p>
+            </div>
+          </div>
+
+          {isDraft && !isEditing && (
+            <div className="flex items-center gap-2 mt-3 flex-wrap">
+              <button onClick={() => setMyEditingId(sub.id)}
+                className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium bg-zinc-700 hover:bg-zinc-600 text-white transition-all">
+                <Pencil size={12} /> Modifica
+              </button>
+              <button onClick={() => handleSendDraft(sub)} disabled={mySendingId === sub.id}
+                className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-black disabled:opacity-50 transition-all"
+                style={{ backgroundColor: '#FFDA2A' }}>
+                {mySendingId === sub.id ? <Loader2 size={12} className="animate-spin" /> : <Send size={12} />} Invia
+              </button>
+              {mySendError?.startsWith(sub.id + ':') && (
+                <span className="text-xs text-red-400 flex items-center gap-1">
+                  <AlertCircle size={11} /> {mySendError.slice(sub.id.length + 1)}
+                </span>
+              )}
+              {isDeleteConfirm ? (
+                <>
+                  <span className="text-xs text-zinc-400">Eliminare?</span>
+                  <button onClick={() => handleDeleteDraft(sub)} disabled={myDeletingId === sub.id}
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-600 hover:bg-red-500 text-white transition-all disabled:opacity-50">
+                    {myDeletingId === sub.id ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />} Sì
+                  </button>
+                  <button onClick={() => setMyDeleteConfirmId(null)}
+                    className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-zinc-600 text-zinc-300 hover:text-white transition-all">
+                    No
+                  </button>
+                </>
+              ) : (
+                <button onClick={() => setMyDeleteConfirmId(sub.id)}
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium text-red-400 hover:text-red-300 hover:bg-zinc-700 transition-all">
+                  <Trash2 size={12} /> Elimina
+                </button>
+              )}
+            </div>
+          )}
+
+          {isDraft && isEditing && (
+            <div className="mt-4 space-y-3 border-t border-zinc-700 pt-4">
+              <div>
+                <label className="block text-xs font-medium text-zinc-400 mb-1">Link YouTube</label>
+                <input type="url" value={ef.youtube_url ?? sub.youtube_url ?? ''} onChange={e => mef(sub.id, 'youtube_url', e.target.value)}
+                  placeholder="https://youtu.be/..." className="w-full bg-zinc-900 border border-zinc-600 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500" />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-zinc-400 mb-1">Titolo</label>
+                <input type="text" value={ef.title ?? sub.title ?? ''} onChange={e => mef(sub.id, 'title', e.target.value)}
+                  className="w-full bg-zinc-900 border border-zinc-600 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500" />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-zinc-400 mb-1">Tema</label>
+                <div className="flex flex-wrap gap-2">
+                  {TEMI_OPTIONS.map(tema => {
+                    const c = TEMA_COLORS[tema];
+                    const active = (ef.tema ?? sub.tema) === tema;
+                    return (
+                      <button key={tema} type="button" onClick={() => mef(sub.id, 'tema', tema)}
+                        className="px-3 py-1.5 rounded-lg text-xs font-medium text-white transition-all"
+                        style={{ backgroundColor: active ? c.solid : 'transparent', border: `2px solid ${c.border}` }}>
+                        {tema}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-zinc-400 mb-1">Descrizione</label>
+                <textarea value={ef.description ?? sub.description ?? ''} onChange={e => mef(sub.id, 'description', e.target.value)}
+                  rows={4} className="w-full bg-zinc-900 border border-zinc-600 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500 resize-none" />
+              </div>
+              <div>
+                <button type="button" onClick={() => mef(sub.id, 'prodotto_scuola', !(ef.prodotto_scuola ?? sub.prodotto_scuola))}
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all border-2"
+                  style={{ borderColor: (ef.prodotto_scuola ?? sub.prodotto_scuola) ? '#FFDA2A' : '#3f3f46', color: (ef.prodotto_scuola ?? sub.prodotto_scuola) ? '#FFDA2A' : '#a1a1aa' }}>
+                  <School size={14} /> Prodotto da scuola {(ef.prodotto_scuola ?? sub.prodotto_scuola) && <Check size={12} />}
+                </button>
+              </div>
+              <div className="flex gap-2 justify-end">
+                <button onClick={() => { setMyEditingId(null); setMyEditForms(prev => { const n = { ...prev }; delete n[sub.id]; return n; }); }}
+                  className="px-3 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 transition-all">
+                  Annulla
+                </button>
+                <button onClick={() => handleSaveDraft(sub)} disabled={mySavingId === sub.id}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold text-black disabled:opacity-50"
+                  style={{ backgroundColor: '#FFDA2A' }}>
+                  {mySavingId === sub.id ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />} Salva
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const drafts   = mySubmissions.filter(s => s.status === 'draft');
+  const pending  = mySubmissions.filter(s => s.status === 'pending');
+  const approved = mySubmissions.filter(s => s.status === 'approved');
+  const rejected = mySubmissions.filter(s => s.status === 'rejected');
+
+  return (
+    <div className="max-w-3xl mx-auto py-8">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-3xl font-bold text-white">I miei video</h2>
+        <button onClick={onNewVideo}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-black hover:brightness-110 transition-all text-sm"
+          style={{ backgroundColor: '#FFDA2A' }}>
+          <Plus size={16} /> Nuovo video
+        </button>
+      </div>
+
+      {mySubmissions.length === 0 ? (
+        <div className="text-center py-20">
+          <Upload size={64} className="text-zinc-700 mx-auto mb-4" strokeWidth={1.5} />
+          <p className="text-zinc-400 mb-4">Non hai ancora segnalato nessun video.</p>
+          <button onClick={onNewVideo}
+            className="text-black px-6 py-3 rounded-lg font-semibold hover:brightness-110 transition-all"
+            style={{ backgroundColor: '#FFDA2A' }}>
+            Segnala il primo
+          </button>
+        </div>
+      ) : (
+        <div className="space-y-8">
+          {drafts.length > 0 && (
+            <div>
+              <h3 className="text-base font-semibold text-zinc-400 mb-3 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-zinc-500 inline-block" />
+                Bozze ({drafts.length})
+              </h3>
+              <div className="space-y-3">{drafts.map(s => renderCard(s, true))}</div>
+            </div>
+          )}
+          {pending.length > 0 && (
+            <div>
+              <h3 className="text-base font-semibold text-zinc-400 mb-3 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: '#FFDA2A' }} />
+                In attesa di revisione ({pending.length})
+              </h3>
+              <div className="space-y-3">{pending.map(s => renderCard(s, false))}</div>
+            </div>
+          )}
+          {approved.length > 0 && (
+            <div>
+              <h3 className="text-base font-semibold text-zinc-400 mb-3 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
+                Approvati ({approved.length})
+              </h3>
+              <div className="space-y-3">{approved.map(s => renderCard(s, false))}</div>
+            </div>
+          )}
+          {rejected.length > 0 && (
+            <div>
+              <h3 className="text-base font-semibold text-zinc-400 mb-3 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-red-500 inline-block" />
+                Rifiutati ({rejected.length})
+              </h3>
+              <div className="space-y-3">{rejected.map(s => renderCard(s, false))}</div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
@@ -1765,6 +2048,17 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const [deleteArchiveConfirm, setDeleteArchiveConfirm] = useState(false);
   const [deletingArchive, setDeletingArchive] = useState(false);
 
+  // Utenti
+  const [users, setUsers] = useState([]);
+  const [loadingUsers, setLoadingUsers] = useState(false);
+  const [usersLoaded, setUsersLoaded] = useState(false);
+  const [changingRoleId, setChangingRoleId] = useState(null);
+  const [deleteUserConfirmId, setDeleteUserConfirmId] = useState(null);
+  const [deletingUserId, setDeletingUserId] = useState(null);
+  const [editingUserId, setEditingUserId] = useState(null);
+  const [editUserForms, setEditUserForms] = useState({});
+  const [savingUserId, setSavingUserId] = useState(null);
+
   const f = (field, val) => setForm(prev => ({ ...prev, [field]: val }));
   const ef = (subId, field, val) => setEditForms(prev => ({ ...prev, [subId]: { ...(prev[subId] || {}), [field]: val } }));
   const evf = (videoId, field, val) => setEditVideoForms(prev => ({ ...prev, [videoId]: { ...(prev[videoId] || {}), [field]: val } }));
@@ -1815,10 +2109,19 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     setArchiveLoaded(true);
   };
 
+  const loadPending = async () => {
+    setLoadingSubs(true);
+    const { data } = await supabase.from('video_submissions').select('*').eq('status', 'pending').order('submitted_at', { ascending: false });
+    setSubmissions(data || []);
+    setLoadingSubs(false);
+  };
+
   const handleTabChange = (tab) => {
     setActiveTab(tab);
-    if (tab === 'rejected' && rejectedSubs.length === 0) loadRejected();
+    if (tab === 'pending') loadPending();
+    if (tab === 'rejected') loadRejected();
     if (tab === 'archive' && !archiveLoaded) loadArchive();
+    if (tab === 'users' && !usersLoaded) loadUsers();
   };
 
   const handleApprove = async (sub) => {
@@ -1945,6 +2248,55 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     setDeletingArchive(false);
   };
 
+  const loadUsers = async () => {
+    setLoadingUsers(true);
+    const { data } = await supabase.from('profiles').select('*').order('nome');
+    setUsers(data || []);
+    setLoadingUsers(false);
+    setUsersLoaded(true);
+  };
+
+  const handleChangeRole = async (u) => {
+    const newRole = u.role === 'admin' ? 'user' : 'admin';
+    setChangingRoleId(u.id);
+    const { error } = await supabase.from('profiles').update({ role: newRole }).eq('id', u.id);
+    if (!error) setUsers(prev => prev.map(x => x.id === u.id ? { ...x, role: newRole } : x));
+    setChangingRoleId(null);
+  };
+
+  const handleDeleteUser = async (u) => {
+    setDeletingUserId(u.id);
+    await supabase.from('video_submissions').delete().eq('user_id', u.id);
+    await supabase.from('playlists').delete().eq('user_id', u.id);
+    const { error } = await supabase.from('profiles').delete().eq('id', u.id);
+    if (!error) {
+      setUsers(prev => prev.filter(x => x.id !== u.id));
+      setDeleteUserConfirmId(null);
+    }
+    setDeletingUserId(null);
+  };
+
+  const handleSaveUser = async (u) => {
+    const uf = editUserForms[u.id] || {};
+    setSavingUserId(u.id);
+    const payload = {
+      nome: uf.nome ?? u.nome,
+      organizzazione: uf.organizzazione ?? u.organizzazione,
+      email: uf.email ?? u.email,
+    };
+    const { error } = await supabase.from('profiles').update(payload).eq('id', u.id);
+    if (!error) {
+      setUsers(prev => prev.map(x => x.id === u.id ? { ...x, ...payload } : x));
+      setEditingUserId(null);
+      setEditUserForms(prev => { const n = { ...prev }; delete n[u.id]; return n; });
+    } else {
+      alert('Errore salvataggio: ' + error.message);
+    }
+    setSavingUserId(null);
+  };
+
+  const uef = (id, field, val) => setEditUserForms(prev => ({ ...prev, [id]: { ...(prev[id] || {}), [field]: val } }));
+
   const filteredArchive = useMemo(() => archiveVideos.filter(v => {
     const s = archiveSearch.toLowerCase();
     return (!s || v.title?.toLowerCase().includes(s) || v.description?.toLowerCase().includes(s))
@@ -2039,6 +2391,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
           { id: 'pending', label: 'In attesa', count: submissions.length, showCount: !loadingSubs },
           { id: 'rejected', label: 'Rifiutati', count: rejectedSubs.length, showCount: activeTab === 'rejected' && !loadingRejected },
           { id: 'archive', label: 'Archivio', count: archiveVideos.length, showCount: archiveLoaded },
+          { id: 'users', label: 'Utenti', count: users.length, showCount: usersLoaded, icon: User },
         ].map(tab => (
           <button key={tab.id} onClick={() => handleTabChange(tab.id)}
             className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold transition-all"
@@ -2651,6 +3004,115 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
           )}
         </div>
       )}
+      {/* Tab: Utenti */}
+      {activeTab === 'users' && (
+        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+          <h3 className="text-xl font-bold text-white mb-5 flex items-center gap-2">
+            <User size={20} className="text-[#FFDA2A]" />
+            Utenti registrati {usersLoaded && `(${users.length})`}
+          </h3>
+          {loadingUsers ? (
+            <div className="flex items-center justify-center py-10"><Loader2 size={24} className="animate-spin text-zinc-500" /></div>
+          ) : users.length === 0 ? (
+            <p className="text-zinc-500 text-sm py-4">Nessun utente registrato.</p>
+          ) : (
+            <div className="space-y-3">
+              {users.map(u => {
+                const initials = (u.nome || u.email || '?').slice(0, 2).toUpperCase();
+                const isCurrentUser = u.id === userProfile.id;
+                const isDeleteConfirm = deleteUserConfirmId === u.id;
+                const isEditing = editingUserId === u.id;
+                const uf = editUserForms[u.id] || {};
+                return (
+                  <div key={u.id} className="bg-zinc-800 rounded-xl overflow-hidden border border-zinc-700">
+                    {/* Riga principale */}
+                    <div className="p-4 flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-zinc-700 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                        {initials}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white text-sm font-semibold truncate">{u.nome || '(senza nome)'}</p>
+                        <p className="text-zinc-400 text-xs truncate">{u.email || '—'}</p>
+                        <p className="text-zinc-500 text-xs truncate">{u.organizzazione || '—'}</p>
+                      </div>
+                      <span className="text-xs px-2 py-0.5 rounded-full font-semibold flex-shrink-0"
+                        style={{
+                          backgroundColor: u.role === 'admin' ? 'rgba(255,218,42,0.15)' : '#27272a',
+                          color: u.role === 'admin' ? '#FFDA2A' : '#a1a1aa',
+                          border: u.role === 'admin' ? '1px solid rgba(255,218,42,0.3)' : '1px solid #3f3f46',
+                        }}>
+                        {u.role === 'admin' ? 'Admin' : 'User'}
+                      </span>
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        <button onClick={() => { setEditingUserId(isEditing ? null : u.id); setEditUserForms(prev => ({ ...prev, [u.id]: { nome: u.nome || '', email: u.email || '', organizzazione: u.organizzazione || '' } })); }}
+                          className="text-zinc-400 hover:text-white transition-colors p-1.5"
+                          title="Modifica">
+                          <Pencil size={15} />
+                        </button>
+                        <button onClick={() => handleChangeRole(u)} disabled={isCurrentUser || changingRoleId === u.id}
+                          className="text-xs px-3 py-1.5 rounded-lg border border-zinc-600 text-zinc-300 hover:text-white hover:border-zinc-400 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1">
+                          {changingRoleId === u.id ? <Loader2 size={12} className="animate-spin" /> : null}
+                          Cambia ruolo
+                        </button>
+                        {isDeleteConfirm ? (
+                          <>
+                            <button onClick={() => handleDeleteUser(u)} disabled={deletingUserId === u.id}
+                              className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-semibold bg-red-600 hover:bg-red-500 text-white disabled:opacity-50">
+                              {deletingUserId === u.id ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
+                            </button>
+                            <button onClick={() => setDeleteUserConfirmId(null)}
+                              className="px-2 py-1.5 rounded-lg text-xs font-semibold border border-zinc-600 text-zinc-300 hover:text-white transition-all">
+                              <X size={12} />
+                            </button>
+                          </>
+                        ) : (
+                          <button onClick={() => setDeleteUserConfirmId(u.id)} disabled={isCurrentUser}
+                            className="text-zinc-500 hover:text-red-400 transition-colors disabled:opacity-40 disabled:cursor-not-allowed p-1.5">
+                            <Trash2 size={16} />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    {/* Form modifica inline */}
+                    {isEditing && (
+                      <div className="border-t border-zinc-700 p-4 space-y-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          <div>
+                            <label className="block text-xs font-medium text-zinc-400 mb-1">Nome</label>
+                            <input type="text" value={uf.nome ?? ''} onChange={e => uef(u.id, 'nome', e.target.value)}
+                              className="w-full bg-zinc-900 border border-zinc-600 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-400" />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-zinc-400 mb-1">Email</label>
+                            <input type="email" value={uf.email ?? ''} onChange={e => uef(u.id, 'email', e.target.value)}
+                              className="w-full bg-zinc-900 border border-zinc-600 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-400" />
+                          </div>
+                          <div className="sm:col-span-2">
+                            <label className="block text-xs font-medium text-zinc-400 mb-1">Organizzazione</label>
+                            <input type="text" value={uf.organizzazione ?? ''} onChange={e => uef(u.id, 'organizzazione', e.target.value)}
+                              className="w-full bg-zinc-900 border border-zinc-600 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-400" />
+                          </div>
+                        </div>
+                        <div className="flex gap-2 justify-end">
+                          <button onClick={() => setEditingUserId(null)}
+                            className="px-3 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 transition-all">
+                            Annulla
+                          </button>
+                          <button onClick={() => handleSaveUser(u)} disabled={savingUserId === u.id}
+                            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold text-black disabled:opacity-50"
+                            style={{ backgroundColor: '#FFDA2A' }}>
+                            {savingUserId === u.id ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />} Salva
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
@@ -2724,8 +3186,12 @@ function App() {
   const allVideos = useMemo(() => dbVideos.length > 0 ? dbVideos : mockVideos, [dbVideos]);
 
   // ─── Auth Supabase ────────────────────────────────────────────────────────────
-  const loadProfile = async (userId) => {
+  const loadProfile = async (userId, userEmail) => {
     const { data } = await supabase.from('profiles').select('*').eq('id', userId).single();
+    if (data && !data.email && userEmail) {
+      supabase.from('profiles').update({ email: userEmail }).eq('id', userId);
+      data.email = userEmail;
+    }
     setUserProfile(data || null);
   };
 
@@ -2737,11 +3203,11 @@ function App() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
-      if (session?.user) { loadProfile(session.user.id); loadPlaylists(session.user.id); }
+      if (session?.user) { loadProfile(session.user.id, session.user.email); loadPlaylists(session.user.id); }
     });
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
-      if (session?.user) { loadProfile(session.user.id); loadPlaylists(session.user.id); }
+      if (session?.user) { loadProfile(session.user.id, session.user.email); loadPlaylists(session.user.id); }
       else { setUserProfile(null); setPlaylists([]); }
     });
     return () => subscription.unsubscribe();
@@ -2944,6 +3410,15 @@ function App() {
         </li>
       ))}
       <li className="pt-2 mt-2 border-t border-zinc-800">
+        {user && (
+          <button
+            onClick={() => { setActiveSection('myvideos'); setIsMobileMenuOpen(false); }}
+            className={`w-full text-left px-4 py-3 rounded-lg transition-colors flex items-center gap-3 ${activeSection === 'myvideos' ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'}`}
+          >
+            <List size={18} className="flex-shrink-0" />
+            <span>I miei video</span>
+          </button>
+        )}
         <button
           onClick={() => { setActiveSection('submit'); setIsMobileMenuOpen(false); }}
           className={`w-full text-left px-4 py-3 rounded-lg transition-colors flex items-center gap-3 ${activeSection === 'submit' ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'}`}
@@ -3063,6 +3538,9 @@ function App() {
             {userProfile?.organizzazione && <p className="text-zinc-500 text-xs truncate">{userProfile.organizzazione}</p>}
             {userProfile?.role === 'admin' && <span className="text-xs text-[#FFDA2A] font-semibold">Admin</span>}
           </div>
+          <button onClick={() => { setActiveSection('myvideos'); setShowUserMenu(false); }} className="block w-full text-left px-4 py-3 text-zinc-300 hover:bg-zinc-800 transition-colors text-sm flex items-center gap-2">
+            <List size={15} /> I miei video
+          </button>
           <button onClick={() => { setActiveSection('submit'); setShowUserMenu(false); }} className="block w-full text-left px-4 py-3 text-zinc-300 hover:bg-zinc-800 transition-colors text-sm flex items-center gap-2">
             <Upload size={15} /> Segnala un video
           </button>
@@ -3100,9 +3578,10 @@ function App() {
 )}
 {activeSection === 'formats' && <NatureCarousel onSelectNature={(natura) => setSelectedNatura(natura)} selectedNatura={selectedNatura} videos={allVideos} />}
           {activeSection === 'inspire' && <InspireSection onVideoClick={handleVideoClick} onAddToPlaylist={handleAddToPlaylist} isInPlaylist={isInPlaylist} videos={allVideos} />}
-          {activeSection === 'submit' && <SubmitVideoSection user={user} userProfile={userProfile} onOpenAuth={() => { setAuthMode('login'); setShowAuthModal(true); }} onBack={() => setActiveSection('home')} />}
+          {activeSection === 'submit' && <SubmitVideoSection user={user} userProfile={userProfile} onOpenAuth={() => { setAuthMode('login'); setShowAuthModal(true); }} onBack={() => setActiveSection('home')} onDraftSaved={() => setActiveSection('myvideos')} />}
           {activeSection === 'admin' && <AdminSection userProfile={userProfile} onVideoApproved={loadVideos} allVideos={allVideos} />}
-          {activeSection !== 'submit' && activeSection !== 'admin' && (
+          {activeSection === 'myvideos' && <MyVideosSection user={user} onNewVideo={() => setActiveSection('submit')} />}
+          {activeSection !== 'submit' && activeSection !== 'admin' && activeSection !== 'myvideos' && (
           <>
           <div ref={resultsRef} className="mb-6">
             <div className="flex items-center justify-between">
