@@ -1907,7 +1907,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       prodotto_scuola: vf.prodotto_scuola ?? video.prodotto_scuola ?? false,
       description: vf.description ?? video.description ?? null,
       codice: vf.codice !== undefined ? (vf.codice || null) : (video.codice || null),
-      views: video.views || 0,
+      views: vf.views !== undefined ? vf.views : (video.views || 0),
       data_inserimento: vf.data_inserimento ?? video.data_inserimento ?? new Date().toISOString().split('T')[0],
     };
     const { error } = await supabase.from('videos').upsert(fullRecord, { onConflict: 'id' });
@@ -2516,6 +2516,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                             )}
                             {video.year && <span className="text-xs text-zinc-400">{video.year}</span>}
                             {video.data_inserimento && <span className="text-xs text-zinc-500">{new Date(video.data_inserimento).toLocaleDateString('it-IT')}</span>}
+                            <span className="text-xs text-zinc-400 flex items-center gap-0.5"><Eye size={10} />{video.views ?? 0}</span>
                           </div>
                         </div>
                         {video.youtube_url && (
@@ -2612,6 +2613,11 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                             <label className="block text-xs font-medium text-zinc-400 mb-1">Data inserimento</label>
                             <input type="date" value={vf.data_inserimento ?? video.data_inserimento ?? ''} onChange={e => evf(video.id, 'data_inserimento', e.target.value)}
                               className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500" />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-zinc-400 mb-1">Visualizzazioni</label>
+                            <input type="number" min="0" value={vf.views ?? video.views ?? 0} onChange={e => evf(video.id, 'views', parseInt(e.target.value) || 0)}
+                              className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-[#FFDA2A]" />
                           </div>
                         </div>
                         <div className="flex items-center justify-between">
