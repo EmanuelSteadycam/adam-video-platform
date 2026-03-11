@@ -199,7 +199,14 @@ const HeroSection = ({ onVideoClick, videos = [] }) => {
   }, []);
 
   useEffect(() => {
-    if (!heroVideo && videos.length > 0) setHeroVideo(videos[Math.floor(Math.random() * videos.length)]);
+    if (!heroVideo && videos.length > 0) {
+      const eligible = videos.filter(v => {
+        const ytId = getYouTubeID(v.youtubeUrl);
+        return ytId && ytId !== PLACEHOLDER_VIDEO_ID && v.duration && v.duration !== '0:00';
+      });
+      const pool = eligible.length > 0 ? eligible : videos;
+      setHeroVideo(pool[Math.floor(Math.random() * pool.length)]);
+    }
   }, [videos.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!heroVideo) return null;
@@ -258,7 +265,14 @@ const InspireSection = ({ onVideoClick, onAddToPlaylist, isInPlaylist, videos = 
   const [inspireVideo, setInspireVideo] = useState(null);
 
   const getRandomVideo = () => {
-    if (videos.length > 0) setInspireVideo(videos[Math.floor(Math.random() * videos.length)]);
+    if (videos.length > 0) {
+      const eligible = videos.filter(v => {
+        const ytId = getYouTubeID(v.youtubeUrl);
+        return ytId && ytId !== PLACEHOLDER_VIDEO_ID && v.duration && v.duration !== '0:00';
+      });
+      const pool = eligible.length > 0 ? eligible : videos;
+      setInspireVideo(pool[Math.floor(Math.random() * pool.length)]);
+    }
   };
 
   useEffect(() => {
@@ -2084,7 +2098,9 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     if (userProfile?.role !== 'admin') return;
     supabase.from('video_submissions').select('*').in('status', ['pending', 'admin_draft']).order('submitted_at', { ascending: false })
       .then(({ data }) => { setSubmissions(data || []); setLoadingSubs(false); });
-  }, [userProfile]);
+    loadRejected();
+    loadUsers();
+  }, [userProfile]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Aggiorna archivio quando allVideos cambia (es. dopo approvazione)
   useEffect(() => {
@@ -2166,7 +2182,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       data_inserimento: new Date().toISOString().split('T')[0],
     });
     if (vidErr) {
-      setApproveError(sub.id + ':Errore inserimento video: ' + vidErr.message);
+      setApproveError(sub.id + ':' + (vidErr.code === '23505' ? `Il Codice ID "${edited.codice.trim()}" esiste già nell'archivio.` : 'Errore inserimento video: ' + vidErr.message));
       setActionLoading(null);
       return;
     }
@@ -2339,6 +2355,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       duration: ef_val.duration ?? sub.duration,
       description: ef_val.description ?? sub.description,
       prodotto_scuola: ef_val.prodotto_scuola ?? sub.prodotto_scuola,
+      codice: ef_val.codice ?? sub.codice ?? null,
     }).eq('id', sub.id);
     if (!error) {
       setSubmissions(prev => prev.map(s => s.id === sub.id ? { ...s, ...ef_val } : s));
@@ -2377,7 +2394,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       views: 0,
       data_inserimento: new Date().toISOString().split('T')[0],
     });
-    if (error) setSaveMsg({ type: 'error', text: error.message });
+    if (error) setSaveMsg({ type: 'error', text: error.code === '23505' ? `Il Codice ID "${form.codice.trim()}" esiste già nell'archivio.` : error.message });
     else {
       setSaveMsg({ type: 'success', text: 'Video aggiunto all\'archivio.' });
       setForm({ title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: '' });
@@ -2440,9 +2457,9 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
         {[
           { id: 'add', label: 'Aggiungi', icon: Plus },
           { id: 'pending', label: 'In attesa', count: submissions.length, showCount: !loadingSubs },
-          { id: 'rejected', label: 'Rifiutati', count: rejectedSubs.length, showCount: activeTab === 'rejected' && !loadingRejected },
-          { id: 'archive', label: 'Archivio', count: archiveVideos.length, showCount: archiveLoaded },
-          { id: 'users', label: 'Utenti', count: users.length, showCount: usersLoaded, icon: User },
+          { id: 'rejected', label: 'Rifiutati', count: rejectedSubs.length, showCount: !loadingRejected },
+          { id: 'archive', label: 'Archivio', count: allVideos.length, showCount: true },
+          { id: 'users', label: 'Utenti', count: users.length, showCount: !loadingUsers, icon: User },
         ].map(tab => (
           <button key={tab.id} onClick={() => handleTabChange(tab.id)}
             className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold transition-all"
@@ -2468,8 +2485,17 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                 {saveMsg.type === 'error' ? <AlertCircle size={16} /> : <Check size={16} />}{saveMsg.text}
               </div>
             )}
-            {/* Row 1: Prodotto da scuola + Codice ID */}
-            <div className="grid grid-cols-2 gap-4 items-end">
+            {/* Row 1: Codice ID + Prodotto da scuola */}
+            <div className="grid grid-cols-2 gap-4 items-start">
+              <div>
+                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Codice ID *</label>
+                <input type="text" value={form.codice} onChange={e => f('codice', e.target.value)} placeholder="es. HD245"
+                  className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm font-mono placeholder-zinc-500 outline-none focus:border-[#FFDA2A]"
+                  style={{ borderColor: form.codice.trim() && allVideos.some(v => v.id === form.codice.trim()) ? '#ef4444' : undefined }} />
+                {form.codice.trim() && allVideos.some(v => v.id === form.codice.trim()) && (
+                  <p className="text-xs text-red-400 mt-1 flex items-center gap-1"><AlertCircle size={11} /> ID già presente nell'archivio</p>
+                )}
+              </div>
               <div>
                 <label className="block text-sm font-medium text-zinc-300 mb-1.5">Tipo</label>
                 <button type="button" onClick={() => f('prodotto_scuola', !form.prodotto_scuola)}
@@ -2478,11 +2504,6 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                   <School size={16} /> Prodotto da scuola
                   {form.prodotto_scuola && <Check size={14} />}
                 </button>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Codice ID *</label>
-                <input type="text" value={form.codice} onChange={e => f('codice', e.target.value)} placeholder="es. HD245"
-                  className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm font-mono placeholder-zinc-500 outline-none focus:border-[#FFDA2A]" />
               </div>
             </div>
             {/* Row 2: URL YouTube */}
@@ -2543,15 +2564,20 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
               <textarea value={form.description} onChange={e => f('description', e.target.value)} rows={5} placeholder="Descrizione del video..." className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500 resize-none" />
             </div>
             {/* Row 7: Action buttons */}
-            <div className="flex gap-3 pt-1">
-              <button type="submit" disabled={saving} className="btn-aggiungi-adam flex-1 flex items-center justify-center py-3 rounded-lg font-semibold">
-                <span>{saving ? <Loader2 size={18} className="animate-spin" /> : <Plus size={18} />} Aggiungi ad ADAM</span>
-              </button>
-              <button type="button" disabled={saving} onClick={handleSaveForLater}
-                className="flex items-center justify-center gap-2 px-5 py-3 rounded-lg text-sm font-semibold border-2 border-zinc-600 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all disabled:opacity-50">
-                <BookOpen size={16} /> Salva per dopo
-              </button>
-            </div>
+            {(() => {
+              const codicieDuplicato = form.codice.trim() && allVideos.some(v => v.id === form.codice.trim());
+              return (
+                <div className="flex gap-3 pt-1">
+                  <button type="submit" disabled={saving || !!codicieDuplicato} className="btn-aggiungi-adam flex-1 flex items-center justify-center py-3 rounded-lg font-semibold">
+                    <span>{saving ? <Loader2 size={18} className="animate-spin" /> : <Plus size={18} />} Aggiungi ad ADAM</span>
+                  </button>
+                  <button type="button" disabled={saving || !!codicieDuplicato} onClick={handleSaveForLater}
+                    className="flex items-center justify-center gap-2 px-5 py-3 rounded-lg text-sm font-semibold border-2 border-zinc-600 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all disabled:opacity-50">
+                    <BookOpen size={16} /> Salva per dopo
+                  </button>
+                </div>
+              );
+            })()}
           </form>
         </div>
       )}
@@ -2578,8 +2604,14 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                     <div className="p-4">
                       <div className="flex items-start justify-between gap-3 mb-3">
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1 flex-wrap">
-                            <p className="text-white font-semibold text-sm">{subForm.title ?? sub.title}</p>
+                          {/* Riga 1: Codice ID + Prodotto scuola + Bozza Admin */}
+                          <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                            {(subForm.codice ?? sub.codice) && (
+                              <span className="text-xs font-mono font-bold text-[#FFDA2A]">{subForm.codice ?? sub.codice}</span>
+                            )}
+                            {(sub.prodotto_scuola ?? subForm.prodotto_scuola) && (
+                              <span className="flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-zinc-700 text-zinc-300"><School size={9} /> Scuola</span>
+                            )}
                             {sub.status === 'admin_draft' && (
                               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold border"
                                 style={{ backgroundColor: 'rgba(255,218,42,0.12)', borderColor: 'rgba(255,218,42,0.4)', color: '#FFDA2A' }}>
@@ -2587,13 +2619,15 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                               </span>
                             )}
                           </div>
+                          {/* Riga 2: Titolo */}
+                          <p className="text-white font-semibold text-sm mb-1">{subForm.title ?? sub.title}</p>
+                          {/* Riga 3: Tema + Natura + Anno */}
                           <div className="flex flex-wrap gap-2 text-xs">
                             {(subForm.tema ?? sub.tema) && (() => { const c = TEMA_COLORS[subForm.tema ?? sub.tema]; return (
                               <span className="px-2 py-0.5 rounded font-semibold" style={{ backgroundColor: c?.solid || '#52525b', color: '#fff' }}>{subForm.tema ?? sub.tema}</span>
                             ); })()}
                             {(subForm.natura ?? sub.natura) && <span className="px-2 py-0.5 rounded font-medium bg-blue-600/20 border border-blue-600/30 text-white">{subForm.natura ?? sub.natura}</span>}
                             {(subForm.year ?? sub.year) && <span className="text-zinc-400">{subForm.year ?? sub.year}</span>}
-                            {sub.prodotto_scuola && <span className="bg-zinc-700 text-zinc-300 px-2 py-0.5 rounded flex items-center gap-1"><School size={10} /> Scuola</span>}
                           </div>
                           {sub.youtube_url && (
                             <a href={sub.youtube_url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-400 hover:underline mt-1.5 block truncate">{sub.youtube_url}</a>
@@ -2618,15 +2652,18 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                         ) : (
                           <>
                             {(() => {
-                              const hasCodice = (subForm.codice ?? sub.codice ?? '').trim().length > 0;
+                              const codiceVal = (subForm.codice ?? sub.codice ?? '').trim();
+                              const hasCodice = codiceVal.length > 0;
+                              const codiceEsiste = hasCodice && allVideos.some(v => v.id === codiceVal);
                               return (
                                 <>
                                   <button onClick={() => handleApprove(sub)}
-                                    disabled={actionLoading === sub.id + '_approve' || !hasCodice}
-                                    title={!hasCodice ? 'Imposta il Codice file fisico nel form di modifica prima di approvare' : ''}
+                                    disabled={actionLoading === sub.id + '_approve' || !hasCodice || codiceEsiste}
+                                    title={!hasCodice ? 'Imposta il Codice ID prima di approvare' : codiceEsiste ? 'Codice ID già presente nell\'archivio' : ''}
                                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-[#FFDA2A] text-white hover:bg-[#FFDA2A]/10 transition-all disabled:opacity-40 disabled:cursor-not-allowed">
                                     {actionLoading === sub.id + '_approve' ? <Loader2 size={12} className="animate-spin text-[#FFDA2A]" /> : <Check size={12} className="text-[#FFDA2A]" />}
                                     Approva{!hasCodice && <span className="text-[10px] text-zinc-500 ml-0.5">(codice mancante)</span>}
+                                    {codiceEsiste && <span className="text-[10px] text-red-400 ml-0.5">(ID duplicato)</span>}
                                   </button>
                                 </>
                               );
@@ -2646,17 +2683,49 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                     </div>
                     {/* Edit form */}
                     {isExpanded && (
-                      <div className="border-t border-zinc-700 bg-zinc-900 p-4 space-y-4">
+                      <div className="border-t border-zinc-700 bg-zinc-900 p-4 space-y-3">
+                        {/* Riga 1: Codice ID + Prodotto scuola */}
+                        <div className="grid grid-cols-2 gap-3 items-start">
+                          <div>
+                            <label className="block text-xs font-medium text-zinc-400 mb-1">Codice ID <span className="text-red-400">*</span></label>
+                            {(() => {
+                              const codiceVal = (subForm.codice ?? sub.codice ?? '').trim();
+                              const codiceExists = codiceVal && allVideos.some(v => v.id === codiceVal);
+                              return (
+                                <>
+                                  <input type="text" value={subForm.codice ?? sub.codice ?? ''} onChange={e => ef(sub.id, 'codice', e.target.value)}
+                                    placeholder="es. HD245"
+                                    className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm font-mono placeholder-zinc-500 outline-none focus:border-[#FFDA2A]"
+                                    style={{ borderColor: codiceExists ? '#ef4444' : codiceVal ? '#3f3f46' : '#7f1d1d' }} />
+                                  {codiceExists && (
+                                    <p className="text-xs text-red-400 mt-1 flex items-center gap-1"><AlertCircle size={11} /> ID già presente nell'archivio</p>
+                                  )}
+                                </>
+                              );
+                            })()}
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-zinc-400 mb-1">Tipo</label>
+                            <button type="button" onClick={() => ef(sub.id, 'prodotto_scuola', !(subForm.prodotto_scuola ?? sub.prodotto_scuola))}
+                              className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all border-2"
+                              style={{ borderColor: (subForm.prodotto_scuola ?? sub.prodotto_scuola) ? '#FFDA2A' : '#3f3f46', color: (subForm.prodotto_scuola ?? sub.prodotto_scuola) ? '#FFDA2A' : '#a1a1aa' }}>
+                              <School size={13} /> Prodotto da scuola {(subForm.prodotto_scuola ?? sub.prodotto_scuola) && <Check size={11} />}
+                            </button>
+                          </div>
+                        </div>
+                        {/* Riga 2: URL YouTube */}
                         <div>
                           <label className="block text-xs font-medium text-zinc-400 mb-1">Link YouTube</label>
                           <input type="url" value={subForm.youtube_url ?? sub.youtube_url ?? ''} onChange={e => ef(sub.id, 'youtube_url', e.target.value)}
                             placeholder="https://youtu.be/..." className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
                         </div>
+                        {/* Riga 3: Titolo */}
                         <div>
                           <label className="block text-xs font-medium text-zinc-400 mb-1">Titolo</label>
                           <input type="text" value={subForm.title ?? sub.title} onChange={e => ef(sub.id, 'title', e.target.value)}
                             className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500" />
                         </div>
+                        {/* Riga 4: Tema + Natura */}
                         <div className="grid grid-cols-2 gap-3">
                           <div>
                             <label className="block text-xs font-medium text-zinc-400 mb-1">Tema</label>
@@ -2669,6 +2738,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                               options={[{ value: '', label: 'Non specificato' }, ...NATURE_OPTIONS.map(n => ({ value: n, label: n }))]} />
                           </div>
                         </div>
+                        {/* Riga 5: Anno + Durata + Formato */}
                         <div className="grid grid-cols-3 gap-3">
                           <div>
                             <label className="block text-xs font-medium text-zinc-400 mb-1">Anno</label>
@@ -2686,42 +2756,28 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                               options={[{ value: 'orizzontale', label: 'Orizzontale' }, { value: 'verticale', label: 'Verticale' }]} />
                           </div>
                         </div>
+                        {/* Riga 6: Descrizione */}
                         <div>
                           <label className="block text-xs font-medium text-zinc-400 mb-1">Descrizione</label>
                           <textarea value={subForm.description ?? sub.description ?? ''} onChange={e => ef(sub.id, 'description', e.target.value)}
-                            rows={6} className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500 resize-none" />
-                        </div>
-                        <div>
-                          <label className="block text-xs font-medium text-zinc-400 mb-1">
-                            Codice ID <span className="text-red-400">*</span>
-                          </label>
-                          <input type="text" value={subForm.codice ?? ''} onChange={e => ef(sub.id, 'codice', e.target.value)}
-                            placeholder="es. HD245 — obbligatorio per approvare"
-                            className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm font-mono placeholder-zinc-500 outline-none focus:border-[#FFDA2A]"
-                            style={{ borderColor: (subForm.codice ?? '').trim() ? '#3f3f46' : '#7f1d1d' }} />
+                            rows={5} className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500 resize-none" />
                         </div>
                         {approveError?.startsWith(sub.id + ':') && (
                           <div className="text-xs text-red-400 bg-red-900/20 border border-red-800/40 rounded-lg px-3 py-2">
                             {approveError.slice(sub.id.length + 1)}
                           </div>
                         )}
-                        <div className="flex items-center justify-between">
-                          <button type="button" onClick={() => ef(sub.id, 'prodotto_scuola', !(subForm.prodotto_scuola ?? sub.prodotto_scuola))}
-                            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all border-2"
-                            style={{ borderColor: (subForm.prodotto_scuola ?? sub.prodotto_scuola) ? '#FFDA2A' : '#3f3f46', color: (subForm.prodotto_scuola ?? sub.prodotto_scuola) ? '#FFDA2A' : '#a1a1aa' }}>
-                            <School size={14} /> Prodotto da scuola {(subForm.prodotto_scuola ?? sub.prodotto_scuola) && <Check size={12} />}
+                        {/* Bottoni */}
+                        <div className="flex gap-2 justify-end pt-1">
+                          <button onClick={() => { setExpandedId(null); setEditForms(prev => { const n = { ...prev }; delete n[sub.id]; return n; }); }}
+                            className="px-4 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 transition-all">
+                            Annulla
                           </button>
-                          <div className="flex gap-2">
-                            <button onClick={() => { setExpandedId(null); setEditForms(prev => { const n = { ...prev }; delete n[sub.id]; return n; }); }}
-                              className="px-3 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 transition-all">
-                              Annulla
-                            </button>
-                            <button onClick={() => handleEditSave(sub)} disabled={actionLoading === sub.id + '_edit'}
-                              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold text-black disabled:opacity-50 transition-all"
-                              style={{ backgroundColor: '#FFDA2A' }}>
-                              {actionLoading === sub.id + '_edit' ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />} Salva
-                            </button>
-                          </div>
+                          <button onClick={() => handleEditSave(sub)} disabled={actionLoading === sub.id + '_edit'}
+                            className="flex items-center gap-1.5 px-5 py-2 rounded-lg text-xs font-semibold text-black disabled:opacity-50 transition-all"
+                            style={{ backgroundColor: '#FFDA2A' }}>
+                            {actionLoading === sub.id + '_edit' ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />} Salva
+                          </button>
                         </div>
                       </div>
                     )}
@@ -3013,8 +3069,13 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                     {/* Inline edit form */}
                     {isEditing && (
                       <div className="border-t border-zinc-700 bg-zinc-900 p-4 space-y-3">
-                        {/* Row 1: Prodotto scuola + Codice ID */}
-                        <div className="grid grid-cols-2 gap-3 items-end">
+                        {/* Row 1: Codice ID + Prodotto scuola */}
+                        <div className="grid grid-cols-2 gap-3 items-start">
+                          <div>
+                            <label className="block text-xs font-medium text-zinc-400 mb-1">Codice ID</label>
+                            <input type="text" value={vf.codice ?? video.codice ?? ''} onChange={e => evf(video.id, 'codice', e.target.value)}
+                              placeholder="es. HD245" className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm font-mono placeholder-zinc-500 outline-none focus:border-[#FFDA2A]" />
+                          </div>
                           <div>
                             <label className="block text-xs font-medium text-zinc-400 mb-1">Tipo</label>
                             <button type="button" onClick={() => evf(video.id, 'prodotto_scuola', !(vf.prodotto_scuola ?? video.prodotto_scuola))}
@@ -3022,11 +3083,6 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                               style={{ borderColor: (vf.prodotto_scuola ?? video.prodotto_scuola) ? '#FFDA2A' : '#3f3f46', color: (vf.prodotto_scuola ?? video.prodotto_scuola) ? '#FFDA2A' : '#a1a1aa' }}>
                               <School size={13} /> Prodotto da scuola {(vf.prodotto_scuola ?? video.prodotto_scuola) && <Check size={11} />}
                             </button>
-                          </div>
-                          <div>
-                            <label className="block text-xs font-medium text-zinc-400 mb-1">Codice ID</label>
-                            <input type="text" value={vf.codice ?? video.codice ?? ''} onChange={e => evf(video.id, 'codice', e.target.value)}
-                              placeholder="es. HD245" className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm font-mono placeholder-zinc-500 outline-none focus:border-[#FFDA2A]" />
                           </div>
                         </div>
                         {/* Row 2: URL YouTube */}

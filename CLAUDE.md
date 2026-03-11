@@ -353,6 +353,15 @@ Pannello admin con **5 tab**. Riceve prop: `userProfile`, `onVideoApproved`, `al
 - **Modifica inline**: stesso ordine del tab "+ Aggiungi" (Tipo+Codice | URL | Titolo | Tema+Natura | Anno+Durata+Formato | Descrizione | Data+Views) + [Annulla] [Salva] → Supabase `upsert`
 - **Elimina**: conferma inline → delete da `videos` + aggiorna lista locale
 
+#### Contatori tab — sempre visibili
+Al mount di AdminSection (quando `userProfile.role === 'admin'`) vengono caricati in parallelo:
+- `video_submissions` con `status IN ('pending', 'admin_draft')` → popola `submissions` per contatore "In attesa"
+- `loadRejected()` → popola `rejectedSubs` per contatore "Rifiutati"
+- `loadUsers()` → popola `users` per contatore "Utenti"
+- Archivio: usa `allVideos.length` (già in memoria dall'app)
+
+Questo garantisce che tutti i contatori siano visibili sui tab fin dall'apertura del pannello admin, senza aspettare il click sul tab.
+
 #### `handleTabChange` — logica di caricamento lazy
 - `pending` → `loadPending()` sempre (dati freschi ad ogni visita)
 - `rejected` → `loadRejected()` sempre
@@ -402,9 +411,14 @@ const [savingUserId, setSavingUserId] = useState(null);
 ```
 
 ### `HeroSection`
-- Video YouTube autoplay muted in background (video casuale)
+- Video YouTube autoplay muted in background (video casuale **filtrato**)
+- Il video random esclude: `PLACEHOLDER_VIDEO_ID` (`IbHF-SOVYJU`), video senza YouTube ID valido, video con `duration === '0:00'`
 - Logo animato Lottie in sovrimpressione
 - Tagline verticale "ARCHIVIO / DIGITALE / ADDICTION E / MEDIA" con animazione `fadeSlideIn` staggered (initiali in giallo `#FFDA2A`)
+
+### `InspireSection`
+- `getRandomVideo()` applica lo stesso filtro di HeroSection: esclude placeholder, video senza ID valido, video con `duration === '0:00'`
+- Se nessun video eligible, fa fallback all'intero array
 
 ### `FiltersSection`
 - **Sticky** (`top: stickyTop`, `z-30`) — `stickyTop` è misurato dinamicamente con `offsetHeight` dell'header al mount e al resize (NON hardcoded)
