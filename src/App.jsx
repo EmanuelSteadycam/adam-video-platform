@@ -473,21 +473,10 @@ const CustomSelect = ({ value, onChange, options, accentColor = '#FFDA2A' }) => 
 };
 
 const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchChange, onSearchSubmit, videos = [] }) => {
-  const nature = ['Tutte', 'Cortometraggio', 'Film', 'Info', 'Sequenza', 'Spot commerciale', 'Spot sociale', 'Videoclip', 'Web e social'];
+  const nature = ['Tutti', 'Cortometraggio', 'Film', 'Info', 'Sequenza', 'Spot commerciale', 'Spot sociale', 'Videoclip', 'Web e social'];
   const years = ['Tutti', ...new Set(videos.map(v => v.year).filter(Boolean).sort((a, b) => b - a))];
   const [hoveredTema, setHoveredTema] = useState(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [stickyTop, setStickyTop] = useState(72);
-
-  useEffect(() => {
-    const measure = () => {
-      const h = document.querySelector('header')?.offsetHeight;
-      if (h) setStickyTop(h);
-    };
-    measure();
-    window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
-  }, []);
 
   const activeTema = currentFilters.tema;
   const activeBorderColor = TEMA_COLORS[activeTema]?.border || '#3f3f46';
@@ -496,7 +485,7 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
   // Conta filtri avanzati attivi
   const durActive = currentFilters.durationMin !== SNAP_POINTS[0] || currentFilters.durationMax !== SNAP_POINTS[SNAP_POINTS.length - 1];
   const advancedCount = [
-    currentFilters.natura !== 'Tutte',
+    currentFilters.natura !== 'Tutti',
     currentFilters.year !== 'Tutti',
     currentFilters.scuola !== 'Tutti',
     durActive,
@@ -505,214 +494,207 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
   const hasAnyFilter = activeTema !== 'Tutti' || advancedCount > 0 || searchQuery;
 
   const resetAll = () => {
-    onFilterChange({ tema: 'Tutti', natura: 'Tutte', year: 'Tutti', scuola: 'Tutti', durationMin: SNAP_POINTS[0], durationMax: SNAP_POINTS[SNAP_POINTS.length - 1] });
+    onFilterChange({ tema: 'Tutti', natura: 'Tutti', year: 'Tutti', scuola: 'Tutti', durationMin: SNAP_POINTS[0], durationMax: SNAP_POINTS[SNAP_POINTS.length - 1] });
     onSearchChange('');
   };
 
   // Chips filtri avanzati attivi (visibili anche col pannello chiuso)
   const activeChips = [];
-  if (currentFilters.natura !== 'Tutte') activeChips.push({ label: currentFilters.natura, clear: () => onFilterChange({ ...currentFilters, natura: 'Tutte' }) });
+  if (currentFilters.natura !== 'Tutti') activeChips.push({ label: currentFilters.natura, clear: () => onFilterChange({ ...currentFilters, natura: 'Tutti' }) });
   if (currentFilters.year !== 'Tutti') activeChips.push({ label: `Anno: ${currentFilters.year}`, clear: () => onFilterChange({ ...currentFilters, year: 'Tutti' }) });
   if (currentFilters.scuola !== 'Tutti') activeChips.push({ label: currentFilters.scuola === 'Scuole' ? 'Solo Scuole' : 'Escl. Scuole', clear: () => onFilterChange({ ...currentFilters, scuola: 'Tutti' }) });
   if (durActive) activeChips.push({ label: `${formatDuration(currentFilters.durationMin)} – ${formatDuration(currentFilters.durationMax)}`, clear: () => onFilterChange({ ...currentFilters, durationMin: SNAP_POINTS[0], durationMax: SNAP_POINTS[SNAP_POINTS.length - 1] }) });
 
   return (
-    <div
-      data-filters-section
-      className="sticky z-30 bg-black mb-8"
-      style={{ top: stickyTop }}
-    >
-      <div className="bg-zinc-900 rounded-xl overflow-hidden transition-all duration-300">
-      {/* Striscia colorata tema */}
-      <div className="h-[3px] transition-colors duration-300" style={{ backgroundColor: activeTema !== 'Tutti' ? activeBorderColor : 'transparent' }} />
-      <div className="p-6">
-      {/* Campo di ricerca libera */}
-      <div className="relative mb-5">
-        <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" />
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') onSearchSubmit?.(); }}
-          placeholder="Cerca video"
-          className="w-full bg-zinc-800 border border-zinc-700 rounded-lg pl-11 pr-10 py-2.5 text-sm text-white placeholder-zinc-500 outline-none focus:border-zinc-500 transition-colors"
-        />
-        {searchQuery && (
-          <button onClick={() => onSearchChange('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors">
-            <X size={16} />
-          </button>
-        )}
-      </div>
+    <div className="mb-8">
+      <div>
+        <div className={`bg-zinc-900 overflow-hidden transition-all duration-300 ${showAdvanced ? 'rounded-t-xl' : 'rounded-xl'}`}>
+          {/* Striscia colorata tema */}
+          <div className="h-[3px] transition-colors duration-300" style={{ backgroundColor: activeTema !== 'Tutti' ? activeBorderColor : 'transparent' }} />
+          <div className="p-6">
+            {/* Campo di ricerca libera */}
+            <div className="relative mb-5">
+              <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => onSearchChange(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') onSearchSubmit?.(); }}
+                placeholder="Cerca video"
+                className="w-full bg-zinc-800 border border-zinc-700 rounded-lg pl-11 pr-10 py-2.5 text-sm text-white placeholder-zinc-500 outline-none focus:border-zinc-500 transition-colors"
+              />
+              {searchQuery && (
+                <button onClick={() => onSearchChange('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors">
+                  <X size={16} />
+                </button>
+              )}
+            </div>
 
-      {/* Tema + toggle filtri avanzati sulla stessa riga */}
-      <div className="flex items-center justify-between gap-4 flex-wrap">
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => onFilterChange({ ...currentFilters, tema: 'Tutti' })}
-            onMouseEnter={() => setHoveredTema('Tutti')}
-            onMouseLeave={() => setHoveredTema(null)}
-            className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-white"
-            style={{
-              backgroundColor: activeTema === 'Tutti' ? '#52525b' : hoveredTema === 'Tutti' ? '#3f3f46' : 'transparent',
-              border: '2px solid #52525b',
-            }}
-          >
-            Tutti
-          </button>
-          {['Alcool', 'Azzardo', 'Digitale', 'Sostanze'].map(tema => {
-            const c = TEMA_COLORS[tema];
-            const noVideos = tema === 'Sostanze';
-            return (
-              <button
-                key={tema}
-                onClick={() => onFilterChange({ ...currentFilters, tema })}
-                onMouseEnter={() => setHoveredTema(tema)}
-                onMouseLeave={() => setHoveredTema(null)}
-                className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-white"
-                style={{
-                  backgroundColor: activeTema === tema ? c.solid : hoveredTema === tema ? c.dim : 'transparent',
-                  border: `2px solid ${c.border}`,
-                }}
-                title={noVideos ? 'Nessun video disponibile' : ''}
-              >
-                {tema}
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="flex items-center gap-2">
-          {/* Bottone Filtri avanzati */}
-          <button
-            onClick={() => setShowAdvanced(v => !v)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200"
-            style={{
-              backgroundColor: showAdvanced || advancedCount > 0 ? '#27272a' : 'transparent',
-              border: '2px solid #3f3f46',
-              color: '#a1a1aa',
-            }}
-          >
-            <SlidersHorizontal size={16} style={{ color: showAdvanced ? accentColor : 'inherit' }} />
-            <span>Filtri avanzati</span>
-            {advancedCount > 0 && (
-              <span className="text-black text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: accentColor }}>
-                {advancedCount}
-              </span>
-            )}
-            <ChevronDown size={14} className="transition-transform duration-200" style={{ transform: showAdvanced ? 'rotate(180deg)' : 'rotate(0deg)' }} />
-          </button>
-
-          {/* Azzera tutto */}
-          {hasAnyFilter && (
-            <button
-              onClick={resetAll}
-              className="flex items-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-medium text-zinc-400 transition-colors"
-              style={{ border: '2px solid #3f3f46' }}
-            >
-              <X size={14} style={{ color: accentColor }} />
-              Azzera
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Chips filtri avanzati attivi */}
-      {activeChips.length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-3">
-          {activeChips.map((chip) => (
-            <span
-              key={chip.label}
-              className="flex items-center gap-1.5 text-xs px-3 py-1 rounded-full bg-zinc-800 border border-zinc-700"
-              style={{ color: accentColor }}
-            >
-              {chip.label}
-              <button onClick={chip.clear} className="hover:text-white transition-colors">
-                <X size={12} />
-              </button>
-            </span>
-          ))}
-        </div>
-      )}
-
-      {/* Filtri avanzati espandibili */}
-      {showAdvanced && (
-        <div className="mt-5 pt-5 border-t border-zinc-800 space-y-5">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {[
-              {
-                label: 'Formato',
-                value: currentFilters.natura,
-                onChange: (v) => onFilterChange({ ...currentFilters, natura: v }),
-                options: nature.map(n => ({ value: n, label: n })),
-              },
-              {
-                label: 'Anno',
-                value: currentFilters.year,
-                onChange: (v) => onFilterChange({ ...currentFilters, year: v }),
-                options: years.map(y => ({ value: y, label: y })),
-              },
-            ].map(({ label, value, onChange, options }) => (
-              <div key={label}>
-                <label className="block text-sm font-medium text-zinc-400 mb-2">{label}</label>
-                <CustomSelect value={value} onChange={onChange} options={options} accentColor={accentColor} />
-              </div>
-            ))}
-
-            {/* Prodotto dalle scuole — toggle visivo */}
-            <div>
-              <label className="block text-sm font-medium text-zinc-400 mb-2">Prodotto dalle scuole</label>
-              <div className="flex gap-2">
-                {[
-                  { value: 'Tutti', label: 'Tutti' },
-                  { value: 'Scuole', label: 'Sì', icon: <School size={14} /> },
-                  { value: 'Altri', label: 'No', icon: <School size={14} className="opacity-40" /> },
-                ].map(({ value, label, icon }) => {
-                  const active = currentFilters.scuola === value;
+            {/* Tema + toggle filtri avanzati sulla stessa riga */}
+            <div className="flex items-center justify-between gap-4 flex-wrap">
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => onFilterChange({ ...currentFilters, tema: 'Tutti' })}
+                  onMouseEnter={() => setHoveredTema('Tutti')}
+                  onMouseLeave={() => setHoveredTema(null)}
+                  className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-white"
+                  style={{
+                    backgroundColor: activeTema === 'Tutti' ? '#52525b' : hoveredTema === 'Tutti' ? '#3f3f46' : 'transparent',
+                    border: '2px solid #52525b',
+                  }}
+                >
+                  Tutti
+                </button>
+                {['Alcool', 'Azzardo', 'Digitale', 'Sostanze'].map(tema => {
+                  const c = TEMA_COLORS[tema];
+                  const noVideos = tema === 'Sostanze';
                   return (
                     <button
-                      key={value}
-                      onClick={() => onFilterChange({ ...currentFilters, scuola: value })}
-                      className="flex items-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200"
+                      key={tema}
+                      onClick={() => onFilterChange({ ...currentFilters, tema })}
+                      onMouseEnter={() => setHoveredTema(tema)}
+                      onMouseLeave={() => setHoveredTema(null)}
+                      className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-white"
                       style={{
-                        backgroundColor: active ? '#27272a' : 'transparent',
-                        border: `2px solid ${active ? accentColor : '#3f3f46'}`,
-                        color: active ? accentColor : '#a1a1aa',
+                        backgroundColor: activeTema === tema ? c.solid : hoveredTema === tema ? c.dim : 'transparent',
+                        border: `2px solid ${c.border}`,
                       }}
+                      title={noVideos ? 'Nessun video disponibile' : ''}
                     >
-                      {icon}
-                      {label}
+                      {tema}
                     </button>
                   );
                 })}
               </div>
-            </div>
-          </div>
 
-          {/* Slider durata */}
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <label className="text-sm font-medium text-zinc-400">Durata</label>
-              <span className="text-sm font-medium" style={{ color: accentColor }}>
-                {formatDuration(currentFilters.durationMin)} – {formatDuration(currentFilters.durationMax)}
-              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setShowAdvanced(v => !v)}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200"
+                  style={{
+                    backgroundColor: showAdvanced || advancedCount > 0 ? '#27272a' : 'transparent',
+                    border: '2px solid #3f3f46',
+                    color: '#a1a1aa',
+                  }}
+                >
+                  <SlidersHorizontal size={16} style={{ color: showAdvanced ? accentColor : 'inherit' }} />
+                  <span>Filtri avanzati</span>
+                  {advancedCount > 0 && (
+                    <span className="text-black text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: accentColor }}>
+                      {advancedCount}
+                    </span>
+                  )}
+                  <ChevronDown size={14} className="transition-transform duration-200" style={{ transform: showAdvanced ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+                </button>
+                {hasAnyFilter && (
+                  <button
+                    onClick={resetAll}
+                    className="flex items-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-medium text-zinc-400 transition-colors"
+                    style={{ border: '2px solid #3f3f46' }}
+                  >
+                    <X size={14} style={{ color: accentColor }} />
+                    Azzera
+                  </button>
+                )}
+              </div>
             </div>
-            <DualRangeSlider
-              min={0}
-              max={SNAP_POINTS.length - 1}
-              valueMin={Math.max(0, SNAP_POINTS.indexOf(currentFilters.durationMin))}
-              valueMax={SNAP_POINTS.indexOf(currentFilters.durationMax) === -1 ? SNAP_POINTS.length - 1 : SNAP_POINTS.indexOf(currentFilters.durationMax)}
-              onChange={(mn, mx) => onFilterChange({ ...currentFilters, durationMin: SNAP_POINTS[mn], durationMax: SNAP_POINTS[mx] })}
-              accentColor={accentColor}
-            />
-            <div className="flex justify-between mt-2 text-xs text-zinc-500">
-              <span>{formatDuration(SNAP_POINTS[0])}</span>
-              <span>{formatDuration(SNAP_POINTS[SNAP_POINTS.length - 1])}</span>
+
+            {/* Chips filtri avanzati attivi */}
+            {activeChips.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {activeChips.map((chip) => (
+                  <span
+                    key={chip.label}
+                    className="flex items-center gap-1.5 text-xs px-3 py-1 rounded-full bg-zinc-800 border border-zinc-700"
+                    style={{ color: accentColor }}
+                  >
+                    {chip.label}
+                    <button onClick={chip.clear} className="hover:text-white transition-colors">
+                      <X size={12} />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Pannello avanzato — NON sticky, scorre con la pagina */}
+      {showAdvanced && (
+        <div className="bg-zinc-900 rounded-b-xl px-6 pb-6">
+          <div className="pt-5 border-t border-zinc-800 space-y-5">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {[
+                {
+                  label: 'Formato',
+                  value: currentFilters.natura,
+                  onChange: (v) => onFilterChange({ ...currentFilters, natura: v }),
+                  options: nature.map(n => ({ value: n, label: n })),
+                },
+                {
+                  label: 'Anno',
+                  value: currentFilters.year,
+                  onChange: (v) => onFilterChange({ ...currentFilters, year: v }),
+                  options: years.map(y => ({ value: y, label: y })),
+                },
+              ].map(({ label, value, onChange, options }) => (
+                <div key={label}>
+                  <label className="block text-sm font-medium text-zinc-400 mb-2">{label}</label>
+                  <CustomSelect value={value} onChange={onChange} options={options} accentColor={accentColor} />
+                </div>
+              ))}
+              <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Prodotto dalle scuole</label>
+                <div className="flex gap-2">
+                  {[
+                    { value: 'Tutti', label: 'Tutti' },
+                    { value: 'Scuole', label: 'Sì', icon: <School size={14} /> },
+                    { value: 'Altri', label: 'No', icon: <School size={14} className="opacity-40" /> },
+                  ].map(({ value, label, icon }) => {
+                    const active = currentFilters.scuola === value;
+                    return (
+                      <button
+                        key={value}
+                        onClick={() => onFilterChange({ ...currentFilters, scuola: value })}
+                        className="flex items-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200"
+                        style={{
+                          backgroundColor: active ? '#27272a' : 'transparent',
+                          border: `2px solid ${active ? accentColor : '#3f3f46'}`,
+                          color: active ? accentColor : '#a1a1aa',
+                        }}
+                      >
+                        {icon}
+                        {label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <label className="text-sm font-medium text-zinc-400">Durata</label>
+                <span className="text-sm font-medium" style={{ color: accentColor }}>
+                  {formatDuration(currentFilters.durationMin)} – {formatDuration(currentFilters.durationMax)}
+                </span>
+              </div>
+              <DualRangeSlider
+                min={0}
+                max={SNAP_POINTS.length - 1}
+                valueMin={Math.max(0, SNAP_POINTS.indexOf(currentFilters.durationMin))}
+                valueMax={SNAP_POINTS.indexOf(currentFilters.durationMax) === -1 ? SNAP_POINTS.length - 1 : SNAP_POINTS.indexOf(currentFilters.durationMax)}
+                onChange={(mn, mx) => onFilterChange({ ...currentFilters, durationMin: SNAP_POINTS[mn], durationMax: SNAP_POINTS[mx] })}
+                accentColor={accentColor}
+              />
+              <div className="flex justify-between mt-2 text-xs text-zinc-500">
+                <span>{formatDuration(SNAP_POINTS[0])}</span>
+                <span>{formatDuration(SNAP_POINTS[SNAP_POINTS.length - 1])}</span>
+              </div>
             </div>
           </div>
         </div>
       )}
-      </div>
-      </div>
     </div>
   );
 };
@@ -724,7 +706,7 @@ const NatureCarousel = ({ onSelectNature, selectedNatura, videos = [] }) => {
     { name: 'Cortometraggio', image: '/images/nature/cortometraggio.jpg', key: 'Cortometraggio' },
     { name: 'Film', image: '/images/nature/film.jpg', key: 'Film' },
     { name: 'Info', image: '/images/nature/info.jpg', key: 'Info' },
-    { name: 'Sequenza', image: '/images/nature/sequenza.jpg', key: 'Sequenze' },
+    { name: 'Sequenze', image: '/images/nature/sequenza.jpg', key: 'Sequenze' },
     { name: 'Spot ADV', image: '/images/nature/spot-adv.jpg', key: 'Spot commerciale' },
     { name: 'Spot Sociale', image: '/images/nature/spot-sociale.jpg', key: 'Spot sociale' },
     { name: 'Videoclip', image: '/images/nature/videoclip.jpg', key: 'Videoclip' },
@@ -1612,7 +1594,7 @@ const AuthModal = ({ mode: initialMode, onClose }) => {
 };
 
 // ─── SubmitVideoSection ────────────────────────────────────────────────────────
-const NATURE_OPTIONS = ['Cortometraggio', 'Film', 'Info', 'Sequenza', 'Spot commerciale', 'Spot sociale', 'Videoclip', 'Web e social'];
+const NATURE_OPTIONS = ['Cortometraggio', 'Film', 'Info', 'Sequenze', 'Spot commerciale', 'Spot sociale', 'Videoclip', 'Web e social'];
 const TEMI_OPTIONS = ['Alcool', 'Azzardo', 'Digitale', 'Sostanze'];
 
 const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSaved }) => {
@@ -3295,8 +3277,11 @@ function App() {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [selectedTemaTag, setSelectedTemaTag] = useState(null);
   const [tagWidth, setTagWidth] = useState(0);
+  const [naturaTagWidth, setNaturaTagWidth] = useState(0);
   const headerSearchRef = useRef(null);
   const userMenuRef = useRef(null);
+  const filtersSectionRef = useRef(null);
+  const [filtersInView, setFiltersInView] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -3308,13 +3293,11 @@ function App() {
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, []);
-  const carouselRef = useRef(null);
-  const resultsRef = useRef(null);
   const [selectedNatura, setSelectedNatura] = useState('Tutte');
   const [schoolsSort, setSchoolsSort] = useState('date'); // 'date' | 'views'
   const [filters, setFilters] = useState({
     tema: 'Tutti',
-    natura: 'Tutte',
+    natura: 'Tutti',
     year: 'Tutti',
     scuola: 'Tutti',
     durationMin: SNAP_POINTS[0],
@@ -3330,6 +3313,19 @@ function App() {
   const [currentPlaylistIndex, setCurrentPlaylistIndex] = useState(0);
   const [dbVideos, setDbVideos] = useState([]);
 
+  // ─── IntersectionObserver: mostra header search quando FiltersSection esce dal viewport ──
+  useEffect(() => {
+    if (activeSection !== 'home') { setFiltersInView(true); return; }
+    const el = filtersSectionRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => setFiltersInView(entry.isIntersecting),
+      { threshold: 0.5 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [activeSection]);
+
   // ─── Carica tutti i video da Supabase ─────────────────────────────────────────
   const loadVideos = async () => {
     const { data } = await supabase.from('videos').select('*');
@@ -3337,6 +3333,17 @@ function App() {
   };
 
   useEffect(() => { loadVideos(); }, []);
+
+  // Sync selectedTemaTag con filters.tema (es. click bottoni FiltersSection in home)
+  useEffect(() => {
+    const TEMA_TAG_COLORS = { Alcool: '#D97706', Azzardo: '#BE123C', Digitale: '#3b82f6', Sostanze: '#10b981' };
+    if (filters.tema !== 'Tutti') {
+      setSelectedTemaTag({ label: filters.tema, color: TEMA_TAG_COLORS[filters.tema] });
+    } else {
+      setSelectedTemaTag(null);
+      setTagWidth(0);
+    }
+  }, [filters.tema]);
 
   // ─── Apre il modal e incrementa le visualizzazioni ────────────────────────────
   const handleVideoClick = (video) => {
@@ -3386,28 +3393,6 @@ function App() {
   // ─── Fine Auth ────────────────────────────────────────────────────────────────
 
   // Scroll ai risultati — posizione calcolata dinamicamente sotto header + FiltersSection sticky
-  const scrollToResults = () => {
-    if (!resultsRef.current) return;
-    const headerH = document.querySelector('header')?.offsetHeight ?? 72;
-    const filterSection = document.querySelector('[data-filters-section]');
-    const filterHeight = filterSection?.offsetHeight ?? 160;
-    const offset = headerH + filterHeight + 8; // header fisso + sezione filtri sticky + gap
-    const elementTop = resultsRef.current.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo({ top: elementTop - offset, behavior: 'smooth' });
-  };
-
-  // Scolla ai risultati solo quando cambiano i filtri (bottoni/dropdown), NON ad ogni carattere digitato
-  useEffect(() => {
-    if (activeSection !== 'home') return;
-    const hasActiveFilter =
-      filters.tema !== 'Tutti' ||
-      filters.natura !== 'Tutte' ||
-      filters.year !== 'Tutti' ||
-      filters.scuola !== 'Tutti' ||
-      filters.durationMin !== SNAP_POINTS[0] ||
-      filters.durationMax !== SNAP_POINTS[SNAP_POINTS.length - 1];
-    if (hasActiveFilter) setTimeout(scrollToResults, 50);
-  }, [filters]);
 
   // Carica/salva playlist locale (anonimi) in localStorage
   useEffect(() => {
@@ -3513,7 +3498,7 @@ function App() {
     
     // Applica filtri avanzati
     if (filters.tema !== 'Tutti') filtered = filtered.filter(v => v.tema === filters.tema);
-    if (filters.natura !== 'Tutte') filtered = filtered.filter(v => v.natura === filters.natura);
+    if (filters.natura !== 'Tutti') { const naturaVal = filters.natura === 'Sequenza' ? 'Sequenze' : filters.natura; filtered = filtered.filter(v => v.natura === naturaVal); }
     if (filters.year !== 'Tutti') filtered = filtered.filter(v => v.year === parseInt(filters.year));
     if (filters.scuola === 'Scuole') filtered = filtered.filter(v => v.prodottoScuola);
     else if (filters.scuola === 'Altri') filtered = filtered.filter(v => !v.prodottoScuola);
@@ -3562,7 +3547,6 @@ function App() {
         { section: 'recent',      label: 'Nuovi Inseriti',      icon: Clock },
         { section: 'schools',     label: 'Prodotti dalle Scuole', icon: School },
         { section: 'inspire',     label: 'Lasciati Ispirare',   icon: Sparkles },
-        { section: 'wow',         label: 'WOW',                 icon: Zap },
       ].map(({ section, label, icon: Icon }) => (
         <li key={section}>
           <button
@@ -3615,10 +3599,10 @@ function App() {
     >
       <Menu size={24} />
     </button>
-    {/* Search bar — invisibile in home (coperta dal filtro sticky), visibile altrove */}
+    {/* Search bar — invisibile in home finché FiltersSection è in vista */}
     <div
       className="flex-1 max-w-2xl hidden md:block"
-      style={{ opacity: activeSection === 'home' ? 0 : 1, pointerEvents: activeSection === 'home' ? 'none' : 'auto', transition: 'opacity 0.3s' }}
+      style={{ opacity: (activeSection === 'home' && filtersInView) ? 0 : 1, pointerEvents: (activeSection === 'home' && filtersInView) ? 'none' : 'auto', transition: 'opacity 0.3s' }}
     >
       <div className="relative">
         {isSearchFocused && (
@@ -3631,7 +3615,7 @@ function App() {
             ].map(({ label, color }) => (
               <button
                 key={label}
-                onClick={() => { setFilters(f => ({ ...f, tema: label })); setSelectedTemaTag({ label, color }); setIsSearchFocused(false); setTimeout(() => headerSearchRef.current?.focus(), 50); }}
+                onClick={() => { setFilters(f => ({ ...f, tema: label })); setIsSearchFocused(false); setTimeout(() => headerSearchRef.current?.focus(), 50); }}
                 className="w-full text-left px-4 py-2 text-white hover:bg-zinc-800 transition-colors text-sm flex items-center gap-2"
               >
                 <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
@@ -3644,7 +3628,7 @@ function App() {
         {selectedTemaTag && (
           <span
             ref={el => { if (el) setTagWidth(el.offsetWidth); }}
-            className="absolute left-10 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full z-10 whitespace-nowrap"
+            className="absolute left-10 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-md z-10 whitespace-nowrap"
             style={{ backgroundColor: selectedTemaTag.color, color: '#fff' }}
           >
             {selectedTemaTag.label}
@@ -3654,9 +3638,22 @@ function App() {
             ><X size={10} /></button>
           </span>
         )}
-        {(searchQuery || selectedTemaTag) && (
+        {activeSection === 'formats' && selectedNatura !== 'Tutte' && (
+          <span
+            ref={el => { if (el) setNaturaTagWidth(el.offsetWidth); }}
+            className="absolute top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-md z-10 whitespace-nowrap"
+            style={{ left: selectedTemaTag ? `${tagWidth + 52}px` : '40px', backgroundColor: '#3f3f46', color: '#fff' }}
+          >
+            {selectedNatura}
+            <button
+              onMouseDown={(e) => { e.preventDefault(); setSelectedNatura('Tutte'); setNaturaTagWidth(0); }}
+              className="hover:opacity-70"
+            ><X size={10} /></button>
+          </span>
+        )}
+        {(searchQuery || selectedTemaTag || (activeSection === 'formats' && selectedNatura !== 'Tutte')) && (
           <button
-            onClick={() => { setSearchQuery(''); setSelectedTemaTag(null); setTagWidth(0); setFilters(f => ({ ...f, tema: 'Tutti' })); }}
+            onClick={() => { setSearchQuery(''); setSelectedTemaTag(null); setTagWidth(0); setFilters(f => ({ ...f, tema: 'Tutti' })); setSelectedNatura('Tutte'); setNaturaTagWidth(0); }}
             className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors"
           >
             <X size={18} />
@@ -3664,16 +3661,40 @@ function App() {
         )}
         <input
           type="text"
-          placeholder={selectedTemaTag ? `Cerca in ${selectedTemaTag.label}...` : 'Cerca video...'}
+          placeholder={
+            activeSection === 'formats' && selectedNatura !== 'Tutte' ? `Cerca in ${selectedNatura}...` :
+            selectedTemaTag ? `Cerca in ${selectedTemaTag.label}...` : 'Cerca video...'
+          }
           value={searchQuery}
           onChange={(e) => { setSearchQuery(e.target.value); if (activeSection === 'submit' || activeSection === 'admin') setActiveSection('home'); }}
           onFocus={() => setIsSearchFocused(true)}
           onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
           ref={headerSearchRef}
           className="w-full text-white rounded-lg placeholder-zinc-500 text-sm outline-none"
-          style={{ backgroundColor: '#262626', paddingLeft: selectedTemaTag ? `${tagWidth + 48}px` : '44px', paddingRight: '40px', paddingTop: '10px', paddingBottom: '10px' }}
+          style={{ backgroundColor: '#262626', paddingLeft: (selectedTemaTag || (activeSection === 'formats' && selectedNatura !== 'Tutte')) ? `${(tagWidth || 0) + (activeSection === 'formats' && selectedNatura !== 'Tutte' ? (naturaTagWidth || 0) + 4 : 0) + 48}px` : '44px', paddingRight: '40px', paddingTop: '10px', paddingBottom: '10px' }}
         />
       </div>
+      {/* Pillole filtri avanzati attivi — visibili solo quando FiltersSection è fuori viewport */}
+      {activeSection === 'home' && !filtersInView && (() => {
+        const durActive = filters.durationMin !== SNAP_POINTS[0] || filters.durationMax !== SNAP_POINTS[SNAP_POINTS.length - 1];
+        const chips = [
+          filters.natura !== 'Tutti' && { label: filters.natura, clear: () => setFilters(f => ({ ...f, natura: 'Tutti' })) },
+          filters.year !== 'Tutti' && { label: String(filters.year), clear: () => setFilters(f => ({ ...f, year: 'Tutti' })) },
+          filters.scuola === 'Scuole' && { label: 'Solo scuole', clear: () => setFilters(f => ({ ...f, scuola: 'Tutti' })) },
+          filters.scuola === 'Altri' && { label: 'Escl. scuole', clear: () => setFilters(f => ({ ...f, scuola: 'Tutti' })) },
+          durActive && { label: `${formatDuration(filters.durationMin)} – ${formatDuration(filters.durationMax)}`, clear: () => setFilters(f => ({ ...f, durationMin: SNAP_POINTS[0], durationMax: SNAP_POINTS[SNAP_POINTS.length - 1] })) },
+        ].filter(Boolean);
+        return chips.length > 0 ? (
+          <div className="flex flex-wrap gap-1.5 mt-2">
+            {chips.map(chip => (
+              <span key={chip.label} className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-md bg-zinc-800 border border-zinc-700 text-zinc-300">
+                {chip.label}
+                <button onMouseDown={(e) => { e.preventDefault(); chip.clear(); }} className="hover:text-white transition-colors"><X size={10} /></button>
+              </span>
+            ))}
+          </div>
+        ) : null;
+      })()}
     </div>
     <div className="flex items-center gap-2 lg:gap-3">
   <button
@@ -3737,8 +3758,7 @@ function App() {
           {activeSection === 'home' && (
   <>
     <HeroSection onVideoClick={handleVideoClick} videos={allVideos} />
-    <FiltersSection onFilterChange={setFilters} currentFilters={filters} searchQuery={searchQuery} onSearchChange={setSearchQuery} onSearchSubmit={scrollToResults} videos={allVideos} />
-    <div ref={carouselRef}><NatureCarousel onSelectNature={(natura) => { setSelectedNatura(natura); setActiveSection('all'); }} videos={allVideos} /></div>
+    <div ref={filtersSectionRef}><FiltersSection onFilterChange={setFilters} currentFilters={filters} searchQuery={searchQuery} onSearchChange={setSearchQuery} onSearchSubmit={() => {}} videos={allVideos} /></div>
   </>
 )}
 {activeSection === 'formats' && <NatureCarousel onSelectNature={(natura) => setSelectedNatura(natura)} selectedNatura={selectedNatura} videos={allVideos} />}
@@ -3748,19 +3768,20 @@ function App() {
           {activeSection === 'myvideos' && <MyVideosSection user={user} onNewVideo={() => setActiveSection('submit')} />}
           {activeSection !== 'submit' && activeSection !== 'admin' && activeSection !== 'myvideos' && (
           <>
-          <div ref={resultsRef} className="mb-6">
+          <div className="mb-6">
             <div className="flex items-center justify-between">
+              {!(activeSection === 'formats' && selectedNatura !== 'Tutte') && (
               <h2 className="text-2xl font-bold text-white">
                 {activeSection === 'home' && 'Esplora i Video'}
                 {activeSection === 'most-viewed' && 'I Più Visti'}
                 {activeSection === 'recent' && 'Nuovi Inseriti'}
                 {activeSection === 'schools' && 'Prodotti dalle Scuole'}
                 {activeSection === 'inspire' && 'Esplora i Video'}
-                {activeSection === 'formats' && selectedNatura !== 'Tutte' && `Formato dei video: ${selectedNatura}`}
-                {activeSection === 'formats' && selectedNatura === 'Tutte' && 'Tutti i Video'}
+                {activeSection === 'formats' && 'Tutti i Video'}
                 {activeSection === 'all' && selectedNatura !== 'Tutte' && selectedNatura}
                 {activeSection === 'all' && selectedNatura === 'Tutte' && 'Tutti i Video'}
               </h2>
+              )}
               {activeSection === 'schools' && (
                 <div className="flex items-center gap-1 bg-zinc-900 p-1 rounded-lg">
                   <button
@@ -3784,11 +3805,11 @@ function App() {
             </div>
             <p className="text-zinc-400 mt-2">{filteredVideos.length} video trovati</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" style={{ minHeight: '60vh' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredVideos.map(video => <VideoCard key={video.id} video={video} onClick={() => handleVideoClick(video)} onAddToPlaylist={handleAddToPlaylist} isInPlaylist={isInPlaylist(video.id)} />)}
           </div>
           {filteredVideos.length === 0 && (
-            <div className="text-center py-20">
+            <div className="text-center py-12">
               <div className="inline-block bg-zinc-900 p-8 rounded-2xl mb-6"><Video size={64} className="text-zinc-700" strokeWidth={1.5} /></div>
               <h3 className="text-2xl font-bold text-white mb-3">Nessun video trovato</h3>
               <p className="text-zinc-400">Prova con una ricerca diversa</p>

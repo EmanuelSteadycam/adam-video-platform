@@ -272,13 +272,12 @@ const toArchiveFormat = (v) => ({
 
 | Sezione | `activeSection` | Descrizione |
 |---|---|---|
-| Home | `'home'` | Hero + FiltersSection sticky + NatureCarousel + griglia video |
+| Home | `'home'` | Hero + FiltersSection (non sticky) + griglia video |
 | I Formati ADAM | `'formats'` | NatureCarousel + griglia filtrata per natura |
 | I Più Visti | `'most-viewed'` | Top 20 per visualizzazioni |
 | Nuovi Inseriti | `'recent'` | Ultimi 5 video per dataInserimento |
 | Prodotti dalle Scuole | `'schools'` | Solo video con `prodottoScuola: true` |
 | Lasciati Ispirare | `'inspire'` | Player random + shuffle + griglia |
-| WOW | `'wow'` | (sezione futura, contenuto da definire) |
 | Segnala Video | `'submit'` | Form segnalazione video (utenti loggati) |
 | I miei video | `'myvideos'` | Segnalazioni proprie dell'utente loggato |
 | Admin | `'admin'` | Pannello admin (solo role='admin') |
@@ -421,21 +420,21 @@ const [savingUserId, setSavingUserId] = useState(null);
 - Se nessun video eligible, fa fallback all'intero array
 
 ### `FiltersSection`
-- **Sticky** (`top: stickyTop`, `z-30`) — `stickyTop` è misurato dinamicamente con `offsetHeight` dell'header al mount e al resize (NON hardcoded)
-- Struttura a doppio wrapper: outer div `bg-black sticky` + inner div `bg-zinc-900 rounded-xl overflow-hidden`
-  - Il div esterno ha `data-filters-section` (usato da `scrollToResults` per misurare l'altezza)
-  - La striscia colorata è il primo figlio del div interno, non un `borderTop` (evita che venga nascosta dall'header)
-- Campo ricerca libera (titolo + description) — lo scroll ai risultati si attiva solo con **Invio** (`onSearchSubmit` prop), NON ad ogni carattere digitato
-- Bottoni tema: Tutti / Alcool / Azzardo / Digitale / Sostanze — ogni click attiva lo scroll ai risultati
-- Toggle "Filtri avanzati" con badge contatore
-- Pannello avanzato: Formato (CustomSelect), Anno (CustomSelect), Prodotto dalle Scuole (toggle con icona School), DualRangeSlider durata
-- Chips dismissibili per filtri attivi
+- **NON sticky** in home — scorre con la pagina; il NatureCarousel è stato rimosso dalla home
+- Struttura: parte base (ricerca + tema + chips) + pannello avanzato (separato, non sticky)
+- Campo ricerca libera (titolo + description)
+- Bottoni tema: Tutti / Alcool / Azzardo / Digitale / Sostanze
+- Toggle "Filtri avanzati" con badge contatore — il pannello avanzato si apre sotto (scorre con pagina)
+- Pannello avanzato: Formato (CustomSelect con label "Tutti"/"Sequenza"), Anno (CustomSelect), Prodotto dalle Scuole (toggle), DualRangeSlider durata
+- Chips dismissibili per filtri attivi (visibili anche col pannello chiuso)
 - Bottone "Azzera" quando c'è almeno un filtro attivo
 - **accentColor**: giallo `#FFDA2A` se tema = Tutti, altrimenti colore del tema
+- **Natura "Sequenza" vs "Sequenze"**: il dropdown mostra "Sequenza" (singolare) ma filtra per `'Sequenze'` (valore reale nel DB) — mapping interno in `filteredVideos`
 
 ### `NatureCarousel`
 - Slider orizzontale con 8 card formato (immagini da `public/images/nature/`)
-- Click su formato → filtra la griglia video per natura
+- Usato **solo** nella sezione "I Formati ADAM" (rimosso dalla home)
+- Click su formato → filtra la griglia per natura; quando una natura è selezionata il titolo della sezione scompare (c'è già il chip nell'header)
 
 ### `DualRangeSlider`
 - Implementazione **custom con Pointer Events API** (NON usa `<input type="range">`)
@@ -503,34 +502,22 @@ Quando il filtro durata è attivo, i risultati vengono **ordinati per durata cre
 
 ## Header Search
 
-- Visibile su tutte le sezioni, **opacity:0 / pointerEvents:none** solo in home (la FiltersSection ha già la ricerca)
+- In home: **nascosta** (`opacity:0`) finché la `FiltersSection` è nel viewport; appare con transizione quando scorre fuori
+- In tutte le altre sezioni: sempre visibile
+- Rilevamento visibilità tramite **`IntersectionObserver`** su `filtersSectionRef` (threshold: `0.5` — appare quando metà della FiltersSection è uscita dal viewport)
 - Click sul campo → dropdown con 4 bottoni tema
-- Selezione tema → chip colorato dentro il campo + il tema rimane come tag
-- Il padding sinistro dell'input si adatta dinamicamente alla larghezza del tag (`tagWidth` misurato via ref callback)
+- **Chip tema**: sincronizzato bidirezionalmente con `filters.tema` — selezionando un tema dai bottoni FiltersSection in home, il chip appare anche nell'header (via `useEffect` su `filters.tema`)
+- **Chip natura**: appare in "I Formati ADAM" quando una natura è selezionata dal carousel
+- Il padding sinistro dell'input si adatta dinamicamente alla larghezza dei chip attivi (`tagWidth`, `naturaTagWidth`)
+- **Pillole filtri avanzati**: quando FiltersSection è fuori viewport e ci sono filtri avanzati attivi (natura, anno, scuola, durata), appaiono come chip rimovibili sotto il campo search nell'header — con i nomi reali dei valori (es. "Cortometraggio", "2019", "Solo scuole")
+- Tutti i chip usano `rounded-md`
 - Auto-focus sull'input dopo selezione tema (`setTimeout 50ms`)
-- Chip rimovibile con X
 
 ---
 
-## Scroll ai Risultati (Home)
+## Stato risultati vuoti
 
-Quando si applica un filtro in home, la pagina fa smooth scroll alla sezione "Esplora i Video" (`resultsRef` sul `<div ref={resultsRef}>`).
-
-**Regole di attivazione:**
-- Si attiva su cambio `filters` (tema, formato, anno, scuole, durata) — `useEffect([filters])`
-- Si attiva su **Invio** nel campo di ricerca testuale (`onSearchSubmit` → `scrollToResults`)
-- NON si attiva ad ogni carattere digitato (evita scroll continuo mentre si scrive)
-
-**Calcolo posizione (`scrollToResults`):**
-```js
-const headerH = document.querySelector('header')?.offsetHeight ?? 72;
-const filterH = document.querySelector('[data-filters-section]')?.offsetHeight ?? 160;
-const offset = headerH + filterH + 8;
-window.scrollTo({ top: elementTop - offset, behavior: 'smooth' });
-```
-Entrambe le altezze sono lette dal DOM in tempo reale — nessun valore hardcoded.
-
-**Griglia risultati:** ha `min-height: 60vh` per evitare che la pagina si accorci troppo quando ci sono pochi risultati (altrimenti il browser fa auto-scroll verso l'alto).
+Quando `filteredVideos.length === 0`, mostra icona videocamera + "Nessun video trovato" con `py-12` (non `min-height: 60vh` sulla griglia — rimosso per evitare che il messaggio appaia troppo in basso).
 
 ---
 
@@ -569,7 +556,12 @@ npm run preview  # preview build
 - **NON hardcodare l'altezza dell'header** — misurarla sempre con `document.querySelector('header')?.offsetHeight`; l'header non ha altezza fissa (usa `py-4` + contenuto)
 - **NON usare `borderTop` sul div sticky** per la striscia colorata — viene nascosta dall'header (z-40 > z-30); usare un div figlio come primo elemento dentro il card
 - La sezione **Sostanze** non ha video nell'archivio attuale
+- La sezione **WOW** è stata rimossa dal menu laterale
+- Il **NatureCarousel è rimosso dalla home** — rimane solo in "I Formati ADAM"
+- Lo **scroll automatico ai risultati** è stato rimosso (rimossi `scrollToResults`, `carouselRef`, `resultsRef`)
+- La **FiltersSection non è più sticky** in home — scorre con la pagina
 - I `views` sono randomizzati al caricamento (`addRandomViews`) — non sono dati reali
 - Il campo **`codice`** è obbligatorio e non va mai lasciato vuoto — è il riferimento al file fisico locale
 - La tabella **`videos`** su Supabase contiene gli stessi 420 record di `videosData.js` (migrati) più i nuovi approvati/inseriti dall'admin
 - Il tab Archivio usa `allVideos` prop (già in memoria nell'app) — non fa query Supabase separata
+- **Natura "Sequenza"**: nel dropdown filtri mostra "Sequenza" (singolare) ma il valore reale nel DB è `'Sequenze'` — la mappatura avviene in `filteredVideos`
