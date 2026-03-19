@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Zap, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown, Send, ShieldCheck, AlertCircle, Loader2, LogIn, Film, BookOpen, Pencil, Trash2, Save, RotateCcw, Archive } from 'lucide-react';
+import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Zap, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown, Send, ShieldCheck, AlertCircle, Loader2, LogIn, Film, BookOpen, Pencil, Trash2, Save, RotateCcw, Archive, Lightbulb, Share2, Link } from 'lucide-react';
 import Lottie from 'lottie-react';
 import { supabase } from './supabase';
 import { videos as videosData } from './videosData';
@@ -186,7 +186,189 @@ const SNAP_POINTS = (() => {
   return pts;
 })();
 
-const HeroSection = ({ onVideoClick, videos = [] }) => {
+const SharedPlaylistView = ({ playlistRaw, allVideos, onVideoClick, onOpenAuth, onPlayShared, onSaveShared, onSaved, user, token }) => {
+  const videos = (playlistRaw.video_ids || []).map(id => allVideos.find(v => v.id === id)).filter(Boolean);
+  const storageKey = `adam-shared-played-${token}`;
+  const [played, setPlayed] = useState(() => !!localStorage.getItem(storageKey));
+  const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  const handleSave = async () => {
+    setSaving(true);
+    const ok = await onSaveShared(playlistRaw.name, playlistRaw.video_ids);
+    if (ok) { setSaved(true); onSaved?.(); }
+    setSaving(false);
+  };
+
+  const handleOneTimePlay = () => {
+    localStorage.setItem(storageKey, '1');
+    setPlayed(true);
+    onPlayShared(videos);
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto px-4 md:px-8 py-10">
+      <div className="mb-8">
+        <p className="text-zinc-500 text-xs uppercase tracking-widest mb-2 flex items-center gap-1.5">
+          <Link size={12} /> Playlist condivisa
+        </p>
+        <h2 className="text-3xl font-bold text-white mb-1">{playlistRaw.name}</h2>
+        <p className="text-zinc-400 text-sm">{videos.length} video</p>
+      </div>
+
+      {videos.length === 0 ? (
+        <div className="text-center py-20 text-zinc-500">Nessun video in questa playlist.</div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+          {videos.map(video => (
+            <VideoCard key={video.id} video={video} onClick={() => onVideoClick(video)} onAddToPlaylist={() => {}} isInPlaylist={false} />
+          ))}
+        </div>
+      )}
+
+      {!user && videos.length > 0 && (
+        <div className="border-t border-zinc-800 pt-8 flex flex-col sm:flex-row gap-3 items-center justify-center">
+          <button
+            onClick={played ? undefined : handleOneTimePlay}
+            disabled={played}
+            className="flex items-center gap-2 px-8 py-3 rounded-xl font-semibold transition-all"
+            style={{ backgroundColor: played ? '#27272a' : '#FFDA2A', color: played ? '#71717a' : '#000', cursor: played ? 'not-allowed' : 'pointer' }}
+          >
+            <Play size={18} />
+            {played ? 'Già riprodotta' : 'Riproduci (1 volta)'}
+          </button>
+          <button
+            onClick={onOpenAuth}
+            className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white px-8 py-3 rounded-xl font-semibold transition-all"
+          >
+            <Save size={18} />
+            Salva in ADAM
+          </button>
+        </div>
+      )}
+
+      {user && videos.length > 0 && (
+        <div className="border-t border-zinc-800 pt-8 flex flex-col sm:flex-row gap-3 items-center justify-center">
+          <button
+            onClick={() => onPlayShared(videos)}
+            className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white px-8 py-3 rounded-xl font-semibold transition-all"
+          >
+            <Play size={18} /> Riproduci
+          </button>
+          <button
+            onClick={saved ? undefined : handleSave}
+            disabled={saving || saved}
+            className="flex items-center gap-2 px-8 py-3 rounded-xl font-semibold transition-all"
+            style={{ backgroundColor: saved ? '#27272a' : '#FFDA2A', color: saved ? '#71717a' : '#000', cursor: saved ? 'not-allowed' : 'pointer' }}
+          >
+            {saving ? <Loader2 size={18} className="animate-spin" /> : saved ? <Check size={18} /> : <Save size={18} />}
+            {saving ? 'Salvataggio...' : saved ? 'Salvata!' : 'Salva nelle mie playlist'}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const AboutSection = ({ onNavigate, onEsplora }) => {
+  const [logoAnim, setLogoAnim] = useState(null);
+  const lottieRef = useRef(null);
+
+  useEffect(() => {
+    fetch('/logo-animation.json')
+      .then(r => r.json())
+      .then(data => setLogoAnim(data))
+      .catch(() => {});
+  }, []);
+
+  const blocks = [
+    {
+      num: '01',
+      label: 'COSA',
+      icon: Archive,
+      title: 'Un archivio di video sulle dipendenze',
+      text: 'ADAM raccoglie spot, cortometraggi, videoclip e materiali informativi su alcool, azzardo, digitale e sostanze. Oltre 420 video selezionati, sempre gratuiti, sempre accessibili. Pensato per chi lavora ogni giorno con ragazze e ragazzi — in classe, in strada, in comunità.',
+    },
+    {
+      num: '02',
+      label: 'COME',
+      icon: PlayCircle,
+      title: 'Cerca, salva, porta in campo',
+      text: 'Filtra per tema, formato o durata. Guarda l\'anteprima direttamente su ADAM. Crea una playlist per il tuo prossimo intervento e aprila quando ne hai bisogno. Registrarsi è gratuito e richiede un minuto — le playlist sono riservate agli utenti registrati.',
+    },
+    {
+      num: '03',
+      label: 'PERCHÉ',
+      icon: Sparkles,
+      title: 'I buoni video non dovrebbero sparire',
+      text: 'Ogni anno classi, gruppi informali e associazioni producono video straordinari su questi temi. Finiscono su YouTube, vengono visti una volta, poi scompaiono. ADAM li raccoglie e li restituisce a chi può usarli. Se conosci un video che dovrebbe essere qui — trovato online o prodotto con i tuoi ragazzi — puoi segnalarlo. L\'archivio cresce grazie a chi lo usa.',
+    },
+  ];
+
+  return (
+    <div className="px-4 md:px-8 py-10">
+      {/* Header: logo + titolo a sinistra, spazio per animazioni a destra */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 items-center">
+        <div className="flex items-center gap-6">
+          {logoAnim && (
+            <div className="w-40 md:w-52 flex-shrink-0">
+              <Lottie
+                animationData={logoAnim}
+                loop={true}
+                autoplay={true}
+                lottieRef={lottieRef}
+                onComplete={() => {
+                  if (lottieRef.current) lottieRef.current.setDirection(lottieRef.current.playDirection * -1);
+                }}
+              />
+            </div>
+          )}
+          <div>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-2 leading-tight whitespace-nowrap">Benvenuto in ADAM</h2>
+            <p className="text-zinc-500 text-xs md:text-sm tracking-widest uppercase">Archivio Digitale<br/>Addiction e Media</p>
+          </div>
+        </div>
+        {/* Spazio riservato per animazioni future */}
+        <div className="hidden md:block" />
+      </div>
+
+      <div className="max-w-3xl divide-y divide-zinc-800">
+        {blocks.map(({ num, label, icon: Icon, title, text }) => (
+          <div key={num} className="py-10 flex gap-6 md:gap-10">
+            <div className="flex-shrink-0 w-12 md:w-16 text-right">
+              <span className="text-[#FFDA2A] text-4xl md:text-5xl font-bold tabular-nums leading-none">{num}</span>
+              <p className="text-zinc-400 text-[11px] tracking-widest uppercase mt-1">{label}</p>
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-3">
+                <Icon size={20} className="text-[#FFDA2A] flex-shrink-0" strokeWidth={1.5} />
+                <h3 className="text-lg font-semibold text-white">{title}</h3>
+              </div>
+              <p className="text-zinc-400 leading-relaxed text-sm md:text-base">{text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="max-w-3xl mt-4 pt-10 border-t border-zinc-800 flex flex-col sm:flex-row gap-3">
+        <button
+          onClick={onEsplora}
+          className="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white px-6 py-4 rounded-xl font-semibold transition-colors"
+        >
+          Esplora l'archivio
+        </button>
+        <button
+          onClick={() => onNavigate('submit')}
+          className="flex-1 bg-[#FFDA2A] hover:brightness-110 text-black px-6 py-4 rounded-xl font-semibold transition-all"
+        >
+          Partecipa →
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const HeroSection = ({ onVideoClick, videos = [], onScopri }) => {
   const [heroVideo, setHeroVideo] = useState(null);
   const [logoAnim, setLogoAnim] = useState(null);
   const lottieRef = useRef(null);
@@ -227,6 +409,16 @@ const HeroSection = ({ onVideoClick, videos = [] }) => {
       </div>
       {/* Gradiente bottom */}
       <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black to-transparent" />
+      {/* Bottone Scopri ADAM */}
+      {onScopri && (
+        <button
+          onClick={onScopri}
+          className="absolute z-10 bottom-4 right-4 md:bottom-6 md:right-8 flex items-center gap-2 bg-black/50 hover:bg-black/70 backdrop-blur-sm text-white text-xs md:text-sm px-4 py-2 rounded-full border border-white/20 transition-all"
+        >
+          <Lightbulb size={14} strokeWidth={1.5} />
+          Scopri ADAM
+        </button>
+      )}
       {/* Gradiente left — nero pieno sul logo, si dissolve dopo */}
       <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-black from-50% to-transparent" />
       <div className="absolute inset-0">
@@ -336,23 +528,23 @@ return (
                 </div>
               </div>
             </button>
-            <div className="mt-[30px] flex flex-col items-center gap-4">
+            <div className="mt-[30px] flex flex-col items-stretch gap-4 w-full max-w-[220px]">
               <span
-                className="text-white text-xs px-3 py-1 rounded-full font-semibold"
+                className="text-white text-sm px-4 py-2.5 rounded-md font-semibold text-center"
                 style={{ backgroundColor: getTemaColor(inspireVideo.tema) }}
               >
                 {inspireVideo.tema}
               </span>
               <button
                 onClick={() => onAddToPlaylist(inspireVideo)}
-                className="p-2 rounded-full transition-all"
+                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-md transition-all text-sm font-semibold"
                 style={{
                   backgroundColor: isInPlaylist(inspireVideo.id) ? '#FFDA2A' : '#27272a',
                   color: isInPlaylist(inspireVideo.id) ? '#000' : '#d4d4d8',
                 }}
-                title={isInPlaylist(inspireVideo.id) ? 'In playlist' : 'Aggiungi a playlist'}
               >
-                {isInPlaylist(inspireVideo.id) ? <Check size={20} /> : <Plus size={20} />}
+                {isInPlaylist(inspireVideo.id) ? <Check size={16} /> : <Plus size={16} />}
+                {isInPlaylist(inspireVideo.id) ? 'In playlist' : 'Aggiungi alla playlist'}
               </button>
             </div>
           </div>
@@ -363,10 +555,10 @@ return (
 };
 
 const TEMA_COLORS = {
-  'Alcool':   { solid: '#D97706', border: '#D97706', dim: 'rgba(217,119,6,0.15)' },
-  'Azzardo':  { solid: '#BE123C', border: '#BE123C', dim: 'rgba(190,18,60,0.15)' },
-  'Digitale': { solid: '#1e3a8a', border: '#3b82f6', dim: 'rgba(59,130,246,0.15)' },
-  'Sostanze': { solid: '#065f46', border: '#10b981', dim: 'rgba(16,185,129,0.15)' },
+  'Alcool':   { solid: '#D97706', border: '#D97706', dim: 'rgba(217,119,6,0.15)',   btnActive: 'rgba(217,119,6,0.25)' },
+  'Azzardo':  { solid: '#BE123C', border: '#BE123C', dim: 'rgba(190,18,60,0.15)',   btnActive: 'rgba(190,18,60,0.25)' },
+  'Digitale': { solid: '#1e3a8a', border: '#3b82f6', dim: 'rgba(59,130,246,0.15)', btnActive: 'rgba(59,130,246,0.25)' },
+  'Sostanze': { solid: '#065f46', border: '#10b981', dim: 'rgba(16,185,129,0.15)', btnActive: 'rgba(16,185,129,0.25)' },
 };
 
 const DualRangeSlider = ({ min, max, valueMin, valueMax, onChange, accentColor = '#FFDA2A' }) => {
@@ -556,7 +748,7 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
                       onMouseLeave={() => setHoveredTema(null)}
                       className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-white"
                       style={{
-                        backgroundColor: activeTema === tema ? c.solid : hoveredTema === tema ? c.dim : 'transparent',
+                        backgroundColor: activeTema === tema ? c.btnActive : hoveredTema === tema ? c.dim : 'transparent',
                         border: `2px solid ${c.border}`,
                       }}
                       title={noVideos ? 'Nessun video disponibile' : ''}
@@ -1018,13 +1210,28 @@ const PlaylistSidebar = ({
   onReorder,
   onPlay,
   getVideosForPlaylist,
+  onSharePlaylist,
 }) => {
-  const [dragId, setDragId] = useState(null); // solo per effetto visivo (dim)
-  const dragIdRef = useRef(null);             // per la logica drag (no re-render)
+  const [dragId, setDragId] = useState(null);
+  const dragIdRef = useRef(null);
   const [creatingNew, setCreatingNew] = useState(false);
   const [newPlaylistName, setNewPlaylistName] = useState('');
   const [editingId, setEditingId] = useState(null);
   const [editingName, setEditingName] = useState('');
+  const [copiedShareId, setCopiedShareId] = useState(null);
+  const [copiedShareSource, setCopiedShareSource] = useState('bottom');
+
+  const handleShare = async (pl, source = 'bottom') => {
+    let token = pl.share_token;
+    if (!token || !pl.is_public) token = await onSharePlaylist(pl.id);
+    if (token) {
+      const url = `${window.location.origin}${window.location.pathname}?playlist=${token}`;
+      navigator.clipboard.writeText(url);
+      setCopiedShareId(pl.id);
+      setCopiedShareSource(source);
+      setTimeout(() => setCopiedShareId(null), 2500);
+    }
+  };
 
   const activePlaylist = playlists.find(p => p.id === activePlaylistId);
   const activeVideos = getVideosForPlaylist(activePlaylist);
@@ -1085,6 +1292,13 @@ const PlaylistSidebar = ({
     <>
       <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={onClose} />
       <div className="fixed right-0 top-0 h-full w-full md:w-96 bg-zinc-900 z-50 flex flex-col">
+        {/* Toast "Link copiato" */}
+        {copiedShareId && (
+          <div className={`absolute ${copiedShareSource === 'top' ? 'top-20' : 'bottom-6'} left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-zinc-800 border border-zinc-700 text-white text-sm px-4 py-2.5 rounded-xl shadow-xl pointer-events-none whitespace-nowrap`}>
+            <Check size={15} style={{ color: '#FFDA2A' }} />
+            Link copiato negli appunti
+          </div>
+        )}
 
         {/* === Non loggato: playlist locale === */}
         {!user ? (
@@ -1212,11 +1426,18 @@ const PlaylistSidebar = ({
                           <p className="text-zinc-500 text-xs">{videos.length} video</p>
                         </div>
                         <div className="flex items-center gap-0.5 flex-shrink-0 ml-2">
+                          <button onClick={() => onSetActive(pl.id)} className="p-1.5 rounded-md hover:bg-zinc-800 transition-colors" title="Apri playlist" style={{ color: '#FFDA2A' }}>
+                            <ChevronRight size={20} />
+                          </button>
                           <button onClick={() => onPlay(pl.id)} className="p-1.5 rounded-md hover:bg-zinc-700 text-zinc-400 hover:text-white transition-colors" title="Riproduci">
                             <Play size={14} />
                           </button>
-                          <button onClick={() => onSetActive(pl.id)} className="p-1.5 rounded-md hover:bg-zinc-700 text-zinc-400 hover:text-white transition-colors" title="Apri">
-                            <ChevronRight size={14} />
+                          <button
+                            onClick={() => handleShare(pl)}
+                            className="p-1.5 rounded-md hover:bg-zinc-700 transition-colors"
+                            style={{ color: copiedShareId === pl.id ? '#FFDA2A' : '' }}
+                          >
+                            {copiedShareId === pl.id ? <Check size={14} /> : <Share2 size={14} className="text-zinc-400" />}
                           </button>
                           <button onClick={() => { setEditingId(pl.id); setEditingName(pl.name); }} className="p-1.5 rounded-md hover:bg-zinc-700 text-zinc-400 hover:text-white transition-colors" title="Rinomina">
                             <Pencil size={14} />
@@ -1243,7 +1464,18 @@ const PlaylistSidebar = ({
                 </button>
                 <h2 className="text-xl font-bold text-white truncate">{activePlaylist?.name}</h2>
               </div>
-              <button onClick={onClose} className="text-zinc-400 hover:text-white transition-colors flex-shrink-0 ml-2"><X size={24} /></button>
+              <div className="flex items-center gap-1 flex-shrink-0 ml-2">
+                {activePlaylist && (
+                  <button
+                    onClick={() => handleShare(activePlaylist, 'top')}
+                    className="p-1.5 rounded-md hover:bg-zinc-700 transition-colors"
+                    style={{ color: copiedShareId === activePlaylist.id ? '#FFDA2A' : '' }}
+                  >
+                    {copiedShareId === activePlaylist.id ? <Check size={18} /> : <Share2 size={18} className="text-zinc-400" />}
+                  </button>
+                )}
+                <button onClick={onClose} className="text-zinc-400 hover:text-white transition-colors"><X size={24} /></button>
+              </div>
             </div>
             <div className="flex-1 overflow-y-auto p-4 modal-scrollbar" style={{'--scrollbar-color': '#52525b'}}>
               {activeVideos.length === 0 ? (
@@ -1262,13 +1494,19 @@ const PlaylistSidebar = ({
               )}
             </div>
             {activeVideos.length > 0 && (
-              <div className="p-4 border-t border-zinc-800">
+              <div className="p-4 border-t border-zinc-800 flex flex-col gap-2">
                 <button
                   onClick={() => onPlay(activePlaylistId)}
                   className="w-full flex items-center justify-center gap-2 text-black py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-all"
                   style={{ backgroundColor: '#FFDA2A' }}
                 >
                   <Play size={20} /> Riproduci Playlist
+                </button>
+                <button
+                  onClick={() => handleShare(activePlaylist)}
+                  className="w-full flex items-center justify-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white py-3 rounded-lg font-semibold transition-all"
+                >
+                  {copiedShareId === activePlaylist?.id ? <><Check size={16} className="text-[#FFDA2A]" /> Link copiato!</> : <><Share2 size={16} /> Condividi</>}
                 </button>
               </div>
             )}
@@ -1702,7 +1940,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
                   onClick={() => f('tema', active ? '' : tema)}
                   className="px-4 py-2 rounded-lg text-sm font-medium transition-all text-white"
                   style={{
-                    backgroundColor: active ? c.solid : 'transparent',
+                    backgroundColor: active ? c.btnActive : 'transparent',
                     border: `2px solid ${c.border}`,
                     opacity: 1,
                   }}
@@ -1907,7 +2145,7 @@ const MyVideosSection = ({ user, onNewVideo }) => {
                     return (
                       <button key={tema} type="button" onClick={() => mef(sub.id, 'tema', tema)}
                         className="px-3 py-1.5 rounded-lg text-xs font-medium text-white transition-all"
-                        style={{ backgroundColor: active ? c.solid : 'transparent', border: `2px solid ${c.border}` }}>
+                        style={{ backgroundColor: active ? c.btnActive : 'transparent', border: `2px solid ${c.border}` }}>
                         {tema}
                       </button>
                     );
@@ -2510,7 +2748,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                       <button key={t} type="button" onClick={() => f('tema', isSelected ? '' : t)}
                         className="px-3 py-2 rounded-lg text-xs font-semibold transition-all border-2"
                         style={isSelected
-                          ? { backgroundColor: c.solid, borderColor: c.solid, color: '#fff' }
+                          ? { backgroundColor: c.btnActive, borderColor: c.border, color: '#fff' }
                           : { backgroundColor: 'transparent', borderColor: c.border, color: '#fff', opacity: 0.6 }}>
                         {t}
                       </button>
@@ -3312,6 +3550,9 @@ function App() {
   const [showPlaylist, setShowPlaylist] = useState(false);
   const [currentPlaylistIndex, setCurrentPlaylistIndex] = useState(0);
   const [dbVideos, setDbVideos] = useState([]);
+  const [sharedPlaylistRaw, setSharedPlaylistRaw] = useState(null);
+  const [sharedPlaylistToken, setSharedPlaylistToken] = useState(null);
+  const [sharedPlaylistSaved, setSharedPlaylistSaved] = useState(false);
 
   // ─── IntersectionObserver: mostra header search quando FiltersSection esce dal viewport ──
   useEffect(() => {
@@ -3333,6 +3574,20 @@ function App() {
   };
 
   useEffect(() => { loadVideos(); }, []);
+
+  const loadSharedPlaylist = async (token) => {
+    const { data } = await supabase.from('playlists').select('*').eq('share_token', token).eq('is_public', true).single();
+    if (data) {
+      setSharedPlaylistRaw({ name: data.name, video_ids: data.video_ids || [] });
+      setSharedPlaylistToken(token);
+      setActiveSection('shared-playlist');
+    }
+  };
+
+  useEffect(() => {
+    const token = new URLSearchParams(window.location.search).get('playlist');
+    if (token) loadSharedPlaylist(token);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Sync selectedTemaTag con filters.tema (es. click bottoni FiltersSection in home)
   useEffect(() => {
@@ -3445,6 +3700,22 @@ function App() {
     if (playingPlaylistId === playlistId) setPlayingPlaylistId(null);
   };
 
+  const saveSharedPlaylist = async (name, videoIds) => {
+    const { data, error } = await supabase.from('playlists')
+      .insert({ user_id: user.id, name, video_ids: videoIds }).select().single();
+    if (error) { console.error('saveSharedPlaylist:', error.message); return false; }
+    if (data) setPlaylists(prev => [...prev, data]);
+    return true;
+  };
+
+  const sharePlaylist = async (playlistId) => {
+    const token = crypto.randomUUID();
+    const { error } = await supabase.from('playlists').update({ share_token: token, is_public: true }).eq('id', playlistId);
+    if (error) { console.error('sharePlaylist:', error.message); return null; }
+    setPlaylists(prev => prev.map(p => p.id === playlistId ? { ...p, share_token: token, is_public: true } : p));
+    return token;
+  };
+
   const getVideosForPlaylist = (pl) =>
     (pl?.video_ids || []).map(id => allVideos.find(v => v.id === id)).filter(Boolean);
 
@@ -3455,13 +3726,20 @@ function App() {
 
   const handleAddToPlaylist = (video) => {
     if (!user) {
-      // Anonimo: aggiunge alla playlist locale
-      if (!localPlaylist.find(v => v.id === video.id)) {
+      // Anonimo: toggle nella playlist locale
+      if (localPlaylist.find(v => v.id === video.id)) {
+        setLocalPlaylist(prev => prev.filter(v => v.id !== video.id));
+      } else {
         setLocalPlaylist(prev => [...prev, video]);
       }
       return;
     }
-    // Loggato: Supabase
+    // Loggato: toggle su Supabase
+    const playlistWithVideo = playlists.find(p => p.video_ids.includes(video.id));
+    if (playlistWithVideo) {
+      removeVideoFromPlaylist(playlistWithVideo.id, video.id);
+      return;
+    }
     if (playlists.length === 0) {
       createPlaylist('La mia playlist').then(pl => { if (pl) addVideoToPlaylist(pl.id, video.id); });
     } else if (playlists.length === 1) {
@@ -3542,6 +3820,7 @@ function App() {
     <ul className="space-y-1">
       {[
         { section: 'home',        label: 'Home',                icon: Home },
+        { section: 'about',       label: 'Scopri ADAM',         icon: Lightbulb },
         { section: 'formats',     label: 'I Formati ADAM',      icon: LayoutGrid },
         { section: 'most-viewed', label: 'I Più Visti',         icon: TrendingUp },
         { section: 'recent',      label: 'Nuovi Inseriti',      icon: Clock },
@@ -3573,7 +3852,7 @@ function App() {
           className={`w-full text-left px-4 py-3 rounded-lg transition-colors flex items-center gap-3 ${activeSection === 'submit' ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'}`}
         >
           <Upload size={18} className="flex-shrink-0" />
-          <span>Segnala un Video</span>
+          <span>Partecipa</span>
         </button>
       </li>
       {userProfile?.role === 'admin' && (
@@ -3703,7 +3982,13 @@ function App() {
   >
     <List size={18} />
     <span className="hidden sm:inline">Playlist</span>
-    {(() => { const n = user ? playlists.reduce((s, p) => s + p.video_ids.length, 0) : localPlaylist.length; return n > 0 && <span className="absolute -top-1 -right-1 text-black text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold" style={{ backgroundColor: '#FFDA2A' }}>{n}</span>; })()}
+    {(() => {
+      const n = user ? playlists.reduce((s, p) => s + p.video_ids.length, 0) : localPlaylist.length;
+      if (sharedPlaylistRaw && user && activeSection === 'shared-playlist') {
+        return <span className={`absolute -top-1 -right-1 text-black text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold ${sharedPlaylistSaved ? '' : 'animate-pulse'}`} style={{ backgroundColor: '#FFDA2A' }}>{sharedPlaylistRaw.video_ids.length}</span>;
+      }
+      return n > 0 && <span className="absolute -top-1 -right-1 text-black text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold" style={{ backgroundColor: '#FFDA2A' }}>{n}</span>;
+    })()}
  </button>
   <button
     onClick={() => setActiveSection('submit')}
@@ -3757,16 +4042,18 @@ function App() {
         <main className="p-4 md:p-8 bg-black">
           {activeSection === 'home' && (
   <>
-    <HeroSection onVideoClick={handleVideoClick} videos={allVideos} />
+    <HeroSection onVideoClick={handleVideoClick} videos={allVideos} onScopri={() => setActiveSection('about')} />
     <div ref={filtersSectionRef}><FiltersSection onFilterChange={setFilters} currentFilters={filters} searchQuery={searchQuery} onSearchChange={setSearchQuery} onSearchSubmit={() => {}} videos={allVideos} /></div>
   </>
 )}
 {activeSection === 'formats' && <NatureCarousel onSelectNature={(natura) => setSelectedNatura(natura)} selectedNatura={selectedNatura} videos={allVideos} />}
           {activeSection === 'inspire' && <InspireSection onVideoClick={handleVideoClick} onAddToPlaylist={handleAddToPlaylist} isInPlaylist={isInPlaylist} videos={allVideos} />}
+          {activeSection === 'about' && <AboutSection onNavigate={setActiveSection} onEsplora={() => { setActiveSection('home'); setTimeout(() => filtersSectionRef.current?.scrollIntoView({ behavior: 'smooth' }), 120); }} />}
+          {activeSection === 'shared-playlist' && sharedPlaylistRaw && <SharedPlaylistView playlistRaw={sharedPlaylistRaw} allVideos={allVideos} onVideoClick={handleVideoClick} onOpenAuth={() => { setAuthMode('login'); setShowAuthModal(true); }} onPlayShared={(vids) => { setLocalPlaylist(vids); setPlayingLocalPlaylist(true); setCurrentPlaylistIndex(0); }} onSaveShared={saveSharedPlaylist} onSaved={() => setSharedPlaylistSaved(true)} user={user} token={sharedPlaylistToken} />}
           {activeSection === 'submit' && <SubmitVideoSection user={user} userProfile={userProfile} onOpenAuth={() => { setAuthMode('login'); setShowAuthModal(true); }} onBack={() => setActiveSection('home')} onDraftSaved={() => setActiveSection('myvideos')} />}
           {activeSection === 'admin' && <AdminSection userProfile={userProfile} onVideoApproved={loadVideos} allVideos={allVideos} />}
           {activeSection === 'myvideos' && <MyVideosSection user={user} onNewVideo={() => setActiveSection('submit')} />}
-          {activeSection !== 'submit' && activeSection !== 'admin' && activeSection !== 'myvideos' && (
+          {activeSection !== 'submit' && activeSection !== 'admin' && activeSection !== 'myvideos' && activeSection !== 'about' && activeSection !== 'shared-playlist' && (
           <>
           <div className="mb-6">
             <div className="flex items-center justify-between">
@@ -3848,6 +4135,7 @@ function App() {
           if (pl && pl.video_ids.length > 0) { setPlayingPlaylistId(playlistId); setCurrentPlaylistIndex(0); setShowPlaylist(false); }
         }}
         getVideosForPlaylist={getVideosForPlaylist}
+        onSharePlaylist={sharePlaylist}
       />
       
       {/* Playlist Player — locale (anonimi) */}
@@ -3855,7 +4143,7 @@ function App() {
         <PlaylistPlayer
           playlist={localPlaylist}
           currentIndex={currentPlaylistIndex}
-          onClose={() => { setPlayingLocalPlaylist(false); setCurrentPlaylistIndex(0); }}
+          onClose={() => { setPlayingLocalPlaylist(false); setCurrentPlaylistIndex(0); setShowPlaylist(true); }}
           onNext={() => { if (currentPlaylistIndex < localPlaylist.length - 1) setCurrentPlaylistIndex(p => p + 1); else { setPlayingLocalPlaylist(false); setCurrentPlaylistIndex(0); } }}
           onPrevious={() => { if (currentPlaylistIndex > 0) setCurrentPlaylistIndex(p => p - 1); }}
         />
@@ -3868,7 +4156,7 @@ function App() {
           <PlaylistPlayer
             playlist={playingVideos}
             currentIndex={currentPlaylistIndex}
-            onClose={() => { setPlayingPlaylistId(null); setCurrentPlaylistIndex(0); }}
+            onClose={() => { setPlayingPlaylistId(null); setCurrentPlaylistIndex(0); setShowPlaylist(true); }}
             onNext={() => { if (currentPlaylistIndex < playingVideos.length - 1) setCurrentPlaylistIndex(p => p + 1); else { setPlayingPlaylistId(null); setCurrentPlaylistIndex(0); } }}
             onPrevious={() => { if (currentPlaylistIndex > 0) setCurrentPlaylistIndex(p => p - 1); }}
           />

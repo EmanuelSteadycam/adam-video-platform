@@ -178,6 +178,13 @@ CREATE POLICY "Admin delete submissions"
 CREATE POLICY "Admin delete playlists"
   ON playlists FOR DELETE
   USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+
+CREATE POLICY "Public read shared playlists"
+  ON playlists FOR SELECT USING (is_public = true);
+
+-- Condivisione playlist (già eseguito)
+ALTER TABLE playlists ADD COLUMN IF NOT EXISTS share_token text UNIQUE;
+ALTER TABLE playlists ADD COLUMN IF NOT EXISTS is_public boolean DEFAULT false;
 ```
 
 ### Check constraint su video_submissions.status
@@ -273,14 +280,16 @@ const toArchiveFormat = (v) => ({
 | Sezione | `activeSection` | Descrizione |
 |---|---|---|
 | Home | `'home'` | Hero + FiltersSection (non sticky) + griglia video |
+| Scopri ADAM | `'about'` | AboutSection: Cosa/Come/Perché + Lottie logo |
 | I Formati ADAM | `'formats'` | NatureCarousel + griglia filtrata per natura |
 | I Più Visti | `'most-viewed'` | Top 20 per visualizzazioni |
 | Nuovi Inseriti | `'recent'` | Ultimi 5 video per dataInserimento |
 | Prodotti dalle Scuole | `'schools'` | Solo video con `prodottoScuola: true` |
 | Lasciati Ispirare | `'inspire'` | Player random + shuffle + griglia |
-| Segnala Video | `'submit'` | Form segnalazione video (utenti loggati) |
+| Partecipa | `'submit'` | Form segnalazione video — ex "Segnala Video" |
 | I miei video | `'myvideos'` | Segnalazioni proprie dell'utente loggato |
 | Admin | `'admin'` | Pannello admin (solo role='admin') |
+| Playlist condivisa | `'shared-playlist'` | Vista pubblica di una playlist ricevuta via link |
 
 ---
 
@@ -452,9 +461,51 @@ const [savingUserId, setSavingUserId] = useState(null);
 - Bottone aggiungi/rimuovi playlist
 - Tag tema colorato
 
+### `AboutSection`
+- Sezione `activeSection === 'about'` — "Scopri ADAM"
+- Lottie logo (stesso di HeroSection) affiancato al titolo in cima
+- Trittico: **01 COSA** / **02 COME** / **03 PERCHÉ** — numeri gialli `#FFDA2A`
+- CTA in fondo: **Esplora l'archivio** (→ home + scroll a FiltersSection) | **Partecipa →** (→ submit)
+- HeroSection ha bottone `Scopri ADAM` in basso a destra (`z-10` per stare sopra iframe YouTube)
+
+### `SharedPlaylistView`
+- Sezione `activeSection === 'shared-playlist'` — visibile via URL `?playlist=<token>`
+- Carica la playlist pubblica via `share_token` da Supabase (no auth richiesta)
+- Mostra griglia video card cliccabili (apre VideoModal)
+- **Non loggato**: bottone "Riproduci (1 volta)" (one-shot, check `localStorage adam-shared-played-{token}`) + "Salva in ADAM" (→ login)
+- **Loggato**: bottone "Riproduci" + "Salva nelle mie playlist" (giallo → crea copia, poi disabilitato con ✓)
+- Quando salvata: badge pulsante sull'icona Playlist in header smette di lampeggiare
+
+### Playlist — Condivisione
+**Colonne aggiuntive su tabella `playlists` (già eseguite):**
+```sql
+ALTER TABLE playlists ADD COLUMN IF NOT EXISTS share_token text UNIQUE;
+ALTER TABLE playlists ADD COLUMN IF NOT EXISTS is_public boolean DEFAULT false;
+CREATE POLICY "Public read shared playlists" ON playlists FOR SELECT USING (is_public = true);
+```
+**Funzioni in App:**
+- `sharePlaylist(playlistId)` — genera UUID token, salva su Supabase, aggiorna stato locale, restituisce token
+- `saveSharedPlaylist(name, videoIds)` — crea nuova playlist nel proprio account copiando nome e video
+- `loadSharedPlaylist(token)` — query pubblica per `share_token`, setta `sharedPlaylistRaw` e `activeSection = 'shared-playlist'`
+- URL detection al mount: `new URLSearchParams(window.location.search).get('playlist')`
+
+**PlaylistSidebar — UI aggiornata:**
+- Vista 1 (lista): ChevronRight giallo `#FFDA2A`, `size={20}`, primo bottone nella riga
+- Vista 2 (playlist aperta): bottone "Condividi" full-width in fondo, sotto "Riproduci Playlist"
+- Icona share piccola (`Share2`) nell'header accanto alla X resta in Vista 2
+- Toast "Link copiato negli appunti" — posizionato in alto (`top-20`) se click dall'icona header, in basso (`bottom-6`) se click dal bottone in fondo
+- `copiedShareSource: 'top' | 'bottom'` per gestire posizione toast
+
+**Badge playlist in header:**
+- Quando `sharedPlaylistRaw && user && activeSection === 'shared-playlist'`: badge giallo pulsante (`animate-pulse`) con count video received
+- Smette di lampeggiare quando `sharedPlaylistSaved = true`
+
+**PlaylistPlayer — comportamento chiusura:**
+- Alla chiusura (sia locale che Supabase): `setShowPlaylist(true)` → riapre sidebar playlist sulla sezione attiva
+
 ### Playlist
-- **PlaylistSidebar**: lista drag & drop con riordinamento
-- **PlaylistPlayer**: fullscreen con controlli Prev/Next e autoplay
+- **PlaylistSidebar**: lista drag & drop con riordinamento, condivisione playlist
+- **PlaylistPlayer**: fullscreen con controlli Prev/Next e autoplay — alla chiusura riapre la sidebar
 
 ---
 
