@@ -1,6 +1,6 @@
 # ADAM — Archivio Digitale Addiction e Media
 
-Piattaforma video per educatori sociali. Archivio di video (spot, cortometraggi, videoclip) su temi legati alle dipendenze (Alcool, Azzardo, Digitale, Sostanze), usati in contesti educativi.
+Piattaforma video per educatori sociali. Archivio di video (spot, cortometraggi, videoclip) su temi legati alle dipendenze (Alcool, Azzardo, Digitale, Sostanze, Tabacco, Sessualità), usati in contesti educativi.
 
 ---
 
@@ -221,7 +221,7 @@ Ogni video ha questi campi (formato camelCase — lato app React):
   year: 2017,
   views: 0,                  // incrementato casualmente da addRandomViews()
   format: "orizzontale",     // "orizzontale" | "verticale"
-  tema: "Alcool",            // "Alcool" | "Azzardo" | "Digitale" | "Sostanze"
+  tema: "Alcool",            // "Alcool" | "Azzardo" | "Digitale" | "Sostanze" | "Tabacco" | "Sessualità"
   natura: "Spot sociale",    // tipo di formato (vedi natura sottostante)
   prodottoScuola: false,     // true se realizzato da studenti
   description: "...",
@@ -352,7 +352,7 @@ Pannello admin con **5 tab**. Riceve prop: `userProfile`, `onVideoApproved`, `al
 #### Tab "Archivio" (`activeTab === 'archive'`)
 - Lista completa di tutti i video (`allVideos` prop, convertiti con `toArchiveFormat`)
 - **Lazy load**: caricato al primo accesso al tab
-- **Filtri**: ricerca testo + bottoni tema (Tutti/Alcool/Azzardo/Digitale/Sostanze con stile home) + `CustomSelect` natura + bottone "Prodotto dalle scuole"
+- **Filtri**: ricerca testo + bottoni tema (Tutti/Alcool/Azzardo/Digitale/Sostanze/Tabacco/Sessualità con stile home) + `CustomSelect` natura + bottone "Prodotto dalle scuole"
 - **Sort toggle**: pulsante ↕ alterna ordine cronologico crescente/decrescente (`archiveSortDesc`)
 - **Selezione multipla**: checkbox gialle + "Seleziona tutti" + "Elimina selezionati (N)" con conferma
 - Ogni riga: thumbnail | ID (giallo) | titolo + link YouTube | badges tema/natura/anno/scuola | [✎ Modifica] [🗑 Elimina]
@@ -432,7 +432,7 @@ const [savingUserId, setSavingUserId] = useState(null);
 - **NON sticky** in home — scorre con la pagina; il NatureCarousel è stato rimosso dalla home
 - Struttura: parte base (ricerca + tema + chips) + pannello avanzato (separato, non sticky)
 - Campo ricerca libera (titolo + description)
-- Bottoni tema: Tutti / Alcool / Azzardo / Digitale / Sostanze
+- Bottoni tema: Tutti / Alcool / Azzardo / Digitale / Sostanze / Tabacco / Sessualità
 - Toggle "Filtri avanzati" con badge contatore — il pannello avanzato si apre sotto (scorre con pagina)
 - Pannello avanzato: Formato (CustomSelect con label "Tutti"/"Sequenza"), Anno (CustomSelect), Prodotto dalle Scuole (toggle), DualRangeSlider durata
 - Chips dismissibili per filtri attivi (visibili anche col pannello chiuso)
@@ -513,10 +513,12 @@ CREATE POLICY "Public read shared playlists" ON playlists FOR SELECT USING (is_p
 
 ```js
 const TEMA_COLORS = {
-  'Alcool':   { solid: '#D97706', border: '#D97706', dim: 'rgba(217,119,6,0.15)' },
-  'Azzardo':  { solid: '#BE123C', border: '#BE123C', dim: 'rgba(190,18,60,0.15)' },
-  'Digitale': { solid: '#1e3a8a', border: '#3b82f6', dim: 'rgba(59,130,246,0.15)' },
-  'Sostanze': { solid: '#065f46', border: '#10b981', dim: 'rgba(16,185,129,0.15)' },
+  'Alcool':     { solid: '#D97706', border: '#D97706', dim: 'rgba(217,119,6,0.15)',   btnActive: 'rgba(217,119,6,0.50)' },
+  'Azzardo':    { solid: '#BE123C', border: '#BE123C', dim: 'rgba(190,18,60,0.15)',   btnActive: 'rgba(190,18,60,0.50)' },
+  'Digitale':   { solid: '#1e3a8a', border: '#3b82f6', dim: 'rgba(59,130,246,0.15)', btnActive: 'rgba(59,130,246,0.50)' },
+  'Sostanze':   { solid: '#065f46', border: '#10b981', dim: 'rgba(16,185,129,0.15)', btnActive: 'rgba(16,185,129,0.50)' },
+  'Tabacco':    { solid: '#92400E', border: '#C9975A', dim: 'rgba(201,151,90,0.15)',  btnActive: 'rgba(201,151,90,0.50)' },
+  'Sessualità': { solid: '#7C3AED', border: '#8B5CF6', dim: 'rgba(139,92,246,0.15)', btnActive: 'rgba(139,92,246,0.50)' },
 };
 ```
 
@@ -606,7 +608,7 @@ npm run preview  # preview build
 - **NON usare `<input type="range">` doppio** per dual slider — il thumb sinistro non funziona per via degli z-index; usare l'implementazione con Pointer Events API
 - **NON hardcodare l'altezza dell'header** — misurarla sempre con `document.querySelector('header')?.offsetHeight`; l'header non ha altezza fissa (usa `py-4` + contenuto)
 - **NON usare `borderTop` sul div sticky** per la striscia colorata — viene nascosta dall'header (z-40 > z-30); usare un div figlio come primo elemento dentro il card
-- La sezione **Sostanze** non ha video nell'archivio attuale
+- Le sezioni **Sostanze**, **Tabacco** e **Sessualità** non hanno video nell'archivio attuale
 - La sezione **WOW** è stata rimossa dal menu laterale
 - Il **NatureCarousel è rimosso dalla home** — rimane solo in "I Formati ADAM"
 - Lo **scroll automatico ai risultati** è stato rimosso (rimossi `scrollToResults`, `carouselRef`, `resultsRef`)

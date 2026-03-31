@@ -480,7 +480,9 @@ const getTemaColor = (tema) => {
       'Alcool': '#D97706',
       'Azzardo': '#BE123C',
       'Digitale': '#1e3a8a',
-      'Sostanze': '#065f46'
+      'Sostanze': '#065f46',
+      'Tabacco': '#C9975A',
+      'Sessualità': '#7C3AED',
     };
     return colors[tema] || '#6b7280';
   };
@@ -490,7 +492,9 @@ const getTemaColor = (tema) => {
       'Alcool': 'border-amber-700',
       'Azzardo': 'border-rose-900',
       'Digitale': 'border-blue-900',
-      'Sostanze': 'border-emerald-800'
+      'Sostanze': 'border-emerald-800',
+      'Tabacco': 'border-amber-900',
+      'Sessualità': 'border-violet-700',
     };
     return colors[tema] || 'border-gray-500';
   };
@@ -555,10 +559,12 @@ return (
 };
 
 const TEMA_COLORS = {
-  'Alcool':   { solid: '#D97706', border: '#D97706', dim: 'rgba(217,119,6,0.15)',   btnActive: 'rgba(217,119,6,0.25)' },
-  'Azzardo':  { solid: '#BE123C', border: '#BE123C', dim: 'rgba(190,18,60,0.15)',   btnActive: 'rgba(190,18,60,0.25)' },
-  'Digitale': { solid: '#1e3a8a', border: '#3b82f6', dim: 'rgba(59,130,246,0.15)', btnActive: 'rgba(59,130,246,0.25)' },
-  'Sostanze': { solid: '#065f46', border: '#10b981', dim: 'rgba(16,185,129,0.15)', btnActive: 'rgba(16,185,129,0.25)' },
+  'Alcool':     { solid: '#D97706', border: '#D97706', dim: 'rgba(217,119,6,0.15)',   btnActive: 'rgba(217,119,6,0.50)' },
+  'Azzardo':    { solid: '#BE123C', border: '#BE123C', dim: 'rgba(190,18,60,0.15)',   btnActive: 'rgba(190,18,60,0.50)' },
+  'Digitale':   { solid: '#1e3a8a', border: '#3b82f6', dim: 'rgba(59,130,246,0.15)', btnActive: 'rgba(59,130,246,0.50)' },
+  'Sostanze':   { solid: '#065f46', border: '#10b981', dim: 'rgba(16,185,129,0.15)', btnActive: 'rgba(16,185,129,0.50)' },
+  'Tabacco':    { solid: '#92400E', border: '#C9975A', dim: 'rgba(201,151,90,0.15)',  btnActive: 'rgba(201,151,90,0.50)' },
+  'Sessualità': { solid: '#7C3AED', border: '#8B5CF6', dim: 'rgba(139,92,246,0.15)', btnActive: 'rgba(139,92,246,0.50)' },
 };
 
 const DualRangeSlider = ({ min, max, valueMin, valueMax, onChange, accentColor = '#FFDA2A' }) => {
@@ -737,9 +743,9 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
                 >
                   Tutti
                 </button>
-                {['Alcool', 'Azzardo', 'Digitale', 'Sostanze'].map(tema => {
+                {['Alcool', 'Azzardo', 'Digitale', 'Sostanze', 'Tabacco', 'Sessualità'].map(tema => {
                   const c = TEMA_COLORS[tema];
-                  const noVideos = tema === 'Sostanze';
+                  const noVideos = tema === 'Sostanze' || tema === 'Tabacco' || tema === 'Sessualità';
                   return (
                     <button
                       key={tema}
@@ -1008,7 +1014,9 @@ const VideoCard = ({ video, onClick, onAddToPlaylist, isInPlaylist }) => {
       'Alcool': '#b45309',
       'Azzardo': '#881337',
       'Digitale': '#1e3a8a',
-      'Sostanze': '#065f46'
+      'Sostanze': '#065f46',
+      'Tabacco': '#C9975A',
+      'Sessualità': '#7C3AED',
     };
     return colors[tema] || '#6b7280';
   };
@@ -1092,7 +1100,9 @@ const VideoModal = ({ video, onClose }) => {
       'Alcool': '#D97706',
       'Azzardo': '#BE123C',
       'Digitale': '#1e3a8a',
-      'Sostanze': '#065f46'
+      'Sostanze': '#065f46',
+      'Tabacco': '#C9975A',
+      'Sessualità': '#7C3AED',
     };
     return colors[tema] || '#FFD700';
   };
@@ -1633,7 +1643,9 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
       'Alcool': '#D97706',
       'Azzardo': '#BE123C',
       'Digitale': '#1e3a8a',
-      'Sostanze': '#065f46'
+      'Sostanze': '#065f46',
+      'Tabacco': '#C9975A',
+      'Sessualità': '#7C3AED',
     };
     return colors[tema] || '#6b7280';
   };
@@ -1833,7 +1845,7 @@ const AuthModal = ({ mode: initialMode, onClose }) => {
 
 // ─── SubmitVideoSection ────────────────────────────────────────────────────────
 const NATURE_OPTIONS = ['Cortometraggio', 'Film', 'Info', 'Sequenze', 'Spot commerciale', 'Spot sociale', 'Videoclip', 'Web e social'];
-const TEMI_OPTIONS = ['Alcool', 'Azzardo', 'Digitale', 'Sostanze'];
+const TEMI_OPTIONS = ['Alcool', 'Azzardo', 'Digitale', 'Sostanze', 'Tabacco', 'Sessualità'];
 
 const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSaved }) => {
   const [form, setForm] = useState({ title: '', youtube_url: '', tema: '', description: '', prodotto_scuola: false });
@@ -3591,7 +3603,7 @@ function App() {
 
   // Sync selectedTemaTag con filters.tema (es. click bottoni FiltersSection in home)
   useEffect(() => {
-    const TEMA_TAG_COLORS = { Alcool: '#D97706', Azzardo: '#BE123C', Digitale: '#3b82f6', Sostanze: '#10b981' };
+    const TEMA_TAG_COLORS = { Alcool: '#D97706', Azzardo: '#BE123C', Digitale: '#3b82f6', Sostanze: '#10b981', Tabacco: '#C9975A', Sessualità: '#8B5CF6' };
     if (filters.tema !== 'Tutti') {
       setSelectedTemaTag({ label: filters.tema, color: TEMA_TAG_COLORS[filters.tema] });
     } else {
@@ -3887,10 +3899,12 @@ function App() {
         {isSearchFocused && (
           <div className="absolute top-full left-0 mt-2 bg-zinc-900 border border-zinc-800 rounded-lg shadow-xl py-2 min-w-[160px] z-50">
             {[
-              { label: 'Alcool',   color: '#D97706' },
-              { label: 'Azzardo',  color: '#BE123C' },
-              { label: 'Digitale', color: '#3b82f6' },
-              { label: 'Sostanze', color: '#10b981' },
+              { label: 'Alcool',     color: '#D97706' },
+              { label: 'Azzardo',    color: '#BE123C' },
+              { label: 'Digitale',   color: '#3b82f6' },
+              { label: 'Sostanze',   color: '#10b981' },
+              { label: 'Tabacco',    color: '#C9975A' },
+              { label: 'Sessualità', color: '#7C3AED' },
             ].map(({ label, color }) => (
               <button
                 key={label}
@@ -3907,7 +3921,7 @@ function App() {
         {selectedTemaTag && (
           <span
             ref={el => { if (el) setTagWidth(el.offsetWidth); }}
-            className="absolute left-10 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-md z-10 whitespace-nowrap"
+            className="absolute left-10 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs font-semibold px-2 py-1.5 rounded-md z-10 whitespace-nowrap"
             style={{ backgroundColor: selectedTemaTag.color, color: '#fff' }}
           >
             {selectedTemaTag.label}
@@ -3920,7 +3934,7 @@ function App() {
         {activeSection === 'formats' && selectedNatura !== 'Tutte' && (
           <span
             ref={el => { if (el) setNaturaTagWidth(el.offsetWidth); }}
-            className="absolute top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-md z-10 whitespace-nowrap"
+            className="absolute top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs font-semibold px-2 py-1.5 rounded-md z-10 whitespace-nowrap"
             style={{ left: selectedTemaTag ? `${tagWidth + 52}px` : '40px', backgroundColor: '#3f3f46', color: '#fff' }}
           >
             {selectedNatura}
