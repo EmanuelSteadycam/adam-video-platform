@@ -1,15 +1,10 @@
-export const config = { runtime: 'edge', maxDuration: 25 };
+import { YoutubeTranscript } from 'youtube-transcript';
+
+export const config = { maxDuration: 60 };
 
 function extractVideoId(url) {
   const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/);
   return m?.[1] ?? null;
-}
-
-function arrayBufferToBase64(buffer) {
-  const bytes = new Uint8Array(buffer);
-  let binary = '';
-  for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
-  return btoa(binary);
 }
 
 async function fetchOEmbed(videoId) {
@@ -21,43 +16,29 @@ async function fetchOEmbed(videoId) {
   } catch { return null; }
 }
 
-async function fetchStoryboardUrls(videoId) {
+async function fetchTranscript(videoId) {
   try {
-    const html = await fetch(`https://www.youtube.com/watch?v=${videoId}`, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept-Language': 'it-IT,it;q=0.9,en;q=0.8',
-      },
-    }).then(r => r.text());
+    const items = await YoutubeTranscript.fetchTranscript(videoId, { lang: 'it' });
+    if (items?.length) return items.map(i => i.text).join(' ');
+  } catch {}
+  try {
+    const items = await YoutubeTranscript.fetchTranscript(videoId);
+    if (items?.length) return items.map(i => i.text).join(' ');
+  } catch {}
+  return null;
+}
 
-    const m = html.match(/"playerStoryboardSpecRenderer"\s*:\s*\{"spec"\s*:\s*"((?:[^"\\]|\\.)*)"/);
-    if (!m) return [];
-
-    const spec = JSON.parse('"' + m[1] + '"');
-    const parts = spec.split('|');
-    const baseUrl = parts[0];
-
-    const levels = parts.slice(1).map((p, idx) => {
-      const f = p.split('#');
-      const rs = (f[7] || '').startsWith('rs$') ? f[7].slice(3) : '';
-      return { level: idx, count: parseInt(f[2]) || 0, cols: parseInt(f[3]) || 0, rows: parseInt(f[4]) || 0, template: f[6] || '', rs };
-    });
-
-    const valid = levels.filter(l => l.template.includes('$M') && l.rs && l.count > 0);
-    if (!valid.length) return [];
-
-    const chosen = valid[valid.length - 1];
-    const numSheets = Math.ceil(chosen.count / (chosen.cols * chosen.rows));
-
-    const urls = Array.from({ length: numSheets }, (_, i) => {
-      const filename = chosen.template.replace('$M', String(i));
-      return baseUrl.replace('$L', String(chosen.level)).replace('$N', filename) + '&rs=' + chosen.rs;
-    });
-
-    if (urls.length <= 5) return urls;
-    const n = urls.length;
-    return [0, 0.25, 0.5, 0.75, 1].map(f => urls[Math.min(Math.floor(f * n), n - 1)]);
-  } catch { return []; }
+async function fetchYoutubeDescription(videoId) {
+  const apiKey = process.env.YOUTUBE_API_KEY;
+  if (!apiKey) return null;
+  try {
+    const res = await fetch(
+      `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=snippet&key=${apiKey}`
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.items?.[0]?.snippet?.description || null;
+  } catch { return null; }
 }
 
 async function fetchFallbackThumbnails(videoId) {
@@ -65,53 +46,37 @@ async function fetchFallbackThumbnails(videoId) {
     ['0', '1', '2', '3'].map(async n => {
       try {
         const res = await fetch(`https://img.youtube.com/vi/${videoId}/${n}.jpg`);
-        return res.ok ? arrayBufferToBase64(await res.arrayBuffer()) : null;
+        if (!res.ok) return null;
+        return Buffer.from(await res.arrayBuffer()).toString('base64');
       } catch { return null; }
     })
   );
   return results.filter(Boolean);
 }
 
-async function downloadAsBase64(url) {
-  try {
-    const res = await fetch(url);
-    return res.ok ? arrayBufferToBase64(await res.arrayBuffer()) : null;
-  } catch { return null; }
-}
+export default async function handler(req, res) {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
 
-export default async function handler(req) {
-  if (req.method !== 'POST') return new Response('Method Not Allowed', { status: 405 });
+  const { youtubeUrl, title, tema } = req.body || {};
+  if (!youtubeUrl) return res.status(400).json({ error: 'URL YouTube mancante.' });
 
-  const body = await req.json().catch(() => ({}));
-  const { youtubeUrl, title, tema } = body;
-
-  const json = (data, status = 200) =>
-    new Response(JSON.stringify(data), { status, headers: { 'Content-Type': 'application/json' } });
-
-  if (!youtubeUrl) return json({ error: 'URL YouTube mancante.' }, 400);
   const videoId = extractVideoId(youtubeUrl);
-  if (!videoId) return json({ error: 'URL YouTube non valido.' }, 400);
+  if (!videoId) return res.status(400).json({ error: 'URL YouTube non valido.' });
 
-  const [oembedResult, storyboardResult] = await Promise.allSettled([
+  const [oembedResult, transcriptResult, imagesResult, descriptionResult] = await Promise.allSettled([
     fetchOEmbed(videoId),
-    fetchStoryboardUrls(videoId),
+    fetchTranscript(videoId),
+    fetchFallbackThumbnails(videoId),
+    fetchYoutubeDescription(videoId),
   ]);
 
   const oembed = oembedResult.value ?? null;
-  const sheetUrls = storyboardResult.value ?? [];
-
-  let images = [];
-  let usedStoryboard = false;
-  if (sheetUrls.length) {
-    images = (await Promise.all(sheetUrls.map(downloadAsBase64))).filter(Boolean);
-    usedStoryboard = images.length > 0;
-  }
-  if (!usedStoryboard) {
-    images = await fetchFallbackThumbnails(videoId);
-  }
+  const transcript = transcriptResult.value ?? null;
+  const images = imagesResult.value ?? [];
+  const ytDescription = descriptionResult.value ?? null;
 
   const warnings = [];
-  if (!usedStoryboard) warnings.push('Storyboard non disponibile: analisi basata sulle thumbnail principali (copertura ridotta).');
+  if (!transcript) warnings.push('Trascrizione non disponibile: la sinossi è basata solo sull\'analisi visiva del video.');
 
   const content = [];
   for (const data of images) {
@@ -125,23 +90,39 @@ export default async function handler(req) {
   if (ytTitle) prompt += ` intitolato "${ytTitle}"`;
   if (ytChannel) prompt += ` pubblicato dal canale "${ytChannel}"`;
   if (tema) prompt += ` (tema: ${tema})`;
-  prompt += `.\n\nREGOLE ASSOLUTE:
-- Descrivi SOLO quello che è visibile nelle immagini
+
+  prompt += `\n\nREGOLE ASSOLUTE:
+- Descrivi SOLO quello che è visibile nelle immagini e/o viene detto nella trascrizione
 - NON interpretare, NON dedurre, NON giudicare
 - NON dire cosa "vuole comunicare" il video o qual è il suo "messaggio"
-- NON suggerire utilizzi didattici
+- NON suggerire utilizzi didattici o pedagogici
 - NON usare grassetto, corsivo o markdown
-- NON aggiungere valutazioni estetiche`;
+- NON aggiungere valutazioni estetiche o morali`;
 
-  const frameDesc = usedStoryboard
-    ? `Le ${images.length} immagini sono sprite sheet (griglie di miniature) che coprono il video dall'inizio alla fine — ogni griglia mostra decine di frame in sequenza temporale, da sinistra a destra e dall'alto verso il basso.`
-    : `Le ${images.length} immagini sono fotogrammi del video a intervalli regolari (inizio, 25%, 50%, 75%).`;
-  prompt += `\n\nIMMAGINI: ${frameDesc} Descrivi cosa si vede: luoghi, persone, azioni.`;
-  prompt += `\n\nScrivi in italiano, 2-4 frasi, testo semplice. Descrivi i fatti visibili: chi si vede, dove, cosa fa. Nient'altro.`;
+  if (images.length > 0) {
+    prompt += `\n\nIMMAGINI: Le ${images.length} immagini sono fotogrammi del video (inizio, 25%, 50%, 75% della durata). Descrivono i luoghi, le persone e le azioni visibili.`;
+  }
+
+  if (transcript) {
+    const truncated = transcript.length > 4000 ? transcript.slice(0, 4000) + '...' : transcript;
+    prompt += `\n\nTRASCRIZIONE DEL PARLATO (fonte principale):\n${truncated}`;
+    prompt += `\n\nUsa la trascrizione per descrivere cosa viene detto: dialoghi, voci, testi parlati. Le immagini completano con ciò che si vede.`;
+  }
+
+  if (ytDescription) {
+    const truncated = ytDescription.length > 600 ? ytDescription.slice(0, 600) + '...' : ytDescription;
+    prompt += `\n\nDESCRIZIONE YOUTUBE (contesto aggiuntivo):\n${truncated}`;
+  }
+
+  prompt += `\n\nScrivi in italiano, 2-4 frasi, testo semplice senza formattazione.`;
+  if (transcript) {
+    prompt += ` Integra quello che si vede con quello che viene detto. Riporta i contenuti del parlato in modo diretto e fedele.`;
+  } else {
+    prompt += ` Descrivi solo i fatti visibili: chi si vede, dove, cosa fa.`;
+  }
 
   content.push({ type: 'text', text: prompt });
 
-  // Chiamata diretta alle API Anthropic — nessuna dipendenza Node.js
   const anthropicRes = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -149,14 +130,18 @@ export default async function handler(req) {
       'x-api-key': process.env.ANTHROPIC_API_KEY,
       'anthropic-version': '2023-06-01',
     },
-    body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 600, messages: [{ role: 'user', content }] }),
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 600,
+      messages: [{ role: 'user', content }],
+    }),
   });
 
   if (!anthropicRes.ok) {
     const err = await anthropicRes.json().catch(() => ({}));
-    return json({ error: `Errore Claude: ${err.error?.message || anthropicRes.status}` }, 500);
+    return res.status(500).json({ error: `Errore Claude: ${err.error?.message || anthropicRes.status}` });
   }
 
   const result = await anthropicRes.json();
-  return json({ synopsis: result.content[0].text.trim(), warnings });
+  return res.status(200).json({ synopsis: result.content[0].text.trim(), warnings });
 }
