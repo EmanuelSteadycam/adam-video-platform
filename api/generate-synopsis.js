@@ -28,6 +28,17 @@ async function fetchTranscript(videoId) {
   return null;
 }
 
+async function fetchStoryboardUrls(videoId) {
+  const workerUrl = process.env.CF_STORYBOARD_WORKER_URL;
+  if (!workerUrl) return [];
+  try {
+    const res = await fetch(`${workerUrl}?v=${videoId}`);
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data.urls) ? data.urls : [];
+  } catch { return []; }
+}
+
 async function fetchYoutubeDescription(videoId) {
   const apiKey = process.env.YOUTUBE_API_KEY;
   if (!apiKey) return null;
@@ -41,15 +52,17 @@ async function fetchYoutubeDescription(videoId) {
   } catch { return null; }
 }
 
+async function downloadBase64(url) {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    return Buffer.from(await res.arrayBuffer()).toString('base64');
+  } catch { return null; }
+}
+
 async function fetchFallbackThumbnails(videoId) {
   const results = await Promise.all(
-    ['0', '1', '2', '3'].map(async n => {
-      try {
-        const res = await fetch(`https://img.youtube.com/vi/${videoId}/${n}.jpg`);
-        if (!res.ok) return null;
-        return Buffer.from(await res.arrayBuffer()).toString('base64');
-      } catch { return null; }
-    })
+    ['0', '1', '2', '3'].map(n => downloadBase64(`https://img.youtube.com/vi/${videoId}/${n}.jpg`))
   );
   return results.filter(Boolean);
 }
@@ -63,20 +76,34 @@ export default async function handler(req, res) {
   const videoId = extractVideoId(youtubeUrl);
   if (!videoId) return res.status(400).json({ error: 'URL YouTube non valido.' });
 
-  const [oembedResult, transcriptResult, imagesResult, descriptionResult] = await Promise.allSettled([
+  const [oembedResult, transcriptResult, storyboardResult, descriptionResult] = await Promise.allSettled([
     fetchOEmbed(videoId),
     fetchTranscript(videoId),
-    fetchFallbackThumbnails(videoId),
+    fetchStoryboardUrls(videoId),
     fetchYoutubeDescription(videoId),
   ]);
 
   const oembed = oembedResult.value ?? null;
   const transcript = transcriptResult.value ?? null;
-  const images = imagesResult.value ?? [];
+  const storyboardUrls = storyboardResult.value ?? [];
   const ytDescription = descriptionResult.value ?? null;
+
+  // scarica sprite sheet storyboard; fallback a 4 thumbnail standard
+  let images = [];
+  let usedStoryboard = false;
+
+  if (storyboardUrls.length > 0) {
+    const downloaded = await Promise.all(storyboardUrls.map(downloadBase64));
+    images = downloaded.filter(Boolean);
+    usedStoryboard = images.length > 0;
+  }
+  if (!usedStoryboard) {
+    images = await fetchFallbackThumbnails(videoId);
+  }
 
   const warnings = [];
   if (!transcript) warnings.push('Trascrizione non disponibile: la sinossi è basata solo sull\'analisi visiva del video.');
+  if (!usedStoryboard) warnings.push('Storyboard non disponibile: analisi basata sulle thumbnail principali (copertura ridotta).');
 
   const content = [];
   for (const data of images) {
@@ -100,13 +127,17 @@ export default async function handler(req, res) {
 - NON aggiungere valutazioni estetiche o morali`;
 
   if (images.length > 0) {
-    prompt += `\n\nIMMAGINI: Le ${images.length} immagini sono fotogrammi del video (inizio, 25%, 50%, 75% della durata). Descrivono i luoghi, le persone e le azioni visibili.`;
+    if (usedStoryboard) {
+      prompt += `\n\nIMMAGINI (${images.length} sprite sheet): ogni immagine è una griglia di miniature che copre una porzione temporale del video — leggile da sinistra a destra e dall'alto verso il basso. Insieme coprono il video dall'inizio alla fine.`;
+    } else {
+      prompt += `\n\nIMMAGINI (${images.length} fotogrammi): inizio, 25%, 50%, 75% della durata del video.`;
+    }
   }
 
   if (transcript) {
     const truncated = transcript.length > 4000 ? transcript.slice(0, 4000) + '...' : transcript;
     prompt += `\n\nTRASCRIZIONE DEL PARLATO (fonte principale):\n${truncated}`;
-    prompt += `\n\nUsa la trascrizione per descrivere cosa viene detto: dialoghi, voci, testi parlati. Le immagini completano con ciò che si vede.`;
+    prompt += `\n\nUsa la trascrizione per riportare fedelmente cosa viene detto: dialoghi, voci, testi parlati. Le immagini completano con ciò che si vede.`;
   }
 
   if (ytDescription) {
@@ -115,11 +146,9 @@ export default async function handler(req, res) {
   }
 
   prompt += `\n\nScrivi in italiano, 2-4 frasi, testo semplice senza formattazione.`;
-  if (transcript) {
-    prompt += ` Integra quello che si vede con quello che viene detto. Riporta i contenuti del parlato in modo diretto e fedele.`;
-  } else {
-    prompt += ` Descrivi solo i fatti visibili: chi si vede, dove, cosa fa.`;
-  }
+  prompt += transcript
+    ? ` Integra quello che si vede con quello che viene detto. Riporta i contenuti del parlato in modo diretto e fedele.`
+    : ` Descrivi solo i fatti visibili: chi si vede, dove, cosa fa.`;
 
   content.push({ type: 'text', text: prompt });
 
