@@ -11,57 +11,43 @@ function extractVideoId(url) {
 async function fetchTranscript(videoId) {
   try {
     const items = await YoutubeTranscript.fetchTranscript(videoId);
-    return items?.length ? items.map(i => i.text).join(' ').slice(0, 8000) : null;
-  } catch {
-    return null;
+    if (items?.length) return items.map(i => i.text).join(' ').slice(0, 8000);
+  } catch (e) {
+    console.log('[transcript] failed:', e.message);
   }
+  return null;
 }
 
+// Proba i.ytimg.com direttamente — CDN pubblico, non bloccato come youtube.com
 async function fetchStoryboardUrls(videoId) {
-  try {
-    const html = await fetch(`https://www.youtube.com/watch?v=${videoId}`, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept-Language': 'it-IT,it;q=0.9,en;q=0.8',
-      },
-    }).then(r => r.text());
-
-    const specMatch = html.match(/"playerStoryboardSpecRenderer"\s*:\s*\{"spec"\s*:\s*"((?:[^"\\]|\\.)*)"/);
-    if (!specMatch) return [];
-
-    // JSON.parse handles all escape sequences (\/, &, etc.)
-    const spec = JSON.parse('"' + specMatch[1] + '"');
-
-    // Levels are separated by '$https://'
-    const levels = spec.split('$https://').map((l, i) => (i === 0 ? l : 'https://' + l));
-
-    // URL template is the part before the first '|' in each level
-    const templates = levels
-      .map(l => l.split('|')[0])
-      .filter(t => t.startsWith('https://') && t.includes('$M'));
-
-    if (!templates.length) return [];
-
-    // Use highest quality level (last entry has largest thumbnails)
-    const template = templates[templates.length - 1];
-
-    // Probe which sheets exist (up to 8 in parallel)
-    const candidates = Array.from({ length: 8 }, (_, i) => template.replace('$M', String(i)));
+  for (const level of ['L3', 'L2', 'L1', 'L0']) {
+    const baseUrl = `https://i.ytimg.com/sb/${videoId}/storyboard3_${level}/M`;
+    const urls = Array.from({ length: 8 }, (_, i) => `${baseUrl}${i}.jpg`);
     const checks = await Promise.all(
-      candidates.map(url =>
-        fetch(url, { method: 'HEAD' }).then(r => (r.ok ? url : null)).catch(() => null)
+      urls.map(url =>
+        fetch(url, { method: 'HEAD' }).then(r => r.ok ? url : null).catch(() => null)
       )
     );
     const valid = checks.filter(Boolean);
-    if (!valid.length) return [];
+    console.log(`[storyboard] ${level}: ${valid.length} sheets found`);
+    if (valid.length > 0) {
+      if (valid.length <= 4) return valid;
+      const n = valid.length;
+      return [valid[0], valid[Math.floor(n / 3)], valid[Math.floor(2 * n / 3)], valid[n - 1]];
+    }
+  }
+  console.log('[storyboard] no sheets found for any level');
+  return [];
+}
 
-    // Sample up to 4 sheets spread evenly across the video
-    if (valid.length <= 4) return valid;
-    const n = valid.length;
-    return [valid[0], valid[Math.floor(n / 3)], valid[Math.floor((2 * n) / 3)], valid[n - 1]];
-  } catch (err) {
-    console.error('[storyboard]', err.message);
-    return [];
+async function downloadAsBase64(url) {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const buf = await res.arrayBuffer();
+    return Buffer.from(buf).toString('base64');
+  } catch {
+    return null;
   }
 }
 
@@ -74,6 +60,8 @@ module.exports = async function handler(req, res) {
   const videoId = extractVideoId(youtubeUrl);
   if (!videoId) return res.status(400).json({ error: 'URL YouTube non valido.' });
 
+  console.log(`[synopsis] videoId=${videoId} title="${title}" tema="${tema}"`);
+
   const [transcriptResult, storyboardResult] = await Promise.allSettled([
     fetchTranscript(videoId),
     fetchStoryboardUrls(videoId),
@@ -82,11 +70,20 @@ module.exports = async function handler(req, res) {
   const transcript = transcriptResult.value ?? null;
   const sheetUrls = storyboardResult.value ?? [];
 
+  console.log(`[synopsis] transcript=${!!transcript} sheets=${sheetUrls.length}`);
+
+  // Scarica le immagini e le converte in base64 (Claude non dipende da URL esterni)
+  const images = sheetUrls.length
+    ? (await Promise.all(sheetUrls.map(downloadAsBase64))).filter(Boolean)
+    : [];
+
+  console.log(`[synopsis] images downloaded=${images.length}`);
+
   const warnings = [];
   if (!transcript) warnings.push("Trascrizione non disponibile: la sinossi è basata solo sull'analisi visiva.");
-  if (!sheetUrls.length) warnings.push('Frame visivi non disponibili: la sinossi è basata solo sulla trascrizione.');
+  if (!images.length) warnings.push('Frame visivi non disponibili: la sinossi è basata solo sulla trascrizione.');
 
-  if (!transcript && !sheetUrls.length) {
+  if (!transcript && !images.length) {
     return res.status(422).json({
       error: 'Impossibile generare la sinossi: né trascrizione né frame visivi sono disponibili per questo video.',
     });
@@ -94,9 +91,9 @@ module.exports = async function handler(req, res) {
 
   const content = [];
 
-  // Storyboard sprite sheets as image URLs (Claude le recupera direttamente)
-  for (const url of sheetUrls) {
-    content.push({ type: 'image', source: { type: 'url', url } });
+  // Immagini come base64
+  for (const data of images) {
+    content.push({ type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data } });
   }
 
   let prompt = `Sei un esperto di analisi video per ADAM, una piattaforma educativa italiana dedicata ai temi delle dipendenze (alcool, azzardo, digitale, sostanze, tabacco, sessualità).\n\nStai analizzando un video YouTube`;
@@ -104,8 +101,8 @@ module.exports = async function handler(req, res) {
   if (tema) prompt += ` (tema ADAM: ${tema})`;
   prompt += '.';
 
-  if (sheetUrls.length) {
-    prompt += `\n\nLe ${sheetUrls.length} immagini allegate sono griglie di miniature (storyboard YouTube) che coprono il video dall'inizio alla fine. Ogni griglia contiene decine di frame in sequenza temporale, da sinistra a destra e dall'alto verso il basso. Analizzale per comprendere ambientazione, personaggi, atmosfera e stile visivo.`;
+  if (images.length) {
+    prompt += `\n\nLe ${images.length} immagini allegate sono griglie di miniature (storyboard YouTube) che coprono il video dall'inizio alla fine. Ogni griglia contiene decine di frame in sequenza temporale, da sinistra a destra e dall'alto verso il basso. Analizzale per comprendere ambientazione, personaggi, atmosfera e stile visivo.`;
   }
 
   if (transcript) {
@@ -129,7 +126,7 @@ Rispondi SOLO con il testo della sinossi, senza titoli o note aggiuntive.`;
       max_tokens: 600,
       messages: [{ role: 'user', content }],
     });
-
+    console.log(`[synopsis] done, usage=${JSON.stringify(message.usage)}`);
     return res.json({ synopsis: message.content[0].text.trim(), warnings });
   } catch (err) {
     console.error('[claude]', err.message);
