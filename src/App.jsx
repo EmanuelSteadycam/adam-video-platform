@@ -2279,6 +2279,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const [editForms, setEditForms] = useState({});
   const [actionLoading, setActionLoading] = useState(null);
   const [approveError, setApproveError] = useState(null);
+  const [generatingSynopsis, setGeneratingSynopsis] = useState(false);
+  const [synopsisWarning, setSynopsisWarning] = useState('');
 
   // Tab
   const [activeTab, setActiveTab] = useState('add');
@@ -2597,6 +2599,30 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     setActionLoading(null);
   };
 
+  const handleGenerateSynopsis = async () => {
+    setGeneratingSynopsis(true);
+    setSynopsisWarning('');
+    try {
+      const res = await fetch('/api/generate-synopsis', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          youtubeUrl: form.youtube_url,
+          title: form.title || undefined,
+          tema: form.tema || undefined,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setSynopsisWarning(data.error || 'Errore nella generazione della sinossi.'); return; }
+      if (data.synopsis) setForm(prev => ({ ...prev, description: data.synopsis }));
+      if (data.warnings?.length) setSynopsisWarning(data.warnings.join(' '));
+    } catch {
+      setSynopsisWarning('Errore di rete nella generazione della sinossi.');
+    } finally {
+      setGeneratingSynopsis(false);
+    }
+  };
+
   const handleDirectSubmit = async (e) => {
     e.preventDefault();
     if (!form.title.trim()) { setSaveMsg({ type: 'error', text: 'Titolo obbligatorio.' }); return; }
@@ -2630,6 +2656,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     else {
       setSaveMsg({ type: 'success', text: 'Video aggiunto all\'archivio.' });
       setForm({ title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: '' });
+      setSynopsisWarning('');
       onVideoApproved?.();
     }
     setSaving(false);
@@ -2657,6 +2684,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       setSaving(false);
     } else {
       setForm({ title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: '' });
+      setSynopsisWarning('');
       setActiveTab('pending');
       loadPending();
       setSaving(false);
@@ -2738,9 +2766,21 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                 </button>
               </div>
             </div>
-            {/* Row 2: URL YouTube */}
+            {/* Row 2: URL YouTube + Genera sinossi */}
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1.5">URL YouTube *</label>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-sm font-medium text-zinc-300">URL YouTube *</label>
+                <button
+                  type="button"
+                  onClick={handleGenerateSynopsis}
+                  disabled={!form.youtube_url.trim() || generatingSynopsis}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                  style={{ backgroundColor: '#FFDA2A', color: '#000' }}>
+                  {generatingSynopsis
+                    ? <><Loader2 size={12} className="animate-spin inline-block" /> Generando…</>
+                    : <><Sparkles size={12} className="inline-block" /> Genera sinossi</>}
+                </button>
+              </div>
               <input type="url" value={form.youtube_url} onChange={e => f('youtube_url', e.target.value)} placeholder="https://youtu.be/..." className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
             </div>
             {/* Row 3: Titolo */}
@@ -2794,6 +2834,12 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
             <div>
               <label className="block text-sm font-medium text-zinc-300 mb-1.5">Descrizione *</label>
               <textarea value={form.description} onChange={e => f('description', e.target.value)} rows={5} placeholder="Descrizione del video..." className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500 resize-none" />
+              {synopsisWarning && (
+                <div className="flex items-start gap-2 mt-2 px-3 py-2 rounded-lg text-xs bg-amber-900/30 border border-amber-800/50 text-amber-400">
+                  <AlertCircle size={13} className="mt-0.5 shrink-0" />
+                  <span>{synopsisWarning}</span>
+                </div>
+              )}
             </div>
             {/* Row 7: Action buttons */}
             {(() => {

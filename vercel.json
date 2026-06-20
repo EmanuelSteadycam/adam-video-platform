@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/generate-synopsis.js": {
+      "maxDuration": 60
+    }
+  }
+}
