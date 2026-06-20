@@ -2281,6 +2281,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const [approveError, setApproveError] = useState(null);
   const [generatingSynopsis, setGeneratingSynopsis] = useState(false);
   const [synopsisWarning, setSynopsisWarning] = useState('');
+  const [manualTranscript, setManualTranscript] = useState('');
+  const [showTranscriptInput, setShowTranscriptInput] = useState(false);
 
   // Tab
   const [activeTab, setActiveTab] = useState('add');
@@ -2610,6 +2612,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
           youtubeUrl: form.youtube_url,
           title: form.title || undefined,
           tema: form.tema || undefined,
+          transcript: manualTranscript.trim() || undefined,
         }),
       });
       const data = await res.json();
@@ -2657,6 +2660,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       setSaveMsg({ type: 'success', text: 'Video aggiunto all\'archivio.' });
       setForm({ title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: '' });
       setSynopsisWarning('');
+      setManualTranscript('');
+      setShowTranscriptInput(false);
       onVideoApproved?.();
     }
     setSaving(false);
@@ -2685,6 +2690,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     } else {
       setForm({ title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: '' });
       setSynopsisWarning('');
+      setManualTranscript('');
+      setShowTranscriptInput(false);
       setActiveTab('pending');
       loadPending();
       setSaving(false);
@@ -2782,6 +2789,28 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                 </button>
               </div>
               <input type="url" value={form.youtube_url} onChange={e => f('youtube_url', e.target.value)} placeholder="https://youtu.be/..." className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
+            </div>
+            {/* Transcript opzionale */}
+            <div>
+              <button type="button" onClick={() => setShowTranscriptInput(v => !v)}
+                className="flex items-center gap-1.5 text-xs text-zinc-500 hover:text-zinc-300 transition-colors">
+                <ChevronDown size={12} className={`transition-transform duration-150 ${showTranscriptInput ? 'rotate-180' : ''}`} />
+                Incolla trascrizione (opzionale — migliora la sinossi)
+              </button>
+              {showTranscriptInput && (
+                <div className="mt-2">
+                  <textarea
+                    value={manualTranscript}
+                    onChange={e => setManualTranscript(e.target.value)}
+                    rows={4}
+                    placeholder="Apri il video su YouTube → icona ··· → Apri trascrizione → copia e incolla qui..."
+                    className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500 resize-none"
+                  />
+                  {manualTranscript.trim() && (
+                    <p className="text-xs text-emerald-400 mt-1">✓ Trascrizione presente — la sinossi userà il testo del parlato.</p>
+                  )}
+                </div>
+              )}
             </div>
             {/* Row 3: Titolo */}
             <div>

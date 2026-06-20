@@ -70,21 +70,23 @@ async function fetchFallbackThumbnails(videoId) {
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
 
-  const { youtubeUrl, title, tema } = req.body || {};
+  const { youtubeUrl, title, tema, transcript: providedTranscript } = req.body || {};
   if (!youtubeUrl) return res.status(400).json({ error: 'URL YouTube mancante.' });
 
   const videoId = extractVideoId(youtubeUrl);
   if (!videoId) return res.status(400).json({ error: 'URL YouTube non valido.' });
 
+  const manualTranscript = providedTranscript?.trim() || null;
+
   const [oembedResult, transcriptResult, storyboardResult, descriptionResult] = await Promise.allSettled([
     fetchOEmbed(videoId),
-    fetchTranscript(videoId),
+    manualTranscript ? Promise.resolve(null) : fetchTranscript(videoId),
     fetchStoryboardUrls(videoId),
     fetchYoutubeDescription(videoId),
   ]);
 
   const oembed = oembedResult.value ?? null;
-  const transcript = transcriptResult.value ?? null;
+  const transcript = manualTranscript || transcriptResult.value || null;
   const storyboardUrls = storyboardResult.value ?? [];
   const ytDescription = descriptionResult.value ?? null;
 
