@@ -1,11 +1,15 @@
-const Anthropic = require('@anthropic-ai/sdk');
-const { YoutubeTranscript } = require('youtube-transcript');
-
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+export const config = { runtime: 'edge', maxDuration: 25 };
 
 function extractVideoId(url) {
   const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/);
   return m?.[1] ?? null;
+}
+
+function arrayBufferToBase64(buffer) {
+  const bytes = new Uint8Array(buffer);
+  let binary = '';
+  for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
+  return btoa(binary);
 }
 
 async function fetchOEmbed(videoId) {
@@ -17,17 +21,6 @@ async function fetchOEmbed(videoId) {
   } catch { return null; }
 }
 
-async function fetchTranscript(videoId) {
-  try {
-    const items = await YoutubeTranscript.fetchTranscript(videoId);
-    if (items?.length) return items.map(i => i.text).join(' ').slice(0, 8000);
-  } catch (e) {
-    console.log('[transcript] not available:', e.message?.slice(0, 80));
-  }
-  return null;
-}
-
-// Sprite sheet storyboard con URL firmate (sqp + rs) dalla spec YouTube
 async function fetchStoryboardUrls(videoId) {
   try {
     const html = await fetch(`https://www.youtube.com/watch?v=${videoId}`, {
@@ -37,119 +30,87 @@ async function fetchStoryboardUrls(videoId) {
       },
     }).then(r => r.text());
 
-    const specMatch = html.match(/"playerStoryboardSpecRenderer"\s*:\s*\{"spec"\s*:\s*"((?:[^"\\]|\\.)*)"/);
-    if (!specMatch) { console.log('[storyboard] spec not found in page'); return []; }
+    const m = html.match(/"playerStoryboardSpecRenderer"\s*:\s*\{"spec"\s*:\s*"((?:[^"\\]|\\.)*)"/);
+    if (!m) return [];
 
-    const spec = JSON.parse('"' + specMatch[1] + '"');
+    const spec = JSON.parse('"' + m[1] + '"');
     const parts = spec.split('|');
-    const baseUrlTemplate = parts[0]; // https://i.ytimg.com/sb/{id}/storyboard3_L$L/$N.jpg?sqp=SQP
+    const baseUrl = parts[0];
 
-    // Livelli: ogni parte dopo la prima è "width#height#count#cols#rows#interval#template#rs$SIG"
     const levels = parts.slice(1).map((p, idx) => {
       const f = p.split('#');
       const rs = (f[7] || '').startsWith('rs$') ? f[7].slice(3) : '';
-      return {
-        level: idx,
-        count: parseInt(f[2]) || 0,
-        cols: parseInt(f[3]) || 0,
-        rows: parseInt(f[4]) || 0,
-        template: f[6] || '',
-        rs,
-      };
+      return { level: idx, count: parseInt(f[2]) || 0, cols: parseInt(f[3]) || 0, rows: parseInt(f[4]) || 0, template: f[6] || '', rs };
     });
 
-    // Usa il livello più alto con sprite multipli (template M$M)
     const valid = levels.filter(l => l.template.includes('$M') && l.rs && l.count > 0);
-    if (!valid.length) { console.log('[storyboard] no usable levels'); return []; }
+    if (!valid.length) return [];
 
-    const chosen = valid[valid.length - 1]; // livello più alto = frame più grandi
-    const framesPerSheet = chosen.cols * chosen.rows;
-    const numSheets = Math.ceil(chosen.count / framesPerSheet);
+    const chosen = valid[valid.length - 1];
+    const numSheets = Math.ceil(chosen.count / (chosen.cols * chosen.rows));
 
-    console.log(`[storyboard] level=${chosen.level} ${chosen.cols}x${chosen.rows} sheets=${numSheets}`);
-
-    // Costruisce gli URL firmati: sostituisce $L, $N, aggiunge &rs=
-    const urls = [];
-    for (let i = 0; i < numSheets; i++) {
+    const urls = Array.from({ length: numSheets }, (_, i) => {
       const filename = chosen.template.replace('$M', String(i));
-      const url = baseUrlTemplate
-        .replace('$L', String(chosen.level))
-        .replace('$N', filename)
-        + '&rs=' + chosen.rs;
-      urls.push(url);
-    }
+      return baseUrl.replace('$L', String(chosen.level)).replace('$N', filename) + '&rs=' + chosen.rs;
+    });
 
-    // Se più di 6 sheet, campiona in modo uniforme
-    if (urls.length <= 6) return urls;
+    if (urls.length <= 5) return urls;
     const n = urls.length;
-    const indices = [0, 0.2, 0.4, 0.6, 0.8, 1].map(f => Math.min(Math.floor(f * n), n - 1));
-    return [...new Set(indices)].map(i => urls[i]);
-  } catch (err) {
-    console.log('[storyboard] error:', err.message?.slice(0, 80));
-    return [];
-  }
+    return [0, 0.25, 0.5, 0.75, 1].map(f => urls[Math.min(Math.floor(f * n), n - 1)]);
+  } catch { return []; }
 }
 
-// Thumbnail standard come fallback garantito (sempre accessibili)
 async function fetchFallbackThumbnails(videoId) {
-  const urls = ['0', '1', '2', '3'].map(n => `https://img.youtube.com/vi/${videoId}/${n}.jpg`);
-  const images = await Promise.all(
-    urls.map(async url => {
+  const results = await Promise.all(
+    ['0', '1', '2', '3'].map(async n => {
       try {
-        const res = await fetch(url);
-        if (!res.ok) return null;
-        return Buffer.from(await res.arrayBuffer()).toString('base64');
+        const res = await fetch(`https://img.youtube.com/vi/${videoId}/${n}.jpg`);
+        return res.ok ? arrayBufferToBase64(await res.arrayBuffer()) : null;
       } catch { return null; }
     })
   );
-  return images.filter(Boolean);
+  return results.filter(Boolean);
 }
 
 async function downloadAsBase64(url) {
   try {
     const res = await fetch(url);
-    if (!res.ok) return null;
-    return Buffer.from(await res.arrayBuffer()).toString('base64');
+    return res.ok ? arrayBufferToBase64(await res.arrayBuffer()) : null;
   } catch { return null; }
 }
 
-module.exports = async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).end();
+export default async function handler(req) {
+  if (req.method !== 'POST') return new Response('Method Not Allowed', { status: 405 });
 
-  const { youtubeUrl, title, tema } = req.body ?? {};
-  if (!youtubeUrl) return res.status(400).json({ error: 'URL YouTube mancante.' });
+  const body = await req.json().catch(() => ({}));
+  const { youtubeUrl, title, tema } = body;
 
+  const json = (data, status = 200) =>
+    new Response(JSON.stringify(data), { status, headers: { 'Content-Type': 'application/json' } });
+
+  if (!youtubeUrl) return json({ error: 'URL YouTube mancante.' }, 400);
   const videoId = extractVideoId(youtubeUrl);
-  if (!videoId) return res.status(400).json({ error: 'URL YouTube non valido.' });
+  if (!videoId) return json({ error: 'URL YouTube non valido.' }, 400);
 
-  console.log(`[synopsis] videoId=${videoId}`);
-
-  const [transcriptResult, storyboardResult, oembedResult] = await Promise.allSettled([
-    fetchTranscript(videoId),
-    fetchStoryboardUrls(videoId),
+  const [oembedResult, storyboardResult] = await Promise.allSettled([
     fetchOEmbed(videoId),
+    fetchStoryboardUrls(videoId),
   ]);
+
   const oembed = oembedResult.value ?? null;
+  const sheetUrls = storyboardResult.value ?? [];
 
-  const transcript = transcriptResult.value ?? null;
-  let sheetUrls = storyboardResult.value ?? [];
-
-  // Fallback a thumbnail standard se storyboard non disponibile
   let images = [];
   let usedStoryboard = false;
-  if (sheetUrls.length > 0) {
+  if (sheetUrls.length) {
     images = (await Promise.all(sheetUrls.map(downloadAsBase64))).filter(Boolean);
-    if (images.length > 0) usedStoryboard = true;
+    usedStoryboard = images.length > 0;
   }
   if (!usedStoryboard) {
     images = await fetchFallbackThumbnails(videoId);
-    console.log(`[synopsis] using fallback thumbnails: ${images.length}`);
   }
 
-  console.log(`[synopsis] storyboard=${usedStoryboard} images=${images.length} transcript=${!!transcript}`);
-
   const warnings = [];
-  if (!transcript) warnings.push('Trascrizione non disponibile: la sinossi è basata sull\'analisi visiva del video.');
   if (!usedStoryboard) warnings.push('Storyboard non disponibile: analisi basata sulle thumbnail principali (copertura ridotta).');
 
   const content = [];
@@ -164,42 +125,38 @@ module.exports = async function handler(req, res) {
   if (ytTitle) prompt += ` intitolato "${ytTitle}"`;
   if (ytChannel) prompt += ` pubblicato dal canale "${ytChannel}"`;
   if (tema) prompt += ` (tema: ${tema})`;
-  prompt += `.\n\nREGOLE ASSOLUTE — non derogabili:
-- Descrivi SOLO quello che è effettivamente visibile nelle immagini o udibile nella trascrizione
+  prompt += `.\n\nREGOLE ASSOLUTE:
+- Descrivi SOLO quello che è visibile nelle immagini
 - NON interpretare, NON dedurre, NON giudicare
-- NON dire cosa "vuole comunicare" il video, qual è il suo "messaggio" o il suo "approccio"
-- NON suggerire utilizzi didattici né dare consigli agli educatori
-- NON usare grassetto, corsivo o altri formati markdown
-- NON aggiungere valutazioni estetiche
-- Se non hai la trascrizione, descrivi solo le immagini senza inventare dialoghi`;
+- NON dire cosa "vuole comunicare" il video o qual è il suo "messaggio"
+- NON suggerire utilizzi didattici
+- NON usare grassetto, corsivo o markdown
+- NON aggiungere valutazioni estetiche`;
 
-  if (images.length) {
-    const frameDesc = usedStoryboard
-      ? `Le ${images.length} immagini sono sprite sheet (griglie di miniature) che coprono il video dall'inizio alla fine — ogni griglia contiene più frame in sequenza temporale, da sinistra a destra e dall'alto verso il basso.`
-      : `Le ${images.length} immagini sono fotogrammi del video (inizio, 25%, 50%, 75%).`;
-    prompt += `\n\nIMMAGINI: ${frameDesc} Descrivi cosa si vede: luoghi, persone, azioni visibili.`;
-  }
-
-  if (transcript) {
-    prompt += `\n\nTRASCRIZIONE (quello che viene detto nel video):\n${transcript}`;
-  } else {
-    prompt += `\n\nNota: non è disponibile la trascrizione audio. Descrivi solo quello che è visibile nelle immagini.`;
-  }
-
-  prompt += `\n\nScrivi la descrizione in italiano, 2-4 frasi, testo semplice senza formattazione. Descrivi i fatti: chi si vede, dove, cosa fa o dice. Nient'altro.`;
+  const frameDesc = usedStoryboard
+    ? `Le ${images.length} immagini sono sprite sheet (griglie di miniature) che coprono il video dall'inizio alla fine — ogni griglia mostra decine di frame in sequenza temporale, da sinistra a destra e dall'alto verso il basso.`
+    : `Le ${images.length} immagini sono fotogrammi del video a intervalli regolari (inizio, 25%, 50%, 75%).`;
+  prompt += `\n\nIMMAGINI: ${frameDesc} Descrivi cosa si vede: luoghi, persone, azioni.`;
+  prompt += `\n\nScrivi in italiano, 2-4 frasi, testo semplice. Descrivi i fatti visibili: chi si vede, dove, cosa fa. Nient'altro.`;
 
   content.push({ type: 'text', text: prompt });
 
-  try {
-    const message = await anthropic.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 600,
-      messages: [{ role: 'user', content }],
-    });
-    console.log(`[synopsis] done usage=${JSON.stringify(message.usage)}`);
-    return res.json({ synopsis: message.content[0].text.trim(), warnings });
-  } catch (err) {
-    console.error('[claude]', err.message);
-    return res.status(500).json({ error: `Errore Claude: ${err.message}` });
+  // Chiamata diretta alle API Anthropic — nessuna dipendenza Node.js
+  const anthropicRes = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': process.env.ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 600, messages: [{ role: 'user', content }] }),
+  });
+
+  if (!anthropicRes.ok) {
+    const err = await anthropicRes.json().catch(() => ({}));
+    return json({ error: `Errore Claude: ${err.error?.message || anthropicRes.status}` }, 500);
   }
-};
+
+  const result = await anthropicRes.json();
+  return json({ synopsis: result.content[0].text.trim(), warnings });
+}
