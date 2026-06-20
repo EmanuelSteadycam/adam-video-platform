@@ -68,27 +68,29 @@ module.exports = async function handler(req, res) {
     content.push({ type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data } });
   }
 
-  let prompt = `Sei un esperto di analisi video per ADAM, una piattaforma educativa italiana dedicata ai temi delle dipendenze (alcool, azzardo, digitale, sostanze, tabacco, sessualità).\n\nStai analizzando un video YouTube`;
+  let prompt = `Devi scrivere la descrizione di un video YouTube`;
   if (title) prompt += ` intitolato "${title}"`;
-  if (tema) prompt += ` (tema ADAM: ${tema})`;
-  prompt += '.';
+  if (tema) prompt += ` (tema: ${tema})`;
+  prompt += `.\n\nREGOLE ASSOLUTE — non derogabili:
+- Descrivi SOLO quello che è effettivamente visibile nelle immagini o udibile nella trascrizione
+- NON interpretare, NON dedurre, NON giudicare
+- NON dire cosa "vuole comunicare" il video, qual è il suo "messaggio" o il suo "approccio"
+- NON suggerire utilizzi didattici né dare consigli agli educatori
+- NON usare grassetto, corsivo o altri formati markdown
+- NON aggiungere valutazioni estetiche ("cinematografico", "empatico", ecc.)
+- Se manca la trascrizione e non puoi sentire cosa viene detto, descrivi solo le immagini senza inventare dialoghi o contenuti audio`;
 
   if (images.length) {
-    prompt += `\n\nLe ${images.length} immagini mostrano fotogrammi del video a intervalli regolari (inizio, 25%, 50%, 75%). Analizzale per comprendere ambientazione, personaggi, atmosfera e stile visivo.`;
+    prompt += `\n\nIMMIMAGINI: le ${images.length} immagini sono fotogrammi del video (inizio, 25%, 50%, 75%). Descrivi cosa si vede: luoghi, persone, azioni visibili.`;
   }
 
   if (transcript) {
-    prompt += `\n\nTRASCRIZIONE COMPLETA DEL VIDEO:\n${transcript}`;
+    prompt += `\n\nTRASCRIZIONE (quello che viene detto nel video):\n${transcript}`;
+  } else {
+    prompt += `\n\nNota: non è disponibile la trascrizione audio. Descrivi solo quello che è visibile nelle immagini.`;
   }
 
-  prompt += `\n\nScrivi una sinossi in italiano di 3-5 righe che descriva:
-- Il tema principale e il messaggio del video
-- Il contesto visivo (luoghi, personaggi, stile)
-- L'approccio narrativo (emotivo, informativo, narrativo, shock...)
-- L'utilità didattica per un educatore che vuole usarlo in classe
-
-Non iniziare con "Il video" o "Questo video". Scrivi in modo diretto e denso.
-Rispondi SOLO con il testo della sinossi, senza titoli o note aggiuntive.`;
+  prompt += `\n\nScrivi la descrizione in italiano, 2-4 frasi, testo semplice senza formattazione. Descrivi i fatti: chi si vede, dove, cosa fa o dice. Nient'altro.`;
 
   content.push({ type: 'text', text: prompt });
 
