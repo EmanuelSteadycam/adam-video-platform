@@ -8,6 +8,15 @@ function extractVideoId(url) {
   return m?.[1] ?? null;
 }
 
+async function fetchOEmbed(videoId) {
+  try {
+    const res = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`);
+    if (!res.ok) return null;
+    const d = await res.json();
+    return { title: d.title || '', channel: d.author_name || '' };
+  } catch { return null; }
+}
+
 async function fetchTranscript(videoId) {
   try {
     const items = await YoutubeTranscript.fetchTranscript(videoId);
@@ -115,10 +124,12 @@ module.exports = async function handler(req, res) {
 
   console.log(`[synopsis] videoId=${videoId}`);
 
-  const [transcriptResult, storyboardResult] = await Promise.allSettled([
+  const [transcriptResult, storyboardResult, oembedResult] = await Promise.allSettled([
     fetchTranscript(videoId),
     fetchStoryboardUrls(videoId),
+    fetchOEmbed(videoId),
   ]);
+  const oembed = oembedResult.value ?? null;
 
   const transcript = transcriptResult.value ?? null;
   let sheetUrls = storyboardResult.value ?? [];
@@ -146,8 +157,12 @@ module.exports = async function handler(req, res) {
     content.push({ type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data } });
   }
 
+  const ytTitle = title || oembed?.title || '';
+  const ytChannel = oembed?.channel || '';
+
   let prompt = `Devi scrivere la descrizione di un video YouTube`;
-  if (title) prompt += ` intitolato "${title}"`;
+  if (ytTitle) prompt += ` intitolato "${ytTitle}"`;
+  if (ytChannel) prompt += ` pubblicato dal canale "${ytChannel}"`;
   if (tema) prompt += ` (tema: ${tema})`;
   prompt += `.\n\nREGOLE ASSOLUTE — non derogabili:
 - Descrivi SOLO quello che è effettivamente visibile nelle immagini o udibile nella trascrizione
