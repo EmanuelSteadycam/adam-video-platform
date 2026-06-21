@@ -2617,7 +2617,11 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       });
       const data = await res.json();
       if (!res.ok) { setSynopsisWarning(data.error || 'Errore nella generazione della sinossi.'); return; }
-      if (data.synopsis) setForm(prev => ({ ...prev, description: data.synopsis }));
+      if (data.synopsis || data.ytTitle) setForm(prev => ({
+        ...prev,
+        ...(data.synopsis ? { description: data.synopsis } : {}),
+        ...(!prev.title.trim() && data.ytTitle ? { title: data.ytTitle } : {}),
+      }));
       if (data.warnings?.length) setSynopsisWarning(data.warnings.join(' '));
     } catch {
       setSynopsisWarning('Errore di rete nella generazione della sinossi.');
