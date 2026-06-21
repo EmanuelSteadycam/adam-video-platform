@@ -16,16 +16,25 @@ async function fetchOEmbed(videoId) {
   } catch { return null; }
 }
 
-function parseVTT(vtt) {
-  return vtt
-    .replace(/WEBVTT\n/, '')
-    .replace(/\d{2}:\d{2}:\d{2}\.\d{3} --> \d{2}:\d{2}:\d{2}\.\d{3}[^\n]*/g, '')
-    .replace(/<[^>]+>/g, '')
-    .split('\n')
-    .map(l => l.trim())
-    .filter(l => l.length > 0)
-    .filter((l, i, arr) => l !== arr[i - 1])
-    .join(' ');
+function parseXmlOrVttTranscript(body) {
+  if (!body || body.length < 10) return null;
+  let text = '';
+  if (body.includes('<transcript>') || body.includes('<text ')) {
+    text = body
+      .replace(/<text[^>]*>/g, '').replace(/<\/text>/g, ' ')
+      .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+      .replace(/&#39;/g, "'").replace(/&quot;/g, '"')
+      .replace(/<[^>]+>/g, '')
+      .split('\n').map(l => l.trim()).filter(l => l.length > 0).join(' ');
+  } else if (body.includes('WEBVTT')) {
+    text = body
+      .replace(/WEBVTT\n/, '')
+      .replace(/\d{2}:\d{2}:\d{2}\.\d{3} --> \d{2}:\d{2}:\d{2}\.\d{3}[^\n]*/g, '')
+      .replace(/<[^>]+>/g, '')
+      .split('\n').map(l => l.trim()).filter(l => l.length > 0)
+      .filter((l, i, arr) => l !== arr[i - 1]).join(' ');
+  }
+  return text.length > 20 ? text : null;
 }
 
 function parseStoryboardSpec(spec) {
@@ -81,44 +90,73 @@ async function fetchFromYouTubePage(videoId) {
     const html = await pageRes.text();
     const debugInfo = { htmlLen: html.length, sessionNum };
 
-    // estrai transcript — prendi il primo baseUrl nella sezione captionTracks
     let transcript = null;
-    const captionIdx = html.indexOf('"captionTracks"');
-    debugInfo.captionIdx = captionIdx;
-    if (captionIdx >= 0) {
+
+    // approccio 1: InnerTube API → URL caption freschi, non legati alla sessione
+    const apiKeyMatch = html.match(/"INNERTUBE_API_KEY":"([^"]+)"/);
+    const clientVerMatch = html.match(/"clientVersion":"([^"]+)"/);
+    if (apiKeyMatch) {
+      const apiKey = apiKeyMatch[1];
+      const clientVersion = clientVerMatch?.[1] || '2.20240101.00.00';
+      debugInfo.itApiKey = apiKey.slice(0, 8) + '...';
       try {
-        const section = html.slice(captionIdx, captionIdx + 3000);
-        const urlMatch = section.match(/"baseUrl":"((?:[^"\\]|\\.)*)"/);
-        debugInfo.urlMatchFound = !!urlMatch;
-        if (urlMatch) {
-          const captionUrl = JSON.parse('"' + urlMatch[1] + '"');
-          debugInfo.captionUrl = captionUrl.slice(0, 80);
-          // stessa sessione ScraperAPI → stessa IP/cookies della pagina → ei valido
-          const proxiedUrl = `http://api.scraperapi.com?api_key=${scraperKey}&session_number=${sessionNum}&url=${encodeURIComponent(captionUrl)}`;
-          const captionRes = await fetch(proxiedUrl);
-          debugInfo.captionStatus = captionRes.status;
-          if (captionRes.ok) {
-            const body = await captionRes.text();
-            debugInfo.bodyLen = body.length;
-            debugInfo.bodyStart = body.slice(0, 80);
-            let text = '';
-            if (body.includes('<transcript>') || body.includes('<text ')) {
-              // XML format: <text start="..." dur="...">testo</text>
-              text = body
-                .replace(/<text[^>]*>/g, '')
-                .replace(/<\/text>/g, ' ')
-                .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-                .replace(/&#39;/g, "'").replace(/&quot;/g, '"')
-                .replace(/<[^>]+>/g, '')
-                .split('\n').map(l => l.trim()).filter(l => l.length > 0).join(' ');
-            } else if (body.includes('WEBVTT')) {
-              text = parseVTT(body);
+        const itRes = await fetch(
+          `https://www.youtube.com/youtubei/v1/player?key=${apiKey}&prettyPrint=false`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              videoId,
+              context: { client: { clientName: 'WEB', clientVersion, hl: 'it', gl: 'IT' } }
+            }),
+          }
+        );
+        debugInfo.itStatus = itRes.status;
+        if (itRes.ok) {
+          const itData = await itRes.json();
+          const tracks = itData?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
+          debugInfo.itTracksFound = tracks?.length || 0;
+          const track = tracks?.find(t => t.languageCode === 'it') || tracks?.[0];
+          if (track?.baseUrl) {
+            debugInfo.itCaptionUrl = track.baseUrl.slice(0, 80);
+            const capRes = await fetch(track.baseUrl);
+            debugInfo.itCapStatus = capRes.status;
+            if (capRes.ok) {
+              const body = await capRes.text();
+              debugInfo.itBodyLen = body.length;
+              transcript = parseXmlOrVttTranscript(body);
+              debugInfo.itTranscriptLen = transcript?.length || 0;
+              if (!transcript) transcript = null;
             }
-            debugInfo.transcriptLen = text.length;
-            if (text.length > 20) transcript = text;
           }
         }
-      } catch (e) { debugInfo.captionError = e.message; }
+      } catch (e) { debugInfo.itError = e.message; }
+    }
+
+    // approccio 2 (fallback): URL session-bound dalla pagina HTML via ScraperAPI
+    if (!transcript) {
+      const captionIdx = html.indexOf('"captionTracks"');
+      debugInfo.captionIdx = captionIdx;
+      if (captionIdx >= 0) {
+        try {
+          const section = html.slice(captionIdx, captionIdx + 3000);
+          const urlMatch = section.match(/"baseUrl":"((?:[^"\\]|\\.)*)"/);
+          debugInfo.urlMatchFound = !!urlMatch;
+          if (urlMatch) {
+            const captionUrl = JSON.parse('"' + urlMatch[1] + '"');
+            debugInfo.captionUrl = captionUrl.slice(0, 80);
+            const proxiedUrl = `http://api.scraperapi.com?api_key=${scraperKey}&session_number=${sessionNum}&url=${encodeURIComponent(captionUrl)}`;
+            const captionRes = await fetch(proxiedUrl);
+            debugInfo.captionStatus = captionRes.status;
+            if (captionRes.ok) {
+              const body = await captionRes.text();
+              debugInfo.bodyLen = body.length;
+              transcript = parseXmlOrVttTranscript(body) || null;
+              debugInfo.transcriptLen = transcript?.length || 0;
+            }
+          }
+        } catch (e) { debugInfo.captionError = e.message; }
+      }
     }
 
     // estrai storyboard URLs
