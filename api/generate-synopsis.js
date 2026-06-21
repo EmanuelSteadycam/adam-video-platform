@@ -68,32 +68,38 @@ function parseStoryboardSpec(spec) {
 // Una sola chiamata ScraperAPI → transcript + storyboard URLs
 async function fetchFromYouTubePage(videoId) {
   const scraperKey = process.env.SCRAPER_API_KEY;
-  if (!scraperKey) return { transcript: null, storyboardUrls: [] };
+  if (!scraperKey) return { transcript: null, storyboardUrls: [], debug: 'no SCRAPER_API_KEY' };
 
   try {
     const pageRes = await fetch(
       `http://api.scraperapi.com?api_key=${scraperKey}&url=${encodeURIComponent(`https://www.youtube.com/watch?v=${videoId}`)}`
     );
-    if (!pageRes.ok) return { transcript: null, storyboardUrls: [] };
+    if (!pageRes.ok) return { transcript: null, storyboardUrls: [], debug: `scraper HTTP ${pageRes.status}` };
 
     const html = await pageRes.text();
+    const debugInfo = { htmlLen: html.length };
 
     // estrai transcript — prendi il primo baseUrl nella sezione captionTracks
     let transcript = null;
     const captionIdx = html.indexOf('"captionTracks"');
+    debugInfo.captionIdx = captionIdx;
     if (captionIdx >= 0) {
       try {
         const section = html.slice(captionIdx, captionIdx + 3000);
         const urlMatch = section.match(/"baseUrl":"((?:[^"\\]|\\.)*)"/);
+        debugInfo.urlMatchFound = !!urlMatch;
         if (urlMatch) {
           const captionUrl = JSON.parse('"' + urlMatch[1] + '"');
+          debugInfo.captionUrl = captionUrl.slice(0, 80);
           const captionRes = await fetch(captionUrl + '&fmt=vtt');
+          debugInfo.captionStatus = captionRes.status;
           if (captionRes.ok) {
             const text = parseVTT(await captionRes.text());
+            debugInfo.vttLen = text.length;
             if (text.length > 20) transcript = text;
           }
         }
-      } catch {}
+      } catch (e) { debugInfo.captionError = e.message; }
     }
 
     // estrai storyboard URLs
@@ -106,8 +112,8 @@ async function fetchFromYouTubePage(videoId) {
       } catch {}
     }
 
-    return { transcript, storyboardUrls };
-  } catch { return { transcript: null, storyboardUrls: [] }; }
+    return { transcript, storyboardUrls, debug: debugInfo };
+  } catch (e) { return { transcript: null, storyboardUrls: [], debug: `exception: ${e.message}` }; }
 }
 
 async function fetchTranscriptFallback(videoId) {
@@ -264,5 +270,5 @@ export default async function handler(req, res) {
   }
 
   const result = await anthropicRes.json();
-  return res.status(200).json({ synopsis: result.content[0].text.trim(), warnings });
+  return res.status(200).json({ synopsis: result.content[0].text.trim(), warnings, _debug: pageResult.value?.debug });
 }
