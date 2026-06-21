@@ -78,21 +78,15 @@ async function fetchFromYouTubePage(videoId) {
 
     const html = await pageRes.text();
 
-    // estrai transcript — cerca baseUrl+languageCode accoppiati nel testo
+    // estrai transcript — prendi il primo baseUrl nella sezione captionTracks
     let transcript = null;
     const captionIdx = html.indexOf('"captionTracks"');
     if (captionIdx >= 0) {
       try {
-        const section = html.slice(captionIdx, captionIdx + 15000);
-        const trackPattern = /"baseUrl":"((?:[^"\\]|\\.)*)"(?:(?!"baseUrl")[^}])*?"languageCode":"([^"]+)"/g;
-        let itUrl = null, firstUrl = null, m2;
-        while ((m2 = trackPattern.exec(section)) !== null) {
-          const u = JSON.parse('"' + m2[1] + '"');
-          if (m2[2] === 'it' && !itUrl) itUrl = u;
-          if (!firstUrl) firstUrl = u;
-        }
-        const captionUrl = itUrl || firstUrl;
-        if (captionUrl) {
+        const section = html.slice(captionIdx, captionIdx + 3000);
+        const urlMatch = section.match(/"baseUrl":"((?:[^"\\]|\\.)*)"/);
+        if (urlMatch) {
+          const captionUrl = JSON.parse('"' + urlMatch[1] + '"');
           const captionRes = await fetch(captionUrl + '&fmt=vtt');
           if (captionRes.ok) {
             const text = parseVTT(await captionRes.text());
