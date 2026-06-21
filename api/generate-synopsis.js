@@ -172,18 +172,6 @@ async function fetchFromYouTubePage(videoId) {
               debugInfo.directTranscriptLen = transcript?.length || 0;
             }
 
-            // 2b: via ScraperAPI (stessa sessione della pagina)
-            if (!transcript) {
-              const proxiedUrl = `http://api.scraperapi.com?api_key=${scraperKey}&session_number=${sessionNum}&url=${encodeURIComponent(captionUrl)}`;
-              const captionRes = await fetch(proxiedUrl);
-              debugInfo.captionStatus = captionRes.status;
-              if (captionRes.ok) {
-                const body = await captionRes.text();
-                debugInfo.bodyLen = body.length;
-                transcript = parseXmlOrVttTranscript(body) || null;
-                debugInfo.transcriptLen = transcript?.length || 0;
-              }
-            }
           }
         } catch (e) { debugInfo.captionError = e.message; }
       }
