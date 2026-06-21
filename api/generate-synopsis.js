@@ -16,44 +16,101 @@ async function fetchOEmbed(videoId) {
   } catch { return null; }
 }
 
-async function fetchTranscript(videoId) {
-  const scraperKey = process.env.SCRAPER_API_KEY;
+function parseVTT(vtt) {
+  return vtt
+    .replace(/WEBVTT\n/, '')
+    .replace(/\d{2}:\d{2}:\d{2}\.\d{3} --> \d{2}:\d{2}:\d{2}\.\d{3}[^\n]*/g, '')
+    .replace(/<[^>]+>/g, '')
+    .split('\n')
+    .map(l => l.trim())
+    .filter(l => l.length > 0)
+    .filter((l, i, arr) => l !== arr[i - 1])
+    .join(' ');
+}
 
-  // tenta via ScraperAPI (proxy residenziale — bypassa il blocco YouTube)
-  if (scraperKey) {
-    try {
-      const pageRes = await fetch(
-        `http://api.scraperapi.com?api_key=${scraperKey}&url=${encodeURIComponent(`https://www.youtube.com/watch?v=${videoId}`)}`
-      );
-      if (pageRes.ok) {
-        const html = await pageRes.text();
-        const m = html.match(/"captionTracks":\s*(\[[\s\S]*?\])/);
-        if (m) {
-          const tracks = JSON.parse(m[1]);
-          const track = tracks.find(t => t.languageCode === 'it') || tracks[0];
-          if (track?.baseUrl) {
-            const baseUrl = track.baseUrl.replace(/\\u0026/g, '&');
-            const captionRes = await fetch(baseUrl + '&fmt=vtt');
-            if (captionRes.ok) {
-              const vtt = await captionRes.text();
-              const text = vtt
-                .replace(/WEBVTT\n/, '')
-                .replace(/\d{2}:\d{2}:\d{2}\.\d{3} --> \d{2}:\d{2}:\d{2}\.\d{3}[^\n]*/g, '')
-                .replace(/<[^>]+>/g, '')
-                .split('\n')
-                .map(l => l.trim())
-                .filter(l => l.length > 0)
-                .filter((l, i, arr) => l !== arr[i - 1])
-                .join(' ');
-              if (text.length > 20) return text;
-            }
+function parseStoryboardSpec(spec) {
+  const parts = spec.split('|');
+  const baseUrl = parts[0];
+
+  const levels = parts.slice(1).map((p, idx) => {
+    const f = p.split('#');
+    const rs = (f[7] || '').startsWith('rs$') ? f[7].slice(3) : '';
+    return {
+      level: idx,
+      count: parseInt(f[2]) || 0,
+      cols: parseInt(f[3]) || 0,
+      rows: parseInt(f[4]) || 0,
+      template: f[6] || '',
+      rs,
+    };
+  });
+
+  const valid = levels.filter(l => l.template.includes('$M') && l.rs && l.count > 0);
+  if (!valid.length) return [];
+
+  const chosen = valid[valid.length - 1];
+  const framesPerSheet = (chosen.cols || 1) * (chosen.rows || 1);
+  const numSheets = Math.ceil(chosen.count / framesPerSheet);
+
+  const MAX = 12;
+  const indices = numSheets <= MAX
+    ? Array.from({ length: numSheets }, (_, i) => i)
+    : Array.from({ length: MAX }, (_, i) => Math.round(i * (numSheets - 1) / (MAX - 1)));
+
+  return indices.map(i => {
+    const filename = chosen.template.replace('$M', String(i));
+    return baseUrl
+      .replace('$L', String(chosen.level))
+      .replace('$N', filename) + '&rs=' + chosen.rs;
+  });
+}
+
+// Una sola chiamata ScraperAPI → transcript + storyboard URLs
+async function fetchFromYouTubePage(videoId) {
+  const scraperKey = process.env.SCRAPER_API_KEY;
+  if (!scraperKey) return { transcript: null, storyboardUrls: [] };
+
+  try {
+    const pageRes = await fetch(
+      `http://api.scraperapi.com?api_key=${scraperKey}&url=${encodeURIComponent(`https://www.youtube.com/watch?v=${videoId}`)}`
+    );
+    if (!pageRes.ok) return { transcript: null, storyboardUrls: [] };
+
+    const html = await pageRes.text();
+
+    // estrai transcript
+    let transcript = null;
+    const captionMatch = html.match(/"captionTracks":\s*(\[[\s\S]*?\])/);
+    if (captionMatch) {
+      try {
+        const tracks = JSON.parse(captionMatch[1]);
+        const track = tracks.find(t => t.languageCode === 'it') || tracks[0];
+        if (track?.baseUrl) {
+          const baseUrl = track.baseUrl.replace(/\\u0026/g, '&');
+          const captionRes = await fetch(baseUrl + '&fmt=vtt');
+          if (captionRes.ok) {
+            const text = parseVTT(await captionRes.text());
+            if (text.length > 20) transcript = text;
           }
         }
-      }
-    } catch {}
-  }
+      } catch {}
+    }
 
-  // fallback: youtube-transcript diretto (funziona da IP residenziali, non da Vercel)
+    // estrai storyboard URLs
+    let storyboardUrls = [];
+    const sbMatch = html.match(/"playerStoryboardSpecRenderer":\{"spec":"((?:[^"\\]|\\.)*)"/);
+    if (sbMatch) {
+      try {
+        const spec = JSON.parse('"' + sbMatch[1] + '"');
+        storyboardUrls = parseStoryboardSpec(spec);
+      } catch {}
+    }
+
+    return { transcript, storyboardUrls };
+  } catch { return { transcript: null, storyboardUrls: [] }; }
+}
+
+async function fetchTranscriptFallback(videoId) {
   try {
     const items = await YoutubeTranscript.fetchTranscript(videoId, { lang: 'it' });
     if (items?.length) return items.map(i => i.text).join(' ');
@@ -63,17 +120,6 @@ async function fetchTranscript(videoId) {
     if (items?.length) return items.map(i => i.text).join(' ');
   } catch {}
   return null;
-}
-
-async function fetchStoryboardUrls(videoId) {
-  const workerUrl = process.env.CF_STORYBOARD_WORKER_URL;
-  if (!workerUrl) return [];
-  try {
-    const res = await fetch(`${workerUrl}?v=${videoId}`);
-    if (!res.ok) return [];
-    const data = await res.json();
-    return Array.isArray(data.urls) ? data.urls : [];
-  } catch { return []; }
 }
 
 async function fetchYoutubeDescription(videoId) {
@@ -115,19 +161,21 @@ export default async function handler(req, res) {
 
   const manualTranscript = providedTranscript?.trim() || null;
 
-  const [oembedResult, transcriptResult, storyboardResult, descriptionResult] = await Promise.allSettled([
+  const [pageResult, oembedResult, descriptionResult] = await Promise.allSettled([
+    fetchFromYouTubePage(videoId),
     fetchOEmbed(videoId),
-    manualTranscript ? Promise.resolve(null) : fetchTranscript(videoId),
-    fetchStoryboardUrls(videoId),
     fetchYoutubeDescription(videoId),
   ]);
 
+  const { transcript: pageTranscript, storyboardUrls } = pageResult.value ?? { transcript: null, storyboardUrls: [] };
   const oembed = oembedResult.value ?? null;
-  const transcript = manualTranscript || transcriptResult.value || null;
-  const storyboardUrls = storyboardResult.value ?? [];
   const ytDescription = descriptionResult.value ?? null;
 
-  // scarica sprite sheet storyboard; fallback a 4 thumbnail standard
+  // transcript: manuale > ScraperAPI > youtube-transcript fallback
+  let transcript = manualTranscript || pageTranscript;
+  if (!transcript) transcript = await fetchTranscriptFallback(videoId);
+
+  // immagini: storyboard sprite sheet > 3 thumbnail standard
   let images = [];
   let usedStoryboard = false;
 
