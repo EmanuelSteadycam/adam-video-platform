@@ -103,14 +103,21 @@ async function fetchFromYouTubePage(videoId) {
       const clientVersion = clientVerMatch?.[1] || '2.20240101.00.00';
       debugInfo.itApiKey = apiKey.slice(0, 8) + '...';
       try {
+        // client ANDROID: restituisce caption track in modo più affidabile di WEB
+        const ANDROID_UA = 'com.google.android.youtube/17.36.4 (Linux; U; Android 12; GB) gzip';
         const itRes = await fetch(
           `https://www.youtube.com/youtubei/v1/player?key=${apiKey}&prettyPrint=false`,
           {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'User-Agent': ANDROID_UA },
             body: JSON.stringify({
               videoId,
-              context: { client: { clientName: 'WEB', clientVersion, hl: 'it', gl: 'IT' } }
+              context: {
+                client: {
+                  clientName: 'ANDROID', clientVersion: '17.36.4',
+                  androidSdkVersion: 30, userAgent: ANDROID_UA, hl: 'it', gl: 'IT',
+                }
+              },
             }),
           }
         );
