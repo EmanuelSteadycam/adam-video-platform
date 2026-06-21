@@ -90,6 +90,9 @@ async function fetchFromYouTubePage(videoId) {
     const html = await pageRes.text();
     const debugInfo = { htmlLen: html.length, sessionNum };
 
+    // pagina troppo piccola = bot-detection di YouTube → ScraperAPI non è riuscito
+    if (html.length < 50000) return { transcript: null, storyboardUrls: [], debug: { ...debugInfo, error: 'bot-detection page' } };
+
     let transcript = null;
 
     // approccio 1: InnerTube API → URL caption freschi, non legati alla sessione
