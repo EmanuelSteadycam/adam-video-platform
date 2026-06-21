@@ -17,6 +17,43 @@ async function fetchOEmbed(videoId) {
 }
 
 async function fetchTranscript(videoId) {
+  const scraperKey = process.env.SCRAPER_API_KEY;
+
+  // tenta via ScraperAPI (proxy residenziale — bypassa il blocco YouTube)
+  if (scraperKey) {
+    try {
+      const pageRes = await fetch(
+        `http://api.scraperapi.com?api_key=${scraperKey}&url=${encodeURIComponent(`https://www.youtube.com/watch?v=${videoId}`)}`
+      );
+      if (pageRes.ok) {
+        const html = await pageRes.text();
+        const m = html.match(/"captionTracks":\s*(\[[\s\S]*?\])/);
+        if (m) {
+          const tracks = JSON.parse(m[1]);
+          const track = tracks.find(t => t.languageCode === 'it') || tracks[0];
+          if (track?.baseUrl) {
+            const baseUrl = track.baseUrl.replace(/\\u0026/g, '&');
+            const captionRes = await fetch(baseUrl + '&fmt=vtt');
+            if (captionRes.ok) {
+              const vtt = await captionRes.text();
+              const text = vtt
+                .replace(/WEBVTT\n/, '')
+                .replace(/\d{2}:\d{2}:\d{2}\.\d{3} --> \d{2}:\d{2}:\d{2}\.\d{3}[^\n]*/g, '')
+                .replace(/<[^>]+>/g, '')
+                .split('\n')
+                .map(l => l.trim())
+                .filter(l => l.length > 0)
+                .filter((l, i, arr) => l !== arr[i - 1])
+                .join(' ');
+              if (text.length > 20) return text;
+            }
+          }
+        }
+      }
+    } catch {}
+  }
+
+  // fallback: youtube-transcript diretto (funziona da IP residenziali, non da Vercel)
   try {
     const items = await YoutubeTranscript.fetchTranscript(videoId, { lang: 'it' });
     if (items?.length) return items.map(i => i.text).join(' ');
