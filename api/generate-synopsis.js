@@ -91,7 +91,9 @@ async function fetchFromYouTubePage(videoId) {
         if (urlMatch) {
           const captionUrl = JSON.parse('"' + urlMatch[1] + '"');
           debugInfo.captionUrl = captionUrl.slice(0, 80);
-          const captionRes = await fetch(captionUrl + '&fmt=vtt');
+          // anche il VTT va via ScraperAPI — Vercel riceve contenuto vuoto da IP datacenter
+          const proxiedVttUrl = `http://api.scraperapi.com?api_key=${scraperKey}&url=${encodeURIComponent(captionUrl + '&fmt=vtt')}`;
+          const captionRes = await fetch(proxiedVttUrl);
           debugInfo.captionStatus = captionRes.status;
           if (captionRes.ok) {
             const text = parseVTT(await captionRes.text());
