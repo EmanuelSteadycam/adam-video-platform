@@ -62,7 +62,7 @@ async function downloadBase64(url) {
 
 async function fetchFallbackThumbnails(videoId) {
   const results = await Promise.all(
-    ['0', '1', '2', '3'].map(n => downloadBase64(`https://img.youtube.com/vi/${videoId}/${n}.jpg`))
+    ['1', '2', '3'].map(n => downloadBase64(`https://img.youtube.com/vi/${videoId}/${n}.jpg`))
   );
   return results.filter(Boolean);
 }
@@ -132,7 +132,7 @@ export default async function handler(req, res) {
     if (usedStoryboard) {
       prompt += `\n\nIMMAGINI (${images.length} sprite sheet): ogni immagine è una griglia di miniature che copre una porzione temporale del video — leggile da sinistra a destra e dall'alto verso il basso. Insieme coprono il video dall'inizio alla fine.`;
     } else {
-      prompt += `\n\nIMMAGINI (${images.length} fotogrammi): inizio, 25%, 50%, 75% della durata del video.`;
+      prompt += `\n\nIMMAGINI (${images.length} fotogrammi): circa 25%, 50% e 75% della durata del video — in ordine cronologico. NON dedurre cosa succede all'inizio o alla fine basandoti solo su queste immagini.`;
     }
   }
 
