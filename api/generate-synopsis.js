@@ -95,7 +95,7 @@ async function fetchFromYouTubePage(videoId) {
 
     let transcript = null;
 
-    // approccio 1: InnerTube API → URL caption freschi, non legati alla sessione
+    // approccio 1: InnerTube WEB con headers YouTube-style
     const apiKeyMatch = html.match(/"INNERTUBE_API_KEY":"([^"]+)"/);
     const clientVerMatch = html.match(/"clientVersion":"([^"]+)"/);
     if (apiKeyMatch) {
@@ -103,21 +103,20 @@ async function fetchFromYouTubePage(videoId) {
       const clientVersion = clientVerMatch?.[1] || '2.20240101.00.00';
       debugInfo.itApiKey = apiKey.slice(0, 8) + '...';
       try {
-        // client ANDROID: restituisce caption track in modo più affidabile di WEB
-        const ANDROID_UA = 'com.google.android.youtube/17.36.4 (Linux; U; Android 12; GB) gzip';
         const itRes = await fetch(
           `https://www.youtube.com/youtubei/v1/player?key=${apiKey}&prettyPrint=false`,
           {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'User-Agent': ANDROID_UA },
+            headers: {
+              'Content-Type': 'application/json',
+              'X-YouTube-Client-Name': '1',
+              'X-YouTube-Client-Version': clientVersion,
+              'Origin': 'https://www.youtube.com',
+              'Referer': 'https://www.youtube.com/',
+            },
             body: JSON.stringify({
               videoId,
-              context: {
-                client: {
-                  clientName: 'ANDROID', clientVersion: '17.36.4',
-                  androidSdkVersion: 30, userAgent: ANDROID_UA, hl: 'it', gl: 'IT',
-                }
-              },
+              context: { client: { clientName: 'WEB', clientVersion, hl: 'it', gl: 'IT' } },
             }),
           }
         );
@@ -143,7 +142,7 @@ async function fetchFromYouTubePage(videoId) {
       } catch (e) { debugInfo.itError = e.message; }
     }
 
-    // approccio 2 (fallback): URL session-bound dalla pagina HTML via ScraperAPI
+    // approccio 2: URL session-bound dalla pagina HTML
     if (!transcript) {
       const captionIdx = html.indexOf('"captionTracks"');
       debugInfo.captionIdx = captionIdx;
@@ -155,14 +154,35 @@ async function fetchFromYouTubePage(videoId) {
           if (urlMatch) {
             const captionUrl = JSON.parse('"' + urlMatch[1] + '"');
             debugInfo.captionUrl = captionUrl.slice(0, 80);
-            const proxiedUrl = `http://api.scraperapi.com?api_key=${scraperKey}&session_number=${sessionNum}&url=${encodeURIComponent(captionUrl)}`;
-            const captionRes = await fetch(proxiedUrl);
-            debugInfo.captionStatus = captionRes.status;
-            if (captionRes.ok) {
-              const body = await captionRes.text();
-              debugInfo.bodyLen = body.length;
+
+            // 2a: fetch diretto da Vercel con headers browser (stessa strategia di youtube-transcript)
+            const browserHeaders = {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+              'Referer': `https://www.youtube.com/watch?v=${videoId}`,
+              'Origin': 'https://www.youtube.com',
+              'Accept': '*/*',
+              'Accept-Language': 'it-IT,it;q=0.9',
+            };
+            const directRes = await fetch(captionUrl, { headers: browserHeaders });
+            debugInfo.directStatus = directRes.status;
+            if (directRes.ok) {
+              const body = await directRes.text();
+              debugInfo.directBodyLen = body.length;
               transcript = parseXmlOrVttTranscript(body) || null;
-              debugInfo.transcriptLen = transcript?.length || 0;
+              debugInfo.directTranscriptLen = transcript?.length || 0;
+            }
+
+            // 2b: via ScraperAPI (stessa sessione della pagina)
+            if (!transcript) {
+              const proxiedUrl = `http://api.scraperapi.com?api_key=${scraperKey}&session_number=${sessionNum}&url=${encodeURIComponent(captionUrl)}`;
+              const captionRes = await fetch(proxiedUrl);
+              debugInfo.captionStatus = captionRes.status;
+              if (captionRes.ok) {
+                const body = await captionRes.text();
+                debugInfo.bodyLen = body.length;
+                transcript = parseXmlOrVttTranscript(body) || null;
+                debugInfo.transcriptLen = transcript?.length || 0;
+              }
             }
           }
         } catch (e) { debugInfo.captionError = e.message; }
