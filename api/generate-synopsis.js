@@ -139,7 +139,12 @@ async function downloadBase64(url) {
   try {
     const res = await fetch(url);
     if (!res.ok) return null;
-    return Buffer.from(await res.arrayBuffer()).toString('base64');
+    const contentType = res.headers.get('content-type') || 'image/jpeg';
+    const mediaType = contentType.includes('webp') ? 'image/webp'
+      : contentType.includes('png') ? 'image/png'
+      : 'image/jpeg';
+    const data = Buffer.from(await res.arrayBuffer()).toString('base64');
+    return { data, mediaType };
   } catch { return null; }
 }
 
@@ -193,8 +198,8 @@ export default async function handler(req, res) {
   if (!usedStoryboard) warnings.push('Storyboard non disponibile: analisi basata sulle thumbnail principali (copertura ridotta).');
 
   const content = [];
-  for (const data of images) {
-    content.push({ type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data } });
+  for (const { data, mediaType } of images) {
+    content.push({ type: 'image', source: { type: 'base64', media_type: mediaType, data } });
   }
 
   const ytTitle = title || oembed?.title || '';
