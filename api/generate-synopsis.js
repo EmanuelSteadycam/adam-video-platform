@@ -103,23 +103,14 @@ async function fetchFromYouTubePage(videoId) {
       const clientVersion = clientVerMatch?.[1] || '2.20240101.00.00';
       debugInfo.itApiKey = apiKey.slice(0, 8) + '...';
       try {
-        const itRes = await fetch(
-          `https://www.youtube.com/youtubei/v1/player?key=${apiKey}&prettyPrint=false`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-YouTube-Client-Name': '1',
-              'X-YouTube-Client-Version': clientVersion,
-              'Origin': 'https://www.youtube.com',
-              'Referer': 'https://www.youtube.com/',
-            },
-            body: JSON.stringify({
-              videoId,
-              context: { client: { clientName: 'WEB', clientVersion, hl: 'it', gl: 'IT' } },
-            }),
-          }
-        );
+        // InnerTube via ScraperAPI (IP residenziale) — YouTube strips captionTracks da datacenter IP
+        const itBody = JSON.stringify({
+          videoId,
+          context: { client: { clientName: 'WEB', clientVersion, hl: 'it', gl: 'IT' } },
+        });
+        const itUrl = `https://www.youtube.com/youtubei/v1/player?key=${apiKey}&prettyPrint=false`;
+        const itScraperUrl = `http://api.scraperapi.com?api_key=${scraperKey}&session_number=${sessionNum}&url=${encodeURIComponent(itUrl)}&method=POST&post_data=${encodeURIComponent(itBody)}`;
+        const itRes = await fetch(itScraperUrl);
         debugInfo.itStatus = itRes.status;
         if (itRes.ok) {
           const itData = await itRes.json();
