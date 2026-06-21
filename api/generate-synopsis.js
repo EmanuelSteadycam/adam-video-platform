@@ -71,13 +71,15 @@ async function fetchFromYouTubePage(videoId) {
   if (!scraperKey) return { transcript: null, storyboardUrls: [], debug: 'no SCRAPER_API_KEY' };
 
   try {
+    // stesso session_number per page + caption: stesso IP e cookies → ei valido per entrambe le richieste
+    const sessionNum = Math.floor(Math.random() * 9000) + 1000;
     const pageRes = await fetch(
-      `http://api.scraperapi.com?api_key=${scraperKey}&url=${encodeURIComponent(`https://www.youtube.com/watch?v=${videoId}`)}`
+      `http://api.scraperapi.com?api_key=${scraperKey}&session_number=${sessionNum}&url=${encodeURIComponent(`https://www.youtube.com/watch?v=${videoId}`)}`
     );
     if (!pageRes.ok) return { transcript: null, storyboardUrls: [], debug: `scraper HTTP ${pageRes.status}` };
 
     const html = await pageRes.text();
-    const debugInfo = { htmlLen: html.length };
+    const debugInfo = { htmlLen: html.length, sessionNum };
 
     // estrai transcript — prendi il primo baseUrl nella sezione captionTracks
     let transcript = null;
@@ -91,9 +93,8 @@ async function fetchFromYouTubePage(videoId) {
         if (urlMatch) {
           const captionUrl = JSON.parse('"' + urlMatch[1] + '"');
           debugInfo.captionUrl = captionUrl.slice(0, 80);
-          // fetch via ScraperAPI senza &fmt=vtt (il parametro non è firmato → YouTube ritorna vuoto)
-          // YouTube risponde con XML di default — lo parsiamo direttamente
-          const proxiedUrl = `http://api.scraperapi.com?api_key=${scraperKey}&url=${encodeURIComponent(captionUrl)}`;
+          // stessa sessione ScraperAPI → stessa IP/cookies della pagina → ei valido
+          const proxiedUrl = `http://api.scraperapi.com?api_key=${scraperKey}&session_number=${sessionNum}&url=${encodeURIComponent(captionUrl)}`;
           const captionRes = await fetch(proxiedUrl);
           debugInfo.captionStatus = captionRes.status;
           if (captionRes.ok) {
