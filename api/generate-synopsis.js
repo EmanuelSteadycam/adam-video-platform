@@ -91,13 +91,29 @@ async function fetchFromYouTubePage(videoId) {
         if (urlMatch) {
           const captionUrl = JSON.parse('"' + urlMatch[1] + '"');
           debugInfo.captionUrl = captionUrl.slice(0, 80);
-          // anche il VTT va via ScraperAPI — Vercel riceve contenuto vuoto da IP datacenter
-          const proxiedVttUrl = `http://api.scraperapi.com?api_key=${scraperKey}&url=${encodeURIComponent(captionUrl + '&fmt=vtt')}`;
-          const captionRes = await fetch(proxiedVttUrl);
+          // fetch via ScraperAPI senza &fmt=vtt (il parametro non è firmato → YouTube ritorna vuoto)
+          // YouTube risponde con XML di default — lo parsiamo direttamente
+          const proxiedUrl = `http://api.scraperapi.com?api_key=${scraperKey}&url=${encodeURIComponent(captionUrl)}`;
+          const captionRes = await fetch(proxiedUrl);
           debugInfo.captionStatus = captionRes.status;
           if (captionRes.ok) {
-            const text = parseVTT(await captionRes.text());
-            debugInfo.vttLen = text.length;
+            const body = await captionRes.text();
+            debugInfo.bodyLen = body.length;
+            debugInfo.bodyStart = body.slice(0, 80);
+            let text = '';
+            if (body.includes('<transcript>') || body.includes('<text ')) {
+              // XML format: <text start="..." dur="...">testo</text>
+              text = body
+                .replace(/<text[^>]*>/g, '')
+                .replace(/<\/text>/g, ' ')
+                .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+                .replace(/&#39;/g, "'").replace(/&quot;/g, '"')
+                .replace(/<[^>]+>/g, '')
+                .split('\n').map(l => l.trim()).filter(l => l.length > 0).join(' ');
+            } else if (body.includes('WEBVTT')) {
+              text = parseVTT(body);
+            }
+            debugInfo.transcriptLen = text.length;
             if (text.length > 20) transcript = text;
           }
         }
