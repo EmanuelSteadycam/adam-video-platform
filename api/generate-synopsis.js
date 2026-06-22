@@ -74,7 +74,6 @@ function parseStoryboardSpec(spec) {
   });
 }
 
-// ScraperAPI → solo storyboard (la timedtext URL è IP-bound e ritorna vuoto da IP diverso)
 async function fetchStoryboardUrls(videoId) {
   const scraperKey = process.env.SCRAPER_API_KEY;
   if (!scraperKey) return { storyboardUrls: [], debug: 'no SCRAPER_API_KEY' };
@@ -115,19 +114,6 @@ async function fetchTranscriptFallback(videoId) {
   return null;
 }
 
-async function fetchYoutubeDescription(videoId) {
-  const apiKey = process.env.YOUTUBE_API_KEY;
-  if (!apiKey) return null;
-  try {
-    const res = await fetch(
-      `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=snippet&key=${apiKey}`
-    );
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data.items?.[0]?.snippet?.description || null;
-  } catch { return null; }
-}
-
 async function downloadBase64(url) {
   try {
     const res = await fetch(url);
@@ -159,17 +145,15 @@ export default async function handler(req, res) {
 
   const manualTranscript = providedTranscript?.trim() || null;
 
-  // tutto in parallelo: storyboard, transcript, oembed, descrizione
-  const [storyboardResult, transcriptResult, oembedResult, descriptionResult] = await Promise.allSettled([
+  // tutto in parallelo: storyboard, transcript, oembed
+  const [storyboardResult, transcriptResult, oembedResult] = await Promise.allSettled([
     fetchStoryboardUrls(videoId),
     manualTranscript ? Promise.resolve(manualTranscript) : fetchTranscriptFallback(videoId),
     fetchOEmbed(videoId),
-    fetchYoutubeDescription(videoId),
   ]);
 
   const { storyboardUrls } = storyboardResult.value ?? { storyboardUrls: [] };
   const oembed = oembedResult.value ?? null;
-  const ytDescription = descriptionResult.value ?? null;
   let transcript = transcriptResult.value ?? null;
 
   // immagini: storyboard sprite sheet > 3 thumbnail standard
@@ -224,11 +208,6 @@ export default async function handler(req, res) {
     prompt += `\n\nUsa la trascrizione per riportare fedelmente cosa viene detto: dialoghi, voci, testi parlati. Le immagini completano con ciò che si vede.`;
   }
 
-  if (ytDescription) {
-    const truncated = ytDescription.length > 600 ? ytDescription.slice(0, 600) + '...' : ytDescription;
-    prompt += `\n\nDESCRIZIONE YOUTUBE (contesto aggiuntivo):\n${truncated}`;
-  }
-
   prompt += `\n\nScrivi in italiano, 2-4 frasi, testo semplice senza formattazione.`;
   prompt += transcript
     ? ` Integra quello che si vede con quello che viene detto. Riporta i contenuti del parlato in modo diretto e fedele.`
@@ -256,5 +235,12 @@ export default async function handler(req, res) {
   }
 
   const result = await anthropicRes.json();
-  return res.status(200).json({ synopsis: result.content[0].text.trim(), ytTitle: ytTitle || null, warnings, imagesUsed: images.length, usedStoryboard, _debug: storyboardResult.value?.debug });
+  return res.status(200).json({
+    synopsis: result.content[0].text.trim(),
+    ytTitle: ytTitle || null,
+    warnings,
+    imagesUsed: images.length,
+    usedStoryboard,
+    _debug: storyboardResult.value?.debug,
+  });
 }
