@@ -256,5 +256,5 @@ export default async function handler(req, res) {
   }
 
   const result = await anthropicRes.json();
-  return res.status(200).json({ synopsis: result.content[0].text.trim(), ytTitle: ytTitle || null, warnings, _debug: storyboardResult.value?.debug });
+  return res.status(200).json({ synopsis: result.content[0].text.trim(), ytTitle: ytTitle || null, warnings, imagesUsed: images.length, usedStoryboard, _debug: storyboardResult.value?.debug });
 }
