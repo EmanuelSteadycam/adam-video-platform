@@ -2283,6 +2283,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const [synopsisWarning, setSynopsisWarning] = useState('');
   const [manualTranscript, setManualTranscript] = useState('');
   const [showTranscriptInput, setShowTranscriptInput] = useState(false);
+  const [nasFile, setNasFile] = useState(null);
+  const [transcribingNas, setTranscribingNas] = useState(false);
 
   // Tab
   const [activeTab, setActiveTab] = useState('add');
@@ -2605,6 +2607,23 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     setGeneratingSynopsis(true);
     setSynopsisWarning('');
     try {
+      // se c'è un file NAS selezionato, trascrive prima con Whisper
+      let transcript = manualTranscript.trim() || undefined;
+      if (nasFile && !transcript) {
+        setTranscribingNas(true);
+        try {
+          const fd = new FormData();
+          fd.append('file', nasFile);
+          const tRes = await fetch('/api/transcribe', { method: 'POST', body: fd });
+          const tData = await tRes.json();
+          if (!tRes.ok) { setSynopsisWarning(tData.error || 'Errore nella trascrizione audio.'); return; }
+          transcript = tData.transcript || undefined;
+          if (transcript) setManualTranscript(transcript);
+        } finally {
+          setTranscribingNas(false);
+        }
+      }
+
       const res = await fetch('/api/generate-synopsis', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -2612,7 +2631,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
           youtubeUrl: form.youtube_url,
           title: form.title || undefined,
           tema: form.tema || undefined,
-          transcript: manualTranscript.trim() || undefined,
+          transcript,
         }),
       });
       const data = await res.json();
@@ -2627,6 +2646,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       setSynopsisWarning('Errore di rete nella generazione della sinossi.');
     } finally {
       setGeneratingSynopsis(false);
+      setTranscribingNas(false);
     }
   };
 
@@ -2666,6 +2686,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       setSynopsisWarning('');
       setManualTranscript('');
       setShowTranscriptInput(false);
+      setNasFile(null);
       onVideoApproved?.();
     }
     setSaving(false);
@@ -2696,6 +2717,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       setSynopsisWarning('');
       setManualTranscript('');
       setShowTranscriptInput(false);
+      setNasFile(null);
       setActiveTab('pending');
       loadPending();
       setSaving(false);
@@ -2794,18 +2816,36 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
               </div>
               <input type="url" value={form.youtube_url} onChange={e => f('youtube_url', e.target.value)} placeholder="https://youtu.be/..." className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
             </div>
-            {/* Transcript opzionale */}
-            <div>
+            {/* Transcript: NAS upload o testo manuale */}
+            <div className="space-y-2">
+              {/* Opzione 1: carica dal NAS */}
+              <div className="flex items-center gap-3">
+                <label className="flex items-center gap-1.5 cursor-pointer text-xs font-medium px-3 py-1.5 rounded-lg border border-zinc-600 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all">
+                  <input type="file" accept="video/*,audio/*" className="hidden"
+                    onChange={e => { setNasFile(e.target.files?.[0] || null); setManualTranscript(''); }} />
+                  <Upload size={12} /> Carica dal NAS
+                </label>
+                {nasFile && (
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="text-xs text-emerald-400 truncate max-w-[200px]">✓ {nasFile.name}</span>
+                    <button type="button" onClick={() => setNasFile(null)} className="text-zinc-500 hover:text-zinc-300 flex-shrink-0">
+                      <X size={12} />
+                    </button>
+                  </div>
+                )}
+                {transcribingNas && <span className="text-xs text-zinc-400 flex items-center gap-1"><Loader2 size={11} className="animate-spin" /> Whisper…</span>}
+              </div>
+              {/* Opzione 2: trascrizione manuale */}
               <button type="button" onClick={() => setShowTranscriptInput(v => !v)}
                 className="flex items-center gap-1.5 text-xs text-zinc-500 hover:text-zinc-300 transition-colors">
                 <ChevronDown size={12} className={`transition-transform duration-150 ${showTranscriptInput ? 'rotate-180' : ''}`} />
-                Incolla trascrizione (opzionale — migliora la sinossi)
+                Incolla trascrizione manuale (opzionale)
               </button>
               {showTranscriptInput && (
-                <div className="mt-2">
+                <div>
                   <textarea
                     value={manualTranscript}
-                    onChange={e => setManualTranscript(e.target.value)}
+                    onChange={e => { setManualTranscript(e.target.value); setNasFile(null); }}
                     rows={4}
                     placeholder="Apri il video su YouTube → icona ··· → Apri trascrizione → copia e incolla qui..."
                     className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500 resize-none"
