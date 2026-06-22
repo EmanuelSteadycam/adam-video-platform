@@ -74,101 +74,22 @@ function parseStoryboardSpec(spec) {
   });
 }
 
-// Una sola chiamata ScraperAPI → transcript + storyboard URLs
-async function fetchFromYouTubePage(videoId) {
+// ScraperAPI → solo storyboard (la timedtext URL è IP-bound e ritorna vuoto da IP diverso)
+async function fetchStoryboardUrls(videoId) {
   const scraperKey = process.env.SCRAPER_API_KEY;
-  if (!scraperKey) return { transcript: null, storyboardUrls: [], debug: 'no SCRAPER_API_KEY' };
+  if (!scraperKey) return { storyboardUrls: [], debug: 'no SCRAPER_API_KEY' };
 
   try {
-    // stesso session_number per page + caption: stesso IP e cookies → ei valido per entrambe le richieste
-    const sessionNum = Math.floor(Math.random() * 9000) + 1000;
     const pageRes = await fetch(
-      `http://api.scraperapi.com?api_key=${scraperKey}&session_number=${sessionNum}&url=${encodeURIComponent(`https://www.youtube.com/watch?v=${videoId}`)}`
+      `http://api.scraperapi.com?api_key=${scraperKey}&url=${encodeURIComponent(`https://www.youtube.com/watch?v=${videoId}`)}`
     );
-    if (!pageRes.ok) return { transcript: null, storyboardUrls: [], debug: `scraper HTTP ${pageRes.status}` };
+    if (!pageRes.ok) return { storyboardUrls: [], debug: `scraper HTTP ${pageRes.status}` };
 
     const html = await pageRes.text();
-    const debugInfo = { htmlLen: html.length, sessionNum };
+    const debugInfo = { htmlLen: html.length };
 
-    // pagina troppo piccola = bot-detection di YouTube → ScraperAPI non è riuscito
-    if (html.length < 50000) return { transcript: null, storyboardUrls: [], debug: { ...debugInfo, error: 'bot-detection page' } };
+    if (html.length < 50000) return { storyboardUrls: [], debug: { ...debugInfo, error: 'bot-detection page' } };
 
-    let transcript = null;
-
-    // approccio 1: InnerTube WEB con headers YouTube-style
-    const apiKeyMatch = html.match(/"INNERTUBE_API_KEY":"([^"]+)"/);
-    const clientVerMatch = html.match(/"clientVersion":"([^"]+)"/);
-    if (apiKeyMatch) {
-      const apiKey = apiKeyMatch[1];
-      const clientVersion = clientVerMatch?.[1] || '2.20240101.00.00';
-      debugInfo.itApiKey = apiKey.slice(0, 8) + '...';
-      try {
-        // InnerTube via ScraperAPI (IP residenziale) — YouTube strips captionTracks da datacenter IP
-        const itBody = JSON.stringify({
-          videoId,
-          context: { client: { clientName: 'WEB', clientVersion, hl: 'it', gl: 'IT' } },
-        });
-        const itUrl = `https://www.youtube.com/youtubei/v1/player?key=${apiKey}&prettyPrint=false`;
-        const itScraperUrl = `http://api.scraperapi.com?api_key=${scraperKey}&session_number=${sessionNum}&url=${encodeURIComponent(itUrl)}&method=POST&post_data=${encodeURIComponent(itBody)}`;
-        const itRes = await fetch(itScraperUrl);
-        debugInfo.itStatus = itRes.status;
-        if (itRes.ok) {
-          const itData = await itRes.json();
-          const tracks = itData?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
-          debugInfo.itTracksFound = tracks?.length || 0;
-          const track = tracks?.find(t => t.languageCode === 'it') || tracks?.[0];
-          if (track?.baseUrl) {
-            debugInfo.itCaptionUrl = track.baseUrl.slice(0, 80);
-            const capRes = await fetch(track.baseUrl);
-            debugInfo.itCapStatus = capRes.status;
-            if (capRes.ok) {
-              const body = await capRes.text();
-              debugInfo.itBodyLen = body.length;
-              transcript = parseXmlOrVttTranscript(body);
-              debugInfo.itTranscriptLen = transcript?.length || 0;
-              if (!transcript) transcript = null;
-            }
-          }
-        }
-      } catch (e) { debugInfo.itError = e.message; }
-    }
-
-    // approccio 2: URL session-bound dalla pagina HTML
-    if (!transcript) {
-      const captionIdx = html.indexOf('"captionTracks"');
-      debugInfo.captionIdx = captionIdx;
-      if (captionIdx >= 0) {
-        try {
-          const section = html.slice(captionIdx, captionIdx + 3000);
-          const urlMatch = section.match(/"baseUrl":"((?:[^"\\]|\\.)*)"/);
-          debugInfo.urlMatchFound = !!urlMatch;
-          if (urlMatch) {
-            const captionUrl = JSON.parse('"' + urlMatch[1] + '"');
-            debugInfo.captionUrl = captionUrl.slice(0, 80);
-
-            // 2a: fetch diretto da Vercel con headers browser (stessa strategia di youtube-transcript)
-            const browserHeaders = {
-              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-              'Referer': `https://www.youtube.com/watch?v=${videoId}`,
-              'Origin': 'https://www.youtube.com',
-              'Accept': '*/*',
-              'Accept-Language': 'it-IT,it;q=0.9',
-            };
-            const directRes = await fetch(captionUrl, { headers: browserHeaders });
-            debugInfo.directStatus = directRes.status;
-            if (directRes.ok) {
-              const body = await directRes.text();
-              debugInfo.directBodyLen = body.length;
-              transcript = parseXmlOrVttTranscript(body) || null;
-              debugInfo.directTranscriptLen = transcript?.length || 0;
-            }
-
-          }
-        } catch (e) { debugInfo.captionError = e.message; }
-      }
-    }
-
-    // estrai storyboard URLs
     let storyboardUrls = [];
     const sbMatch = html.match(/"playerStoryboardSpecRenderer":\{"spec":"((?:[^"\\]|\\.)*)"/);
     if (sbMatch) {
@@ -178,8 +99,8 @@ async function fetchFromYouTubePage(videoId) {
       } catch {}
     }
 
-    return { transcript, storyboardUrls, debug: debugInfo };
-  } catch (e) { return { transcript: null, storyboardUrls: [], debug: `exception: ${e.message}` }; }
+    return { storyboardUrls, debug: debugInfo };
+  } catch (e) { return { storyboardUrls: [], debug: `exception: ${e.message}` }; }
 }
 
 async function fetchTranscriptFallback(videoId) {
@@ -238,19 +159,18 @@ export default async function handler(req, res) {
 
   const manualTranscript = providedTranscript?.trim() || null;
 
-  const [pageResult, oembedResult, descriptionResult] = await Promise.allSettled([
-    fetchFromYouTubePage(videoId),
+  // tutto in parallelo: storyboard, transcript, oembed, descrizione
+  const [storyboardResult, transcriptResult, oembedResult, descriptionResult] = await Promise.allSettled([
+    fetchStoryboardUrls(videoId),
+    manualTranscript ? Promise.resolve(manualTranscript) : fetchTranscriptFallback(videoId),
     fetchOEmbed(videoId),
     fetchYoutubeDescription(videoId),
   ]);
 
-  const { transcript: pageTranscript, storyboardUrls } = pageResult.value ?? { transcript: null, storyboardUrls: [] };
+  const { storyboardUrls } = storyboardResult.value ?? { storyboardUrls: [] };
   const oembed = oembedResult.value ?? null;
   const ytDescription = descriptionResult.value ?? null;
-
-  // transcript: manuale > ScraperAPI > youtube-transcript fallback
-  let transcript = manualTranscript || pageTranscript;
-  if (!transcript) transcript = await fetchTranscriptFallback(videoId);
+  let transcript = transcriptResult.value ?? null;
 
   // immagini: storyboard sprite sheet > 3 thumbnail standard
   let images = [];
@@ -336,5 +256,5 @@ export default async function handler(req, res) {
   }
 
   const result = await anthropicRes.json();
-  return res.status(200).json({ synopsis: result.content[0].text.trim(), ytTitle: ytTitle || null, warnings, _debug: pageResult.value?.debug });
+  return res.status(200).json({ synopsis: result.content[0].text.trim(), ytTitle: ytTitle || null, warnings, _debug: storyboardResult.value?.debug });
 }
