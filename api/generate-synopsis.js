@@ -2,7 +2,7 @@ import { YoutubeTranscript } from 'youtube-transcript';
 
 export const config = { maxDuration: 120 };
 
-async function callNasServer(youtubeUrl, title, tema) {
+async function callNasServer(youtubeUrl, title, tema, saveToArchive, codice, recordTitle) {
   const nasUrl = process.env.NAS_URL;
   const nasSecret = process.env.NAS_SECRET;
   if (!nasUrl) return null;
@@ -16,7 +16,14 @@ async function callNasServer(youtubeUrl, title, tema) {
         'Content-Type': 'application/json',
         ...(nasSecret ? { Authorization: `Bearer ${nasSecret}` } : {}),
       },
-      body: JSON.stringify({ youtubeUrl, title: title || '', tema: tema || '' }),
+      body: JSON.stringify({
+        youtubeUrl,
+        title: title || '',
+        tema: tema || '',
+        saveToArchive: !!saveToArchive,
+        codice: codice || '',
+        recordTitle: recordTitle || '',
+      }),
       signal: controller.signal,
     });
     if (!res.ok) return null;
@@ -203,18 +210,20 @@ async function fetchFallbackThumbnails(videoId) {
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
 
-  const { youtubeUrl, title, tema, transcript: providedTranscript } = req.body || {};
+  const { youtubeUrl, title, tema, transcript: providedTranscript, saveToArchive, codice, recordTitle } = req.body || {};
   if (!youtubeUrl) return res.status(400).json({ error: 'URL YouTube mancante.' });
 
   const videoId = extractVideoId(youtubeUrl);
   if (!videoId) return res.status(400).json({ error: 'URL YouTube non valido.' });
 
   // MODO2: NAS (yt-dlp + ffmpeg + Groq + Claude) — qualità superiore
-  const nasResult = await callNasServer(youtubeUrl, title, tema);
+  const nasResult = await callNasServer(youtubeUrl, title, tema, saveToArchive, codice, recordTitle);
   if (nasResult?.synopsis) {
     return res.status(200).json({
       synopsis: nasResult.synopsis,
-      ytTitle: title || null,
+      ytTitle: nasResult.ytTitle || title || null,
+      ytDuration: nasResult.ytDuration || nasResult.duration || null,
+      ytFormat: nasResult.ytFormat || null,
       warnings: nasResult.warnings || [],
       imagesUsed: nasResult.framesExtracted || 0,
       usedStoryboard: false,
