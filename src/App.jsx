@@ -3018,24 +3018,31 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
               )}
             </div>
             {/* Salva video su NAS */}
-            {form.youtube_url.trim() && form.codice.trim() && form.tema && form.natura && (
-              <div className="flex items-center gap-3 py-1 border-t border-zinc-800 pt-3">
-                <button
-                  type="button"
-                  onClick={handleSaveToNas}
-                  disabled={savingToNas}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold border border-zinc-600 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all disabled:opacity-40">
-                  {savingToNas
-                    ? <><Loader2 size={14} className="animate-spin" /> Salvataggio…</>
-                    : <><Archive size={14} /> Salva video su NAS</>}
-                </button>
-                {nasSaveMsg && (
-                  <span className={`text-xs ${nasSaveMsg.ok ? 'text-emerald-400' : 'text-red-400'}`}>
-                    {nasSaveMsg.text}
-                  </span>
-                )}
-              </div>
-            )}
+            {(() => {
+              const canSave = !!(form.youtube_url.trim() && form.codice.trim() && form.tema && form.natura);
+              return (
+                <div className="flex items-center gap-3 border-t border-zinc-800 pt-3">
+                  <button
+                    type="button"
+                    onClick={handleSaveToNas}
+                    disabled={!canSave || savingToNas}
+                    title={!canSave ? 'Compila URL, Codice, Tema e Natura per abilitare' : ''}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold border border-zinc-600 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                    {savingToNas
+                      ? <><Loader2 size={14} className="animate-spin" /> Salvataggio…</>
+                      : <><Archive size={14} /> Salva video su NAS</>}
+                  </button>
+                  {nasSaveMsg && (
+                    <span className={`text-xs ${nasSaveMsg.ok ? 'text-emerald-400' : 'text-red-400'}`}>
+                      {nasSaveMsg.text}
+                    </span>
+                  )}
+                  {!canSave && !nasSaveMsg && (
+                    <span className="text-xs text-zinc-600">compila URL, Codice, Tema e Natura</span>
+                  )}
+                </div>
+              );
+            })()}
 
             {/* Row 7: Action buttons */}
             {(() => {
