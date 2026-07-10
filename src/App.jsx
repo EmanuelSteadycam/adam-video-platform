@@ -1,5 +1,4 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { upload as blobUpload } from '@vercel/blob/client';
 import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Zap, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown, Send, ShieldCheck, AlertCircle, Loader2, LogIn, Film, BookOpen, Pencil, Trash2, Save, RotateCcw, Archive, Lightbulb, Share2, Link, Activity } from 'lucide-react';
 import Lottie from 'lottie-react';
 import { supabase } from './supabase';
@@ -2284,8 +2283,6 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const [synopsisWarning, setSynopsisWarning] = useState('');
   const [manualTranscript, setManualTranscript] = useState('');
   const [showTranscriptInput, setShowTranscriptInput] = useState(false);
-  const [nasFile, setNasFile] = useState(null);
-  const [transcribingNas, setTranscribingNas] = useState(false);
 
   // Tab
   const [activeTab, setActiveTab] = useState('add');
@@ -2622,68 +2619,29 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     setGeneratingSynopsis(true);
     setSynopsisWarning('');
     try {
-      if (nasFile) {
-        // flusso NAS: ffmpeg (audio + frame) → Whisper + Claude → synopsis
-        setTranscribingNas(true);
-        const isProduction = window.location.hostname !== 'localhost';
-        let tRes, tData;
-
-        if (isProduction) {
-          // produzione: upload a Vercel Blob, poi transcribe con URL
-          const blob = await blobUpload(nasFile.name, nasFile, {
-            access: 'public',
-            handleUploadUrl: '/api/blob-upload',
-          });
-          tRes = await fetch('/api/transcribe', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ blobUrl: blob.url, title: form.title, tema: form.tema }),
-          });
-        } else {
-          // sviluppo locale: upload diretto FormData
-          const fd = new FormData();
-          fd.append('file', nasFile);
-          if (form.title) fd.append('title', form.title);
-          if (form.tema) fd.append('tema', form.tema);
-          tRes = await fetch('/api/transcribe', { method: 'POST', body: fd });
-        }
-
-        tData = await tRes.json();
-        if (!tRes.ok) { setSynopsisWarning(tData.error || 'Errore nella trascrizione.'); return; }
-        if (tData.synopsis || tData.duration) setForm(prev => ({
-          ...prev,
-          ...(tData.synopsis ? { description: tData.synopsis } : {}),
-          ...(tData.duration ? { duration: tData.duration } : {}),
-        }));
-        if (tData.transcript) setManualTranscript(tData.transcript);
-        if (tData.warnings?.length) setSynopsisWarning(tData.warnings.join(' '));
-      } else {
-        // flusso YouTube: ScraperAPI storyboard + youtube-transcript + Claude
-        const transcript = manualTranscript.trim() || undefined;
-        const res = await fetch('/api/generate-synopsis', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            youtubeUrl: form.youtube_url,
-            title: form.title || undefined,
-            tema: form.tema || undefined,
-            transcript,
-          }),
-        });
-        const data = await res.json();
-        if (!res.ok) { setSynopsisWarning(data.error || 'Errore nella generazione della sinossi.'); return; }
-        if (data.synopsis || data.ytTitle) setForm(prev => ({
-          ...prev,
-          ...(data.synopsis ? { description: data.synopsis } : {}),
-          ...(!prev.title.trim() && data.ytTitle ? { title: data.ytTitle } : {}),
-        }));
-        if (data.warnings?.length) setSynopsisWarning(data.warnings.join(' '));
-      }
+      const transcript = manualTranscript.trim() || undefined;
+      const res = await fetch('/api/generate-synopsis', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          youtubeUrl: form.youtube_url,
+          title: form.title || undefined,
+          tema: form.tema || undefined,
+          transcript,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setSynopsisWarning(data.error || 'Errore nella generazione della sinossi.'); return; }
+      if (data.synopsis || data.ytTitle) setForm(prev => ({
+        ...prev,
+        ...(data.synopsis ? { description: data.synopsis } : {}),
+        ...(!prev.title.trim() && data.ytTitle ? { title: data.ytTitle } : {}),
+      }));
+      if (data.warnings?.length) setSynopsisWarning(data.warnings.join(' '));
     } catch (e) {
       setSynopsisWarning(e?.message || 'Errore di rete nella generazione della sinossi.');
     } finally {
       setGeneratingSynopsis(false);
-      setTranscribingNas(false);
     }
   };
 
@@ -2844,7 +2802,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                 <button
                   type="button"
                   onClick={handleGenerateSynopsis}
-                  disabled={(!form.youtube_url.trim() && !nasFile) || generatingSynopsis}
+                  disabled={!form.youtube_url.trim() || generatingSynopsis}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                   style={{ backgroundColor: '#FFDA2A', color: '#000' }}>
                   {generatingSynopsis
@@ -2854,33 +2812,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
               </div>
               <input type="url" value={form.youtube_url} onChange={e => f('youtube_url', e.target.value)} placeholder="https://youtu.be/..." className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
             </div>
-            {/* Transcript: NAS upload o testo manuale */}
+            {/* Transcript: testo manuale */}
             <div className="space-y-2">
-              {/* Opzione 1: carica dal NAS */}
-              <div className="flex items-center gap-3">
-                <label className="flex items-center gap-1.5 cursor-pointer text-xs font-medium px-3 py-1.5 rounded-lg border border-zinc-600 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all">
-                  <input type="file" accept="video/*,audio/*" className="hidden"
-                    onChange={e => {
-                      const f = e.target.files?.[0] || null;
-                      setNasFile(f);
-                      setManualTranscript('');
-                      if (f && !form.title.trim()) {
-                        setForm(prev => ({ ...prev, title: f.name.replace(/\.[^/.]+$/, '') }));
-                      }
-                    }} />
-                  <Upload size={12} /> Carica dal NAS
-                </label>
-                {nasFile && (
-                  <div className="flex items-center gap-2 min-w-0">
-                    <span className="text-xs text-emerald-400 truncate max-w-[200px]">✓ {nasFile.name}</span>
-                    <button type="button" onClick={() => setNasFile(null)} className="text-zinc-500 hover:text-zinc-300 flex-shrink-0">
-                      <X size={12} />
-                    </button>
-                  </div>
-                )}
-                {transcribingNas && <span className="text-xs text-zinc-400 flex items-center gap-1"><Loader2 size={11} className="animate-spin" /> Audio + frame…</span>}
-              </div>
-              {/* Opzione 2: trascrizione manuale */}
               <button type="button" onClick={() => setShowTranscriptInput(v => !v)}
                 className="flex items-center gap-1.5 text-xs text-zinc-500 hover:text-zinc-300 transition-colors">
                 <ChevronDown size={12} className={`transition-transform duration-150 ${showTranscriptInput ? 'rotate-180' : ''}`} />
@@ -2890,7 +2823,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                 <div>
                   <textarea
                     value={manualTranscript}
-                    onChange={e => { setManualTranscript(e.target.value); setNasFile(null); }}
+                    onChange={e => setManualTranscript(e.target.value)}
                     rows={4}
                     placeholder="Apri il video su YouTube → icona ··· → Apri trascrizione → copia e incolla qui..."
                     className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500 resize-none"
