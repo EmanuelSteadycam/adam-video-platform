@@ -3034,12 +3034,13 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
             {(() => {
               const codicieDuplicato = form.codice.trim() && allVideos.some(v => v.id === form.codice.trim());
               const canSaveNas = !!(form.youtube_url.trim() && form.codice.trim() && form.tema && form.natura);
+              const canSubmit = !!(form.title.trim() && form.codice.trim() && form.youtube_url.trim() && form.tema && form.natura && form.year && form.duration.trim() && form.description.trim() && !codicieDuplicato);
               return (
                 <div className="space-y-2 pt-1">
                   <div className="flex gap-3">
                     {/* Aggiungi + Salva su NAS */}
                     <button type="button" onClick={handleDirectSubmitAndSave}
-                      disabled={saving || savingToNas || !!codicieDuplicato || !canSaveNas}
+                      disabled={saving || savingToNas || !canSubmit || !canSaveNas}
                       className="btn-aggiungi-adam flex-1 flex items-center justify-center py-3 rounded-lg font-semibold">
                       <span>
                         {(saving || savingToNas) ? <Loader2 size={18} className="animate-spin" /> : <Plus size={18} />}
@@ -3047,7 +3048,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                       </span>
                     </button>
                     {/* Solo Aggiungi */}
-                    <button type="submit" disabled={saving || !!codicieDuplicato}
+                    <button type="submit" disabled={saving || !canSubmit}
                       className="btn-aggiungi-adam flex-1 flex items-center justify-center py-3 rounded-lg font-semibold">
                       <span>{saving ? <Loader2 size={18} className="animate-spin" /> : <Plus size={18} />} Aggiungi ad ADAM</span>
                     </button>
