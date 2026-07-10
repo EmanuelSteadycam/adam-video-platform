@@ -2735,16 +2735,15 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     }
   };
 
-  const handleDirectSubmit = async (e) => {
-    e.preventDefault();
-    if (!form.title.trim()) { setSaveMsg({ type: 'error', text: 'Titolo obbligatorio.' }); return; }
-    if (!form.codice.trim()) { setSaveMsg({ type: 'error', text: 'Codice ID obbligatorio.' }); return; }
-    if (!form.youtube_url.trim()) { setSaveMsg({ type: 'error', text: 'URL YouTube obbligatorio.' }); return; }
-    if (!form.tema) { setSaveMsg({ type: 'error', text: 'Tema obbligatorio.' }); return; }
-    if (!form.natura) { setSaveMsg({ type: 'error', text: 'Natura obbligatoria.' }); return; }
-    if (!form.year) { setSaveMsg({ type: 'error', text: 'Anno obbligatorio.' }); return; }
-    if (!form.duration.trim()) { setSaveMsg({ type: 'error', text: 'Durata obbligatoria.' }); return; }
-    if (!form.description.trim()) { setSaveMsg({ type: 'error', text: 'Descrizione obbligatoria.' }); return; }
+  const doInsertVideo = async () => {
+    if (!form.title.trim()) { setSaveMsg({ type: 'error', text: 'Titolo obbligatorio.' }); return false; }
+    if (!form.codice.trim()) { setSaveMsg({ type: 'error', text: 'Codice ID obbligatorio.' }); return false; }
+    if (!form.youtube_url.trim()) { setSaveMsg({ type: 'error', text: 'URL YouTube obbligatorio.' }); return false; }
+    if (!form.tema) { setSaveMsg({ type: 'error', text: 'Tema obbligatorio.' }); return false; }
+    if (!form.natura) { setSaveMsg({ type: 'error', text: 'Natura obbligatoria.' }); return false; }
+    if (!form.year) { setSaveMsg({ type: 'error', text: 'Anno obbligatorio.' }); return false; }
+    if (!form.duration.trim()) { setSaveMsg({ type: 'error', text: 'Durata obbligatoria.' }); return false; }
+    if (!form.description.trim()) { setSaveMsg({ type: 'error', text: 'Descrizione obbligatoria.' }); return false; }
     setSaving(true);
     setSaveMsg(null);
     const ytId = extractYouTubeId(form.youtube_url.trim());
@@ -2764,17 +2763,31 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       views: 0,
       data_inserimento: new Date().toISOString().split('T')[0],
     });
-    if (error) setSaveMsg({ type: 'error', text: error.code === '23505' ? `Il Codice ID "${form.codice.trim()}" esiste già nell'archivio.` : error.message });
-    else {
-      setSaveMsg({ type: 'success', text: 'Video aggiunto all\'archivio.' });
-      setForm({ title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: '' });
-      setSynopsisWarning('');
-      setManualTranscript('');
-      setShowTranscriptInput(false);
-      setNasFile(null);
-      onVideoApproved?.();
-    }
     setSaving(false);
+    if (error) {
+      setSaveMsg({ type: 'error', text: error.code === '23505' ? `Il Codice ID "${form.codice.trim()}" esiste già nell'archivio.` : error.message });
+      return false;
+    }
+    setSaveMsg({ type: 'success', text: 'Video aggiunto all\'archivio.' });
+    setForm({ title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: '' });
+    setSynopsisWarning('');
+    setManualTranscript('');
+    setShowTranscriptInput(false);
+    setNasFile(null);
+    setNasSaveMsg(null);
+    onVideoApproved?.();
+    return true;
+  };
+
+  const handleDirectSubmit = async (e) => {
+    e.preventDefault();
+    await doInsertVideo();
+  };
+
+  const handleDirectSubmitAndSave = async (e) => {
+    e.preventDefault();
+    const ok = await doInsertVideo();
+    if (ok) await handleSaveToNas();
   };
 
   const handleSaveForLater = async () => {
@@ -3017,45 +3030,39 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                 </div>
               )}
             </div>
-            {/* Salva video su NAS */}
-            {(() => {
-              const canSave = !!(form.youtube_url.trim() && form.codice.trim() && form.tema && form.natura);
-              return (
-                <div className="flex items-center gap-3 border-t border-zinc-800 pt-3">
-                  <button
-                    type="button"
-                    onClick={handleSaveToNas}
-                    disabled={!canSave || savingToNas}
-                    title={!canSave ? 'Compila URL, Codice, Tema e Natura per abilitare' : ''}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold border border-zinc-600 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed">
-                    {savingToNas
-                      ? <><Loader2 size={14} className="animate-spin" /> Salvataggio…</>
-                      : <><Archive size={14} /> Salva video su NAS</>}
-                  </button>
-                  {nasSaveMsg && (
-                    <span className={`text-xs ${nasSaveMsg.ok ? 'text-emerald-400' : 'text-red-400'}`}>
-                      {nasSaveMsg.text}
-                    </span>
-                  )}
-                  {!canSave && !nasSaveMsg && (
-                    <span className="text-xs text-zinc-600">compila URL, Codice, Tema e Natura</span>
-                  )}
-                </div>
-              );
-            })()}
-
             {/* Row 7: Action buttons */}
             {(() => {
               const codicieDuplicato = form.codice.trim() && allVideos.some(v => v.id === form.codice.trim());
+              const canSaveNas = !!(form.youtube_url.trim() && form.codice.trim() && form.tema && form.natura);
               return (
-                <div className="flex gap-3 pt-1">
-                  <button type="submit" disabled={saving || !!codicieDuplicato} className="btn-aggiungi-adam flex-1 flex items-center justify-center py-3 rounded-lg font-semibold">
-                    <span>{saving ? <Loader2 size={18} className="animate-spin" /> : <Plus size={18} />} Aggiungi ad ADAM</span>
-                  </button>
-                  <button type="button" disabled={saving || !!codicieDuplicato} onClick={handleSaveForLater}
-                    className="flex items-center justify-center gap-2 px-5 py-3 rounded-lg text-sm font-semibold border-2 border-zinc-600 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all disabled:opacity-50">
-                    <BookOpen size={16} /> Salva per dopo
-                  </button>
+                <div className="space-y-2 pt-1">
+                  <div className="flex gap-3">
+                    {/* Aggiungi + Salva su NAS */}
+                    <button type="button" onClick={handleDirectSubmitAndSave}
+                      disabled={saving || savingToNas || !!codicieDuplicato || !canSaveNas}
+                      className="btn-aggiungi-adam flex-1 flex items-center justify-center py-3 rounded-lg font-semibold">
+                      <span>
+                        {(saving || savingToNas) ? <Loader2 size={18} className="animate-spin" /> : <Plus size={18} />}
+                        {' '}Aggiungi ad ADAM e Salva video
+                      </span>
+                    </button>
+                    {/* Solo Aggiungi */}
+                    <button type="submit" disabled={saving || !!codicieDuplicato}
+                      className="btn-aggiungi-adam flex-1 flex items-center justify-center py-3 rounded-lg font-semibold">
+                      <span>{saving ? <Loader2 size={18} className="animate-spin" /> : <Plus size={18} />} Aggiungi ad ADAM</span>
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <button type="button" disabled={saving || !!codicieDuplicato} onClick={handleSaveForLater}
+                      className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold border-2 border-zinc-600 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all disabled:opacity-50">
+                      <BookOpen size={16} /> Salva per dopo
+                    </button>
+                    {nasSaveMsg && (
+                      <span className={`text-xs ${nasSaveMsg.ok ? 'text-emerald-400' : 'text-red-400'}`}>
+                        {nasSaveMsg.text}
+                      </span>
+                    )}
+                  </div>
                 </div>
               );
             })()}
