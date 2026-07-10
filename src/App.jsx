@@ -498,6 +498,7 @@ const getTemaColor = (tema) => {
       'Sostanze': '#065f46',
       'Tabacco': '#C9975A',
       'Sessualità': '#7C3AED',
+      'Altro': '#475569',
     };
     return colors[tema] || '#6b7280';
   };
@@ -510,6 +511,7 @@ const getTemaColor = (tema) => {
       'Sostanze': 'border-emerald-800',
       'Tabacco': 'border-amber-900',
       'Sessualità': 'border-violet-700',
+      'Altro': 'border-slate-600',
     };
     return colors[tema] || 'border-gray-500';
   };
@@ -580,6 +582,7 @@ const TEMA_COLORS = {
   'Sostanze':   { solid: '#065f46', border: '#10b981', dim: 'rgba(16,185,129,0.15)', btnActive: 'rgba(16,185,129,0.50)' },
   'Tabacco':    { solid: '#92400E', border: '#C9975A', dim: 'rgba(201,151,90,0.15)',  btnActive: 'rgba(201,151,90,0.50)' },
   'Sessualità': { solid: '#7C3AED', border: '#8B5CF6', dim: 'rgba(139,92,246,0.15)', btnActive: 'rgba(139,92,246,0.50)' },
+  'Altro':      { solid: '#475569', border: '#64748b', dim: 'rgba(100,116,139,0.15)', btnActive: 'rgba(100,116,139,0.50)' },
 };
 
 const DualRangeSlider = ({ min, max, valueMin, valueMax, onChange, accentColor = '#FFDA2A' }) => {
@@ -758,9 +761,9 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
                 >
                   Tutti
                 </button>
-                {['Alcool', 'Azzardo', 'Digitale', 'Sostanze', 'Tabacco', 'Sessualità'].map(tema => {
+                {['Alcool', 'Azzardo', 'Digitale', 'Sostanze', 'Tabacco', 'Sessualità', 'Altro'].map(tema => {
                   const c = TEMA_COLORS[tema];
-                  const noVideos = tema === 'Sostanze' || tema === 'Tabacco' || tema === 'Sessualità';
+                  const noVideos = tema === 'Sostanze' || tema === 'Tabacco' || tema === 'Sessualità' || tema === 'Altro';
                   return (
                     <button
                       key={tema}
@@ -1032,6 +1035,7 @@ const VideoCard = ({ video, onClick, onAddToPlaylist, isInPlaylist }) => {
       'Sostanze': '#065f46',
       'Tabacco': '#C9975A',
       'Sessualità': '#7C3AED',
+      'Altro': '#475569',
     };
     return colors[tema] || '#6b7280';
   };
@@ -1118,6 +1122,7 @@ const VideoModal = ({ video, onClose }) => {
       'Sostanze': '#065f46',
       'Tabacco': '#C9975A',
       'Sessualità': '#7C3AED',
+      'Altro': '#475569',
     };
     return colors[tema] || '#FFD700';
   };
@@ -1661,6 +1666,7 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
       'Sostanze': '#065f46',
       'Tabacco': '#C9975A',
       'Sessualità': '#7C3AED',
+      'Altro': '#475569',
     };
     return colors[tema] || '#6b7280';
   };
@@ -1860,7 +1866,7 @@ const AuthModal = ({ mode: initialMode, onClose }) => {
 
 // ─── SubmitVideoSection ────────────────────────────────────────────────────────
 const NATURE_OPTIONS = ['Cortometraggio', 'Film', 'Info', 'Sequenze', 'Spot commerciale', 'Spot sociale', 'Videoclip', 'Web e social'];
-const TEMI_OPTIONS = ['Alcool', 'Azzardo', 'Digitale', 'Sostanze', 'Tabacco', 'Sessualità'];
+const TEMI_OPTIONS = ['Alcool', 'Azzardo', 'Digitale', 'Sostanze', 'Tabacco', 'Sessualità', 'Altro'];
 
 const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSaved }) => {
   const [form, setForm] = useState({ title: '', youtube_url: '', tema: '', description: '', prodotto_scuola: false });
