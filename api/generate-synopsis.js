@@ -217,11 +217,15 @@ export default async function handler(req, res) {
   if (!videoId) return res.status(400).json({ error: 'URL YouTube non valido.' });
 
   // MODO2: NAS (yt-dlp + ffmpeg + Groq + Claude) — qualità superiore
-  const nasResult = await callNasServer(youtubeUrl, title, tema, saveToArchive, codice, recordTitle);
+  const [nasResult, oembedForTitle] = await Promise.all([
+    callNasServer(youtubeUrl, title, tema, saveToArchive, codice, recordTitle),
+    fetchOEmbed(videoId),
+  ]);
   if (nasResult?.synopsis) {
+    const ytTitle = nasResult.ytTitle || oembedForTitle?.title || title || null;
     return res.status(200).json({
       synopsis: nasResult.synopsis,
-      ytTitle: nasResult.ytTitle || title || null,
+      ytTitle,
       ytDuration: nasResult.ytDuration || nasResult.duration || null,
       ytFormat: nasResult.ytFormat || null,
       warnings: nasResult.warnings || [],
