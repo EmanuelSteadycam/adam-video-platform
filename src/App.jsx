@@ -2300,6 +2300,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const [showTranscriptInput, setShowTranscriptInput] = useState(false);
   const [nasFile, setNasFile] = useState(null);
   const [transcribingNas, setTranscribingNas] = useState(false);
+  const [savingToNas, setSavingToNas] = useState(false);
+  const [nasSaveMsg, setNasSaveMsg] = useState(null);
 
   // Tab
   const [activeTab, setActiveTab] = useState('add');
@@ -2702,6 +2704,31 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     }
   };
 
+  const handleSaveToNas = async () => {
+    setSavingToNas(true);
+    setNasSaveMsg(null);
+    try {
+      const res = await fetch('/api/save-to-nas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          youtubeUrl: form.youtube_url,
+          codice: form.codice,
+          title: form.title,
+          tema: form.tema,
+          natura: form.natura,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) setNasSaveMsg({ ok: false, text: data.error || 'Errore salvataggio.' });
+      else setNasSaveMsg({ ok: true, text: `✓ ${data.path}` });
+    } catch (e) {
+      setNasSaveMsg({ ok: false, text: e.message });
+    } finally {
+      setSavingToNas(false);
+    }
+  };
+
   const handleDirectSubmit = async (e) => {
     e.preventDefault();
     if (!form.title.trim()) { setSaveMsg({ type: 'error', text: 'Titolo obbligatorio.' }); return; }
@@ -2984,6 +3011,26 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                 </div>
               )}
             </div>
+            {/* Salva video su NAS */}
+            {form.youtube_url.trim() && form.codice.trim() && form.tema && form.natura && (
+              <div className="flex items-center gap-3 py-1 border-t border-zinc-800 pt-3">
+                <button
+                  type="button"
+                  onClick={handleSaveToNas}
+                  disabled={savingToNas}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold border border-zinc-600 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all disabled:opacity-40">
+                  {savingToNas
+                    ? <><Loader2 size={14} className="animate-spin" /> Salvataggio…</>
+                    : <><Archive size={14} /> Salva video su NAS</>}
+                </button>
+                {nasSaveMsg && (
+                  <span className={`text-xs ${nasSaveMsg.ok ? 'text-emerald-400' : 'text-red-400'}`}>
+                    {nasSaveMsg.text}
+                  </span>
+                )}
+              </div>
+            )}
+
             {/* Row 7: Action buttons */}
             {(() => {
               const codicieDuplicato = form.codice.trim() && allVideos.some(v => v.id === form.codice.trim());

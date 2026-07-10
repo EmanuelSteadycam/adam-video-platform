@@ -24,7 +24,18 @@ function sanitizeFilename(name) {
   return name.replace(/[\/\\:*?"<>|]/g, '-').replace(/\s+/g, ' ').trim().slice(0, 200);
 }
 
-// Fetch yt-dlp metadata without downloading
+function checkAuth(req) {
+  if (!NAS_SECRET) return true;
+  return (req.headers['authorization'] || '') === `Bearer ${NAS_SECRET}`;
+}
+
+async function parseBody(req) {
+  let body = '';
+  for await (const chunk of req) body += chunk;
+  return JSON.parse(body);
+}
+
+// Metadata yt-dlp senza scaricare
 function getVideoInfo(youtubeUrl) {
   return new Promise((resolve) => {
     const proc = spawn('yt-dlp', ['-J', '--no-playlist', youtubeUrl]);
@@ -38,7 +49,7 @@ function getVideoInfo(youtubeUrl) {
   });
 }
 
-// Download video with yt-dlp
+// Download video con yt-dlp
 function downloadVideo(youtubeUrl, outputPath) {
   return new Promise((resolve, reject) => {
     const proc = spawn('yt-dlp', [
@@ -65,7 +76,7 @@ async function processVideo(videoPath, title, tema) {
   mkdirSync(framesDir, { recursive: true });
 
   try {
-    // 1. Estrai audio → Groq Whisper
+    // 1. Audio → Groq Whisper
     execSync(
       `ffmpeg -i "${videoPath}" -vn -acodec libmp3lame -q:a 7 -ac 1 -ar 16000 "${audioPath}" -y`,
       { timeout: 90000, stdio: 'pipe' }
@@ -83,13 +94,9 @@ async function processVideo(videoPath, title, tema) {
       headers: { Authorization: `Bearer ${GROQ_API_KEY}` },
       body: fd,
     });
-    if (whisperRes.ok) {
-      transcript = (await whisperRes.json()).text?.trim() || '';
-    } else {
-      console.error('Whisper error:', whisperRes.status);
-    }
+    if (whisperRes.ok) transcript = (await whisperRes.json()).text?.trim() || '';
 
-    // 2. Ottieni durata e frame
+    // 2. Durata + frame
     let duration = 120;
     try {
       const out = execSync(`ffmpeg -i "${videoPath}" 2>&1 || true`, { timeout: 10000 }).toString();
@@ -171,11 +178,7 @@ Seconda parte (1-2 frasi): spiega quale comportamento o tema viene mostrato o me
       if (retryDelays[attempt] > 0) await new Promise(r => setTimeout(r, retryDelays[attempt]));
       anthropicRes = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': ANTHROPIC_API_KEY,
-          'anthropic-version': '2023-06-01',
-        },
+        headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
         body: anthropicBody,
       });
       if (anthropicRes.status !== 529) break;
@@ -199,97 +202,100 @@ Seconda parte (1-2 frasi): spiega quale comportamento o tema viene mostrato o me
   }
 }
 
+// ─── HTTP Server ──────────────────────────────────────────────────────────────
+
 const server = http.createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return; }
 
+  const json = (status, obj) => {
+    res.writeHead(status, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(obj));
+  };
+
+  // GET /health
   if (req.url === '/health' && req.method === 'GET') {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ status: 'ok', time: new Date().toISOString() }));
-    return;
+    return json(200, { status: 'ok', time: new Date().toISOString() });
   }
 
-  if (req.url !== '/synopsis' || req.method !== 'POST') {
-    res.writeHead(404, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ error: 'Not found' }));
-    return;
-  }
+  if (req.method !== 'POST') return json(404, { error: 'Not found' });
 
   // Auth
-  if (NAS_SECRET) {
-    const auth = req.headers['authorization'] || '';
-    if (auth !== `Bearer ${NAS_SECRET}`) {
-      res.writeHead(401, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Non autorizzato' }));
-      return;
+  if (!checkAuth(req)) return json(401, { error: 'Non autorizzato' });
+
+  // POST /synopsis — genera sinossi (yt-dlp + ffmpeg + Groq + Claude)
+  if (req.url === '/synopsis') {
+    let parsed;
+    try { parsed = await parseBody(req); } catch { return json(400, { error: 'JSON non valido' }); }
+
+    const { youtubeUrl, title, tema } = parsed;
+    if (!youtubeUrl) return json(400, { error: 'youtubeUrl mancante' });
+
+    const ts = Date.now();
+    const videoPath = join(tmpdir(), `adam-synopsis-${ts}.mp4`);
+
+    try {
+      console.log(`[${ts}] /synopsis — ${youtubeUrl}`);
+      const info = await getVideoInfo(youtubeUrl);
+      const ytTitle = info?.title || title || '';
+      const ytWidth = info?.width || 1920;
+      const ytHeight = info?.height || 1080;
+      const ytFormat = ytHeight > ytWidth ? 'verticale' : 'orizzontale';
+      const ytDuration = info?.duration ? formatDuration(info.duration) : '';
+      console.log(`[${ts}] "${ytTitle}" ${ytFormat} ${ytDuration}`);
+
+      await downloadVideo(youtubeUrl, videoPath);
+      console.log(`[${ts}] download OK`);
+
+      const result = await processVideo(videoPath, ytTitle || title || '', tema || '');
+      console.log(`[${ts}] elaborazione OK — ${result.framesExtracted} frame`);
+
+      return json(200, { ...result, ytTitle, ytFormat, ytDuration });
+    } catch (e) {
+      console.error(`[${ts}] errore:`, e.message);
+      return json(500, { error: e.message });
+    } finally {
+      try { unlinkSync(videoPath); } catch {}
     }
   }
 
-  // Parse body
-  let body = '';
-  for await (const chunk of req) body += chunk;
-  let parsed;
-  try { parsed = JSON.parse(body); } catch {
-    res.writeHead(400, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ error: 'JSON non valido' }));
-    return;
-  }
+  // POST /save-video — scarica e salva in archivio NAS (nessuna elaborazione)
+  if (req.url === '/save-video') {
+    let parsed;
+    try { parsed = await parseBody(req); } catch { return json(400, { error: 'JSON non valido' }); }
 
-  const { youtubeUrl, title, tema, saveToArchive, codice, recordTitle } = parsed;
-
-  if (!youtubeUrl) {
-    res.writeHead(400, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ error: 'youtubeUrl mancante' }));
-    return;
-  }
-
-  const ts = Date.now();
-  const videoPath = join(tmpdir(), `adam-nas-${ts}.mp4`);
-
-  try {
-    // Metadata yt-dlp (titolo, dimensioni, durata)
-    console.log(`[${ts}] Fetching metadata for ${youtubeUrl}`);
-    const info = await getVideoInfo(youtubeUrl);
-    const ytTitle = info?.title || title || '';
-    const ytWidth = info?.width || 1920;
-    const ytHeight = info?.height || 1080;
-    const ytFormat = ytHeight > ytWidth ? 'verticale' : 'orizzontale';
-    const ytDuration = info?.duration ? formatDuration(info.duration) : '';
-    console.log(`[${ts}] Title: "${ytTitle}", format: ${ytFormat}, duration: ${ytDuration}`);
-
-    // Download
-    console.log(`[${ts}] Downloading...`);
-    await downloadVideo(youtubeUrl, videoPath);
-    console.log(`[${ts}] Download complete`);
-
-    // Elaborazione (frame + audio + Claude)
-    const result = await processVideo(videoPath, ytTitle || title || '', tema || '');
-    console.log(`[${ts}] Processing complete — ${result.framesExtracted} frames`);
-
-    // Salvataggio in archivio NAS
-    if (saveToArchive && codice && ARCHIVE_PATH && existsSync(ARCHIVE_PATH)) {
-      const finalTitle = sanitizeFilename(recordTitle || ytTitle || title || codice);
-      const destFilename = `${codice}-${finalTitle}.mp4`;
-      const destPath = join(ARCHIVE_PATH, destFilename);
-      try {
-        copyFileSync(videoPath, destPath);
-        console.log(`[${ts}] Saved to archive: ${destPath}`);
-      } catch (e) {
-        console.error(`[${ts}] Archive save failed:`, e.message);
-      }
+    const { youtubeUrl, codice, title, tema, natura } = parsed;
+    if (!youtubeUrl || !codice || !tema || !natura) {
+      return json(400, { error: 'Campi obbligatori: youtubeUrl, codice, tema, natura' });
+    }
+    if (!ARCHIVE_PATH || !existsSync(ARCHIVE_PATH)) {
+      return json(503, { error: 'ARCHIVE_PATH non configurato o cartella inesistente sul NAS' });
     }
 
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ ...result, ytTitle, ytFormat, ytDuration }));
-  } catch (e) {
-    console.error(`[${ts}] Error:`, e.message);
-    res.writeHead(500, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ error: e.message }));
-  } finally {
-    try { unlinkSync(videoPath); } catch {}
+    const ts = Date.now();
+    const safeTema = sanitizeFilename(tema);
+    const safNatura = sanitizeFilename(natura);
+    const safeTitle = sanitizeFilename(title || codice);
+    const filename = `${codice}-${safeTitle}.mp4`;
+    const dirPath = join(ARCHIVE_PATH, safeTema, safNatura);
+    const destPath = join(dirPath, filename);
+
+    try {
+      mkdirSync(dirPath, { recursive: true });
+      console.log(`[${ts}] /save-video — "${filename}" → ${dirPath}`);
+      await downloadVideo(youtubeUrl, destPath);
+      console.log(`[${ts}] salvato OK`);
+      return json(200, { saved: true, path: `ADAM/${safeTema}/${safNatura}/${filename}` });
+    } catch (e) {
+      console.error(`[${ts}] errore save-video:`, e.message);
+      try { unlinkSync(destPath); } catch {}
+      return json(500, { error: e.message });
+    }
   }
+
+  return json(404, { error: 'Not found' });
 });
 
 server.listen(PORT, () => console.log(`ADAM NAS server on :${PORT}`));
