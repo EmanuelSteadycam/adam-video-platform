@@ -2935,7 +2935,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                         setForm(prev => ({ ...prev, title: file.name.replace(/\.[^/.]+$/, '') }));
                       }
                     }} />
-                  <Upload size={12} /> Carica file dal NAS
+                  <Upload size={12} /> Carica file da STEADY_TUBE
                 </label>
                 {nasFile && (
                   <div className="flex items-center gap-2 min-w-0">
