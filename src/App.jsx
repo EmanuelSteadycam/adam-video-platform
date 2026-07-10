@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Zap, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown, Send, ShieldCheck, AlertCircle, Loader2, LogIn, Film, BookOpen, Pencil, Trash2, Save, RotateCcw, Archive, Lightbulb, Share2, Link } from 'lucide-react';
+import { upload as blobUpload } from '@vercel/blob/client';
+import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Zap, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown, Send, ShieldCheck, AlertCircle, Loader2, LogIn, Film, BookOpen, Pencil, Trash2, Save, RotateCcw, Archive, Lightbulb, Share2, Link, Activity } from 'lucide-react';
 import Lottie from 'lottie-react';
 import { supabase } from './supabase';
 import { videos as videosData } from './videosData';
@@ -2289,6 +2290,10 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   // Tab
   const [activeTab, setActiveTab] = useState('add');
 
+  // Servizi
+  const [servicesData, setServicesData] = useState(null);
+  const [loadingServices, setLoadingServices] = useState(false);
+
   // Rifiutati
   const [rejectedSubs, setRejectedSubs] = useState([]);
   const [loadingRejected, setLoadingRejected] = useState(false);
@@ -2387,12 +2392,22 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     setLoadingSubs(false);
   };
 
+  const loadServices = async () => {
+    setLoadingServices(true);
+    try {
+      const res = await fetch('/api/check-usage');
+      if (res.ok) setServicesData(await res.json());
+    } catch {}
+    setLoadingServices(false);
+  };
+
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     if (tab === 'pending') loadPending();
     if (tab === 'rejected') loadRejected();
     if (tab === 'archive' && !archiveLoaded) loadArchive();
     if (tab === 'users' && !usersLoaded) loadUsers();
+    if (tab === 'services') loadServices();
   };
 
   const handleApprove = async (sub) => {
@@ -2607,43 +2622,65 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     setGeneratingSynopsis(true);
     setSynopsisWarning('');
     try {
-      // se c'è un file NAS selezionato, trascrive prima con Whisper
-      let transcript = manualTranscript.trim() || undefined;
-      if (nasFile && !transcript) {
+      if (nasFile) {
+        // flusso NAS: ffmpeg (audio + frame) → Whisper + Claude → synopsis
         setTranscribingNas(true);
-        try {
+        const isProduction = window.location.hostname !== 'localhost';
+        let tRes, tData;
+
+        if (isProduction) {
+          // produzione: upload a Vercel Blob, poi transcribe con URL
+          const blob = await blobUpload(nasFile.name, nasFile, {
+            access: 'public',
+            handleUploadUrl: '/api/blob-upload',
+          });
+          tRes = await fetch('/api/transcribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ blobUrl: blob.url, title: form.title, tema: form.tema }),
+          });
+        } else {
+          // sviluppo locale: upload diretto FormData
           const fd = new FormData();
           fd.append('file', nasFile);
-          const tRes = await fetch('/api/transcribe', { method: 'POST', body: fd });
-          const tData = await tRes.json();
-          if (!tRes.ok) { setSynopsisWarning(tData.error || 'Errore nella trascrizione audio.'); return; }
-          transcript = tData.transcript || undefined;
-          if (transcript) setManualTranscript(transcript);
-        } finally {
-          setTranscribingNas(false);
+          if (form.title) fd.append('title', form.title);
+          if (form.tema) fd.append('tema', form.tema);
+          tRes = await fetch('/api/transcribe', { method: 'POST', body: fd });
         }
-      }
 
-      const res = await fetch('/api/generate-synopsis', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          youtubeUrl: form.youtube_url,
-          title: form.title || undefined,
-          tema: form.tema || undefined,
-          transcript,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) { setSynopsisWarning(data.error || 'Errore nella generazione della sinossi.'); return; }
-      if (data.synopsis || data.ytTitle) setForm(prev => ({
-        ...prev,
-        ...(data.synopsis ? { description: data.synopsis } : {}),
-        ...(!prev.title.trim() && data.ytTitle ? { title: data.ytTitle } : {}),
-      }));
-      if (data.warnings?.length) setSynopsisWarning(data.warnings.join(' '));
-    } catch {
-      setSynopsisWarning('Errore di rete nella generazione della sinossi.');
+        tData = await tRes.json();
+        if (!tRes.ok) { setSynopsisWarning(tData.error || 'Errore nella trascrizione.'); return; }
+        if (tData.synopsis || tData.duration) setForm(prev => ({
+          ...prev,
+          ...(tData.synopsis ? { description: tData.synopsis } : {}),
+          ...(tData.duration ? { duration: tData.duration } : {}),
+        }));
+        if (tData.transcript) setManualTranscript(tData.transcript);
+        if (tData.warnings?.length) setSynopsisWarning(tData.warnings.join(' '));
+      } else {
+        // flusso YouTube: ScraperAPI storyboard + youtube-transcript + Claude
+        const transcript = manualTranscript.trim() || undefined;
+        const res = await fetch('/api/generate-synopsis', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            youtubeUrl: form.youtube_url,
+            title: form.title || undefined,
+            tema: form.tema || undefined,
+            transcript,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) { setSynopsisWarning(data.error || 'Errore nella generazione della sinossi.'); return; }
+        if (data.synopsis || data.ytTitle) setForm(prev => ({
+          ...prev,
+          ...(data.synopsis ? { description: data.synopsis } : {}),
+          ...(!prev.title.trim() && data.ytTitle ? { title: data.ytTitle } : {}),
+        }));
+        if (data.warnings?.length) setSynopsisWarning(data.warnings.join(' '));
+      }
+    } catch (e) {
+      setSynopsisWarning(e?.message || 'Errore di rete nella generazione della sinossi.');
     } finally {
       setGeneratingSynopsis(false);
       setTranscribingNas(false);
@@ -2753,6 +2790,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
           { id: 'rejected', label: 'Rifiutati', count: rejectedSubs.length, showCount: !loadingRejected },
           { id: 'archive', label: 'Archivio', count: allVideos.length, showCount: true },
           { id: 'users', label: 'Utenti', count: users.length, showCount: !loadingUsers, icon: User },
+          { id: 'services', label: 'Servizi', icon: Activity },
         ].map(tab => (
           <button key={tab.id} onClick={() => handleTabChange(tab.id)}
             className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold transition-all"
@@ -2806,7 +2844,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                 <button
                   type="button"
                   onClick={handleGenerateSynopsis}
-                  disabled={!form.youtube_url.trim() || generatingSynopsis}
+                  disabled={(!form.youtube_url.trim() && !nasFile) || generatingSynopsis}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                   style={{ backgroundColor: '#FFDA2A', color: '#000' }}>
                   {generatingSynopsis
@@ -2822,7 +2860,14 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
               <div className="flex items-center gap-3">
                 <label className="flex items-center gap-1.5 cursor-pointer text-xs font-medium px-3 py-1.5 rounded-lg border border-zinc-600 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all">
                   <input type="file" accept="video/*,audio/*" className="hidden"
-                    onChange={e => { setNasFile(e.target.files?.[0] || null); setManualTranscript(''); }} />
+                    onChange={e => {
+                      const f = e.target.files?.[0] || null;
+                      setNasFile(f);
+                      setManualTranscript('');
+                      if (f && !form.title.trim()) {
+                        setForm(prev => ({ ...prev, title: f.name.replace(/\.[^/.]+$/, '') }));
+                      }
+                    }} />
                   <Upload size={12} /> Carica dal NAS
                 </label>
                 {nasFile && (
@@ -2833,7 +2878,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                     </button>
                   </div>
                 )}
-                {transcribingNas && <span className="text-xs text-zinc-400 flex items-center gap-1"><Loader2 size={11} className="animate-spin" /> Whisper…</span>}
+                {transcribingNas && <span className="text-xs text-zinc-400 flex items-center gap-1"><Loader2 size={11} className="animate-spin" /> Audio + frame…</span>}
               </div>
               {/* Opzione 2: trascrizione manuale */}
               <button type="button" onClick={() => setShowTranscriptInput(v => !v)}
@@ -3629,6 +3674,102 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
           )}
         </div>
       )}
+
+      {activeTab === 'services' && (() => {
+        const StatusDot = ({ s }) => {
+          const color = s?.status === 'ok' ? '#22c55e' : s?.status === 'error' ? '#ef4444' : '#71717a';
+          const label = s?.status === 'ok' ? 'attivo' : s?.status === 'error' ? 'errore' : 'non configurato';
+          return (
+            <span className="flex items-center gap-1.5 text-xs font-medium" style={{ color }}>
+              <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
+              {label}
+            </span>
+          );
+        };
+        const ServiceCard = ({ name, url, data, children }) => (
+          <div className="bg-zinc-800 border border-zinc-700 rounded-xl p-5 space-y-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-white font-semibold text-sm">{name}</p>
+                <a href={url} target="_blank" rel="noreferrer" className="text-zinc-500 text-xs hover:text-zinc-300 transition-colors">{url.replace('https://', '')}</a>
+              </div>
+              <StatusDot s={data} />
+            </div>
+            {data?.detail && <p className="text-red-400 text-xs bg-red-950/30 rounded-lg px-3 py-2">{data.detail}</p>}
+            {children}
+          </div>
+        );
+        const sd = servicesData;
+        return (
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                <Activity size={20} className="text-[#FFDA2A]" />
+                Servizi esterni
+              </h3>
+              <div className="flex items-center gap-3">
+                {sd && <span className="text-zinc-600 text-xs">aggiornato {new Date(sd.checkedAt).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}</span>}
+                <button onClick={loadServices} disabled={loadingServices}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition-all disabled:opacity-50">
+                  {loadingServices ? <Loader2 size={12} className="animate-spin" /> : <RotateCcw size={12} />}
+                  Aggiorna
+                </button>
+              </div>
+            </div>
+            {loadingServices && !sd ? (
+              <div className="flex items-center justify-center py-16"><Loader2 size={24} className="animate-spin text-zinc-500" /></div>
+            ) : sd ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <ServiceCard name="ScraperAPI" url="https://dashboard.scraperapi.com" data={sd.scraperapi}>
+                  {sd.scraperapi?.status === 'ok' && (() => {
+                    const used = sd.scraperapi.requestCount ?? 0;
+                    const limit = sd.scraperapi.requestLimit ?? 0;
+                    const pct = limit > 0 ? Math.min(100, Math.round((used / limit) * 100)) : 0;
+                    const barColor = pct > 80 ? '#ef4444' : pct > 60 ? '#f59e0b' : '#22c55e';
+                    return (
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-xs text-zinc-400">
+                          <span>{used.toLocaleString()} richieste usate</span>
+                          <span>{limit.toLocaleString()} limite mensile</span>
+                        </div>
+                        <div className="h-2 bg-zinc-700 rounded-full overflow-hidden">
+                          <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, backgroundColor: barColor }} />
+                        </div>
+                        <div className="flex justify-between text-xs">
+                          <span style={{ color: barColor }}>{pct}% utilizzato</span>
+                          {sd.scraperapi.failedRequestCount > 0 && (
+                            <span className="text-zinc-500">{sd.scraperapi.failedRequestCount} fallite</span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })()}
+                </ServiceCard>
+
+                <ServiceCard name="Groq (Whisper)" url="https://console.groq.com" data={sd.groq}>
+                  {sd.groq?.status === 'ok' && (
+                    <p className="text-zinc-500 text-xs">utilizzo disponibile su console.groq.com → Usage</p>
+                  )}
+                </ServiceCard>
+
+                <ServiceCard name="Anthropic (Claude)" url="https://console.anthropic.com" data={sd.anthropic}>
+                  {sd.anthropic?.status === 'ok' && (
+                    <p className="text-zinc-500 text-xs">costi e token disponibili su console.anthropic.com → Usage</p>
+                  )}
+                </ServiceCard>
+
+                <ServiceCard name="Vercel Blob" url="https://vercel.com/dashboard" data={sd.blob}>
+                  {sd.blob?.status === 'ok' && (
+                    <p className="text-zinc-500 text-xs">utilizzo disponibile su Vercel Dashboard → Storage</p>
+                  )}
+                </ServiceCard>
+              </div>
+            ) : (
+              <p className="text-zinc-500 text-sm py-4">Premi "Aggiorna" per controllare i servizi.</p>
+            )}
+          </div>
+        );
+      })()}
     </div>
   );
 };
