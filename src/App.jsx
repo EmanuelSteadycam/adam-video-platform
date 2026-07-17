@@ -2320,7 +2320,6 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
 
   // Archivio
   const [archiveVideos, setArchiveVideos] = useState([]);
-  const [archiveLoading, setArchiveLoading] = useState(false);
   const [archiveLoaded, setArchiveLoaded] = useState(false);
   const [archiveSearch, setArchiveSearch] = useState('');
   const [archiveTema, setArchiveTema] = useState('');
@@ -3386,9 +3385,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                 options={[{ value: '', label: 'Tutte le nature' }, ...NATURE_OPTIONS.map(n => ({ value: n, label: n }))]} />
             </div>
           </div>
-          {archiveLoading ? (
-            <div className="flex items-center justify-center py-10"><Loader2 size={24} className="animate-spin text-zinc-500" /></div>
-          ) : filteredArchive.length === 0 ? (
+          {filteredArchive.length === 0 ? (
             <p className="text-zinc-500 text-sm py-4">{archiveVideos.length === 0 ? 'Nessun video nell\'archivio.' : 'Nessun risultato per i filtri selezionati.'}</p>
           ) : (
             <>
