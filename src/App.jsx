@@ -2677,9 +2677,6 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
             title: form.title || undefined,
             tema: form.tema || undefined,
             transcript,
-            saveToArchive: !!(form.codice.trim()),
-            codice: form.codice || undefined,
-            recordTitle: form.title || undefined,
           }),
         });
         const data = await res.json();

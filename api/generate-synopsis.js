@@ -2,7 +2,7 @@ import { YoutubeTranscript } from 'youtube-transcript';
 
 export const config = { maxDuration: 120 };
 
-async function callNasServer(youtubeUrl, title, tema, saveToArchive, codice, recordTitle) {
+async function callNasServer(youtubeUrl, title, tema) {
   const nasUrl = process.env.NAS_URL;
   const nasSecret = process.env.NAS_SECRET;
   if (!nasUrl) return null;
@@ -20,9 +20,6 @@ async function callNasServer(youtubeUrl, title, tema, saveToArchive, codice, rec
         youtubeUrl,
         title: title || '',
         tema: tema || '',
-        saveToArchive: !!saveToArchive,
-        codice: codice || '',
-        recordTitle: recordTitle || '',
       }),
       signal: controller.signal,
     });
@@ -189,7 +186,7 @@ async function fetchFallbackThumbnails(videoId) {
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
 
-  const { youtubeUrl, title, tema, transcript: providedTranscript, saveToArchive, codice, recordTitle } = req.body || {};
+  const { youtubeUrl, title, tema, transcript: providedTranscript } = req.body || {};
   if (!youtubeUrl) return res.status(400).json({ error: 'URL YouTube mancante.' });
 
   const videoId = extractVideoId(youtubeUrl);
@@ -197,7 +194,7 @@ export default async function handler(req, res) {
 
   // MODO2: NAS (yt-dlp + ffmpeg + Groq + Claude) — qualità superiore
   const [nasResult, oembedForTitle] = await Promise.all([
-    callNasServer(youtubeUrl, title, tema, saveToArchive, codice, recordTitle),
+    callNasServer(youtubeUrl, title, tema),
     fetchOEmbed(videoId),
   ]);
   if (nasResult?.synopsis) {
