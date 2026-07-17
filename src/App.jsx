@@ -2636,6 +2636,9 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     try {
       if (nasFile) {
         // MODO1: upload file fisico → api/transcribe (audio+frame reali)
+        // Mantenuto intenzionalmente attivo come alternativa a MODO2 (URL YouTube via NAS,
+        // sotto), per confronto futuro sulla qualità delle sinossi generate dai due percorsi.
+        // Non rimuovere come dead code.
         setTranscribingNas(true);
         const isProduction = window.location.hostname !== 'localhost';
         let tRes;

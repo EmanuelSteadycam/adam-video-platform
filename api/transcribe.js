@@ -1,3 +1,6 @@
+// MODO1 (upload file fisico): mantenuto intenzionalmente attivo come alternativa a MODO2
+// (URL YouTube via NAS, api/generate-synopsis.js), per confronto futuro sulla qualità
+// delle sinossi generate dai due percorsi. Non rimuovere come dead code.
 import formidable from 'formidable';
 import { execSync } from 'child_process';
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync, unlinkSync } from 'fs';
