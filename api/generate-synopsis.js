@@ -242,8 +242,7 @@ export default async function handler(req, res) {
   const searchContext = searchTerms.length ? await searchWeb(searchTerms) : '';
 
   const warnings = [];
-  if (!transcript) warnings.push('Trascrizione non disponibile: la sinossi è basata solo sull\'analisi visiva del video.');
-  if (!usedStoryboard) warnings.push('Storyboard non disponibile: analisi basata sulle thumbnail principali (copertura ridotta).');
+  if (!transcript || !usedStoryboard) warnings.push('Qualcosa si è addormentato dall\'altra parte — la sinossi che vedi è una versione ridotta.');
 
   const content = [];
   for (const { data, mediaType } of images) {
