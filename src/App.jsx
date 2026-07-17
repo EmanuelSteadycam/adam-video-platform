@@ -1,6 +1,6 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { upload as blobUpload } from '@vercel/blob/client';
-import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Zap, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown, Send, ShieldCheck, AlertCircle, Loader2, LogIn, Film, BookOpen, Pencil, Trash2, Save, RotateCcw, Archive, Lightbulb, Share2, Link, Activity } from 'lucide-react';
+import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown, Send, ShieldCheck, AlertCircle, Loader2, LogIn, Film, BookOpen, Pencil, Trash2, Save, RotateCcw, Archive, Lightbulb, Share2, Link, Activity } from 'lucide-react';
 import Lottie from 'lottie-react';
 import { supabase } from './supabase';
 import { videos as videosData } from './videosData';
@@ -1040,12 +1040,6 @@ const VideoCard = ({ video, onClick, onAddToPlaylist, isInPlaylist }) => {
     return colors[tema] || '#6b7280';
   };
 
-  const getFormatIcon = (natura) => {
-    // Ritorna orientamento: vertical per 9:16, horizontal per 16:9
-    const verticalFormats = ['Cortometraggio', 'Sequenze', 'Videoclip', 'Web e social'];
-    return verticalFormats.includes(natura) ? 'vertical' : 'horizontal';
-  };
-
   return (
     <div onClick={onClick} className="group cursor-pointer bg-zinc-900 rounded-lg overflow-hidden transition-all duration-300 transform hover:scale-105">
       <div className="relative overflow-hidden aspect-video">
@@ -1872,7 +1866,6 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
   const [form, setForm] = useState({ title: '', youtube_url: '', tema: '', description: '', prodotto_scuola: false });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [successType, setSuccessType] = useState('pending');
   const [error, setError] = useState(null);
 
   const f = (field, val) => setForm(prev => ({ ...prev, [field]: val }));
@@ -1896,7 +1889,6 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
     });
     if (err) setError(err.message);
     else {
-      setSuccessType(statusTarget);
       if (statusTarget === 'draft') {
         onDraftSaved?.();
       } else {
@@ -2434,7 +2426,6 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
 
   const handleApprove = async (sub) => {
     const edited = { ...sub, ...(editForms[sub.id] || {}) };
-    console.log('[handleApprove] edited:', edited);
     if (!edited.codice?.trim()) { setApproveError(sub.id + ':Il campo Codice ID è obbligatorio'); return; }
     const ytId = extractYouTubeId(edited.youtube_url);
     setActionLoading(sub.id + '_approve');

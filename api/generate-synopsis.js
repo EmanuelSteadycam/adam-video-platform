@@ -46,27 +46,6 @@ async function fetchOEmbed(videoId) {
   } catch { return null; }
 }
 
-function parseXmlOrVttTranscript(body) {
-  if (!body || body.length < 10) return null;
-  let text = '';
-  if (body.includes('<transcript>') || body.includes('<text ')) {
-    text = body
-      .replace(/<text[^>]*>/g, '').replace(/<\/text>/g, ' ')
-      .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-      .replace(/&#39;/g, "'").replace(/&quot;/g, '"')
-      .replace(/<[^>]+>/g, '')
-      .split('\n').map(l => l.trim()).filter(l => l.length > 0).join(' ');
-  } else if (body.includes('WEBVTT')) {
-    text = body
-      .replace(/WEBVTT\n/, '')
-      .replace(/\d{2}:\d{2}:\d{2}\.\d{3} --> \d{2}:\d{2}:\d{2}\.\d{3}[^\n]*/g, '')
-      .replace(/<[^>]+>/g, '')
-      .split('\n').map(l => l.trim()).filter(l => l.length > 0)
-      .filter((l, i, arr) => l !== arr[i - 1]).join(' ');
-  }
-  return text.length > 20 ? text : null;
-}
-
 function parseStoryboardSpec(spec) {
   const parts = spec.split('|');
   const baseUrl = parts[0];

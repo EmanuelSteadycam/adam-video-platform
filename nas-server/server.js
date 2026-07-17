@@ -1,7 +1,7 @@
 'use strict';
 const http = require('http');
 const { execSync, spawn } = require('child_process');
-const { readFileSync, mkdirSync, readdirSync, unlinkSync, existsSync, copyFileSync } = require('fs');
+const { readFileSync, mkdirSync, readdirSync, unlinkSync, existsSync } = require('fs');
 const { tmpdir } = require('os');
 const { join } = require('path');
 

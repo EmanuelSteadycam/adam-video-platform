@@ -4,3 +4,6 @@ dist
 .env
 .vercel
 .env*
+
+# output di scripts/synopsis.mjs
+synopsis-output.txt
