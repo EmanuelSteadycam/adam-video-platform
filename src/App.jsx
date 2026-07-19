@@ -27,15 +27,6 @@ styles.textContent = `
     50%  { left: 50%;  width: 30%; }
     100% { left: 110%; width: 40%; }
   }
-  .adam-progress-track {
-    position: fixed; top: 0; left: 0; right: 0;
-    height: 3px; z-index: 9999; overflow: hidden;
-  }
-  .adam-progress-bar {
-    position: absolute; top: 0; height: 100%;
-    background: #ef4444;
-    animation: adamProgress 1.6s ease-in-out infinite;
-  }
   .desc-progress-track {
     position: relative; height: 3px; border-radius: 2px;
     overflow: hidden; background: rgba(255,218,42,0.15);
@@ -2923,12 +2914,6 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   }
 
   return (
-    <>
-    {generatingSynopsis && (
-      <div className="adam-progress-track">
-        <div className="adam-progress-bar" />
-      </div>
-    )}
     <div className="max-w-3xl mx-auto py-8 space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
@@ -3112,6 +3097,11 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
             {/* Row 6: Descrizione */}
             <div>
               <label className="block text-sm font-medium text-zinc-300 mb-1.5">Descrizione *</label>
+              {generatingSynopsis && (
+                <div className="desc-progress-track mb-2">
+                  <div className="desc-progress-bar" />
+                </div>
+              )}
               <textarea value={form.description} onChange={e => f('description', e.target.value)} rows={5} placeholder="Descrizione del video..." className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500 resize-none" />
               {synopsisWarning && (
                 <div className="flex items-start gap-2 mt-2 px-3 py-2 rounded-lg text-xs bg-amber-900/30 border border-amber-800/50 text-amber-400">
@@ -3955,7 +3945,6 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
         );
       })()}
     </div>
-    </>
   );
 };
 
