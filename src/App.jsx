@@ -2405,6 +2405,20 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     setLoadingSubs(false);
   };
 
+  const getNextCodice = () => {
+    const yy = String(new Date().getFullYear()).slice(-2);
+    let maxNum = 0;
+    allVideos.forEach(v => {
+      const c = (v.codice || v.id || '').trim();
+      const m = c.match(/^HD-(\d{2})(\d{4})$/);
+      if (m && m[1] === yy) {
+        const n = parseInt(m[2], 10);
+        if (n > maxNum) maxNum = n;
+      }
+    });
+    return `HD-${yy}${String(maxNum + 1).padStart(4, '0')}`;
+  };
+
   const loadServices = async () => {
     setLoadingServices(true);
     try {
@@ -3147,7 +3161,10 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                                 </>
                               );
                             })()}
-                            <button onClick={() => { setExpandedId(isExpanded ? null : sub.id); if (!editForms[sub.id]) setEditForms(prev => ({ ...prev, [sub.id]: {} })); }}
+                            <button onClick={() => {
+                                setExpandedId(isExpanded ? null : sub.id);
+                                if (!editForms[sub.id]) setEditForms(prev => ({ ...prev, [sub.id]: sub.codice ? {} : { codice: getNextCodice() } }));
+                              }}
                               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-[#FFDA2A] text-white hover:bg-[#FFDA2A]/10 transition-all"
                               style={{ backgroundColor: isExpanded ? 'rgba(255,218,42,0.1)' : 'transparent' }}>
                               <Pencil size={12} className="text-[#FFDA2A]" /> Modifica
