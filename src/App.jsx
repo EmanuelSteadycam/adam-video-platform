@@ -36,6 +36,15 @@ styles.textContent = `
     background: #ef4444;
     animation: adamProgress 1.6s ease-in-out infinite;
   }
+  .desc-progress-track {
+    position: relative; height: 3px; border-radius: 2px;
+    overflow: hidden; background: rgba(255,218,42,0.15);
+  }
+  .desc-progress-bar {
+    position: absolute; top: 0; height: 100%;
+    background: #FFDA2A;
+    animation: adamProgress 1.6s ease-in-out infinite;
+  }
   @keyframes fadeSlideIn {
     from { opacity: 0; transform: translateY(8px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -1892,7 +1901,11 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
       });
       const data = await res.json();
       if (!res.ok) { setDescWarning('Qualcosa si è addormentato dall\'altra parte — riprova più tardi.'); return; }
-      if (data.synopsis) f('description', data.synopsis);
+      setForm(prev => ({
+        ...prev,
+        ...(data.synopsis ? { description: data.synopsis } : {}),
+        ...(!prev.title.trim() && data.ytTitle ? { title: data.ytTitle } : {}),
+      }));
       setGenCounts(prev => ({ ...prev, [key]: (prev[key] || 0) + 1 }));
       if (data.warnings?.length) setDescWarning(data.warnings.join(' '));
     } catch {
@@ -2028,6 +2041,11 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
                 : <><Sparkles size={12} className="inline-block" /> Genera descrizione automatica</>}
             </button>
           </div>
+          {generatingDesc && (
+            <div className="desc-progress-track mb-2">
+              <div className="desc-progress-bar" />
+            </div>
+          )}
           <textarea value={form.description} onChange={e => f('description', e.target.value)} rows={6} placeholder="Descrivi brevemente il contenuto..." className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500 resize-none" />
           {confirmRegen && (
             <div className="flex items-center gap-2 mt-2 px-3 py-2 rounded-lg text-xs bg-zinc-800 border border-zinc-700 flex-wrap">
