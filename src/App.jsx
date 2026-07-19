@@ -1867,9 +1867,46 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
+  const [genCounts, setGenCounts] = useState({});
+  const [confirmRegen, setConfirmRegen] = useState(false);
+  const [generatingDesc, setGeneratingDesc] = useState(false);
+  const [descWarning, setDescWarning] = useState('');
 
   const f = (field, val) => setForm(prev => ({ ...prev, [field]: val }));
   const resetForm = () => setForm({ title: '', youtube_url: '', tema: '', description: '', prodotto_scuola: false });
+
+  const runGenerateDescription = async () => {
+    setConfirmRegen(false);
+    setGeneratingDesc(true);
+    setDescWarning('');
+    const key = extractYouTubeId(form.youtube_url) || form.youtube_url.trim();
+    try {
+      const res = await fetch('/api/generate-synopsis', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          youtubeUrl: form.youtube_url,
+          title: form.title || undefined,
+          tema: form.tema || undefined,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setDescWarning('Qualcosa si è addormentato dall\'altra parte — riprova più tardi.'); return; }
+      if (data.synopsis) f('description', data.synopsis);
+      setGenCounts(prev => ({ ...prev, [key]: (prev[key] || 0) + 1 }));
+      if (data.warnings?.length) setDescWarning(data.warnings.join(' '));
+    } catch {
+      setDescWarning('Qualcosa si è addormentato dall\'altra parte — riprova più tardi.');
+    } finally {
+      setGeneratingDesc(false);
+    }
+  };
+
+  const handleGenerateDescription = () => {
+    const key = extractYouTubeId(form.youtube_url) || form.youtube_url.trim();
+    if (genCounts[key] > 0) { setConfirmRegen(true); return; }
+    runGenerateDescription();
+  };
 
   const handleSubmit = async (statusTarget) => {
     if (!form.youtube_url.trim()) { setError('Il link YouTube è obbligatorio.'); return; }
@@ -1978,8 +2015,39 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">Descrizione <span className="text-zinc-500 font-normal">(opzionale)</span></label>
+          <div className="flex items-center justify-between mb-1.5">
+            <label className="text-sm font-medium text-zinc-300">Descrizione <span className="text-zinc-500 font-normal">(opzionale)</span></label>
+            <button
+              type="button"
+              onClick={handleGenerateDescription}
+              disabled={!form.youtube_url.trim() || generatingDesc}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              style={{ backgroundColor: '#FFDA2A', color: '#000' }}>
+              {generatingDesc
+                ? <><Loader2 size={12} className="animate-spin inline-block" /> Generando…</>
+                : <><Sparkles size={12} className="inline-block" /> Genera descrizione automatica</>}
+            </button>
+          </div>
           <textarea value={form.description} onChange={e => f('description', e.target.value)} rows={6} placeholder="Descrivi brevemente il contenuto..." className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500 resize-none" />
+          {confirmRegen && (
+            <div className="flex items-center gap-2 mt-2 px-3 py-2 rounded-lg text-xs bg-zinc-800 border border-zinc-700 flex-wrap">
+              <span className="text-zinc-300">Hai già generato una descrizione per questo video. Vuoi generarla di nuovo?</span>
+              <button type="button" onClick={runGenerateDescription}
+                className="px-2.5 py-1 rounded-md font-semibold text-black" style={{ backgroundColor: '#FFDA2A' }}>
+                Sì, genera di nuovo
+              </button>
+              <button type="button" onClick={() => setConfirmRegen(false)}
+                className="px-2.5 py-1 rounded-md font-medium text-zinc-400 hover:text-white border border-zinc-600">
+                Annulla
+              </button>
+            </div>
+          )}
+          {descWarning && (
+            <div className="flex items-start gap-2 mt-2 px-3 py-2 rounded-lg text-xs bg-amber-900/30 border border-amber-800/50 text-amber-400">
+              <AlertCircle size={13} className="mt-0.5 shrink-0" />
+              <span>{descWarning}</span>
+            </div>
+          )}
         </div>
 
         <div>
