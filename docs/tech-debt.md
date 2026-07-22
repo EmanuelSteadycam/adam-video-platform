@@ -39,3 +39,24 @@ queste è menzionata in `CLAUDE.md` né referenziata da nessuna parte di questo 
 Supabase, o una feature di ADAM mai documentata/completata? Se sono di un altro progetto,
 varrebbe la pena capire se è previsto isolarle (schema/progetto Supabase separato) per evitare
 ambiguità future in fase di esplorazione del database.
+
+## Esclusione strutturata per "natura" nella ricerca in linguaggio naturale
+
+Emerso il 22 luglio 2026 durante lo stress-test della ricerca smart (`api/search-parse.js` +
+`excludeKeywords` in `src/App.jsx`) con la query "video sul tabacco non per adulti e non
+pubblicitari": il campo `natura` supporta solo una selezione singola (un valore o `null`), non
+un'esclusione. Quando la query nega esplicitamente un formato (es. "non pubblicitari" →
+concettualmente "natura diversa da Spot commerciale"), il modello non ha modo di esprimerlo nel
+campo `natura` e lo riversa come testo libero dentro `excludeKeywords` (es. `["pubblicitari"]`).
+
+**Stato**: funziona solo per coincidenza — il video viene escluso unicamente se quella parola
+compare *letteralmente* in titolo/descrizione, non perché il suo campo `natura` corrisponda
+davvero al formato da escludere. Non è una vera esclusione di categoria, è un match testuale
+approssimato. Verificato dal vivo: query "video sull'azzardo non per adulti e non
+pubblicitari" → 207 risultati (contro ~230 del solo tema Azzardo), quindi il testo `pubblicitari`
+intercetta *qualcosa* ma senza garanzia di correttezza/copertura sul campo `natura` reale.
+
+**Da valutare**: se in futuro emergono altre negazioni di formato ricorrenti, introdurre un
+campo strutturato separato tipo `excludeNatura` (stesso enum di `natura`, ma come esclusione
+vera contro il campo del video, non contro il testo) nello schema restituito da
+`api/search-parse.js` e nella logica di `filteredVideos`.

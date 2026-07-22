@@ -201,6 +201,18 @@ const SNAP_POINTS = (() => {
   return pts;
 })();
 
+const nearestSnapPoint = (secs) =>
+  SNAP_POINTS.reduce((best, p) => (Math.abs(p - secs) < Math.abs(best - secs) ? p : best), SNAP_POINTS[0]);
+
+// ─── Ricerca in linguaggio naturale ────────────────────────────────────────
+// Interruttore unico: false = disattiva del tutto la ricerca smart e ripristina
+// il comportamento originale (substring match puro, nessuna chiamata a /api/search-parse).
+const ENABLE_SMART_SEARCH = true;
+const SMART_SEARCH_MIN_LEN = 4;     // sotto questa lunghezza non vale la pena interpellare l'API
+const SMART_SEARCH_MAX_LEN = 200;   // limite di lunghezza sulla query inviata
+const SMART_SEARCH_DEBOUNCE_MS = 650;
+const SMART_SEARCH_TIMEOUT_MS = 10000;
+
 const SharedPlaylistView = ({ playlistRaw, allVideos, onVideoClick, onOpenAuth, onPlayShared, onSaveShared, onSaved, user, token }) => {
   const videos = (playlistRaw.video_ids || []).map(id => allVideos.find(v => v.id === id)).filter(Boolean);
   const storageKey = `adam-shared-played-${token}`;
@@ -688,7 +700,7 @@ const CustomSelect = ({ value, onChange, options, accentColor = '#FFDA2A' }) => 
   );
 };
 
-const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchChange, onSearchSubmit, videos = [] }) => {
+const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchChange, onSearchSubmit, videos = [], smartInterpretation, smartLoading, onDismissSmartField }) => {
   const nature = ['Tutti', 'Cortometraggio', 'Film', 'Info', 'Sequenza', 'Spot commerciale', 'Spot sociale', 'Videoclip', 'Web e social'];
   const years = ['Tutti', ...new Set(videos.map(v => v.year).filter(Boolean).sort((a, b) => b - a))];
   const [hoveredTema, setHoveredTema] = useState(null);
@@ -736,7 +748,7 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') onSearchSubmit?.(); }}
-                placeholder="Cerca video"
+                placeholder={ENABLE_SMART_SEARCH ? 'Cerca o descrivi cosa cerchi (es. "video brevi sull\'azzardo per adolescenti")' : 'Cerca video'}
                 className="w-full bg-zinc-800 border border-zinc-700 rounded-lg pl-11 pr-10 py-2.5 text-sm text-white placeholder-zinc-500 outline-none focus:border-zinc-500 transition-colors"
               />
               {searchQuery && (
@@ -745,6 +757,61 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
                 </button>
               )}
             </div>
+
+            {/* Interpretazione ricerca in linguaggio naturale — solo se ENABLE_SMART_SEARCH */}
+            {ENABLE_SMART_SEARCH && smartLoading && (
+              <div className="flex items-center gap-1.5 text-xs text-zinc-500 mb-4 -mt-2">
+                <Loader2 size={12} className="animate-spin" />
+                sto interpretando la ricerca…
+              </div>
+            )}
+            {ENABLE_SMART_SEARCH && !smartLoading && smartInterpretation && (
+              smartInterpretation.tema || smartInterpretation.natura || smartInterpretation.scuola ||
+              smartInterpretation.durationMax || (smartInterpretation.keywords && smartInterpretation.keywords.length > 0) ||
+              (smartInterpretation.excludeKeywords && smartInterpretation.excludeKeywords.length > 0)
+            ) && (
+              <div className="flex flex-wrap items-center gap-2 mb-4 -mt-2">
+                <span className="flex items-center gap-1.5 text-xs text-zinc-500">
+                  <Sparkles size={12} style={{ color: accentColor }} /> ho capito:
+                </span>
+                {smartInterpretation.tema && (
+                  <span className="flex items-center gap-1.5 text-xs px-3 py-1 rounded-full bg-zinc-800 border border-zinc-700" style={{ color: accentColor }}>
+                    {smartInterpretation.tema}
+                    <button onClick={() => onDismissSmartField('tema')} className="hover:text-white transition-colors"><X size={12} /></button>
+                  </span>
+                )}
+                {smartInterpretation.natura && (
+                  <span className="flex items-center gap-1.5 text-xs px-3 py-1 rounded-full bg-zinc-800 border border-zinc-700" style={{ color: accentColor }}>
+                    {smartInterpretation.natura === 'Sequenze' ? 'Sequenza' : smartInterpretation.natura}
+                    <button onClick={() => onDismissSmartField('natura')} className="hover:text-white transition-colors"><X size={12} /></button>
+                  </span>
+                )}
+                {smartInterpretation.scuola && (
+                  <span className="flex items-center gap-1.5 text-xs px-3 py-1 rounded-full bg-zinc-800 border border-zinc-700" style={{ color: accentColor }}>
+                    {smartInterpretation.scuola === 'Scuole' ? 'Prodotto da scuole' : 'Escl. scuole'}
+                    <button onClick={() => onDismissSmartField('scuola')} className="hover:text-white transition-colors"><X size={12} /></button>
+                  </span>
+                )}
+                {smartInterpretation.durationMax && (
+                  <span className="flex items-center gap-1.5 text-xs px-3 py-1 rounded-full bg-zinc-800 border border-zinc-700" style={{ color: accentColor }}>
+                    sotto {formatDuration(smartInterpretation.durationMax)}
+                    <button onClick={() => onDismissSmartField('durationMax')} className="hover:text-white transition-colors"><X size={12} /></button>
+                  </span>
+                )}
+                {smartInterpretation.keywords && smartInterpretation.keywords.length > 0 && (
+                  <span className="flex items-center gap-1.5 text-xs px-3 py-1 rounded-full bg-zinc-800 border border-zinc-700" style={{ color: accentColor }}>
+                    parole chiave: {smartInterpretation.keywords.slice(0, 3).join(', ')}
+                    <button onClick={() => onDismissSmartField('keywords')} className="hover:text-white transition-colors"><X size={12} /></button>
+                  </span>
+                )}
+                {smartInterpretation.excludeKeywords && smartInterpretation.excludeKeywords.length > 0 && (
+                  <span className="flex items-center gap-1.5 text-xs px-3 py-1 rounded-full bg-zinc-800 border border-zinc-700" style={{ color: accentColor }}>
+                    senza: {smartInterpretation.excludeKeywords.slice(0, 3).join(', ')}
+                    <button onClick={() => onDismissSmartField('excludeKeywords')} className="hover:text-white transition-colors"><X size={12} /></button>
+                  </span>
+                )}
+              </div>
+            )}
 
             {/* Tema + toggle filtri avanzati sulla stessa riga */}
             <div className="flex items-center justify-between gap-4 flex-wrap">
@@ -3987,6 +4054,11 @@ function App() {
     durationMin: SNAP_POINTS[0],
     durationMax: SNAP_POINTS[SNAP_POINTS.length - 1],
   });
+  // ─── Ricerca in linguaggio naturale (smart search) ───────────────────────
+  const [smartInterpretation, setSmartInterpretation] = useState(null);
+  const [smartSearchLoading, setSmartSearchLoading] = useState(false);
+  const smartSearchTimerRef = useRef(null);
+  const smartSearchAbortRef = useRef(null);
   const [localPlaylist, setLocalPlaylist] = useState([]);
   const [playingLocalPlaylist, setPlayingLocalPlaylist] = useState(false);
   const [playlists, setPlaylists] = useState([]);
@@ -3999,6 +4071,81 @@ function App() {
   const [sharedPlaylistRaw, setSharedPlaylistRaw] = useState(null);
   const [sharedPlaylistToken, setSharedPlaylistToken] = useState(null);
   const [sharedPlaylistSaved, setSharedPlaylistSaved] = useState(false);
+
+  // ─── Ricerca in linguaggio naturale: query → filtri strutturati via /api/search-parse ───
+  // Debounced. In caso di query corta/lunga/errore/timeout non tocca `filters` né
+  // `smartInterpretation`: la ricerca substring esistente (in filteredVideos) resta
+  // sempre la base e non smette mai di funzionare.
+  useEffect(() => {
+    if (!ENABLE_SMART_SEARCH) return;
+    if (smartSearchTimerRef.current) clearTimeout(smartSearchTimerRef.current);
+    if (smartSearchAbortRef.current) smartSearchAbortRef.current.abort();
+
+    const q = searchQuery.trim();
+    if (q.length < SMART_SEARCH_MIN_LEN || q.length > SMART_SEARCH_MAX_LEN) {
+      setSmartInterpretation(null);
+      setSmartSearchLoading(false);
+      return;
+    }
+
+    setSmartSearchLoading(true);
+    smartSearchTimerRef.current = setTimeout(async () => {
+      const controller = new AbortController();
+      smartSearchAbortRef.current = controller;
+      const abortTimeout = setTimeout(() => controller.abort(), SMART_SEARCH_TIMEOUT_MS);
+      try {
+        const res = await fetch('/api/search-parse', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: q.slice(0, SMART_SEARCH_MAX_LEN) }),
+          signal: controller.signal,
+        });
+        if (!res.ok) throw new Error('search-parse non ok');
+        const data = await res.json();
+        const hasAny = data.tema || data.natura || data.scuola || data.durationMax ||
+          (data.keywords && data.keywords.length > 0) || (data.excludeKeywords && data.excludeKeywords.length > 0);
+        if (!hasAny) { setSmartInterpretation(null); return; }
+
+        const snappedDuration = data.durationMax ? nearestSnapPoint(data.durationMax) : null;
+        setFilters(f => ({
+          ...f,
+          ...(data.tema ? { tema: data.tema } : {}),
+          ...(data.natura ? { natura: data.natura } : {}),
+          ...(data.scuola ? { scuola: data.scuola } : {}),
+          ...(snappedDuration ? { durationMax: snappedDuration } : {}),
+        }));
+        setSmartInterpretation({
+          tema: data.tema || null,
+          natura: data.natura || null,
+          scuola: data.scuola || null,
+          durationMax: snappedDuration,
+          keywords: data.keywords || [],
+          excludeKeywords: data.excludeKeywords || [],
+        });
+      } catch {
+        // Fallback: nessuna interpretazione applicata, la ricerca substring sulla query
+        // grezza (già attiva in filteredVideos) continua a funzionare invariata.
+        setSmartInterpretation(null);
+      } finally {
+        clearTimeout(abortTimeout);
+        setSmartSearchLoading(false);
+      }
+    }, SMART_SEARCH_DEBOUNCE_MS);
+
+    return () => { if (smartSearchTimerRef.current) clearTimeout(smartSearchTimerRef.current); };
+  }, [searchQuery]);
+
+  const dismissSmartField = (field) => {
+    setSmartInterpretation(prev => {
+      if (!prev) return prev;
+      return { ...prev, [field]: (field === 'keywords' || field === 'excludeKeywords') ? [] : null };
+    });
+    if (field === 'tema') setFilters(f => ({ ...f, tema: 'Tutti' }));
+    if (field === 'natura') setFilters(f => ({ ...f, natura: 'Tutti' }));
+    if (field === 'scuola') setFilters(f => ({ ...f, scuola: 'Tutti' }));
+    if (field === 'durationMax') setFilters(f => ({ ...f, durationMax: SNAP_POINTS[SNAP_POINTS.length - 1] }));
+    // 'keywords'/'excludeKeywords': azzerando l'array si toglie solo quel vincolo dal match testuale.
+  };
 
   // ─── IntersectionObserver: mostra header search quando FiltersSection esce dal viewport ──
   useEffect(() => {
@@ -4205,10 +4352,27 @@ function App() {
     let filtered = allVideos;
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-      filtered = filtered.filter(video =>
-        video.title.toLowerCase().includes(q) ||
-        (video.description && video.description.toLowerCase().includes(q))
-      );
+      const smartKeywords = ENABLE_SMART_SEARCH ? smartInterpretation?.keywords : null;
+      const smartExclude = ENABLE_SMART_SEARCH ? smartInterpretation?.excludeKeywords : null;
+      const hasSmartMatch = (smartKeywords && smartKeywords.length > 0) || (smartExclude && smartExclude.length > 0);
+      if (hasSmartMatch) {
+        // Ricerca smart riuscita: matcha sulle parole chiave interpretate invece che sulla
+        // frase grezza (che raramente compare letteralmente in titolo/descrizione), ed
+        // esclude esplicitamente i video che contengono le parole indicate come "senza X".
+        filtered = filtered.filter(video => {
+          const hay = `${video.title} ${video.description || ''}`.toLowerCase();
+          if (smartExclude && smartExclude.some(k => hay.includes(k.toLowerCase()))) return false;
+          if (smartKeywords && smartKeywords.length > 0) return smartKeywords.some(k => hay.includes(k.toLowerCase()));
+          return true;
+        });
+      } else {
+        // Comportamento originale: substring match puro. Questo è anche il fallback
+        // automatico quando la ricerca smart è disattivata, non ancora arrivata, o fallita.
+        filtered = filtered.filter(video =>
+          video.title.toLowerCase().includes(q) ||
+          (video.description && video.description.toLowerCase().includes(q))
+        );
+      }
     }
     if (activeSection === 'most-viewed') filtered = [...filtered].sort((a, b) => b.views - a.views).slice(0, 20);
     else if (activeSection === 'recent') filtered = [...filtered].sort((a, b) => new Date(b.dataInserimento) - new Date(a.dataInserimento)).slice(0, 12);
@@ -4241,7 +4405,7 @@ function App() {
     }
 
     return filtered;
-  }, [allVideos, searchQuery, activeSection, selectedNatura, filters, schoolsSort]);
+  }, [allVideos, searchQuery, activeSection, selectedNatura, filters, schoolsSort, smartInterpretation]);
 
   return (
     <div className="min-h-screen bg-black flex">
@@ -4491,7 +4655,7 @@ function App() {
           {activeSection === 'home' && (
   <>
     <HeroSection onVideoClick={handleVideoClick} videos={allVideos} onScopri={() => setActiveSection('about')} />
-    <div ref={filtersSectionRef}><FiltersSection onFilterChange={setFilters} currentFilters={filters} searchQuery={searchQuery} onSearchChange={setSearchQuery} onSearchSubmit={() => {}} videos={allVideos} /></div>
+    <div ref={filtersSectionRef}><FiltersSection onFilterChange={setFilters} currentFilters={filters} searchQuery={searchQuery} onSearchChange={setSearchQuery} onSearchSubmit={() => {}} videos={allVideos} smartInterpretation={smartInterpretation} smartLoading={smartSearchLoading} onDismissSmartField={dismissSmartField} /></div>
   </>
 )}
 {activeSection === 'formats' && <NatureCarousel onSelectNature={(natura) => setSelectedNatura(natura)} selectedNatura={selectedNatura} videos={allVideos} />}
