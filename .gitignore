@@ -10,3 +10,6 @@ synopsis-output.txt
 
 # config locale personale Claude Code
 .claude/settings.local.json
+
+# generato dalla skill /handoff, documento di sessione
+HANDOFF.md
