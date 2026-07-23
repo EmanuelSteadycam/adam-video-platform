@@ -213,6 +213,17 @@ const SMART_SEARCH_MAX_LEN = 200;   // limite di lunghezza sulla query inviata
 const SMART_SEARCH_DEBOUNCE_MS = 650;
 const SMART_SEARCH_TIMEOUT_MS = 10000;
 
+// ─── Ricerca semantica (stadio 2) ──────────────────────────────────────────
+// Interruttore separato da ENABLE_SMART_SEARCH: disattivarlo riporta al layer
+// keyword+substring (stadio 1, già di per sé un miglioramento rispetto al
+// substring puro) senza toccare l'interpretazione tema/natura/durata, che resta.
+// Motivo del flag separato: lo stadio 2 costa e pesa più dello stadio 1 (misurato:
+// ~$0.15 e ~2.7s per una query generica su tutto il catalogo, contro pochi
+// centesimi e frazioni di secondo dello stadio 1) — vedi commento su
+// buildSemanticCandidates più sotto per come si tiene basso il costo nel caso comune.
+const ENABLE_SEMANTIC_SEARCH = true;
+const SEMANTIC_SEARCH_TIMEOUT_MS = 20000;
+
 const SharedPlaylistView = ({ playlistRaw, allVideos, onVideoClick, onOpenAuth, onPlayShared, onSaveShared, onSaved, user, token }) => {
   const videos = (playlistRaw.video_ids || []).map(id => allVideos.find(v => v.id === id)).filter(Boolean);
   const storageKey = `adam-shared-played-${token}`;
@@ -700,7 +711,7 @@ const CustomSelect = ({ value, onChange, options, accentColor = '#FFDA2A' }) => 
   );
 };
 
-const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchChange, onSearchSubmit, videos = [], smartInterpretation, smartLoading, onDismissSmartField }) => {
+const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchChange, onSearchSubmit, videos = [], smartInterpretation, smartLoading, onDismissSmartField, semanticLoading }) => {
   const nature = ['Tutti', 'Cortometraggio', 'Film', 'Info', 'Sequenza', 'Spot commerciale', 'Spot sociale', 'Videoclip', 'Web e social'];
   const years = ['Tutti', ...new Set(videos.map(v => v.year).filter(Boolean).sort((a, b) => b - a))];
   const [hoveredTema, setHoveredTema] = useState(null);
@@ -763,6 +774,12 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
               <div className="flex items-center gap-1.5 text-xs text-zinc-500 mb-4 -mt-2">
                 <Loader2 size={12} className="animate-spin" />
                 sto interpretando la ricerca…
+              </div>
+            )}
+            {ENABLE_SMART_SEARCH && ENABLE_SEMANTIC_SEARCH && !smartLoading && semanticLoading && (
+              <div className="flex items-center gap-1.5 text-xs text-zinc-500 mb-4 -mt-2">
+                <Loader2 size={12} className="animate-spin" />
+                sto leggendo le sinossi per trovare i video pertinenti…
               </div>
             )}
             {ENABLE_SMART_SEARCH && !smartLoading && smartInterpretation && (
@@ -2490,6 +2507,21 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const [editUserForms, setEditUserForms] = useState({});
   const [savingUserId, setSavingUserId] = useState(null);
 
+  // ─── Rigenerazione del pacchetto precalcolato per la ricerca semantica ──────────────
+  // Ogni volta che un video viene aggiunto/modificato/approvato/eliminato, il catalogo
+  // testuale usato da api/semantic-search.js va rigenerato. Se un admin approva/modifica
+  // 10 video di fila, non vogliamo rigenerarlo 10 volte: il timer si azzera ad ogni
+  // chiamata, quindi scatta una sola volta, 8s dopo l'ULTIMA modifica della sequenza.
+  // Rete di sicurezza: un cron Vercel (vercel.json) rigenera comunque ogni ora,
+  // nel caso il tab venga chiuso prima che questo timer scada.
+  const catalogRebuildTimerRef = useRef(null);
+  const scheduleCatalogRebuild = () => {
+    if (catalogRebuildTimerRef.current) clearTimeout(catalogRebuildTimerRef.current);
+    catalogRebuildTimerRef.current = setTimeout(() => {
+      fetch('/api/rebuild-catalog-cache', { method: 'POST' }).catch(() => {});
+    }, 8000);
+  };
+
   const f = (field, val) => setForm(prev => ({ ...prev, [field]: val }));
   const ef = (subId, field, val) => setEditForms(prev => ({ ...prev, [subId]: { ...(prev[subId] || {}), [field]: val } }));
   const evf = (videoId, field, val) => setEditVideoForms(prev => ({ ...prev, [videoId]: { ...(prev[videoId] || {}), [field]: val } }));
@@ -2609,6 +2641,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       setActionLoading(null);
       return;
     }
+    scheduleCatalogRebuild();
     // 2. Solo se il video è stato salvato, aggiorna lo status della segnalazione
     const { error: subErr } = await supabase.from('video_submissions').update({ status: 'approved' }).eq('id', sub.id);
     if (subErr) {
@@ -2675,6 +2708,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       setArchiveVideos(prev => prev.map(v => v.id === video.id ? { ...v, ...fullRecord } : v));
       setEditingVideoId(null);
       setEditVideoForms(prev => { const n = { ...prev }; delete n[video.id]; return n; });
+      scheduleCatalogRebuild();
     }
     setSavingVideoId(null);
   };
@@ -2686,6 +2720,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       setArchiveVideos(prev => prev.filter(v => v.id !== video.id));
       setDeleteConfirmId(null);
       onVideoApproved?.();
+      scheduleCatalogRebuild();
     }
     setDeletingVideoId(null);
   };
@@ -2700,6 +2735,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       setSelectedArchive(new Set());
       setDeleteArchiveConfirm(false);
       onVideoApproved?.();
+      scheduleCatalogRebuild();
     }
     setDeletingArchive(false);
   };
@@ -2924,6 +2960,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     setNasFile(null);
     setNasSaveMsg(null);
     onVideoApproved?.();
+    scheduleCatalogRebuild();
     return true;
   };
 
@@ -4059,6 +4096,29 @@ function App() {
   const [smartSearchLoading, setSmartSearchLoading] = useState(false);
   const smartSearchTimerRef = useRef(null);
   const smartSearchAbortRef = useRef(null);
+  // Tiene traccia di QUALI campi (tema/natura/scuola/durationMax) sono stati applicati
+  // ai filtri dall'ULTIMA interpretazione andata a buon fine (debounce scaduto, fetch
+  // risolta) — per poterli resettare quando una query successiva non li riconferma più.
+  // Deliberatamente NON è uno specchio dello stato `smartInterpretation` (che viene
+  // azzerato ad ogni tasto premuto quando la query scende sotto SMART_SEARCH_MIN_LEN,
+  // per nascondere subito il banner): se fosse uno specchio, digitare una nuova query
+  // carattere per carattere azzererebbe questa "memoria" prima ancora che il debounce
+  // scada, e il reset sotto non troverebbe più nulla da ripulire — bug osservato e
+  // corretto durante il testing di questa sessione.
+  const appliedSmartFieldsRef = useRef({ tema: null, natura: null, scuola: null, durationMax: null });
+  // ─── Ricerca semantica (stadio 2) — sostituisce il match a keyword quando riesce ──
+  const [semanticIds, setSemanticIds] = useState(null); // null = non disponibile (fallback a keyword/substring); [] = nessun risultato pertinente
+  const [semanticLoading, setSemanticLoading] = useState(false);
+  const semanticSearchAbortRef = useRef(null);
+  // Contatore di sequenza: incrementato ad ogni nuova runSemanticSearch. AbortController
+  // non basta a prevenire una risposta "vecchia" che arriva DOPO quella nuova (es. una
+  // query intermedia più generica, che genera più ID quindi più token di output, può
+  // impiegare più tempo di quella finale corretta) — abort() non ha effetto su una
+  // richiesta la cui risposta di rete è già arrivata. Ogni chiamata cattura il proprio
+  // numero di sequenza all'avvio; il risultato viene applicato con setSemanticIds SOLO
+  // se quel numero corrisponde ancora all'ultima richiesta partita — altrimenti viene
+  // scartato in silenzio, anche se è "vinto" la gara di rete.
+  const semanticSearchSeqRef = useRef(0);
   const [localPlaylist, setLocalPlaylist] = useState([]);
   const [playingLocalPlaylist, setPlayingLocalPlaylist] = useState(false);
   const [playlists, setPlaylists] = useState([]);
@@ -4083,7 +4143,25 @@ function App() {
 
     const q = searchQuery.trim();
     if (q.length < SMART_SEARCH_MIN_LEN || q.length > SMART_SEARCH_MAX_LEN) {
+      // Query azzerata del tutto (campo svuotato): è un'azione deliberata dell'utente,
+      // non un carattere transitorio a metà digitazione — libera subito i campi che
+      // l'ultima ricerca smart aveva applicato, altrimenti il banner sparisce ma il
+      // filtro tema/natura resta silenziosamente incollato senza più nulla che lo spieghi.
+      // Per 1-3 caratteri (a metà digitazione di una query nuova) non si tocca nulla qui:
+      // il debounce sotto gestirà correttamente il reset una volta che la query si assesta.
+      if (q.length === 0) {
+        const prevApplied = appliedSmartFieldsRef.current;
+        setFilters(f => ({
+          ...f,
+          tema: prevApplied.tema ? 'Tutti' : f.tema,
+          natura: prevApplied.natura ? 'Tutti' : f.natura,
+          scuola: prevApplied.scuola ? 'Tutti' : f.scuola,
+          durationMax: prevApplied.durationMax ? SNAP_POINTS[SNAP_POINTS.length - 1] : f.durationMax,
+        }));
+        appliedSmartFieldsRef.current = { tema: null, natura: null, scuola: null, durationMax: null };
+      }
       setSmartInterpretation(null);
+      setSemanticIds(null);
       setSmartSearchLoading(false);
       return;
     }
@@ -4104,16 +4182,41 @@ function App() {
         const data = await res.json();
         const hasAny = data.tema || data.natura || data.scuola || data.durationMax ||
           (data.keywords && data.keywords.length > 0) || (data.excludeKeywords && data.excludeKeywords.length > 0);
-        if (!hasAny) { setSmartInterpretation(null); return; }
+        const prevApplied = appliedSmartFieldsRef.current;
+        if (!hasAny) {
+          // Anche una query diventata vaga deve liberare i campi che una query
+          // precedente aveva impostato — altrimenti restano incollati nei filtri.
+          setFilters(f => ({
+            ...f,
+            tema: prevApplied.tema ? 'Tutti' : f.tema,
+            natura: prevApplied.natura ? 'Tutti' : f.natura,
+            scuola: prevApplied.scuola ? 'Tutti' : f.scuola,
+            durationMax: prevApplied.durationMax ? SNAP_POINTS[SNAP_POINTS.length - 1] : f.durationMax,
+          }));
+          appliedSmartFieldsRef.current = { tema: null, natura: null, scuola: null, durationMax: null };
+          setSmartInterpretation(null);
+          setSemanticIds(null);
+          return;
+        }
 
         const snappedDuration = data.durationMax ? nearestSnapPoint(data.durationMax) : null;
         setFilters(f => ({
           ...f,
-          ...(data.tema ? { tema: data.tema } : {}),
-          ...(data.natura ? { natura: data.natura } : {}),
-          ...(data.scuola ? { scuola: data.scuola } : {}),
-          ...(snappedDuration ? { durationMax: snappedDuration } : {}),
+          // Se il campo non è (ri)confermato da questa query MA era stato impostato dalla
+          // precedente interpretazione smart, lo si resetta — non lo si lascia "incollato".
+          // Se non era mai stato impostato dalla ricerca smart (es. scelta manuale
+          // dell'utente), lo si lascia invariato.
+          tema: data.tema ? data.tema : (prevApplied.tema ? 'Tutti' : f.tema),
+          natura: data.natura ? data.natura : (prevApplied.natura ? 'Tutti' : f.natura),
+          scuola: data.scuola ? data.scuola : (prevApplied.scuola ? 'Tutti' : f.scuola),
+          durationMax: snappedDuration ? snappedDuration : (prevApplied.durationMax ? SNAP_POINTS[SNAP_POINTS.length - 1] : f.durationMax),
         }));
+        appliedSmartFieldsRef.current = {
+          tema: data.tema || null,
+          natura: data.natura || null,
+          scuola: data.scuola || null,
+          durationMax: snappedDuration || null,
+        };
         setSmartInterpretation({
           tema: data.tema || null,
           natura: data.natura || null,
@@ -4122,10 +4225,16 @@ function App() {
           keywords: data.keywords || [],
           excludeKeywords: data.excludeKeywords || [],
         });
+        if (ENABLE_SEMANTIC_SEARCH) {
+          runSemanticSearch(q, data.tema || null, data.natura || null);
+        } else {
+          setSemanticIds(null);
+        }
       } catch {
         // Fallback: nessuna interpretazione applicata, la ricerca substring sulla query
         // grezza (già attiva in filteredVideos) continua a funzionare invariata.
         setSmartInterpretation(null);
+        setSemanticIds(null);
       } finally {
         clearTimeout(abortTimeout);
         setSmartSearchLoading(false);
@@ -4134,6 +4243,48 @@ function App() {
 
     return () => { if (smartSearchTimerRef.current) clearTimeout(smartSearchTimerRef.current); };
   }, [searchQuery]);
+
+  // ─── Ricerca semantica (stadio 2): query (+ tema/natura per restringere) -> ID pertinenti ──
+  // Chiamata dallo stadio 1 subito dopo aver ricavato tema/natura. Il catalogo NON viene più
+  // costruito qui: api/semantic-search.js legge il pacchetto precalcolato da Supabase (vedi
+  // api/rebuild-catalog-cache.js) e lo restringe lui stesso al sottoinsieme tema/natura se la
+  // query lo discrimina chiaramente — solo per query generiche viene usato l'intero pacchetto
+  // — misurato: ~$0.15 e ~2.7s in quel caso, comunicato con un indicatore di caricamento dedicato.
+  const runSemanticSearch = async (query, tema, natura) => {
+    if (semanticSearchAbortRef.current) semanticSearchAbortRef.current.abort();
+
+    const mySeq = ++semanticSearchSeqRef.current;
+    const controller = new AbortController();
+    semanticSearchAbortRef.current = controller;
+    const abortTimeout = setTimeout(() => controller.abort(), SEMANTIC_SEARCH_TIMEOUT_MS);
+    setSemanticLoading(true);
+    try {
+      const res = await fetch('/api/semantic-search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query, tema: tema || null, natura: natura || null }),
+        signal: controller.signal,
+      });
+      if (!res.ok) throw new Error('semantic-search non ok');
+      const data = await res.json();
+      // Scarta in silenzio se, mentre questa richiesta era in volo, ne è partita una più
+      // recente: senza questo controllo una risposta "vecchia" ma più lenta (es. una query
+      // intermedia più generica, con più ID quindi più token di output da generare) può
+      // arrivare DOPO quella corretta e sovrascriverla — abort() da solo non lo previene,
+      // perché non ha effetto su una richiesta la cui risposta è già arrivata.
+      if (mySeq !== semanticSearchSeqRef.current) return;
+      setSemanticIds(Array.isArray(data.ids) ? data.ids : null);
+    } catch {
+      if (mySeq !== semanticSearchSeqRef.current) return;
+      // Fallback: nessun ID semantico disponibile (inclusa la cache non ancora esistente —
+      // risposta 503 pulita, gestita qui come un fallimento normale), filteredVideos ricade
+      // sul layer keyword+substring dello stadio 1 (già attivo) — la ricerca non si blocca mai.
+      setSemanticIds(null);
+    } finally {
+      clearTimeout(abortTimeout);
+      if (mySeq === semanticSearchSeqRef.current) setSemanticLoading(false);
+    }
+  };
 
   const dismissSmartField = (field) => {
     setSmartInterpretation(prev => {
@@ -4144,7 +4295,15 @@ function App() {
     if (field === 'natura') setFilters(f => ({ ...f, natura: 'Tutti' }));
     if (field === 'scuola') setFilters(f => ({ ...f, scuola: 'Tutti' }));
     if (field === 'durationMax') setFilters(f => ({ ...f, durationMax: SNAP_POINTS[SNAP_POINTS.length - 1] }));
+    if (field === 'tema' || field === 'natura' || field === 'scuola' || field === 'durationMax') {
+      // Il campo non è più "applicato dalla ricerca smart": una query successiva che
+      // non lo riconferma non deve provare a resettarlo di nuovo (è già a default).
+      appliedSmartFieldsRef.current = { ...appliedSmartFieldsRef.current, [field]: null };
+    }
     // 'keywords'/'excludeKeywords': azzerando l'array si toglie solo quel vincolo dal match testuale.
+    // Qualsiasi campo rimosso invalida il sottoinsieme su cui si basava la ricerca semantica:
+    // si ricade sul layer keyword+substring finché una nuova query non rilancia lo stadio 2.
+    setSemanticIds(null);
   };
 
   // ─── IntersectionObserver: mostra header search quando FiltersSection esce dal viewport ──
@@ -4352,10 +4511,18 @@ function App() {
     let filtered = allVideos;
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
+      const semanticMatch = (ENABLE_SMART_SEARCH && ENABLE_SEMANTIC_SEARCH) ? semanticIds : null;
       const smartKeywords = ENABLE_SMART_SEARCH ? smartInterpretation?.keywords : null;
       const smartExclude = ENABLE_SMART_SEARCH ? smartInterpretation?.excludeKeywords : null;
       const hasSmartMatch = (smartKeywords && smartKeywords.length > 0) || (smartExclude && smartExclude.length > 0);
-      if (hasSmartMatch) {
+      if (semanticMatch) {
+        // Ricerca semantica riuscita (stadio 2): usa direttamente gli ID restituiti da Haiku,
+        // che ha letto il significato reale di titolo/sinossi invece di cercare parole esatte —
+        // risolve i casi di sinonimi/parafrasi che il match a keyword (sotto) non può risolvere.
+        // [] è un risultato legittimo (nessun video pertinente), non un fallimento.
+        const idSet = new Set(semanticMatch);
+        filtered = filtered.filter(video => idSet.has(video.id));
+      } else if (hasSmartMatch) {
         // Ricerca smart riuscita: matcha sulle parole chiave interpretate invece che sulla
         // frase grezza (che raramente compare letteralmente in titolo/descrizione), ed
         // esclude esplicitamente i video che contengono le parole indicate come "senza X".
@@ -4405,7 +4572,7 @@ function App() {
     }
 
     return filtered;
-  }, [allVideos, searchQuery, activeSection, selectedNatura, filters, schoolsSort, smartInterpretation]);
+  }, [allVideos, searchQuery, activeSection, selectedNatura, filters, schoolsSort, smartInterpretation, semanticIds]);
 
   return (
     <div className="min-h-screen bg-black flex">
@@ -4655,7 +4822,7 @@ function App() {
           {activeSection === 'home' && (
   <>
     <HeroSection onVideoClick={handleVideoClick} videos={allVideos} onScopri={() => setActiveSection('about')} />
-    <div ref={filtersSectionRef}><FiltersSection onFilterChange={setFilters} currentFilters={filters} searchQuery={searchQuery} onSearchChange={setSearchQuery} onSearchSubmit={() => {}} videos={allVideos} smartInterpretation={smartInterpretation} smartLoading={smartSearchLoading} onDismissSmartField={dismissSmartField} /></div>
+    <div ref={filtersSectionRef}><FiltersSection onFilterChange={setFilters} currentFilters={filters} searchQuery={searchQuery} onSearchChange={setSearchQuery} onSearchSubmit={() => {}} videos={allVideos} smartInterpretation={smartInterpretation} smartLoading={smartSearchLoading} onDismissSmartField={dismissSmartField} semanticLoading={semanticLoading} /></div>
   </>
 )}
 {activeSection === 'formats' && <NatureCarousel onSelectNature={(natura) => setSelectedNatura(natura)} selectedNatura={selectedNatura} videos={allVideos} />}

@@ -130,6 +130,21 @@ node --env-file=.env scripts/seed-videos.mjs
 ```
 Richiede `SUPABASE_SERVICE_KEY` nel `.env` (service_role key da Supabase Dashboard → Settings → API).
 
+### Cache precalcolata per la ricerca semantica (Vercel Blob, nessun setup SQL richiesto)
+Pacchetto precalcolato (titolo + sinossi + tema + natura di tutti i video) usato come contesto
+per la ricerca semantica in `api/semantic-search.js`. Salvato come singolo file di testo su
+Vercel Blob al pathname fisso `search-catalog-cache.txt` (costante `CACHE_PATHNAME` esportata
+da `api/rebuild-catalog-cache.js`), sovrascritto ad ogni rigenerazione (`addRandomSuffix: false,
+allowOverwrite: true` — non si accumulano blob vecchi). Richiede `BLOB_READ_WRITE_TOKEN` (già
+presente in `.env.local` e nelle env var Vercel del progetto — nessuna tabella da creare).
+Rigenerato da `api/rebuild-catalog-cache.js`, chiamato con debounce dall'admin dopo ogni modifica
+al catalogo e da un cron Vercel ogni ora (`vercel.json`) come rete di sicurezza. Popolato la prima
+volta con:
+```bash
+curl -X POST https://<il-tuo-dominio>/api/rebuild-catalog-cache
+```
+(o in locale, con `vercel dev` attivo: `curl -X POST http://localhost:3000/api/rebuild-catalog-cache`)
+
 ### Auth
 - Email/password via Supabase Auth
 - RLS attivo su tutte le tabelle

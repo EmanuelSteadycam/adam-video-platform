@@ -60,3 +60,27 @@ intercetta *qualcosa* ma senza garanzia di correttezza/copertura sul campo `natu
 campo strutturato separato tipo `excludeNatura` (stesso enum di `natura`, ma come esclusione
 vera contro il campo del video, non contro il testo) nello schema restituito da
 `api/search-parse.js` e nella logica di `filteredVideos`.
+
+## Ricerca semantica (api/semantic-search.js) — confusione categoria+brand nello stesso query
+
+Emerso il 22 luglio 2026 durante il testing della ricerca semantica (stadio 2, che manda a
+Haiku titolo+sinossi dei video candidati e chiede di restituire gli ID pertinenti leggendo il
+significato reale del testo, non per parole chiave). Caso concreto: il tema Digitale contiene
+sia smartphone reali (`Samsung Galaxy`, `Z Fold`, `Z Flip`, iPhone...) sia un video etichettato
+"Samsung Gear" che in realtà è un visore VR, non uno smartphone.
+
+**Stato**: query basate solo sulla categoria ("video sullo smartphone", "video su un telefono
+cellulare") escludono correttamente "Samsung Gear" in modo affidabile — verificato 8/8 esecuzioni
+su due formulazioni diverse. Ma query che menzionano ESPLICITAMENTE sia il brand che la categoria
+insieme ("dispositivo Samsung smartphone") includono erroneamente "Samsung Gear" in 4 esecuzioni
+su 5, anche dopo aver aggiunto al prompt un'istruzione esplicita di attenzione alla categoria del
+prodotto (non solo al brand). Il nome del brand sembra "trascinare dentro" tutti i contenuti con
+quel brand indipendentemente dalla categoria richiesta, anche quando l'istruzione dice il
+contrario. Non è un bug di codice — è un limite di affidabilità del modello su query che
+combinano brand + categoria quando quel brand copre più categorie di prodotto nell'archivio, e
+resta anche dopo un tentativo di correzione via prompt.
+
+**Da valutare**: se questo tipo di query (brand + categoria) risultasse frequente in produzione,
+si potrebbe tentare un secondo giro di prompt engineering più mirato (few-shot example esplicito
+nel prompt con un caso Samsung Gear/Galaxy), oppure accettare il limite e documentarlo per gli
+utenti come caratteristica nota della ricerca "intelligente" (non deterministica al 100%).

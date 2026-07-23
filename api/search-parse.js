@@ -51,7 +51,8 @@ Analizza questa query scritta in linguaggio naturale e restituisci SOLO un ogget
 
 {
   "tema": uno tra ${JSON.stringify(TEMI)} se la query menziona chiaramente quel tema, altrimenti null,
-  "natura": uno tra ${JSON.stringify(NATURE)} se la query menziona un formato specifico, altrimenti null,
+  "natura": uno tra ${JSON.stringify(NATURE)} SOLO se la query contiene una parola o espressione che discrimina esplicitamente quella categoria da tutte le altre — cioè che permetterebbe a un umano di scegliere con sicurezza QUELLA voce e non un'altra della lista. Altrimenti null.
+    ATTENZIONE: la parola "spot" da sola NON è sufficiente — è ambigua tra "Spot commerciale" e "Spot sociale" (e non implica nessun'altra categoria) e va lasciata a null a meno che la query non aggiunga un termine che disambigua (es. "sociale"/"prevenzione"/"campagna sociale"/"istituzionale" → Spot sociale; "pubblicitario"/"commerciale"/"réclame"/"un marchio"/"un prodotto" → Spot commerciale). Non dedurre MAI la natura più "probabile" o "tipica" per l'archivio, e non usare il contenuto o il tono del video per indovinarla se la query non la nomina esplicitamente: in caso di dubbio, restituisci sempre null.
   "scuola": "Scuole" se la query chiede esplicitamente video realizzati da scuole/studenti, "Altri" se chiede il contrario, altrimenti null,
   "durationMax": numero intero di secondi se la query chiede video brevi/corti o con un limite di durata (es. "sotto i 5 minuti" = 300, "brevi" = 180, "cortissimi" = 60), altrimenti null,
   "keywords": array di massimo 5 parole o brevi espressioni in italiano (senza articoli/preposizioni) che potrebbero comparire letteralmente nel titolo o nella descrizione di un video pertinente — es. per "video sul gioco d'azzardo per adolescenti" → ["azzardo", "gioco", "adolescenti", "ragazzi"],
@@ -60,7 +61,7 @@ Analizza questa query scritta in linguaggio naturale e restituisci SOLO un ogget
 
 IMPORTANTE: "keywords" ed "excludeKeywords" sono insiemi opposti — la stessa parola non deve mai comparire in entrambi. Se la query contiene una negazione esplicita su un concetto, quel concetto va SOLO in "excludeKeywords", mai in "keywords" (anche sotto forma di sinonimo).
 
-Se la query è troppo vaga o non contiene nessuna informazione utile su questi campi, restituisci tutti i campi a null/[].
+Valuta ogni campo IN MODO INDIPENDENTE dagli altri — "tema" e "natura" restano null tutte le volte che non c'è un'informazione esplicita e discriminante per quel campo specifico, ma questo NON significa che anche "keywords" debba essere vuoto: "keywords" va comunque popolato con le parole di contenuto della query (sostantivi, oggetti, concetti — non articoli/preposizioni) ogni volta che la query ne contiene almeno una, anche se tema/natura/scuola/durationMax restano tutti null. Esempio: per "spot sul WC" → tema: null, natura: null (vedi sopra: "spot" da solo non basta), ma keywords: ["WC", "bagno", "toilette"] (le parole di contenuto ci sono, vanno comunque estratte). "keywords" resta vuoto SOLO se la query non contiene nessuna parola di contenuto specifica (es. "mostrami un video", "qualcosa di interessante", "cerca qualcosa").
 
 Query: "${q}"`;
 
