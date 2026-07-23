@@ -7,3 +7,6 @@ dist
 
 # output di scripts/synopsis.mjs
 synopsis-output.txt
+
+# config locale personale Claude Code
+.claude/settings.local.json
