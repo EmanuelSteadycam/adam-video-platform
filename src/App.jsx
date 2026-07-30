@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { upload as blobUpload } from '@vercel/blob/client';
-import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown, Send, ShieldCheck, AlertCircle, Loader2, LogIn, Film, BookOpen, Pencil, Trash2, Save, RotateCcw, Archive, Lightbulb, Share2, Link, Activity } from 'lucide-react';
+import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown, Send, ShieldCheck, AlertCircle, Loader2, LogIn, Film, BookOpen, Pencil, Trash2, Save, RotateCcw, Archive, Lightbulb, Share2, Link, Activity, Volume2 } from 'lucide-react';
 import Lottie from 'lottie-react';
 import { supabase } from './supabase';
 import { videos as videosData } from './videosData';
@@ -1258,6 +1258,15 @@ const VideoModal = ({ video, onClose }) => {
     ? `https://www.tiktok.com/embed/v2/${videoId}?autoplay=1&muted=0&rel=0`
     : `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&rel=0&modestbranding=1`;
   const [key, setKey] = useState(0);
+  // TikTok forza il video muto all'avvio (limite del loro player, non regolabile
+  // via parametri) — un hint una tantum spiega dove attivare l'audio
+  const [showAudioHint, setShowAudioHint] = useState(
+    () => platform === 'tiktok' && !localStorage.getItem('adam-tiktok-audio-hint-seen')
+  );
+  const dismissAudioHint = () => {
+    localStorage.setItem('adam-tiktok-audio-hint-seen', '1');
+    setShowAudioHint(false);
+  };
 
   const getTemaScrollbarColor = (tema) => {
     const colors = {
@@ -1302,6 +1311,13 @@ const VideoModal = ({ video, onClose }) => {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               />
+              {showAudioHint && (
+                <button onClick={dismissAudioHint} className="absolute bottom-3 left-3 right-3 z-20 flex items-center gap-2 bg-black/85 text-white text-xs px-3 py-2 rounded-lg text-left">
+                  <Volume2 size={14} className="shrink-0" style={{ color: '#FFDA2A' }} />
+                  <span className="flex-1">Il video parte senza audio — tocca l'icona del volume nel player per attivarlo</span>
+                  <X size={12} className="shrink-0" />
+                </button>
+              )}
             </div>
           ) : (
             <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
