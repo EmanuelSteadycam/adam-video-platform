@@ -1351,6 +1351,7 @@ const VideoModal = ({ video, onClose }) => {
               <span>{video.format}</span>
             </div>
             {video.prodottoScuola && <div className="flex items-center gap-2 text-purple-400"><School size={16} /><span>Prodotto da scuole</span></div>}
+            {video.codice && <div className="flex items-center gap-2 font-mono"><span>{video.codice}</span></div>}
           </div>
           
           {/* Pulsante Aggiungi a Playlist */}
@@ -1491,7 +1492,7 @@ const PlaylistSidebar = ({
       </div>
       <div className="flex-1 min-w-0">
         <h3 className="text-white text-sm font-medium line-clamp-2 mb-1">{video.title}</h3>
-        <p className="text-zinc-400 text-xs">{video.duration || 'N/D'} • {video.year}</p>
+        <p className="text-zinc-400 text-xs">{video.duration || 'N/D'} • {video.year}{video.codice ? ` • ${video.codice}` : ''}</p>
       </div>
       <button onClick={() => onRemove(video.id)} className="text-zinc-500 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100 flex-shrink-0">
         <X size={18} />
