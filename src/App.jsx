@@ -1899,7 +1899,7 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
           <div className="relative w-full h-full">
             {currentVideo.source === 'nas' ? (
               <video
-                key={key}
+                key={`nas-${currentIndex}`}
                 className="w-full h-full"
                 src={currentVideo.videoUrl}
                 controls
@@ -1907,7 +1907,7 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
                 onEnded={onNext}
               />
             ) : platform === 'tiktok' ? (
-              <div className="w-full h-full flex items-center justify-center">
+              <div key={`tiktok-${currentIndex}`} className="w-full h-full flex items-center justify-center">
                 <div className="relative h-full bg-black" style={{ aspectRatio: '9 / 16', maxWidth: '100%' }}>
                   <iframe
                     className="absolute top-0 left-0 w-full h-full"
@@ -1921,6 +1921,7 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
               </div>
             ) : (
               <div
+                key={`yt-${currentIndex}`}
                 ref={containerRef}
                 className="w-full h-full"
               >
