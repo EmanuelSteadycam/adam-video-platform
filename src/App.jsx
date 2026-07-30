@@ -2578,6 +2578,11 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     thumbnail: '',
   });
   const [tiktokLookupLoading, setTiktokLookupLoading] = useState(false);
+  // Precompila il Codice ID con il prossimo numero disponibile (stesso meccanismo
+  // già usato nel tab "In attesa" — non era mai stato esteso qui)
+  useEffect(() => {
+    setForm(prev => ({ ...prev, codice: getNextCodice() }));
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState(null);
   const [expandedId, setExpandedId] = useState(null);
@@ -2762,6 +2767,15 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       }
     });
     return `HD-${yy}${String(maxNum + 1).padStart(4, '0')}`;
+  };
+
+  // Incrementa direttamente dal codice appena salvato invece di ricalcolare da allVideos
+  // (che non si è ancora aggiornato subito dopo un insert) — evita di riproporre lo stesso numero
+  const bumpCodice = (code) => {
+    const yy = String(new Date().getFullYear()).slice(-2);
+    const m = (code || '').trim().match(/^HD-(\d{2})(\d{4})$/);
+    if (m && m[1] === yy) return `HD-${yy}${String(parseInt(m[2], 10) + 1).padStart(4, '0')}`;
+    return getNextCodice();
   };
 
   const loadServices = async () => {
@@ -3164,7 +3178,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       return false;
     }
     setSaveMsg({ type: 'success', text: 'Video aggiunto all\'archivio.' });
-    setForm({ title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: '', thumbnail: '' });
+    setForm({ title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: bumpCodice(form.codice), thumbnail: '' });
     setSynopsisWarning('');
     setManualTranscript('');
     setShowTranscriptInput(false);
@@ -3207,7 +3221,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       setSaveMsg({ type: 'error', text: error.message });
       setSaving(false);
     } else {
-      setForm({ title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: '', thumbnail: '' });
+      setForm({ title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: bumpCodice(form.codice), thumbnail: '' });
       setSynopsisWarning('');
       setManualTranscript('');
       setShowTranscriptInput(false);
