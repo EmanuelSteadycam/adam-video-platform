@@ -1251,6 +1251,12 @@ const VideoCard = ({ video, onClick, onAddToPlaylist, isInPlaylist }) => {
 const VideoModal = ({ video, onClose }) => {
   const platform = detectPlatform(video.youtubeUrl);
   const videoId = platform === 'tiktok' ? extractTikTokId(video.youtubeUrl) : getYouTubeID(video.youtubeUrl);
+  // Contenitore verticale per QUALSIASI video verticale (TikTok o YouTube Shorts),
+  // non solo per piattaforma — altrimenti uno short YouTube resta schiacciato nel box 16:9
+  const isVertical = video.format === 'verticale';
+  const embedSrc = platform === 'tiktok'
+    ? `https://www.tiktok.com/embed/v2/${videoId}?autoplay=1&muted=0&rel=0`
+    : `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&rel=0&modestbranding=1`;
   const [key, setKey] = useState(0);
 
   const getTemaScrollbarColor = (tema) => {
@@ -1275,9 +1281,9 @@ const VideoModal = ({ video, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div 
-        className="bg-zinc-900 rounded-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto modal-scrollbar" 
-        onClick={e => e.stopPropagation()}
+      <div className="relative" onClick={e => e.stopPropagation()}>
+      <div
+        className={`bg-zinc-900 rounded-xl w-full max-h-[90vh] overflow-y-auto modal-scrollbar ${isVertical ? 'max-w-[420px]' : 'max-w-6xl'}`}
         style={{
           scrollbarWidth: 'thin',
           scrollbarColor: `${scrollbarColor} #18181b`,
@@ -1285,12 +1291,12 @@ const VideoModal = ({ video, onClose }) => {
         }}
       >
         <div className="relative">
-          {platform === 'tiktok' ? (
+          {isVertical ? (
             <div className="relative mx-auto bg-black" style={{ width: '100%', maxWidth: '360px', aspectRatio: '9 / 16' }}>
               <iframe
                 key={key}
                 className="absolute top-0 left-0 w-full h-full"
-                src={`https://www.tiktok.com/embed/v2/${videoId}`}
+                src={embedSrc}
                 title={video.title}
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -1302,7 +1308,7 @@ const VideoModal = ({ video, onClose }) => {
               <iframe
                 key={key}
                 className="absolute top-0 left-0 w-full h-full"
-                src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&rel=0&modestbranding=1`}
+                src={embedSrc}
                 title={video.title}
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -1310,7 +1316,9 @@ const VideoModal = ({ video, onClose }) => {
               />
             </div>
           )}
-          <button onClick={onClose} className="absolute top-16 md:top-20 right-6 bg-black bg-opacity-80 text-white p-2 rounded-full hover:bg-opacity-100 transition-all z-10"><X size={24} /></button>
+          {!isVertical && (
+            <button onClick={onClose} className="absolute right-6 top-16 md:top-20 bg-black bg-opacity-80 text-white p-2 rounded-full hover:bg-opacity-100 transition-all z-10"><X size={24} /></button>
+          )}
         </div>
         <div className="p-8">
           <h2 className="text-3xl font-bold text-white mb-4">{video.title}</h2>
@@ -1368,6 +1376,10 @@ const VideoModal = ({ video, onClose }) => {
             <p className="text-zinc-400 leading-relaxed">{video.description}</p>
           </div>
         </div>
+      </div>
+      {isVertical && (
+        <button onClick={onClose} className="absolute -right-16 top-0 bg-black bg-opacity-80 text-white p-2 rounded-full hover:bg-opacity-100 transition-all z-10"><X size={24} /></button>
+      )}
       </div>
     </div>
   );
@@ -1882,7 +1894,7 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
                 <div className="relative h-full bg-black" style={{ aspectRatio: '9 / 16', maxWidth: '100%' }}>
                   <iframe
                     className="absolute top-0 left-0 w-full h-full"
-                    src={`https://www.tiktok.com/embed/v2/${videoId}`}
+                    src={`https://www.tiktok.com/embed/v2/${videoId}?autoplay=1&muted=0&rel=0`}
                     title={currentVideo.title}
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -2645,6 +2657,9 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       youtube_url: meta.canonicalUrl || prev.youtube_url,
       thumbnail: meta.thumbnailUrl || prev.thumbnail,
       title: prev.title.trim() ? prev.title : (meta.title || prev.title),
+      // quasi tutto il contenuto TikTok è verticale — nessun autofill di formato
+      // arriva più da "Genera sinossi" per questa piattaforma (bottone nascosto)
+      formato: 'verticale',
     }));
   };
 
@@ -2659,6 +2674,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
         ...(prev[subId] || {}),
         youtube_url: meta.canonicalUrl || url,
         thumbnail: meta.thumbnailUrl || (prev[subId] || {}).thumbnail,
+        formato: 'verticale',
       },
     }));
   };
