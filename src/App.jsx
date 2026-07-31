@@ -2784,17 +2784,30 @@ const AuthModal = ({ mode: initialMode, onClose, dismissible = true }) => {
       <div className="fixed inset-0 bg-black z-50 flex flex-col items-center" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif' }}>
       <div className="w-full max-w-[420px] flex-1 overflow-y-auto px-7 pt-10 pb-40">
         {logoAnim ? (
-          <div className="w-24 -ml-2 mb-1">
-            <Lottie
-              animationData={logoAnim}
-              loop
-              autoplay
-              lottieRef={lottieRef}
-              onComplete={() => { if (lottieRef.current) lottieRef.current.setDirection(lottieRef.current.playDirection * -1); }}
-            />
+          <div className="flex flex-col items-center text-center mb-2">
+            <div className="w-44">
+              <Lottie
+                animationData={logoAnim}
+                loop
+                autoplay
+                lottieRef={lottieRef}
+                onComplete={() => { if (lottieRef.current) lottieRef.current.setDirection(lottieRef.current.playDirection * -1); }}
+              />
+            </div>
+            <div className="-mt-2 flex flex-col items-center gap-0.5">
+              {['ARCHIVIO', 'DIGITALE', 'ADDICTION E', 'MEDIA'].map((word, i) => (
+                <span
+                  key={word}
+                  className="tagline-word text-white/50 text-[11px] tracking-[0.25em] uppercase leading-tight font-light"
+                  style={{ animationDelay: `${0.5 + i * 0.15}s` }}
+                >
+                  <span style={{ color: '#FFDA2A' }}>{word[0]}</span>{word.slice(1)}
+                </span>
+              ))}
+            </div>
           </div>
         ) : (
-          <div className="text-[15px] font-extrabold tracking-[0.14em] text-white">ADAM<span style={{ color: '#FFDA2A' }}>.</span></div>
+          <div className="text-center text-[15px] font-extrabold tracking-[0.14em] text-white mb-2">ADAM<span style={{ color: '#FFDA2A' }}>.</span></div>
         )}
         <div className="mt-4 mb-6">
           <h1 className="text-[27px] font-extrabold tracking-tight text-white mb-1.5">{mode === 'login' ? 'bentornato' : 'benvenuto'}</h1>
