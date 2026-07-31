@@ -1406,6 +1406,7 @@ const PlaylistSidebar = ({
   onOpenAuth,
   onClose,
   isOpen,
+  mode = 'drawer', // 'drawer' (overlay laterale) | 'page' (schermata a tutta pagina, no backdrop/X)
   // Playlist locale (anonimi)
   localPlaylist,
   onLocalRemove,
@@ -1500,10 +1501,12 @@ const PlaylistSidebar = ({
     </div>
   );
 
+  const isPage = mode === 'page';
+
   return (
     <>
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={onClose} />
-      <div className="fixed right-0 top-0 h-full w-full md:w-96 bg-zinc-900 z-50 flex flex-col">
+      {!isPage && <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={onClose} />}
+      <div className={isPage ? 'relative w-full min-h-[70vh] bg-zinc-900 flex flex-col' : 'fixed right-0 top-0 h-full w-full md:w-96 bg-zinc-900 z-50 flex flex-col'}>
         {/* Toast "Link copiato" */}
         {copiedShareId && (
           <div className={`absolute ${copiedShareSource === 'top' ? 'top-20' : 'bottom-6'} left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-zinc-800 border border-zinc-700 text-white text-sm px-4 py-2.5 rounded-xl shadow-xl pointer-events-none whitespace-nowrap`}>
@@ -1520,7 +1523,7 @@ const PlaylistSidebar = ({
                 <h2 className="text-xl font-bold text-white flex items-center gap-2"><List size={22} />La mia Playlist</h2>
                 <p className="text-zinc-400 text-sm mt-1">{localPlaylist.length} video</p>
               </div>
-              <button onClick={onClose} className="text-zinc-400 hover:text-white transition-colors"><X size={24} /></button>
+              {!isPage && <button onClick={onClose} className="text-zinc-400 hover:text-white transition-colors"><X size={24} /></button>}
             </div>
             <div className="flex-1 overflow-y-auto p-4 modal-scrollbar" style={{'--scrollbar-color': '#52525b'}}>
               {localPlaylist.length === 0 ? (
@@ -1584,7 +1587,7 @@ const PlaylistSidebar = ({
                 >
                   <Plus size={14} /> Nuova
                 </button>
-                <button onClick={onClose} className="text-zinc-400 hover:text-white transition-colors"><X size={24} /></button>
+                {!isPage && <button onClick={onClose} className="text-zinc-400 hover:text-white transition-colors"><X size={24} /></button>}
               </div>
             </div>
             <div className="flex-1 overflow-y-auto p-4 space-y-3 modal-scrollbar" style={{'--scrollbar-color': '#52525b'}}>
@@ -1686,7 +1689,7 @@ const PlaylistSidebar = ({
                     {copiedShareId === activePlaylist.id ? <Check size={18} /> : <Share2 size={18} className="text-zinc-400" />}
                   </button>
                 )}
-                <button onClick={onClose} className="text-zinc-400 hover:text-white transition-colors"><X size={24} /></button>
+                {!isPage && <button onClick={onClose} className="text-zinc-400 hover:text-white transition-colors"><X size={24} /></button>}
               </div>
             </div>
             <div className="flex-1 overflow-y-auto p-4 modal-scrollbar" style={{'--scrollbar-color': '#52525b'}}>
@@ -1781,6 +1784,42 @@ const PickPlaylistModal = ({ video, playlists, onAdd, onClose, onCreatePlaylist 
         )}
       </div>
     </div>
+  );
+};
+
+const QuickTabBar = ({ activeSection, isAdmin, onNavigate }) => {
+  const addDestination = isAdmin ? 'admin' : 'submit';
+  const addActive = activeSection === 'admin' || activeSection === 'submit';
+  return (
+    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-zinc-900 border-t border-zinc-800 px-6 pt-2 pb-3 flex items-center justify-around">
+      <button
+        onClick={() => onNavigate('myvideos')}
+        className={`flex flex-col items-center gap-1 px-4 py-1 transition-colors ${activeSection === 'myvideos' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
+      >
+        <Film size={22} />
+        <span className="text-[11px] font-medium">I miei video</span>
+      </button>
+
+      <button
+        onClick={() => onNavigate(addDestination)}
+        className="flex flex-col items-center -mt-6"
+      >
+        <span
+          className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-transform active:scale-95"
+          style={{ backgroundColor: '#FFDA2A', outline: addActive ? '3px solid #52525b' : 'none' }}
+        >
+          <Plus size={28} className="text-black" strokeWidth={2.5} />
+        </span>
+      </button>
+
+      <button
+        onClick={() => onNavigate('quick-playlist')}
+        className={`flex flex-col items-center gap-1 px-4 py-1 transition-colors ${activeSection === 'quick-playlist' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
+      >
+        <List size={22} />
+        <span className="text-[11px] font-medium">Playlist</span>
+      </button>
+    </nav>
   );
 };
 
@@ -1958,7 +1997,7 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
 };
 
 // ─── AuthModal ────────────────────────────────────────────────────────────────
-const AuthModal = ({ mode: initialMode, onClose }) => {
+const AuthModal = ({ mode: initialMode, onClose, dismissible = true }) => {
   const [mode, setMode] = useState(initialMode || 'login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -1995,8 +2034,11 @@ const AuthModal = ({ mode: initialMode, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4" onClick={onClose}>
+    <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4" onClick={dismissible ? onClose : undefined}>
       <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 max-w-md w-full shadow-2xl" onClick={e => e.stopPropagation()}>
+        {!dismissible && (
+          <p className="text-zinc-400 text-sm mb-4">Accedi per continuare su ADAM</p>
+        )}
         <div className="flex items-center justify-between mb-6">
           <div className="flex gap-2">
             {['login', 'register'].map(m => (
@@ -2010,7 +2052,9 @@ const AuthModal = ({ mode: initialMode, onClose }) => {
               </button>
             ))}
           </div>
-          <button onClick={onClose} className="text-zinc-500 hover:text-white transition-colors"><X size={20} /></button>
+          {dismissible && (
+            <button onClick={onClose} className="text-zinc-500 hover:text-white transition-colors"><X size={20} /></button>
+          )}
         </div>
 
         {registered ? (
@@ -4306,6 +4350,9 @@ function App() {
   const [userProfile, setUserProfile] = useState(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState('login');
+  const [isQuickMode] = useState(() => new URLSearchParams(window.location.search).get('quick') === '1');
+  const [quickRouted, setQuickRouted] = useState(false);
+  const [profileLoaded, setProfileLoaded] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -4589,6 +4636,20 @@ function App() {
     if (token) loadSharedPlaylist(token);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Icona PWA "quick add" (?quick=1): login obbligatorio, poi routing per ruolo
+  // (admin -> Admin tab "Aggiungi", utente -> "Partecipa")
+  useEffect(() => {
+    if (isQuickMode && !user) { setAuthMode('login'); setShowAuthModal(true); }
+  }, [isQuickMode, user]);
+
+  useEffect(() => {
+    if (!isQuickMode || quickRouted) return;
+    if (!user) return; // resta in attesa — la AuthModal obbligatoria è già a schermo
+    if (!profileLoaded) return;
+    setActiveSection(userProfile?.role === 'admin' ? 'admin' : 'submit');
+    setQuickRouted(true);
+  }, [isQuickMode, quickRouted, user, profileLoaded, userProfile]);
+
   // Sync selectedTemaTag con filters.tema (es. click bottoni FiltersSection in home)
   useEffect(() => {
     const TEMA_TAG_COLORS = { Alcool: '#D97706', Azzardo: '#BE123C', Digitale: '#3b82f6', Sostanze: '#10b981', Tabacco: '#C9975A', Sessualità: '#8B5CF6' };
@@ -4620,6 +4681,7 @@ function App() {
       data.email = userEmail;
     }
     setUserProfile(data || null);
+    setProfileLoaded(true);
   };
 
   const loadPlaylists = async (userId) => {
@@ -4635,7 +4697,12 @@ function App() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       if (session?.user) { loadProfile(session.user.id, session.user.email); loadPlaylists(session.user.id); }
-      else { setUserProfile(null); setPlaylists([]); }
+      else {
+        setUserProfile(null);
+        setPlaylists([]);
+        setProfileLoaded(false);
+        if (isQuickMode) setQuickRouted(false);
+      }
     });
     return () => subscription.unsubscribe();
   }, []);
@@ -4894,7 +4961,7 @@ function App() {
     </ul>
   </nav>
 </aside>
-      <div className="lg:ml-64 flex-1">
+      <div className={`lg:ml-64 flex-1 ${isQuickMode && user && quickRouted ? 'pb-20' : ''}`}>
         <header className="bg-black sticky top-0 z-40">
   <div className="px-4 lg:px-8 py-4 flex items-center justify-between gap-2 lg:gap-6">
     <button
@@ -5080,7 +5147,34 @@ function App() {
           {activeSection === 'submit' && <SubmitVideoSection user={user} userProfile={userProfile} onOpenAuth={() => { setAuthMode('login'); setShowAuthModal(true); }} onBack={() => setActiveSection('home')} onDraftSaved={() => setActiveSection('myvideos')} />}
           {activeSection === 'admin' && <AdminSection userProfile={userProfile} onVideoApproved={loadVideos} allVideos={allVideos} />}
           {activeSection === 'myvideos' && <MyVideosSection user={user} onNewVideo={() => setActiveSection('submit')} />}
-          {activeSection !== 'submit' && activeSection !== 'admin' && activeSection !== 'myvideos' && activeSection !== 'about' && activeSection !== 'shared-playlist' && (
+          {activeSection === 'quick-playlist' && (
+            <PlaylistSidebar
+              mode="page"
+              user={user}
+              onOpenAuth={() => { setAuthMode('login'); setShowAuthModal(true); }}
+              onClose={() => {}}
+              isOpen={true}
+              localPlaylist={localPlaylist}
+              onLocalRemove={(videoId) => setLocalPlaylist(prev => prev.filter(v => v.id !== videoId))}
+              onLocalReorder={setLocalPlaylist}
+              onLocalPlay={() => { if (localPlaylist.length > 0) { setPlayingLocalPlaylist(true); setCurrentPlaylistIndex(0); } }}
+              playlists={playlists}
+              activePlaylistId={activePlaylistId}
+              onSetActive={setActivePlaylistId}
+              onCreatePlaylist={createPlaylist}
+              onDeletePlaylist={deletePlaylist}
+              onRenamePlaylist={renamePlaylist}
+              onRemoveVideo={removeVideoFromPlaylist}
+              onReorder={reorderPlaylist}
+              onPlay={(playlistId) => {
+                const pl = playlists.find(p => p.id === playlistId);
+                if (pl && pl.video_ids.length > 0) { setPlayingPlaylistId(playlistId); setCurrentPlaylistIndex(0); }
+              }}
+              getVideosForPlaylist={getVideosForPlaylist}
+              onSharePlaylist={sharePlaylist}
+            />
+          )}
+          {activeSection !== 'submit' && activeSection !== 'admin' && activeSection !== 'myvideos' && activeSection !== 'quick-playlist' && activeSection !== 'about' && activeSection !== 'shared-playlist' && (
           <>
           <div className="mb-6">
             <div className="flex items-center justify-between">
@@ -5206,6 +5300,16 @@ function App() {
         <AuthModal
           mode={authMode}
           onClose={() => setShowAuthModal(false)}
+          dismissible={!isQuickMode}
+        />
+      )}
+
+      {/* Quick mode: barra di navigazione in basso (solo PWA, solo utenti loggati) */}
+      {isQuickMode && user && quickRouted && (
+        <QuickTabBar
+          activeSection={activeSection}
+          isAdmin={userProfile?.role === 'admin'}
+          onNavigate={setActiveSection}
         />
       )}
     </div>
