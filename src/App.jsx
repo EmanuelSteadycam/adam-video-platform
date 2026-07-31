@@ -5178,6 +5178,8 @@ function App() {
   const [isQuickMode] = useState(() => new URLSearchParams(window.location.search).get('quick') === '1');
   const [quickRouted, setQuickRouted] = useState(false);
   const [profileLoaded, setProfileLoaded] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [quickSplashDone, setQuickSplashDone] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -5461,24 +5463,33 @@ function App() {
     if (token) loadSharedPlaylist(token);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Icona PWA "quick add" (?quick=1): login obbligatorio, poi routing per ruolo
-  // (admin -> Admin tab "Aggiungi", utente -> "Partecipa"). Legata direttamente
-  // a !user (non solo aperta al mount) — se una sessione valida è già presente
-  // in localStorage al caricamento, la modal va chiusa non appena `user` risulta
-  // popolato, non solo dopo un login "in diretta" (che chiude la modal da sé).
+  // Splash minimo (~2s): l'animazione ADAM deve comparire per un paio di
+  // secondi all'apertura della PWA anche se l'utente è già loggato, non solo
+  // durante l'attesa reale del login/profilo.
   useEffect(() => {
     if (!isQuickMode) return;
+    const t = setTimeout(() => setQuickSplashDone(true), 2000);
+    return () => clearTimeout(t);
+  }, [isQuickMode]);
+
+  // Icona PWA "quick add" (?quick=1): login obbligatorio, poi routing per ruolo
+  // (admin -> Admin tab "Aggiungi", utente -> "Partecipa"). Aspetta authChecked
+  // (fine del controllo sessione iniziale) prima di decidere se mostrare la
+  // modal, altrimenti lampeggerebbe anche con una sessione già valida.
+  useEffect(() => {
+    if (!isQuickMode || !authChecked) return;
     setAuthMode('login');
     setShowAuthModal(!user);
-  }, [isQuickMode, user]);
+  }, [isQuickMode, authChecked, user]);
 
   useEffect(() => {
     if (!isQuickMode || quickRouted) return;
+    if (!authChecked || !quickSplashDone) return; // aspetta controllo sessione + splash minimo
     if (!user) return; // resta in attesa — la AuthModal obbligatoria è già a schermo
     if (!profileLoaded) return;
     setActiveSection(userProfile?.role === 'admin' ? 'admin' : 'submit');
     setQuickRouted(true);
-  }, [isQuickMode, quickRouted, user, profileLoaded, userProfile]);
+  }, [isQuickMode, quickRouted, authChecked, quickSplashDone, user, profileLoaded, userProfile]);
 
   // Sync selectedTemaTag con filters.tema (es. click bottoni FiltersSection in home)
   useEffect(() => {
@@ -5523,6 +5534,7 @@ function App() {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       if (session?.user) { loadProfile(session.user.id, session.user.email); loadPlaylists(session.user.id); }
+      setAuthChecked(true);
     });
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
@@ -5753,7 +5765,7 @@ function App() {
           </QuickShell>
         )}
 
-        {user && !quickRouted && <QuickLoadingScreen />}
+        {(!authChecked || !quickSplashDone || (user && !quickRouted)) && <QuickLoadingScreen />}
 
         {playingPlaylistId !== null && (() => {
           const playingVideos = getVideosForPlaylist(playlists.find(p => p.id === playingPlaylistId));
