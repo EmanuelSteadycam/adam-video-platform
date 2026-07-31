@@ -192,6 +192,31 @@ const extractTikTokId = (url) => {
   return m ? m[1] : null;
 };
 
+// Prossimo Codice ID disponibile (formato HD-YYNNNN) — usato dal tab Admin
+// "Aggiungi" e dalla schermata equivalente della PWA quick-entry
+const getNextCodice = (allVideos) => {
+  const yy = String(new Date().getFullYear()).slice(-2);
+  let maxNum = 0;
+  allVideos.forEach(v => {
+    const c = (v.codice || v.id || '').trim();
+    const m = c.match(/^HD-(\d{2})(\d{4})$/);
+    if (m && m[1] === yy) {
+      const n = parseInt(m[2], 10);
+      if (n > maxNum) maxNum = n;
+    }
+  });
+  return `HD-${yy}${String(maxNum + 1).padStart(4, '0')}`;
+};
+
+// Incrementa direttamente dal codice appena salvato invece di ricalcolare da allVideos
+// (che non si è ancora aggiornato subito dopo un insert) — evita di riproporre lo stesso numero
+const bumpCodice = (code, allVideos) => {
+  const yy = String(new Date().getFullYear()).slice(-2);
+  const m = (code || '').trim().match(/^HD-(\d{2})(\d{4})$/);
+  if (m && m[1] === yy) return `HD-${yy}${String(parseInt(m[2], 10) + 1).padStart(4, '0')}`;
+  return getNextCodice(allVideos);
+};
+
 // Autofill titolo/thumbnail/URL canonico per TikTok — chiamato al blur del campo URL
 // nei form (admin + Partecipa). Nessuna auth richiesta (oEmbed pubblico TikTok).
 const fetchTikTokMeta = async (url) => {
@@ -1406,7 +1431,6 @@ const PlaylistSidebar = ({
   onOpenAuth,
   onClose,
   isOpen,
-  mode = 'drawer', // 'drawer' (overlay laterale) | 'page' (schermata a tutta pagina, no backdrop/X)
   // Playlist locale (anonimi)
   localPlaylist,
   onLocalRemove,
@@ -1501,12 +1525,10 @@ const PlaylistSidebar = ({
     </div>
   );
 
-  const isPage = mode === 'page';
-
   return (
     <>
-      {!isPage && <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={onClose} />}
-      <div className={isPage ? 'relative w-full min-h-[70vh] bg-zinc-900 flex flex-col' : 'fixed right-0 top-0 h-full w-full md:w-96 bg-zinc-900 z-50 flex flex-col'}>
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={onClose} />
+      <div className="fixed right-0 top-0 h-full w-full md:w-96 bg-zinc-900 z-50 flex flex-col">
         {/* Toast "Link copiato" */}
         {copiedShareId && (
           <div className={`absolute ${copiedShareSource === 'top' ? 'top-20' : 'bottom-6'} left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-zinc-800 border border-zinc-700 text-white text-sm px-4 py-2.5 rounded-xl shadow-xl pointer-events-none whitespace-nowrap`}>
@@ -1523,7 +1545,7 @@ const PlaylistSidebar = ({
                 <h2 className="text-xl font-bold text-white flex items-center gap-2"><List size={22} />La mia Playlist</h2>
                 <p className="text-zinc-400 text-sm mt-1">{localPlaylist.length} video</p>
               </div>
-              {!isPage && <button onClick={onClose} className="text-zinc-400 hover:text-white transition-colors"><X size={24} /></button>}
+              <button onClick={onClose} className="text-zinc-400 hover:text-white transition-colors"><X size={24} /></button>
             </div>
             <div className="flex-1 overflow-y-auto p-4 modal-scrollbar" style={{'--scrollbar-color': '#52525b'}}>
               {localPlaylist.length === 0 ? (
@@ -1587,7 +1609,7 @@ const PlaylistSidebar = ({
                 >
                   <Plus size={14} /> Nuova
                 </button>
-                {!isPage && <button onClick={onClose} className="text-zinc-400 hover:text-white transition-colors"><X size={24} /></button>}
+                <button onClick={onClose} className="text-zinc-400 hover:text-white transition-colors"><X size={24} /></button>
               </div>
             </div>
             <div className="flex-1 overflow-y-auto p-4 space-y-3 modal-scrollbar" style={{'--scrollbar-color': '#52525b'}}>
@@ -1689,7 +1711,7 @@ const PlaylistSidebar = ({
                     {copiedShareId === activePlaylist.id ? <Check size={18} /> : <Share2 size={18} className="text-zinc-400" />}
                   </button>
                 )}
-                {!isPage && <button onClick={onClose} className="text-zinc-400 hover:text-white transition-colors"><X size={24} /></button>}
+                <button onClick={onClose} className="text-zinc-400 hover:text-white transition-colors"><X size={24} /></button>
               </div>
             </div>
             <div className="flex-1 overflow-y-auto p-4 modal-scrollbar" style={{'--scrollbar-color': '#52525b'}}>
@@ -1787,38 +1809,753 @@ const PickPlaylistModal = ({ video, playlists, onAdd, onClose, onCreatePlaylist 
   );
 };
 
+// ─── PWA quick-entry — schermate "app nativa" ──────────────────────────────────
+// Vive tutta qui sotto (App.jsx unico, per convenzione del progetto). Renderizzata
+// solo quando isQuickMode === true, in un branch di ritorno separato da App() —
+// il sito normale non la carica mai e resta bit-per-bit invariato.
+
+const QuickShell = ({ userProfile, isAdmin, onLogout, children }) => (
+  <div className="min-h-screen bg-black text-white flex justify-center" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif' }}>
+    <div className="w-full max-w-[480px] flex flex-col min-h-screen">
+      <div className="flex items-center justify-between px-5 pt-5 pb-1 flex-shrink-0">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <div
+            className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 border border-zinc-800"
+            style={isAdmin ? { backgroundColor: '#FFDA2A', color: '#0a0a0a', borderColor: '#FFDA2A' } : { backgroundColor: '#242428', color: '#f4f4f5' }}
+          >
+            {isAdmin ? 'A' : ((userProfile?.nome || '?').trim().charAt(0).toUpperCase() || '?')}
+          </div>
+          <div className="text-xs text-zinc-400 leading-tight truncate">
+            {isAdmin
+              ? <>admin · <b className="text-white font-semibold">archivio ADAM</b></>
+              : <>ciao, <b className="text-white font-semibold">{userProfile?.nome || 'operatore'}</b></>}
+          </div>
+        </div>
+        <button onClick={onLogout} className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-500 hover:text-white transition-colors flex-shrink-0" aria-label="esci">
+          <LogOut size={17} />
+        </button>
+      </div>
+      <div className="flex-1 px-5 pt-3 pb-8 overflow-y-auto">
+        {children}
+      </div>
+    </div>
+  </div>
+);
+
+const QuickLoadingScreen = () => {
+  const [logoAnim, setLogoAnim] = useState(null);
+  const lottieRef = useRef(null);
+
+  useEffect(() => {
+    fetch('/logo-animation.json').then(r => r.json()).then(setLogoAnim).catch(() => {});
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-black flex items-center justify-center">
+      {logoAnim ? (
+        <div className="w-40">
+          <Lottie
+            animationData={logoAnim}
+            loop
+            autoplay
+            lottieRef={lottieRef}
+            onComplete={() => { if (lottieRef.current) lottieRef.current.setDirection(lottieRef.current.playDirection * -1); }}
+          />
+        </div>
+      ) : (
+        <Loader2 size={28} className="animate-spin text-zinc-600" />
+      )}
+    </div>
+  );
+};
+
+const QuickCard = ({ children, className = '' }) => (
+  <div className={`bg-zinc-900 border border-zinc-800 rounded-2xl p-4 mb-3.5 ${className}`}>{children}</div>
+);
+
+const QuickInput = (props) => (
+  <input {...props} className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3.5 text-[15px] text-white placeholder-zinc-500 outline-none" />
+);
+
+const QuickLabel = ({ children }) => (
+  <label className="block text-xs font-semibold text-zinc-400 mb-2">{children}</label>
+);
+
+const QuickTemaChips = ({ options, value, onChange }) => (
+  <div className="grid grid-cols-2 gap-2">
+    {options.map(tema => {
+      const on = value === tema;
+      const c = TEMA_COLORS[tema] || TEMA_COLORS['Altro'];
+      return (
+        <button
+          key={tema}
+          type="button"
+          onClick={() => onChange(tema)}
+          className="flex items-center gap-2 rounded-xl px-3 py-3 text-[13.5px] font-semibold border transition-colors"
+          style={{ borderColor: on ? c.border : '#28282c', backgroundColor: on ? '#242428' : '#1c1c1f', color: on ? '#f4f4f5' : '#a1a1aa' }}
+        >
+          <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: c.border }} />
+          {tema}
+        </button>
+      );
+    })}
+  </div>
+);
+
+const QuickCta = ({ children, onClick, disabled, ghost, icon: Icon, type = 'button' }) => (
+  <button
+    type={type}
+    onClick={onClick}
+    disabled={disabled}
+    className={`w-full flex items-center justify-center gap-2 rounded-2xl py-4 font-bold text-[15px] transition-all disabled:opacity-50 ${ghost ? 'bg-zinc-800 text-white border border-zinc-700' : 'text-black'}`}
+    style={ghost ? {} : { backgroundColor: '#FFDA2A' }}
+  >
+    {Icon && <Icon size={17} strokeWidth={2.4} />}
+    {children}
+  </button>
+);
+
+// ═══ Partecipa (utente) ═══
+const QuickPartecipaScreen = ({ user }) => {
+  const [form, setForm] = useState({ title: '', youtube_url: '', tema: '', description: '', prodotto_scuola: false });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
+  const [generatingDesc, setGeneratingDesc] = useState(false);
+  const [descWarning, setDescWarning] = useState('');
+
+  const f = (field, val) => setForm(prev => ({ ...prev, [field]: val }));
+  const platform = form.youtube_url.trim() ? detectPlatform(form.youtube_url) : null;
+
+  const handleGenerateDescription = async () => {
+    setGeneratingDesc(true);
+    setDescWarning('');
+    try {
+      const res = await fetch('/api/generate-synopsis', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ youtubeUrl: form.youtube_url, title: form.title || undefined, tema: form.tema || undefined }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setDescWarning('Qualcosa si è addormentato dall\'altra parte — riprova più tardi.'); return; }
+      setForm(prev => ({
+        ...prev,
+        ...(data.synopsis ? { description: data.synopsis } : {}),
+        ...(!prev.title.trim() && data.ytTitle ? { title: data.ytTitle } : {}),
+      }));
+      if (data.warnings?.length) setDescWarning(data.warnings.join(' '));
+    } catch {
+      setDescWarning('Qualcosa si è addormentato dall\'altra parte — riprova più tardi.');
+    } finally {
+      setGeneratingDesc(false);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!form.youtube_url.trim()) { setError('Il link del video è obbligatorio.'); return; }
+    if (!form.title.trim()) { setError('Il titolo è obbligatorio.'); return; }
+    if (!form.tema) { setError('Seleziona un tema.'); return; }
+    setLoading(true);
+    setError(null);
+    const { error: err } = await supabase.from('video_submissions').insert({
+      user_id: user.id,
+      tipo: detectPlatform(form.youtube_url.trim()),
+      title: form.title.trim(),
+      youtube_url: form.youtube_url.trim(),
+      tema: form.tema || null,
+      description: form.description.trim() || null,
+      prodotto_scuola: form.prodotto_scuola,
+      status: 'pending',
+    });
+    setLoading(false);
+    if (err) setError(err.message);
+    else setSuccess(true);
+  };
+
+  if (success) {
+    return (
+      <div className="flex flex-col items-center justify-center text-center py-24">
+        <div className="w-14 h-14 rounded-full flex items-center justify-center mb-5" style={{ backgroundColor: 'rgba(255,218,42,0.12)' }}>
+          <Check size={26} style={{ color: '#FFDA2A' }} />
+        </div>
+        <h1 className="text-xl font-bold mb-2">Inviato!</h1>
+        <p className="text-sm text-zinc-400 max-w-[26ch] mb-6">lo esaminiamo e, se appropriato, lo aggiungiamo all'archivio.</p>
+        <button onClick={() => { setSuccess(false); setForm({ title: '', youtube_url: '', tema: '', description: '', prodotto_scuola: false }); }} className="text-sm font-semibold" style={{ color: '#FFDA2A' }}>
+          segnala un altro video
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div className="text-[11px] font-bold tracking-wider uppercase mb-1" style={{ color: '#FFDA2A' }}>nuova segnalazione</div>
+      <h1 className="text-[26px] font-extrabold tracking-tight mb-1">Partecipa</h1>
+      <p className="text-[13.5px] text-zinc-400 leading-relaxed mb-5 max-w-[34ch]">condividi un video YouTube o TikTok utile per l'educazione — lo esaminiamo e, se appropriato, lo aggiungiamo all'archivio.</p>
+
+      <QuickCard>
+        <QuickLabel>link video</QuickLabel>
+        <QuickInput value={form.youtube_url} onChange={e => f('youtube_url', e.target.value)} placeholder="https://youtu.be/... oppure TikTok" />
+        {platform && (
+          <div className="flex items-center gap-2 mt-2.5 text-xs text-zinc-400">
+            <span className="inline-flex items-center gap-1.5 bg-zinc-800 border border-zinc-700 rounded-full px-2.5 py-1 font-semibold text-white text-[11px]">
+              {platform === 'tiktok'
+                ? <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'linear-gradient(135deg,#25F4EE,#FE2C55)' }} />
+                : <span className="w-1.5 h-1.5 rounded-full bg-red-500" />}
+              {platform === 'tiktok' ? 'TikTok rilevato' : 'YouTube rilevato'}
+            </span>
+          </div>
+        )}
+      </QuickCard>
+
+      <QuickCard>
+        <QuickLabel>titolo</QuickLabel>
+        <QuickInput value={form.title} onChange={e => f('title', e.target.value)} placeholder="titolo del video" />
+      </QuickCard>
+
+      <QuickCard>
+        <QuickLabel>tema</QuickLabel>
+        <QuickTemaChips options={TEMI_OPTIONS} value={form.tema} onChange={v => f('tema', v)} />
+      </QuickCard>
+
+      <QuickCard>
+        <div className="flex items-center justify-between mb-2">
+          <QuickLabel><span className="mb-0">descrizione <span className="text-zinc-500 font-normal">(opzionale)</span></span></QuickLabel>
+        </div>
+        <textarea
+          value={form.description}
+          onChange={e => f('description', e.target.value)}
+          placeholder="descrivi brevemente il contenuto..."
+          rows={3}
+          className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3.5 text-[15px] text-white placeholder-zinc-500 outline-none resize-none"
+        />
+        {platform !== 'tiktok' && (
+          <button
+            type="button"
+            onClick={handleGenerateDescription}
+            disabled={generatingDesc || !form.youtube_url.trim()}
+            className="mt-2.5 inline-flex items-center gap-1.5 border border-zinc-700 text-zinc-300 text-xs font-semibold px-3 py-1.5 rounded-full disabled:opacity-40"
+          >
+            {generatingDesc ? <Loader2 size={13} className="animate-spin" /> : <Sparkles size={13} />}
+            genera automaticamente
+          </button>
+        )}
+        {descWarning && <p className="text-xs text-amber-400 mt-2">{descWarning}</p>}
+      </QuickCard>
+
+      <label className="flex items-center gap-3 px-1 py-2 mb-2 text-sm text-zinc-300">
+        <input type="checkbox" checked={form.prodotto_scuola} onChange={e => f('prodotto_scuola', e.target.checked)} className="w-4 h-4 accent-[#FFDA2A]" />
+        prodotto da scuola
+      </label>
+
+      {error && <p className="text-sm text-red-400 mb-3 flex items-center gap-1.5"><AlertCircle size={14} />{error}</p>}
+
+      <div className="sticky bottom-28 pt-1">
+        <QuickCta onClick={handleSubmit} disabled={loading} icon={loading ? Loader2 : Send}>
+          {loading ? 'invio in corso...' : 'invia ad ADAM'}
+        </QuickCta>
+      </div>
+    </div>
+  );
+};
+
+// ═══ Aggiungi (admin) ═══
+const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
+  const [form, setForm] = useState({
+    title: '', youtube_url: '', tema: '', natura: '',
+    year: new Date().getFullYear(), description: '',
+    prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: '',
+    thumbnail: '',
+  });
+  const [saving, setSaving] = useState(null); // 'add' | 'later' | null
+  const [msg, setMsg] = useState(null);
+
+  // Dipende da allVideos (non solo mount): subito dopo il login in quick mode
+  // il fetch di allVideos da Supabase potrebbe non essere ancora risolto — se
+  // calcolassimo il codice una sola volta al mount rischieremmo di proporne
+  // uno già usato (visto con dati reali: fallback statico ancora attivo).
+  useEffect(() => { setForm(prev => ({ ...prev, codice: getNextCodice(allVideos) })); }, [allVideos]);
+
+  const f = (field, val) => setForm(prev => ({ ...prev, [field]: val }));
+  const platform = form.youtube_url.trim() ? detectPlatform(form.youtube_url) : null;
+
+  const handleUrlBlur = async () => {
+    if (detectPlatform(form.youtube_url) !== 'tiktok') return;
+    const meta = await fetchTikTokMeta(form.youtube_url.trim());
+    if (!meta) return;
+    setForm(prev => ({
+      ...prev,
+      youtube_url: meta.canonicalUrl || prev.youtube_url,
+      thumbnail: meta.thumbnailUrl || prev.thumbnail,
+      title: prev.title.trim() ? prev.title : (meta.title || prev.title),
+      formato: 'verticale',
+    }));
+  };
+
+  const resetForm = (nextCodice) => setForm({
+    title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(),
+    description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: nextCodice, thumbnail: '',
+  });
+
+  const handleAdd = async () => {
+    if (!form.title.trim()) { setMsg({ type: 'error', text: 'Titolo obbligatorio.' }); return; }
+    if (!form.codice.trim()) { setMsg({ type: 'error', text: 'Codice ID obbligatorio.' }); return; }
+    if (!form.youtube_url.trim()) { setMsg({ type: 'error', text: 'URL Video obbligatorio.' }); return; }
+    if (!form.tema) { setMsg({ type: 'error', text: 'Tema obbligatorio.' }); return; }
+    if (!form.natura) { setMsg({ type: 'error', text: 'Natura obbligatoria.' }); return; }
+    if (!form.year) { setMsg({ type: 'error', text: 'Anno obbligatorio.' }); return; }
+    if (!form.duration.trim()) { setMsg({ type: 'error', text: 'Durata obbligatoria.' }); return; }
+    if (!form.description.trim()) { setMsg({ type: 'error', text: 'Descrizione obbligatoria.' }); return; }
+    setSaving('add');
+    setMsg(null);
+    const trimmedUrl = form.youtube_url.trim();
+    const platform2 = detectPlatform(trimmedUrl);
+    const ytId = extractYouTubeId(trimmedUrl);
+    let tiktokThumb = form.thumbnail || null;
+    if (platform2 === 'tiktok' && !tiktokThumb) {
+      const meta = await fetchTikTokMeta(trimmedUrl);
+      tiktokThumb = meta?.thumbnailUrl || null;
+    }
+    const thumbnailUrl = platform2 === 'tiktok' ? tiktokThumb : (ytId ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` : null);
+    const { error } = await supabase.from('videos').insert({
+      id: form.codice.trim(),
+      title: form.title.trim(),
+      youtube_url: trimmedUrl || null,
+      thumbnail: thumbnailUrl,
+      tema: form.tema || null,
+      natura: form.natura || null,
+      year: form.year ? parseInt(form.year) : null,
+      description: form.description.trim() || null,
+      prodotto_scuola: form.prodotto_scuola,
+      formato: form.formato,
+      duration: form.duration || '0:00',
+      codice: form.codice.trim() || null,
+      views: 0,
+      data_inserimento: new Date().toISOString().split('T')[0],
+    });
+    setSaving(null);
+    if (error) {
+      setMsg({ type: 'error', text: error.code === '23505' ? `Il Codice ID "${form.codice.trim()}" esiste già nell'archivio.` : error.message });
+      return;
+    }
+    setMsg({ type: 'success', text: 'Video aggiunto all\'archivio.' });
+    resetForm(bumpCodice(form.codice, allVideos));
+    onVideoApproved?.();
+    fetch('/api/rebuild-catalog-cache', { method: 'POST' }).catch(() => {});
+  };
+
+  const handleSaveForLater = async () => {
+    if (!form.title.trim()) { setMsg({ type: 'error', text: 'Titolo obbligatorio per salvare la bozza.' }); return; }
+    setSaving('later');
+    setMsg(null);
+    const { error } = await supabase.from('video_submissions').insert({
+      user_id: userProfile.id,
+      title: form.title.trim(),
+      youtube_url: form.youtube_url.trim() || null,
+      tema: form.tema || null,
+      natura: form.natura || null,
+      year: form.year ? parseInt(form.year) : null,
+      description: form.description.trim() || null,
+      prodotto_scuola: form.prodotto_scuola,
+      codice: form.codice.trim() || null,
+      status: 'admin_draft',
+      submitted_at: new Date().toISOString(),
+    });
+    setSaving(null);
+    if (error) { setMsg({ type: 'error', text: error.message }); return; }
+    setMsg({ type: 'success', text: 'Bozza salvata — la trovi in "In attesa" da desktop.' });
+    resetForm(bumpCodice(form.codice, allVideos));
+  };
+
+  const NATURA_SELECT_OPTIONS = NATURE_OPTIONS.map(n => ({ value: n, label: n }));
+  const FORMATO_OPTIONS = [{ value: 'orizzontale', label: 'Orizzontale' }, { value: 'verticale', label: 'Verticale' }];
+
+  return (
+    <div>
+      <div className="text-[11px] font-bold tracking-wider uppercase mb-1" style={{ color: '#FFDA2A' }}>inserimento diretto</div>
+      <h1 className="text-[26px] font-extrabold tracking-tight mb-3">Aggiungi</h1>
+      <div className="mb-4">
+        <span className="inline-flex items-center gap-1.5 bg-zinc-900 border border-dashed border-zinc-600 text-zinc-300 text-xs font-semibold px-3 py-1.5 rounded-lg" style={{ fontVariantNumeric: 'tabular-nums' }}>
+          codice <b style={{ color: '#FFDA2A' }}>{form.codice}</b>
+        </span>
+      </div>
+
+      <QuickCard>
+        <QuickLabel>link video</QuickLabel>
+        <QuickInput value={form.youtube_url} onChange={e => f('youtube_url', e.target.value)} onBlur={handleUrlBlur} placeholder="https://youtu.be/... oppure TikTok" />
+        {platform && (
+          <div className="flex items-center gap-2 mt-2.5 text-xs text-zinc-400">
+            <span className="inline-flex items-center gap-1.5 bg-zinc-800 border border-zinc-700 rounded-full px-2.5 py-1 font-semibold text-white text-[11px]">
+              {platform === 'tiktok'
+                ? <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'linear-gradient(135deg,#25F4EE,#FE2C55)' }} />
+                : <span className="w-1.5 h-1.5 rounded-full bg-red-500" />}
+              {platform === 'tiktok' ? 'TikTok rilevato' : 'YouTube rilevato'}
+            </span>
+          </div>
+        )}
+      </QuickCard>
+
+      <QuickCard>
+        <QuickLabel>titolo</QuickLabel>
+        <QuickInput value={form.title} onChange={e => f('title', e.target.value)} placeholder="titolo del video" />
+      </QuickCard>
+
+      <QuickCard>
+        <QuickLabel>tema</QuickLabel>
+        <QuickTemaChips options={TEMI_OPTIONS.filter(t => t !== 'Altro')} value={form.tema} onChange={v => f('tema', v)} />
+      </QuickCard>
+
+      <QuickCard>
+        <QuickLabel>natura</QuickLabel>
+        <CustomSelect value={form.natura} onChange={v => f('natura', v)} options={NATURA_SELECT_OPTIONS} />
+      </QuickCard>
+
+      <QuickCard>
+        <div className="grid grid-cols-3 gap-2.5">
+          <div>
+            <QuickLabel>anno</QuickLabel>
+            <QuickInput value={form.year} onChange={e => f('year', e.target.value)} inputMode="numeric" />
+          </div>
+          <div>
+            <QuickLabel>durata</QuickLabel>
+            <QuickInput value={form.duration} onChange={e => f('duration', e.target.value)} placeholder="1:32" />
+          </div>
+          <div>
+            <QuickLabel>formato</QuickLabel>
+            <CustomSelect value={form.formato} onChange={v => f('formato', v)} options={FORMATO_OPTIONS} />
+          </div>
+        </div>
+      </QuickCard>
+
+      <QuickCard>
+        <QuickLabel>descrizione</QuickLabel>
+        <textarea
+          value={form.description}
+          onChange={e => f('description', e.target.value)}
+          placeholder="descrivi brevemente il contenuto..."
+          rows={3}
+          className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3.5 text-[15px] text-white placeholder-zinc-500 outline-none resize-none"
+        />
+      </QuickCard>
+
+      <label className="flex items-center gap-3 px-1 py-2 mb-2 text-sm text-zinc-300">
+        <input type="checkbox" checked={form.prodotto_scuola} onChange={e => f('prodotto_scuola', e.target.checked)} className="w-4 h-4 accent-[#FFDA2A]" />
+        prodotto da scuola
+      </label>
+
+      {msg && <p className={`text-sm mb-3 flex items-center gap-1.5 ${msg.type === 'error' ? 'text-red-400' : ''}`} style={msg.type === 'success' ? { color: '#FFDA2A' } : {}}>
+        {msg.type === 'error' ? <AlertCircle size={14} /> : <Check size={14} />}{msg.text}
+      </p>}
+
+      <div className="sticky bottom-28 pt-1 flex gap-2.5">
+        <button
+          onClick={handleSaveForLater}
+          disabled={saving !== null}
+          className="flex-1 flex items-center justify-center gap-1.5 bg-zinc-800 border border-zinc-700 text-white rounded-2xl py-4 font-bold text-[14px] disabled:opacity-50"
+        >
+          {saving === 'later' ? <Loader2 size={16} className="animate-spin" /> : <BookOpen size={16} />}
+          salva per dopo
+        </button>
+        <button
+          onClick={handleAdd}
+          disabled={saving !== null}
+          className="flex-1 flex items-center justify-center gap-1.5 text-black rounded-2xl py-4 font-bold text-[14px] disabled:opacity-50"
+          style={{ backgroundColor: '#FFDA2A' }}
+        >
+          {saving === 'add' ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} strokeWidth={2.6} />}
+          aggiungi
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// ═══ I miei video ═══
+const QuickMyVideosScreen = ({ user }) => {
+  const [subs, setSubs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [editForms, setEditForms] = useState({});
+  const [editingId, setEditingId] = useState(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState(null);
+  const [savingId, setSavingId] = useState(null);
+  const [sendingId, setSendingId] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
+
+  const ef = (id, field, val) => setEditForms(prev => ({ ...prev, [id]: { ...(prev[id] || {}), [field]: val } }));
+
+  useEffect(() => {
+    if (!user) return;
+    supabase.from('video_submissions').select('*').eq('user_id', user.id).order('submitted_at', { ascending: false })
+      .then(({ data }) => { setSubs(data || []); setLoading(false); });
+  }, [user]);
+
+  const handleSave = async (sub) => {
+    const form = editForms[sub.id] || {};
+    setSavingId(sub.id);
+    const { error } = await supabase.from('video_submissions').update({
+      youtube_url: form.youtube_url ?? sub.youtube_url,
+      title: form.title ?? sub.title,
+      tema: form.tema ?? sub.tema,
+      description: form.description ?? sub.description,
+      prodotto_scuola: form.prodotto_scuola ?? sub.prodotto_scuola,
+    }).eq('id', sub.id).eq('status', 'draft');
+    if (!error) {
+      setSubs(prev => prev.map(s => s.id === sub.id ? { ...s, ...form } : s));
+      setEditingId(null);
+      setEditForms(prev => { const n = { ...prev }; delete n[sub.id]; return n; });
+    }
+    setSavingId(null);
+  };
+
+  const handleSend = async (sub) => {
+    setSendingId(sub.id);
+    const { error } = await supabase.from('video_submissions').update({ status: 'pending' }).eq('id', sub.id);
+    if (!error) setSubs(prev => prev.map(s => s.id === sub.id ? { ...s, status: 'pending' } : s));
+    setSendingId(null);
+  };
+
+  const handleDelete = async (sub) => {
+    setDeletingId(sub.id);
+    const { error } = await supabase.from('video_submissions').delete().eq('id', sub.id);
+    if (!error) { setSubs(prev => prev.filter(s => s.id !== sub.id)); setDeleteConfirmId(null); }
+    setDeletingId(null);
+  };
+
+  if (loading) return <div className="flex justify-center py-20"><Loader2 size={26} className="animate-spin text-zinc-600" /></div>;
+
+  const STATUS = {
+    draft:    { label: 'bozze',      dot: '#71717a' },
+    pending:  { label: 'in attesa',  dot: '#FFDA2A' },
+    approved: { label: 'approvati',  dot: '#10b981' },
+    rejected: { label: 'rifiutati',  dot: '#ef4444' },
+  };
+  const groups = ['draft', 'pending', 'approved', 'rejected'].map(status => ({
+    status, items: subs.filter(s => s.status === status),
+  })).filter(g => g.items.length > 0);
+
+  return (
+    <div>
+      <div className="text-[11px] font-bold tracking-wider uppercase mb-1" style={{ color: '#FFDA2A' }}>le tue segnalazioni</div>
+      <h1 className="text-[26px] font-extrabold tracking-tight mb-5">I miei video</h1>
+
+      {groups.length === 0 && (
+        <div className="text-center py-16 text-zinc-500 text-sm">nessuna segnalazione ancora — tocca "+" per iniziare</div>
+      )}
+
+      {groups.map(({ status, items }) => (
+        <div key={status}>
+          <div className="flex items-center gap-2 text-[11px] font-bold tracking-wider uppercase text-zinc-500 mt-5 mb-2.5 first:mt-0">
+            <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: STATUS[status].dot }} />
+            {STATUS[status].label}
+          </div>
+          {items.map(sub => {
+            const isEditing = editingId === sub.id;
+            const form = editForms[sub.id] || {};
+            const isDeleteConfirm = deleteConfirmId === sub.id;
+            return (
+              <QuickCard key={sub.id}>
+                {isEditing ? (
+                  <div className="space-y-2.5">
+                    <QuickInput value={form.title ?? sub.title ?? ''} onChange={e => ef(sub.id, 'title', e.target.value)} placeholder="titolo" />
+                    <QuickInput value={form.youtube_url ?? sub.youtube_url ?? ''} onChange={e => ef(sub.id, 'youtube_url', e.target.value)} placeholder="link video" />
+                    <QuickTemaChips options={TEMI_OPTIONS} value={form.tema ?? sub.tema ?? ''} onChange={v => ef(sub.id, 'tema', v)} />
+                    <textarea value={form.description ?? sub.description ?? ''} onChange={e => ef(sub.id, 'description', e.target.value)} placeholder="descrizione" rows={2} className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3 text-sm text-white placeholder-zinc-500 outline-none resize-none" />
+                    <div className="flex gap-2 pt-1">
+                      <button onClick={() => setEditingId(null)} className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-zinc-800 text-zinc-300">annulla</button>
+                      <button onClick={() => handleSave(sub)} disabled={savingId === sub.id} className="flex-1 py-2.5 rounded-xl text-sm font-bold text-black disabled:opacity-50" style={{ backgroundColor: '#FFDA2A' }}>
+                        {savingId === sub.id ? 'salvo...' : 'salva'}
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-xl bg-zinc-800 flex items-center justify-center flex-shrink-0 text-zinc-500">
+                      <PlayCircle size={18} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[14px] font-semibold truncate">{sub.title || 'senza titolo'}</p>
+                      <div className="flex items-center gap-1.5 text-[11.5px] text-zinc-500 mt-0.5">
+                        {sub.tema && <span className="text-[10.5px] font-bold px-1.5 py-0.5 rounded" style={{ backgroundColor: (TEMA_COLORS[sub.tema] || TEMA_COLORS['Altro']).dim, color: (TEMA_COLORS[sub.tema] || TEMA_COLORS['Altro']).border }}>{sub.tema}</span>}
+                        {status === 'draft' && <span>da completare</span>}
+                        {status === 'pending' && <span>in revisione</span>}
+                        {status === 'approved' && <span>in archivio</span>}
+                        {status === 'rejected' && <span>non pertinente</span>}
+                      </div>
+                    </div>
+                    {status === 'draft' && !isDeleteConfirm && (
+                      <div className="flex items-center gap-1 flex-shrink-0">
+                        <button onClick={() => { setEditingId(sub.id); setEditForms(prev => ({ ...prev, [sub.id]: {} })); }} className="p-2 text-zinc-400"><Pencil size={15} /></button>
+                        <button onClick={() => handleSend(sub)} disabled={sendingId === sub.id} className="p-2" style={{ color: '#FFDA2A' }}>{sendingId === sub.id ? <Loader2 size={15} className="animate-spin" /> : <Send size={15} />}</button>
+                        <button onClick={() => setDeleteConfirmId(sub.id)} className="p-2 text-zinc-400"><Trash2 size={15} /></button>
+                      </div>
+                    )}
+                    {isDeleteConfirm && (
+                      <div className="flex items-center gap-1.5 flex-shrink-0">
+                        <button onClick={() => handleDelete(sub)} disabled={deletingId === sub.id} className="text-xs font-bold text-red-400 px-2 py-1">elimina</button>
+                        <button onClick={() => setDeleteConfirmId(null)} className="text-xs text-zinc-500 px-2 py-1">annulla</button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </QuickCard>
+            );
+          })}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// ═══ Playlist ═══
+const QuickPlaylistScreen = ({
+  user, playlists, activePlaylistId, onSetActive, onCreatePlaylist, onDeletePlaylist,
+  onRenamePlaylist, onRemoveVideo, onReorder, onPlay, getVideosForPlaylist, onSharePlaylist,
+}) => {
+  const [creatingNew, setCreatingNew] = useState(false);
+  const [newName, setNewName] = useState('');
+  const [copiedShareId, setCopiedShareId] = useState(null);
+
+  const handleShare = async (pl) => {
+    let token = pl.share_token;
+    if (!token || !pl.is_public) token = await onSharePlaylist(pl.id);
+    if (token) {
+      navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}?playlist=${token}`);
+      setCopiedShareId(pl.id);
+      setTimeout(() => setCopiedShareId(null), 2200);
+    }
+  };
+
+  const handleCreate = async () => {
+    await onCreatePlaylist(newName.trim() || 'La mia playlist');
+    setCreatingNew(false);
+    setNewName('');
+  };
+
+  const move = (list, from, to, commitFn) => {
+    if (to < 0 || to >= list.length) return;
+    const next = [...list];
+    const [item] = next.splice(from, 1);
+    next.splice(to, 0, item);
+    commitFn(next);
+  };
+
+  const activePlaylist = playlists.find(p => p.id === activePlaylistId);
+
+  if (activePlaylist) {
+    const videos = getVideosForPlaylist(activePlaylist);
+    return (
+      <div>
+        <button onClick={() => onSetActive(null)} className="flex items-center gap-1.5 text-zinc-400 text-sm font-semibold mb-4">
+          <ChevronLeft size={17} /> playlist
+        </button>
+        <h1 className="text-[24px] font-extrabold tracking-tight mb-4 truncate">{activePlaylist.name}</h1>
+
+        {videos.length === 0 ? (
+          <div className="text-center py-14 text-zinc-500 text-sm">nessun video in questa playlist</div>
+        ) : (
+          videos.map((video, i) => (
+            <QuickCard key={video.id} className="flex items-center gap-3 !p-3">
+              <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0 text-[11px] font-bold text-zinc-400" style={{ fontVariantNumeric: 'tabular-nums' }}>{i + 1}</div>
+              <div className="min-w-0 flex-1">
+                <p className="text-[13.5px] font-semibold truncate">{video.title}</p>
+                <p className="text-[11.5px] text-zinc-500">{video.duration || 'n/d'} · {video.year}</p>
+              </div>
+              <div className="flex items-center gap-0.5 flex-shrink-0">
+                <button onClick={() => move(videos, i, i - 1, next => onReorder(activePlaylistId, next.map(v => v.id)))} disabled={i === 0} className="p-1.5 text-zinc-500 disabled:opacity-30"><ChevronDown size={15} className="rotate-180" /></button>
+                <button onClick={() => move(videos, i, i + 1, next => onReorder(activePlaylistId, next.map(v => v.id)))} disabled={i === videos.length - 1} className="p-1.5 text-zinc-500 disabled:opacity-30"><ChevronDown size={15} /></button>
+                <button onClick={() => onRemoveVideo(activePlaylistId, video.id)} className="p-1.5 text-zinc-500"><X size={15} /></button>
+              </div>
+            </QuickCard>
+          ))
+        )}
+
+        {videos.length > 0 && (
+          <div className="sticky bottom-28 pt-1 space-y-2.5">
+            <QuickCta onClick={() => onPlay(activePlaylistId)} icon={Play}>riproduci playlist</QuickCta>
+            <button onClick={() => handleShare(activePlaylist)} className="w-full flex items-center justify-center gap-2 bg-zinc-800 border border-zinc-700 text-white rounded-2xl py-3.5 font-bold text-[14px]">
+              {copiedShareId === activePlaylist.id ? <><Check size={15} style={{ color: '#FFDA2A' }} /> link copiato!</> : <><Share2 size={15} /> condividi</>}
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div className="text-[11px] font-bold tracking-wider uppercase mb-1" style={{ color: '#FFDA2A' }}>le tue raccolte</div>
+      <h1 className="text-[26px] font-extrabold tracking-tight mb-1">Playlist</h1>
+      <p className="text-[13.5px] text-zinc-400 mb-5">per preparare in anticipo le tue sessioni formative.</p>
+
+      {creatingNew ? (
+        <QuickCard className="flex gap-2">
+          <QuickInput autoFocus value={newName} onChange={e => setNewName(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') handleCreate(); if (e.key === 'Escape') setCreatingNew(false); }} placeholder="nome playlist..." />
+          <button onClick={handleCreate} className="px-4 rounded-xl text-black font-bold text-sm flex-shrink-0" style={{ backgroundColor: '#FFDA2A' }}>crea</button>
+        </QuickCard>
+      ) : (
+        <button onClick={() => setCreatingNew(true)} className="w-full flex items-center gap-3 border border-dashed border-zinc-700 text-zinc-300 rounded-2xl px-4 py-4 mb-4 font-semibold text-sm">
+          <span className="w-9 h-9 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0" style={{ color: '#FFDA2A' }}><Plus size={17} /></span>
+          nuova playlist
+        </button>
+      )}
+
+      {playlists.length === 0 && !creatingNew && (
+        <div className="text-center py-14 text-zinc-500 text-sm">nessuna playlist ancora</div>
+      )}
+
+      {playlists.map(pl => {
+        const videos = getVideosForPlaylist(pl);
+        return (
+          <QuickCard key={pl.id} className="flex items-center gap-3.5">
+            <button onClick={() => onSetActive(pl.id)} className="flex items-center gap-3.5 flex-1 min-w-0 text-left">
+              <div className="w-11 h-11 rounded-xl bg-zinc-800 flex items-center justify-center flex-shrink-0 text-zinc-500"><List size={18} /></div>
+              <div className="min-w-0">
+                <p className="text-[14.5px] font-semibold truncate">{pl.name}</p>
+                <p className="text-[12px] text-zinc-500">{videos.length} video</p>
+              </div>
+            </button>
+            <button onClick={() => onPlay(pl.id)} disabled={videos.length === 0} className="w-9 h-9 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0 disabled:opacity-30">
+              <Play size={13} className="text-white ml-0.5" fill="currentColor" />
+            </button>
+          </QuickCard>
+        );
+      })}
+    </div>
+  );
+};
+
+// ═══ Tab bar in basso ═══
 const QuickTabBar = ({ activeSection, isAdmin, onNavigate }) => {
   const addDestination = isAdmin ? 'admin' : 'submit';
   const addActive = activeSection === 'admin' || activeSection === 'submit';
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-zinc-900 border-t border-zinc-800 px-6 pt-2 pb-3 flex items-center justify-around">
-      <button
-        onClick={() => onNavigate('myvideos')}
-        className={`flex flex-col items-center gap-1 px-4 py-1 transition-colors ${activeSection === 'myvideos' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
-      >
-        <Film size={22} />
-        <span className="text-[11px] font-medium">I miei video</span>
-      </button>
-
-      <button
-        onClick={() => onNavigate(addDestination)}
-        className="flex flex-col items-center -mt-6"
-      >
-        <span
-          className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-transform active:scale-95"
-          style={{ backgroundColor: '#FFDA2A', outline: addActive ? '3px solid #52525b' : 'none' }}
+    <nav className="fixed bottom-0 left-0 right-0 z-40 flex justify-center pointer-events-none" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0), #000 40%)' }}>
+      <div className="w-full max-w-[480px] px-6 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 flex items-end justify-between pointer-events-auto">
+        <button
+          onClick={() => onNavigate('myvideos')}
+          className={`flex flex-col items-center gap-1 w-20 transition-colors ${activeSection === 'myvideos' ? 'text-white' : 'text-zinc-500'}`}
         >
-          <Plus size={28} className="text-black" strokeWidth={2.5} />
-        </span>
-      </button>
+          <Film size={22} />
+          <span className="text-[10.5px] font-semibold">i miei video</span>
+        </button>
 
-      <button
-        onClick={() => onNavigate('quick-playlist')}
-        className={`flex flex-col items-center gap-1 px-4 py-1 transition-colors ${activeSection === 'quick-playlist' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
-      >
-        <List size={22} />
-        <span className="text-[11px] font-medium">Playlist</span>
-      </button>
+        <button onClick={() => onNavigate(addDestination)} className="flex flex-col items-center -mt-7">
+          <span
+            className="w-14 h-14 rounded-full flex items-center justify-center transition-transform active:scale-95"
+            style={{ backgroundColor: '#FFDA2A', boxShadow: '0 10px 22px -6px rgba(255,218,42,.55)', outline: addActive ? '2.5px solid #f4f4f5' : 'none', outlineOffset: '2px' }}
+          >
+            <Plus size={26} className="text-black" strokeWidth={2.6} />
+          </span>
+        </button>
+
+        <button
+          onClick={() => onNavigate('quick-playlist')}
+          className={`flex flex-col items-center gap-1 w-20 transition-colors ${activeSection === 'quick-playlist' ? 'text-white' : 'text-zinc-500'}`}
+        >
+          <List size={22} />
+          <span className="text-[10.5px] font-semibold">playlist</span>
+        </button>
+      </div>
     </nav>
   );
 };
@@ -2033,12 +2770,83 @@ const AuthModal = ({ mode: initialMode, onClose, dismissible = true }) => {
     setLoading(false);
   };
 
-  return (
-    <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4" onClick={dismissible ? onClose : undefined}>
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 max-w-md w-full shadow-2xl" onClick={e => e.stopPropagation()}>
-        {!dismissible && (
-          <p className="text-zinc-400 text-sm mb-4">Accedi per continuare su ADAM</p>
+  // ── Variante quick-entry (PWA): schermata a tutta pagina, non un popup ──────
+  if (!dismissible) {
+    return (
+      <div className="fixed inset-0 bg-black z-50 flex flex-col justify-center items-center px-7 pb-24" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif' }}>
+      <div className="w-full max-w-[420px]">
+        <div className="text-[15px] font-extrabold tracking-[0.14em] text-white">ADAM<span style={{ color: '#FFDA2A' }}>.</span></div>
+        <div className="mt-9 mb-6">
+          <h1 className="text-[27px] font-extrabold tracking-tight text-white mb-1.5">{mode === 'login' ? 'bentornato' : 'benvenuto'}</h1>
+          <p className="text-[13.5px] text-zinc-400">accedi per continuare su ADAM</p>
+        </div>
+        <div className="flex bg-zinc-900 border border-zinc-800 rounded-xl p-1 mb-5">
+          {['login', 'register'].map(m => (
+            <button
+              key={m}
+              onClick={() => { setMode(m); setError(null); setRegistered(false); }}
+              className="flex-1 py-2.5 rounded-lg text-[13px] font-bold transition-all"
+              style={{ backgroundColor: mode === m ? '#242428' : 'transparent', color: mode === m ? '#FFDA2A' : '#71717a' }}
+            >
+              {m === 'login' ? 'accedi' : 'registrati'}
+            </button>
+          ))}
+        </div>
+
+        {registered ? (
+          <div className="text-center py-6">
+            <ShieldCheck size={40} className="text-[#FFDA2A] mx-auto mb-4" />
+            <h3 className="text-white font-bold text-lg mb-2">Registrazione completata!</h3>
+            <p className="text-zinc-400 text-sm">Controlla la tua email per confermare l'account, poi accedi.</p>
+            <button onClick={() => { setMode('login'); setRegistered(false); }} className="mt-6 text-sm font-semibold" style={{ color: '#FFDA2A' }}>vai al login</button>
+          </div>
+        ) : (
+          <form onSubmit={mode === 'login' ? handleLogin : handleRegister} className="space-y-3.5">
+            {error && (
+              <div className="flex items-center gap-2 bg-red-900/30 border border-red-800 text-red-400 px-3.5 py-3 rounded-xl text-sm">
+                <AlertCircle size={15} className="flex-shrink-0" />{error}
+              </div>
+            )}
+            {mode === 'register' && (
+              <>
+                <div>
+                  <label className="block text-xs font-semibold text-zinc-400 mb-2">nome e cognome</label>
+                  <input type="text" value={nome} onChange={e => setNome(e.target.value)} placeholder="Mario Rossi" className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3.5 text-[15px] text-white placeholder-zinc-500 outline-none" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-zinc-400 mb-2">organizzazione / scuola</label>
+                  <input type="text" value={org} onChange={e => setOrg(e.target.value)} placeholder="es. Liceo Berchet, Milano" className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3.5 text-[15px] text-white placeholder-zinc-500 outline-none" />
+                </div>
+              </>
+            )}
+            <div>
+              <label className="block text-xs font-semibold text-zinc-400 mb-2">email</label>
+              <input type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="nome@email.it" className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3.5 text-[15px] text-white placeholder-zinc-500 outline-none" />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-zinc-400 mb-2">password</label>
+              <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="minimo 6 caratteri" className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3.5 text-[15px] text-white placeholder-zinc-500 outline-none" />
+            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl font-bold text-black transition-all disabled:opacity-50 mt-1"
+              style={{ backgroundColor: '#FFDA2A' }}
+            >
+              {loading ? <Loader2 size={17} className="animate-spin" /> : mode === 'login' ? <LogIn size={17} /> : <Send size={17} />}
+              {mode === 'login' ? 'accedi' : 'crea account'}
+            </button>
+          </form>
         )}
+        <p className="text-center text-[11.5px] text-zinc-600 mt-5">l'accesso è obbligatorio per usare ADAM da qui</p>
+      </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 max-w-md w-full shadow-2xl" onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-6">
           <div className="flex gap-2">
             {['login', 'register'].map(m => (
@@ -2052,9 +2860,7 @@ const AuthModal = ({ mode: initialMode, onClose, dismissible = true }) => {
               </button>
             ))}
           </div>
-          {dismissible && (
-            <button onClick={onClose} className="text-zinc-500 hover:text-white transition-colors"><X size={20} /></button>
-          )}
+          <button onClick={onClose} className="text-zinc-500 hover:text-white transition-colors"><X size={20} /></button>
         </div>
 
         {registered ? (
@@ -2627,7 +3433,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   // Precompila il Codice ID con il prossimo numero disponibile (stesso meccanismo
   // già usato nel tab "In attesa" — non era mai stato esteso qui)
   useEffect(() => {
-    setForm(prev => ({ ...prev, codice: getNextCodice() }));
+    setForm(prev => ({ ...prev, codice: getNextCodice(allVideos) }));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState(null);
@@ -2801,28 +3607,6 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     setLoadingSubs(false);
   };
 
-  const getNextCodice = () => {
-    const yy = String(new Date().getFullYear()).slice(-2);
-    let maxNum = 0;
-    allVideos.forEach(v => {
-      const c = (v.codice || v.id || '').trim();
-      const m = c.match(/^HD-(\d{2})(\d{4})$/);
-      if (m && m[1] === yy) {
-        const n = parseInt(m[2], 10);
-        if (n > maxNum) maxNum = n;
-      }
-    });
-    return `HD-${yy}${String(maxNum + 1).padStart(4, '0')}`;
-  };
-
-  // Incrementa direttamente dal codice appena salvato invece di ricalcolare da allVideos
-  // (che non si è ancora aggiornato subito dopo un insert) — evita di riproporre lo stesso numero
-  const bumpCodice = (code) => {
-    const yy = String(new Date().getFullYear()).slice(-2);
-    const m = (code || '').trim().match(/^HD-(\d{2})(\d{4})$/);
-    if (m && m[1] === yy) return `HD-${yy}${String(parseInt(m[2], 10) + 1).padStart(4, '0')}`;
-    return getNextCodice();
-  };
 
   const loadServices = async () => {
     setLoadingServices(true);
@@ -3224,7 +4008,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       return false;
     }
     setSaveMsg({ type: 'success', text: 'Video aggiunto all\'archivio.' });
-    setForm({ title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: bumpCodice(form.codice), thumbnail: '' });
+    setForm({ title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: bumpCodice(form.codice, allVideos), thumbnail: '' });
     setSynopsisWarning('');
     setManualTranscript('');
     setShowTranscriptInput(false);
@@ -3267,7 +4051,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       setSaveMsg({ type: 'error', text: error.message });
       setSaving(false);
     } else {
-      setForm({ title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: bumpCodice(form.codice), thumbnail: '' });
+      setForm({ title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: bumpCodice(form.codice, allVideos), thumbnail: '' });
       setSynopsisWarning('');
       setManualTranscript('');
       setShowTranscriptInput(false);
@@ -3634,7 +4418,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                             })()}
                             <button onClick={() => {
                                 setExpandedId(isExpanded ? null : sub.id);
-                                if (!editForms[sub.id]) setEditForms(prev => ({ ...prev, [sub.id]: sub.codice ? {} : { codice: getNextCodice() } }));
+                                if (!editForms[sub.id]) setEditForms(prev => ({ ...prev, [sub.id]: sub.codice ? {} : { codice: getNextCodice(allVideos) } }));
                               }}
                               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-[#FFDA2A] text-white hover:bg-[#FFDA2A]/10 transition-all"
                               style={{ backgroundColor: isExpanded ? 'rgba(255,218,42,0.1)' : 'transparent' }}>
@@ -4637,9 +5421,14 @@ function App() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Icona PWA "quick add" (?quick=1): login obbligatorio, poi routing per ruolo
-  // (admin -> Admin tab "Aggiungi", utente -> "Partecipa")
+  // (admin -> Admin tab "Aggiungi", utente -> "Partecipa"). Legata direttamente
+  // a !user (non solo aperta al mount) — se una sessione valida è già presente
+  // in localStorage al caricamento, la modal va chiusa non appena `user` risulta
+  // popolato, non solo dopo un login "in diretta" (che chiude la modal da sé).
   useEffect(() => {
-    if (isQuickMode && !user) { setAuthMode('login'); setShowAuthModal(true); }
+    if (!isQuickMode) return;
+    setAuthMode('login');
+    setShowAuthModal(!user);
   }, [isQuickMode, user]);
 
   useEffect(() => {
@@ -4889,6 +5678,66 @@ function App() {
     return filtered;
   }, [allVideos, searchQuery, activeSection, selectedNatura, filters, schoolsSort, smartInterpretation, semanticIds]);
 
+  // ─── PWA quick-entry: branch di rendering separato dal sito, così il sito
+  // normale (isQuickMode === false, sempre il caso senza ?quick=1) non viene
+  // mai toccato da nessuna delle modifiche qui sotto ────────────────────────
+  if (isQuickMode) {
+    const isAdmin = userProfile?.role === 'admin';
+    return (
+      <>
+        {user && quickRouted && (
+          <QuickShell userProfile={userProfile} isAdmin={isAdmin} onLogout={handleLogout}>
+            {activeSection === 'myvideos' && <QuickMyVideosScreen user={user} />}
+            {activeSection === 'quick-playlist' && (
+              <QuickPlaylistScreen
+                user={user}
+                playlists={playlists}
+                activePlaylistId={activePlaylistId}
+                onSetActive={setActivePlaylistId}
+                onCreatePlaylist={createPlaylist}
+                onDeletePlaylist={deletePlaylist}
+                onRenamePlaylist={renamePlaylist}
+                onRemoveVideo={removeVideoFromPlaylist}
+                onReorder={reorderPlaylist}
+                onPlay={(playlistId) => {
+                  const pl = playlists.find(p => p.id === playlistId);
+                  if (pl && pl.video_ids.length > 0) { setPlayingPlaylistId(playlistId); setCurrentPlaylistIndex(0); }
+                }}
+                getVideosForPlaylist={getVideosForPlaylist}
+                onSharePlaylist={sharePlaylist}
+              />
+            )}
+            {activeSection === 'submit' && !isAdmin && <QuickPartecipaScreen user={user} />}
+            {activeSection === 'admin' && isAdmin && <QuickAggiungiScreen userProfile={userProfile} allVideos={allVideos} onVideoApproved={loadVideos} />}
+          </QuickShell>
+        )}
+
+        {user && !quickRouted && <QuickLoadingScreen />}
+
+        {playingPlaylistId !== null && (() => {
+          const playingVideos = getVideosForPlaylist(playlists.find(p => p.id === playingPlaylistId));
+          return (
+            <PlaylistPlayer
+              playlist={playingVideos}
+              currentIndex={currentPlaylistIndex}
+              onClose={() => { setPlayingPlaylistId(null); setCurrentPlaylistIndex(0); }}
+              onNext={() => { if (currentPlaylistIndex < playingVideos.length - 1) setCurrentPlaylistIndex(p => p + 1); else { setPlayingPlaylistId(null); setCurrentPlaylistIndex(0); } }}
+              onPrevious={() => { if (currentPlaylistIndex > 0) setCurrentPlaylistIndex(p => p - 1); }}
+            />
+          );
+        })()}
+
+        {showAuthModal && (
+          <AuthModal mode={authMode} onClose={() => setShowAuthModal(false)} dismissible={false} />
+        )}
+
+        {isQuickMode && user && quickRouted && (
+          <QuickTabBar activeSection={activeSection} isAdmin={isAdmin} onNavigate={setActiveSection} />
+        )}
+      </>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-black flex">
       
@@ -4961,7 +5810,7 @@ function App() {
     </ul>
   </nav>
 </aside>
-      <div className={`lg:ml-64 flex-1 ${isQuickMode && user && quickRouted ? 'pb-20' : ''}`}>
+      <div className="lg:ml-64 flex-1">
         <header className="bg-black sticky top-0 z-40">
   <div className="px-4 lg:px-8 py-4 flex items-center justify-between gap-2 lg:gap-6">
     <button
@@ -5147,34 +5996,7 @@ function App() {
           {activeSection === 'submit' && <SubmitVideoSection user={user} userProfile={userProfile} onOpenAuth={() => { setAuthMode('login'); setShowAuthModal(true); }} onBack={() => setActiveSection('home')} onDraftSaved={() => setActiveSection('myvideos')} />}
           {activeSection === 'admin' && <AdminSection userProfile={userProfile} onVideoApproved={loadVideos} allVideos={allVideos} />}
           {activeSection === 'myvideos' && <MyVideosSection user={user} onNewVideo={() => setActiveSection('submit')} />}
-          {activeSection === 'quick-playlist' && (
-            <PlaylistSidebar
-              mode="page"
-              user={user}
-              onOpenAuth={() => { setAuthMode('login'); setShowAuthModal(true); }}
-              onClose={() => {}}
-              isOpen={true}
-              localPlaylist={localPlaylist}
-              onLocalRemove={(videoId) => setLocalPlaylist(prev => prev.filter(v => v.id !== videoId))}
-              onLocalReorder={setLocalPlaylist}
-              onLocalPlay={() => { if (localPlaylist.length > 0) { setPlayingLocalPlaylist(true); setCurrentPlaylistIndex(0); } }}
-              playlists={playlists}
-              activePlaylistId={activePlaylistId}
-              onSetActive={setActivePlaylistId}
-              onCreatePlaylist={createPlaylist}
-              onDeletePlaylist={deletePlaylist}
-              onRenamePlaylist={renamePlaylist}
-              onRemoveVideo={removeVideoFromPlaylist}
-              onReorder={reorderPlaylist}
-              onPlay={(playlistId) => {
-                const pl = playlists.find(p => p.id === playlistId);
-                if (pl && pl.video_ids.length > 0) { setPlayingPlaylistId(playlistId); setCurrentPlaylistIndex(0); }
-              }}
-              getVideosForPlaylist={getVideosForPlaylist}
-              onSharePlaylist={sharePlaylist}
-            />
-          )}
-          {activeSection !== 'submit' && activeSection !== 'admin' && activeSection !== 'myvideos' && activeSection !== 'quick-playlist' && activeSection !== 'about' && activeSection !== 'shared-playlist' && (
+          {activeSection !== 'submit' && activeSection !== 'admin' && activeSection !== 'myvideos' && activeSection !== 'about' && activeSection !== 'shared-playlist' && (
           <>
           <div className="mb-6">
             <div className="flex items-center justify-between">
@@ -5300,16 +6122,6 @@ function App() {
         <AuthModal
           mode={authMode}
           onClose={() => setShowAuthModal(false)}
-          dismissible={!isQuickMode}
-        />
-      )}
-
-      {/* Quick mode: barra di navigazione in basso (solo PWA, solo utenti loggati) */}
-      {isQuickMode && user && quickRouted && (
-        <QuickTabBar
-          activeSection={activeSection}
-          isAdmin={userProfile?.role === 'admin'}
-          onNavigate={setActiveSection}
         />
       )}
     </div>
