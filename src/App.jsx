@@ -2785,7 +2785,7 @@ const AuthModal = ({ mode: initialMode, onClose, dismissible = true }) => {
       <div className="w-full max-w-[420px] flex-1 overflow-y-auto px-7 pt-10 pb-40">
         {logoAnim ? (
           <div className="flex flex-col items-center text-center mb-2">
-            <div className="w-44">
+            <div className="w-64">
               <Lottie
                 animationData={logoAnim}
                 loop
@@ -2794,11 +2794,11 @@ const AuthModal = ({ mode: initialMode, onClose, dismissible = true }) => {
                 onComplete={() => { if (lottieRef.current) lottieRef.current.setDirection(lottieRef.current.playDirection * -1); }}
               />
             </div>
-            <div className="-mt-2 flex flex-col items-center gap-0.5">
+            <div className="-mt-4 flex flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5">
               {['ARCHIVIO', 'DIGITALE', 'ADDICTION E', 'MEDIA'].map((word, i) => (
                 <span
                   key={word}
-                  className="tagline-word text-white/50 text-[11px] tracking-[0.25em] uppercase leading-tight font-light"
+                  className="tagline-word text-white/50 text-[11px] tracking-[0.2em] uppercase leading-tight font-light"
                   style={{ animationDelay: `${0.5 + i * 0.15}s` }}
                 >
                   <span style={{ color: '#FFDA2A' }}>{word[0]}</span>{word.slice(1)}
