@@ -1814,33 +1814,49 @@ const PickPlaylistModal = ({ video, playlists, onAdd, onClose, onCreatePlaylist 
 // solo quando isQuickMode === true, in un branch di ritorno separato da App() —
 // il sito normale non la carica mai e resta bit-per-bit invariato.
 
-const QuickShell = ({ userProfile, isAdmin, onLogout, children }) => (
-  <div className="min-h-screen bg-black text-white flex justify-center" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif' }}>
-    <div className="w-full max-w-[480px] flex flex-col min-h-screen">
-      <div className="flex items-center justify-between px-5 pt-5 pb-1 flex-shrink-0">
-        <div className="flex items-center gap-2.5 min-w-0">
-          <div
-            className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 border border-zinc-800"
-            style={isAdmin ? { backgroundColor: '#FFDA2A', color: '#0a0a0a', borderColor: '#FFDA2A' } : { backgroundColor: '#242428', color: '#f4f4f5' }}
-          >
-            {isAdmin ? 'A' : ((userProfile?.nome || '?').trim().charAt(0).toUpperCase() || '?')}
+const QuickShell = ({ userProfile, isAdmin, onLogout, children }) => {
+  const [confirmLogout, setConfirmLogout] = useState(false);
+
+  return (
+    <div className="min-h-screen bg-black text-white flex justify-center" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif' }}>
+      <div className="w-full max-w-[480px] flex flex-col min-h-screen">
+        <div className="flex items-center justify-between px-5 pb-1 flex-shrink-0" style={{ paddingTop: 'max(1.25rem, calc(env(safe-area-inset-top) + 0.5rem))' }}>
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 border border-zinc-800"
+              style={isAdmin ? { backgroundColor: '#FFDA2A', color: '#0a0a0a', borderColor: '#FFDA2A' } : { backgroundColor: '#242428', color: '#f4f4f5' }}
+            >
+              {isAdmin ? 'A' : ((userProfile?.nome || '?').trim().charAt(0).toUpperCase() || '?')}
+            </div>
+            <div className="text-xs text-zinc-400 leading-tight truncate">
+              {isAdmin
+                ? <>admin · <b className="text-white font-semibold">archivio ADAM</b></>
+                : <>ciao, <b className="text-white font-semibold">{userProfile?.nome || 'operatore'}</b></>}
+            </div>
           </div>
-          <div className="text-xs text-zinc-400 leading-tight truncate">
-            {isAdmin
-              ? <>admin · <b className="text-white font-semibold">archivio ADAM</b></>
-              : <>ciao, <b className="text-white font-semibold">{userProfile?.nome || 'operatore'}</b></>}
+          <button onClick={() => setConfirmLogout(true)} className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-500 hover:text-white transition-colors flex-shrink-0" aria-label="esci">
+            <LogOut size={17} />
+          </button>
+        </div>
+        <div className="flex-1 px-5 pt-3 pb-8 overflow-y-auto">
+          {children}
+        </div>
+      </div>
+
+      {confirmLogout && (
+        <div className="fixed inset-0 bg-black/70 z-[60] flex items-center justify-center p-6" onClick={() => setConfirmLogout(false)}>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 w-full max-w-[300px] text-center" onClick={e => e.stopPropagation()}>
+            <p className="text-white font-semibold text-[15px] mb-5">Vuoi uscire da ADAM?</p>
+            <div className="flex gap-2.5">
+              <button onClick={() => setConfirmLogout(false)} className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-zinc-800 text-zinc-300">annulla</button>
+              <button onClick={onLogout} className="flex-1 py-2.5 rounded-xl text-sm font-bold text-black" style={{ backgroundColor: '#FFDA2A' }}>sì</button>
+            </div>
           </div>
         </div>
-        <button onClick={onLogout} className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-500 hover:text-white transition-colors flex-shrink-0" aria-label="esci">
-          <LogOut size={17} />
-        </button>
-      </div>
-      <div className="flex-1 px-5 pt-3 pb-8 overflow-y-auto">
-        {children}
-      </div>
+      )}
     </div>
-  </div>
-);
+  );
+};
 
 const QuickLoadingScreen = () => {
   const [logoAnim, setLogoAnim] = useState(null);
@@ -2352,6 +2368,7 @@ const QuickMyVideosScreen = ({ user }) => {
             const isEditing = editingId === sub.id;
             const form = editForms[sub.id] || {};
             const isDeleteConfirm = deleteConfirmId === sub.id;
+            const ytId = extractYouTubeId(sub.youtube_url);
             return (
               <QuickCard key={sub.id}>
                 {isEditing ? (
@@ -2369,8 +2386,12 @@ const QuickMyVideosScreen = ({ user }) => {
                   </div>
                 ) : (
                   <div className="flex items-center gap-3">
-                    <div className="w-11 h-11 rounded-xl bg-zinc-800 flex items-center justify-center flex-shrink-0 text-zinc-500">
-                      <PlayCircle size={18} />
+                    <div className="w-11 h-11 rounded-xl bg-zinc-800 flex items-center justify-center flex-shrink-0 text-zinc-500 overflow-hidden">
+                      {ytId ? (
+                        <img src={`https://img.youtube.com/vi/${ytId}/mqdefault.jpg`} alt={sub.title} className="w-full h-full object-cover" />
+                      ) : (
+                        <PlayCircle size={18} />
+                      )}
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="text-[14px] font-semibold truncate">{sub.title || 'senza titolo'}</p>
@@ -2636,7 +2657,7 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
   return (
     <div className="fixed inset-0 bg-black z-50 flex flex-col">
       {/* Header */}
-      <div className="bg-zinc-900 px-6 py-3 flex items-center justify-between border-b border-zinc-800">
+      <div className="bg-zinc-900 px-6 py-3 flex items-center justify-between border-b border-zinc-800" style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top))' }}>
         <div className="flex items-center gap-6">
           <div>
             <h3 className="text-white font-semibold">Riproduzione Playlist</h3>
@@ -2782,7 +2803,7 @@ const AuthModal = ({ mode: initialMode, onClose, dismissible = true }) => {
     const formId = 'quick-auth-form';
     return (
       <div className="fixed inset-0 bg-black z-50 flex flex-col items-center" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif' }}>
-      <div className="w-full max-w-[420px] flex-1 overflow-y-auto px-7 pt-10 pb-40">
+      <div className="w-full max-w-[420px] flex-1 overflow-y-auto px-7 pb-40" style={{ paddingTop: 'max(2.5rem, calc(env(safe-area-inset-top) + 1rem))' }}>
         {logoAnim ? (
           <div className="flex flex-col items-center text-center mb-2">
             <div className="w-64">
