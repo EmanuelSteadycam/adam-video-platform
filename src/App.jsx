@@ -2809,7 +2809,7 @@ const AuthModal = ({ mode: initialMode, onClose, dismissible = true }) => {
         ) : (
           <div className="text-center text-[15px] font-extrabold tracking-[0.14em] text-white mb-2">ADAM<span style={{ color: '#FFDA2A' }}>.</span></div>
         )}
-        <div className="mt-4 mb-6">
+        <div className="mb-6" style={{ marginTop: 'calc(1rem + 50px)' }}>
           <h1 className="text-[27px] font-extrabold tracking-tight text-white mb-1.5">{mode === 'login' ? 'bentornato' : 'benvenuto'}</h1>
           <p className="text-[13.5px] text-zinc-400">accedi per continuare su ADAM</p>
         </div>
