@@ -2743,6 +2743,13 @@ const AuthModal = ({ mode: initialMode, onClose, dismissible = true }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [registered, setRegistered] = useState(false);
+  const [logoAnim, setLogoAnim] = useState(null);
+  const lottieRef = useRef(null);
+
+  useEffect(() => {
+    if (dismissible) return;
+    fetch('/logo-animation.json').then(r => r.json()).then(setLogoAnim).catch(() => {});
+  }, [dismissible]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -2772,11 +2779,24 @@ const AuthModal = ({ mode: initialMode, onClose, dismissible = true }) => {
 
   // ── Variante quick-entry (PWA): schermata a tutta pagina, non un popup ──────
   if (!dismissible) {
+    const formId = 'quick-auth-form';
     return (
-      <div className="fixed inset-0 bg-black z-50 flex flex-col justify-center items-center px-7 pb-24" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif' }}>
-      <div className="w-full max-w-[420px]">
-        <div className="text-[15px] font-extrabold tracking-[0.14em] text-white">ADAM<span style={{ color: '#FFDA2A' }}>.</span></div>
-        <div className="mt-9 mb-6">
+      <div className="fixed inset-0 bg-black z-50 flex flex-col items-center" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif' }}>
+      <div className="w-full max-w-[420px] flex-1 overflow-y-auto px-7 pt-10 pb-40">
+        {logoAnim ? (
+          <div className="w-24 -ml-2 mb-1">
+            <Lottie
+              animationData={logoAnim}
+              loop
+              autoplay
+              lottieRef={lottieRef}
+              onComplete={() => { if (lottieRef.current) lottieRef.current.setDirection(lottieRef.current.playDirection * -1); }}
+            />
+          </div>
+        ) : (
+          <div className="text-[15px] font-extrabold tracking-[0.14em] text-white">ADAM<span style={{ color: '#FFDA2A' }}>.</span></div>
+        )}
+        <div className="mt-4 mb-6">
           <h1 className="text-[27px] font-extrabold tracking-tight text-white mb-1.5">{mode === 'login' ? 'bentornato' : 'benvenuto'}</h1>
           <p className="text-[13.5px] text-zinc-400">accedi per continuare su ADAM</p>
         </div>
@@ -2801,7 +2821,7 @@ const AuthModal = ({ mode: initialMode, onClose, dismissible = true }) => {
             <button onClick={() => { setMode('login'); setRegistered(false); }} className="mt-6 text-sm font-semibold" style={{ color: '#FFDA2A' }}>vai al login</button>
           </div>
         ) : (
-          <form onSubmit={mode === 'login' ? handleLogin : handleRegister} className="space-y-3.5">
+          <form id={formId} onSubmit={mode === 'login' ? handleLogin : handleRegister} className="space-y-3.5">
             {error && (
               <div className="flex items-center gap-2 bg-red-900/30 border border-red-800 text-red-400 px-3.5 py-3 rounded-xl text-sm">
                 <AlertCircle size={15} className="flex-shrink-0" />{error}
@@ -2827,19 +2847,27 @@ const AuthModal = ({ mode: initialMode, onClose, dismissible = true }) => {
               <label className="block text-xs font-semibold text-zinc-400 mb-2">password</label>
               <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="minimo 6 caratteri" className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3.5 text-[15px] text-white placeholder-zinc-500 outline-none" />
             </div>
+          </form>
+        )}
+      </div>
+
+      {!registered && (
+        <div className="fixed bottom-0 inset-x-0 flex justify-center px-7 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-6" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0), #000 35%)' }}>
+          <div className="w-full max-w-[420px]">
             <button
               type="submit"
+              form={formId}
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl font-bold text-black transition-all disabled:opacity-50 mt-1"
+              className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl font-bold text-black transition-all disabled:opacity-50"
               style={{ backgroundColor: '#FFDA2A' }}
             >
               {loading ? <Loader2 size={17} className="animate-spin" /> : mode === 'login' ? <LogIn size={17} /> : <Send size={17} />}
               {mode === 'login' ? 'accedi' : 'crea account'}
             </button>
-          </form>
-        )}
-        <p className="text-center text-[11.5px] text-zinc-600 mt-5">l'accesso è obbligatorio per usare ADAM da qui</p>
-      </div>
+            <p className="text-center text-[11.5px] text-zinc-600 mt-3">l'accesso è obbligatorio per usare ADAM da qui</p>
+          </div>
+        </div>
+      )}
       </div>
     );
   }
