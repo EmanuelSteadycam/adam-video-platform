@@ -2472,6 +2472,77 @@ const QuickMyVideosScreen = ({ user }) => {
   );
 };
 
+// ═══ Archivio (admin) — sostituisce "I miei video" per l'admin: tutti i
+// video online, ordinati per inserimento più recente, con ricerca ed
+// eliminazione — utile per controllare/rimuovere subito ciò che si è appena
+// inserito da "Aggiungi" (che finisce direttamente online, senza passare da
+// video_submissions).
+const QuickArchiveScreen = ({ allVideos, onVideoApproved }) => {
+  const [search, setSearch] = useState('');
+  const [deleteConfirmId, setDeleteConfirmId] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
+
+  const sorted = [...allVideos].sort((a, b) => (b.dataInserimento || '').localeCompare(a.dataInserimento || ''));
+  const q = search.trim().toLowerCase();
+  const filtered = q ? sorted.filter(v => v.title?.toLowerCase().includes(q) || v.codice?.toLowerCase().includes(q)) : sorted;
+
+  const handleDelete = async (video) => {
+    setDeletingId(video.id);
+    const { error } = await supabase.from('videos').delete().eq('id', video.id);
+    if (!error) {
+      setDeleteConfirmId(null);
+      onVideoApproved?.();
+      fetch('/api/rebuild-catalog-cache', { method: 'POST' }).catch(() => {});
+    }
+    setDeletingId(null);
+  };
+
+  return (
+    <div>
+      <div className="text-[11px] font-bold tracking-wider uppercase mb-1" style={{ color: '#FFDA2A' }}>archivio adam</div>
+      <h1 className="text-[26px] font-extrabold tracking-tight mb-1">Video online</h1>
+      <p className="text-[13.5px] text-zinc-400 leading-relaxed mb-4">{allVideos.length} video pubblicati — tocca il cestino per eliminare.</p>
+
+      <QuickInput value={search} onChange={e => setSearch(e.target.value)} placeholder="cerca per titolo o codice..." />
+
+      <div className="mt-4">
+        {filtered.length === 0 && (
+          <div className="text-center py-16 text-zinc-500 text-sm">nessun video trovato</div>
+        )}
+        {filtered.slice(0, 60).map(video => {
+          const isDeleteConfirm = deleteConfirmId === video.id;
+          const c = TEMA_COLORS[video.tema] || TEMA_COLORS['Altro'];
+          return (
+            <QuickCard key={video.id} className="flex items-center gap-3 !p-3">
+              <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 bg-zinc-800">
+                <VideoThumbnail youtubeUrl={video.youtubeUrl} thumbnail={video.thumbnail} piattaforma={detectPlatform(video.youtubeUrl)} title={video.title} className="w-full h-full object-cover" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-[13.5px] font-semibold truncate">{video.title}</p>
+                <div className="flex items-center gap-1.5 text-[11px] text-zinc-500 mt-0.5">
+                  {video.tema && <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ backgroundColor: c.dim, color: c.border }}>{video.tema}</span>}
+                  <span style={{ fontVariantNumeric: 'tabular-nums' }}>{video.codice}</span>
+                </div>
+              </div>
+              {!isDeleteConfirm ? (
+                <button onClick={() => setDeleteConfirmId(video.id)} className="p-2 text-zinc-400 flex-shrink-0"><Trash2 size={15} /></button>
+              ) : (
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <button onClick={() => handleDelete(video)} disabled={deletingId === video.id} className="text-xs font-bold text-red-400 px-2 py-1">elimina</button>
+                  <button onClick={() => setDeleteConfirmId(null)} className="text-xs text-zinc-500 px-2 py-1">annulla</button>
+                </div>
+              )}
+            </QuickCard>
+          );
+        })}
+        {filtered.length > 60 && (
+          <p className="text-center text-xs text-zinc-600 py-3">altri {filtered.length - 60} risultati — affina la ricerca per trovarli</p>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // ═══ Playlist ═══
 const QuickPlaylistScreen = ({
   user, playlists, activePlaylistId, onSetActive, onCreatePlaylist, onDeletePlaylist,
@@ -5807,7 +5878,9 @@ function App() {
       <>
         {user && quickRouted && (
           <QuickShell userProfile={userProfile} isAdmin={isAdmin} onLogout={handleLogout}>
-            {activeSection === 'myvideos' && <QuickMyVideosScreen user={user} />}
+            {activeSection === 'myvideos' && (isAdmin
+              ? <QuickArchiveScreen allVideos={allVideos} onVideoApproved={loadVideos} />
+              : <QuickMyVideosScreen user={user} />)}
             {activeSection === 'quick-playlist' && (
               <QuickPlaylistScreen
                 user={user}
