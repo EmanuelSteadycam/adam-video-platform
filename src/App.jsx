@@ -1886,10 +1886,11 @@ const QuickLoadingScreen = () => {
   );
 };
 
-const QuickCard = ({ children, className = '', accentColor }) => (
+const QuickCard = ({ children, className = '', accentColor, onClick }) => (
   <div
     className={`bg-zinc-900 border ${accentColor ? '' : 'border-zinc-800'} rounded-2xl p-4 mb-3.5 transition-colors ${className}`}
     style={accentColor ? { borderColor: accentColor } : undefined}
+    onClick={onClick}
   >{children}</div>
 );
 
@@ -1905,32 +1906,57 @@ const QuickLabel = ({ children }) => (
   <label className="block text-xs font-semibold text-zinc-400 mb-2 uppercase tracking-wide">{children}</label>
 );
 
-const QuickTemaChips = ({ options, value, onChange }) => (
-  <div className="grid grid-cols-3 gap-1.5">
-    {options.flatMap((tema, i) => {
-      const on = value === tema;
-      const c = TEMA_COLORS[tema] || TEMA_COLORS['Altro'];
-      const button = (
-        <button
-          key={tema}
-          type="button"
-          onClick={() => onChange(tema)}
-          className="flex flex-col items-center gap-1 rounded-xl py-2 border transition-colors"
-          style={{ borderColor: on ? c.border : '#28282c', backgroundColor: on ? '#242428' : '#1c1c1f' }}
-        >
-          <span className="w-4 h-4 rounded-full flex-shrink-0" style={{ backgroundColor: c.border, boxShadow: on ? `0 0 0 2.5px ${c.dim}` : 'none' }} />
-          <span className="text-[9.5px] font-bold uppercase tracking-wide leading-tight" style={{ color: on ? '#f4f4f5' : '#a1a1aa' }}>{tema}</span>
-        </button>
-      );
-      // "Altro" va sotto "Tabacco" (stessa colonna) invece che in prima colonna:
-      // se cadrebbe in colonna 0, inseriamo una cella vuota e invisibile prima.
-      if (tema === 'Altro' && i % 3 === 0) {
-        return [<span key="altro-spacer" aria-hidden="true" />, button];
-      }
-      return [button];
-    })}
-  </div>
-);
+const QuickTemaChips = ({ options, value, onChange, variant = 'grid' }) => {
+  // variant "pill" — stessi bottoni pillola colorati dei filtri tema in home (FiltersSection)
+  if (variant === 'pill') {
+    return (
+      <div className="flex flex-wrap gap-2">
+        {options.map(tema => {
+          const on = value === tema;
+          const c = TEMA_COLORS[tema] || TEMA_COLORS['Altro'];
+          return (
+            <button
+              key={tema}
+              type="button"
+              onClick={() => onChange(tema)}
+              className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-white"
+              style={{ backgroundColor: on ? c.btnActive : 'transparent', border: `2px solid ${c.border}` }}
+            >
+              {tema}
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-3 gap-1.5">
+      {options.flatMap((tema, i) => {
+        const on = value === tema;
+        const c = TEMA_COLORS[tema] || TEMA_COLORS['Altro'];
+        const button = (
+          <button
+            key={tema}
+            type="button"
+            onClick={() => onChange(tema)}
+            className="flex flex-col items-center gap-1 rounded-xl py-2 border transition-colors"
+            style={{ borderColor: on ? c.border : '#28282c', backgroundColor: on ? '#242428' : '#1c1c1f' }}
+          >
+            <span className="w-4 h-4 rounded-full flex-shrink-0" style={{ backgroundColor: c.border, boxShadow: on ? `0 0 0 2.5px ${c.dim}` : 'none' }} />
+            <span className="text-[9.5px] font-bold uppercase tracking-wide leading-tight" style={{ color: on ? '#f4f4f5' : '#a1a1aa' }}>{tema}</span>
+          </button>
+        );
+        // "Altro" va sotto "Tabacco" (stessa colonna) invece che in prima colonna:
+        // se cadrebbe in colonna 0, inseriamo una cella vuota e invisibile prima.
+        if (tema === 'Altro' && i % 3 === 0) {
+          return [<span key="altro-spacer" aria-hidden="true" />, button];
+        }
+        return [button];
+      })}
+    </div>
+  );
+};
 
 const QuickCta = ({ children, onClick, disabled, ghost, icon: Icon, type = 'button' }) => (
   <button
@@ -2225,7 +2251,7 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
 
       <QuickCard>
         <QuickLabel>tema</QuickLabel>
-        <QuickTemaChips options={TEMI_OPTIONS} value={form.tema} onChange={v => f('tema', v)} />
+        <QuickTemaChips options={TEMI_OPTIONS} value={form.tema} onChange={v => f('tema', v)} variant="pill" />
       </QuickCard>
 
       <QuickCard>
@@ -2472,15 +2498,42 @@ const QuickMyVideosScreen = ({ user }) => {
   );
 };
 
-// ═══ Archivio (admin) — sostituisce "I miei video" per l'admin: tutti i
-// video online, ordinati per inserimento più recente, con ricerca ed
-// eliminazione — utile per controllare/rimuovere subito ciò che si è appena
-// inserito da "Aggiungi" (che finisce direttamente online, senza passare da
-// video_submissions).
-const QuickArchiveScreen = ({ allVideos, onVideoApproved }) => {
+// Converte una video_submission (snake_case) nella forma camelCase attesa da VideoModal
+const submissionToVideo = (sub) => ({
+  id: sub.id,
+  title: sub.title,
+  youtubeUrl: sub.youtube_url,
+  format: sub.formato || 'orizzontale',
+  tema: sub.tema,
+  natura: sub.natura,
+  year: sub.year,
+  duration: sub.duration,
+  description: sub.description || '',
+  prodottoScuola: sub.prodotto_scuola || false,
+  codice: sub.codice || '',
+});
+
+// ═══ Archivio (admin) — sostituisce "I miei video" per l'admin: in cima le
+// segnalazioni in attesa di approvazione e le bozze salvate per dopo, sotto
+// tutti i video già online, ordinati per inserimento più recente, con
+// ricerca ed eliminazione — utile per controllare/rimuovere subito ciò che
+// si è appena inserito da "Aggiungi" (che finisce direttamente online,
+// senza passare da video_submissions). Tutte le card si aprono a tocco.
+const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo }) => {
   const [search, setSearch] = useState('');
   const [deleteConfirmId, setDeleteConfirmId] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
+  const [subs, setSubs] = useState([]);
+  const [loadingSubs, setLoadingSubs] = useState(true);
+  const [pendingOpen, setPendingOpen] = useState(false);
+
+  useEffect(() => {
+    supabase.from('video_submissions').select('*').in('status', ['pending', 'admin_draft']).order('submitted_at', { ascending: false })
+      .then(({ data }) => { setSubs(data || []); setLoadingSubs(false); });
+  }, []);
+
+  const pendingSubs = subs.filter(s => s.status === 'pending');
+  const draftSubs = subs.filter(s => s.status === 'admin_draft');
 
   const sorted = [...allVideos].sort((a, b) => (b.dataInserimento || '').localeCompare(a.dataInserimento || ''));
   const q = search.trim().toLowerCase();
@@ -2497,11 +2550,56 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved }) => {
     setDeletingId(null);
   };
 
+  const SectionLabel = ({ dot, children }) => (
+    <div className="flex items-center gap-2 text-[11px] font-bold tracking-wider uppercase text-zinc-500 mt-5 mb-2.5 first:mt-0">
+      <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: dot }} />
+      {children}
+    </div>
+  );
+
+  const SubmissionCard = ({ sub, statusLabel }) => {
+    const c = TEMA_COLORS[sub.tema] || TEMA_COLORS['Altro'];
+    return (
+      <QuickCard className="flex items-center gap-3 !p-3" onClick={() => onSelectVideo?.(submissionToVideo(sub))}>
+        <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 bg-zinc-800">
+          <VideoThumbnail youtubeUrl={sub.youtube_url} thumbnail={null} piattaforma={detectPlatform(sub.youtube_url)} title={sub.title} className="w-full h-full object-cover" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="text-[13.5px] font-semibold truncate">{sub.title || 'senza titolo'}</p>
+          <div className="flex items-center gap-1.5 text-[11px] text-zinc-500 mt-0.5">
+            {sub.tema && <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ backgroundColor: c.dim, color: c.border }}>{sub.tema}</span>}
+            <span>{statusLabel}</span>
+          </div>
+        </div>
+      </QuickCard>
+    );
+  };
+
   return (
     <div>
       <div className="text-[11px] font-bold tracking-wider uppercase mb-1" style={{ color: '#FFDA2A' }}>archivio adam</div>
       <h1 className="text-[26px] font-extrabold tracking-tight mb-1">Video online</h1>
-      <p className="text-[13.5px] text-zinc-400 leading-relaxed mb-4">{allVideos.length} video pubblicati — tocca il cestino per eliminare.</p>
+      <p className="text-[13.5px] text-zinc-400 leading-relaxed mb-4">{allVideos.length} video pubblicati — tocca una card per guardarla, il cestino per eliminare.</p>
+
+      {!loadingSubs && pendingSubs.length > 0 && (
+        <>
+          <button type="button" onClick={() => setPendingOpen(v => !v)} className="w-full flex items-center gap-2 text-[11px] font-bold tracking-wider uppercase text-zinc-500 mt-5 mb-2.5">
+            <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: '#FFDA2A' }} />
+            <span className="flex-1 text-left">in attesa di approvazione ({pendingSubs.length})</span>
+            <ChevronDown size={14} className="transition-transform duration-200" style={{ transform: pendingOpen ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          </button>
+          {pendingOpen && pendingSubs.map(sub => <SubmissionCard key={sub.id} sub={sub} statusLabel="in revisione" />)}
+        </>
+      )}
+
+      {!loadingSubs && draftSubs.length > 0 && (
+        <>
+          <SectionLabel dot="#71717a">salvate per dopo ({draftSubs.length})</SectionLabel>
+          {draftSubs.map(sub => <SubmissionCard key={sub.id} sub={sub} statusLabel="bozza salvata" />)}
+        </>
+      )}
+
+      {(pendingSubs.length > 0 || draftSubs.length > 0) && <SectionLabel dot="#10b981">tutti i video</SectionLabel>}
 
       <QuickInput value={search} onChange={e => setSearch(e.target.value)} placeholder="cerca per titolo o codice..." />
 
@@ -2513,7 +2611,7 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved }) => {
           const isDeleteConfirm = deleteConfirmId === video.id;
           const c = TEMA_COLORS[video.tema] || TEMA_COLORS['Altro'];
           return (
-            <QuickCard key={video.id} className="flex items-center gap-3 !p-3">
+            <QuickCard key={video.id} className="flex items-center gap-3 !p-3" onClick={() => !isDeleteConfirm && onSelectVideo?.(video)}>
               <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 bg-zinc-800">
                 <VideoThumbnail youtubeUrl={video.youtubeUrl} thumbnail={video.thumbnail} piattaforma={detectPlatform(video.youtubeUrl)} title={video.title} className="w-full h-full object-cover" />
               </div>
@@ -2525,9 +2623,9 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved }) => {
                 </div>
               </div>
               {!isDeleteConfirm ? (
-                <button onClick={() => setDeleteConfirmId(video.id)} className="p-2 text-zinc-400 flex-shrink-0"><Trash2 size={15} /></button>
+                <button onClick={e => { e.stopPropagation(); setDeleteConfirmId(video.id); }} className="p-2 text-zinc-400 flex-shrink-0"><Trash2 size={15} /></button>
               ) : (
-                <div className="flex items-center gap-1 flex-shrink-0">
+                <div className="flex items-center gap-1 flex-shrink-0" onClick={e => e.stopPropagation()}>
                   <button onClick={() => handleDelete(video)} disabled={deletingId === video.id} className="text-xs font-bold text-red-400 px-2 py-1">elimina</button>
                   <button onClick={() => setDeleteConfirmId(null)} className="text-xs text-zinc-500 px-2 py-1">annulla</button>
                 </div>
@@ -5879,7 +5977,7 @@ function App() {
         {user && quickRouted && (
           <QuickShell userProfile={userProfile} isAdmin={isAdmin} onLogout={handleLogout}>
             {activeSection === 'myvideos' && (isAdmin
-              ? <QuickArchiveScreen allVideos={allVideos} onVideoApproved={loadVideos} />
+              ? <QuickArchiveScreen allVideos={allVideos} onVideoApproved={loadVideos} onSelectVideo={setSelectedVideo} />
               : <QuickMyVideosScreen user={user} />)}
             {activeSection === 'quick-playlist' && (
               <QuickPlaylistScreen
@@ -5923,6 +6021,8 @@ function App() {
         {showAuthModal && (
           <AuthModal mode={authMode} onClose={() => setShowAuthModal(false)} dismissible={false} />
         )}
+
+        {selectedVideo && <VideoModal video={selectedVideo} onClose={() => setSelectedVideo(null)} />}
 
         {isQuickMode && user && quickRouted && (
           <QuickTabBar activeSection={activeSection} isAdmin={isAdmin} onNavigate={setActiveSection} />
