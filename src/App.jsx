@@ -1909,9 +1909,14 @@ const QuickLabel = ({ children }) => (
 const QuickTemaChips = ({ options, value, onChange, variant = 'grid' }) => {
   // variant "pill" — stessi bottoni pillola colorati dei filtri tema in home (FiltersSection)
   if (variant === 'pill') {
+    // "Altro" subito dopo "Digitale" invece che in fondo, così riempie la
+    // prima riga invece di restare da solo sulla riga successiva
+    const pillOptions = options.includes('Altro') && options.includes('Digitale')
+      ? [...options.filter(t => t !== 'Altro')].flatMap(t => t === 'Digitale' ? [t, 'Altro'] : [t])
+      : options;
     return (
       <div className="flex flex-wrap gap-2">
-        {options.map(tema => {
+        {pillOptions.map(tema => {
           const on = value === tema;
           const c = TEMA_COLORS[tema] || TEMA_COLORS['Altro'];
           return (
