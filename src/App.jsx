@@ -99,7 +99,7 @@ styles.textContent = `
 document.head.appendChild(styles);
 
 const getYouTubeID = (url) => {
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|shorts\/|watch\?v=|&v=)([^#&?]*).*/;
   const match = url.match(regExp);
   return (match && match[2].length === 11) ? match[2] : null;
 };
@@ -177,7 +177,7 @@ const mockVideos = addRandomViews(videosData);
 
 const extractYouTubeId = (url) => {
   if (!url) return null;
-  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([^&\n?#]+)/);
+  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([^&\n?#]+)/);
   return m ? m[1] : null;
 };
 
@@ -743,7 +743,7 @@ const DualRangeSlider = ({ min, max, valueMin, valueMax, onChange, accentColor =
   );
 };
 
-const CustomSelect = ({ value, onChange, options, accentColor = '#FFDA2A' }) => {
+const CustomSelect = ({ value, onChange, options, accentColor = '#FFDA2A', coloredBorder = false }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -761,7 +761,8 @@ const CustomSelect = ({ value, onChange, options, accentColor = '#FFDA2A' }) => 
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(v => !v)}
-        className="w-full flex items-center justify-between bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 hover:bg-zinc-700 transition-colors"
+        className={`w-full flex items-center justify-between bg-zinc-800 border ${coloredBorder ? '' : 'border-zinc-700'} text-white rounded-lg px-4 py-2.5 hover:bg-zinc-700 transition-colors`}
+        style={coloredBorder ? { borderColor: accentColor } : undefined}
       >
         <span className="text-sm truncate">{selected?.label ?? value}</span>
         <ChevronDown
@@ -1818,8 +1819,8 @@ const QuickShell = ({ userProfile, isAdmin, onLogout, children }) => {
   const [confirmLogout, setConfirmLogout] = useState(false);
 
   return (
-    <div className="min-h-screen bg-black text-white flex justify-center" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif' }}>
-      <div className="w-full max-w-[480px] flex flex-col min-h-screen">
+    <div className="h-[100dvh] overflow-hidden bg-black text-white flex justify-center" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif' }}>
+      <div className="w-full max-w-[480px] flex flex-col h-full">
         <div className="flex items-center justify-between px-5 pb-1 flex-shrink-0" style={{ paddingTop: 'max(1.25rem, calc(env(safe-area-inset-top) + 0.5rem))' }}>
           <div className="flex items-center gap-2.5 min-w-0">
             <div
@@ -1838,7 +1839,7 @@ const QuickShell = ({ userProfile, isAdmin, onLogout, children }) => {
             <LogOut size={17} />
           </button>
         </div>
-        <div className="flex-1 px-5 pt-3 pb-8 overflow-y-auto">
+        <div className="flex-1 min-h-0 px-5 pt-3 pb-8 overflow-y-auto">
           {children}
         </div>
       </div>
@@ -1867,7 +1868,7 @@ const QuickLoadingScreen = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center">
+    <div className="h-[100dvh] overflow-hidden bg-black flex items-center justify-center">
       {logoAnim ? (
         <div className="w-40">
           <Lottie
@@ -1885,35 +1886,48 @@ const QuickLoadingScreen = () => {
   );
 };
 
-const QuickCard = ({ children, className = '' }) => (
-  <div className={`bg-zinc-900 border border-zinc-800 rounded-2xl p-4 mb-3.5 ${className}`}>{children}</div>
+const QuickCard = ({ children, className = '', accentColor }) => (
+  <div
+    className={`bg-zinc-900 border ${accentColor ? '' : 'border-zinc-800'} rounded-2xl p-4 mb-3.5 transition-colors ${className}`}
+    style={accentColor ? { borderColor: accentColor } : undefined}
+  >{children}</div>
 );
 
-const QuickInput = (props) => (
-  <input {...props} className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3.5 text-[15px] text-white placeholder-zinc-500 outline-none" />
+const QuickInput = ({ accentColor, ...props }) => (
+  <input
+    {...props}
+    className={`w-full bg-zinc-800 border ${accentColor ? '' : 'border-zinc-700'} rounded-xl px-3.5 py-3.5 text-[15px] text-white placeholder-zinc-500 outline-none transition-colors`}
+    style={accentColor ? { borderColor: accentColor } : undefined}
+  />
 );
 
 const QuickLabel = ({ children }) => (
-  <label className="block text-xs font-semibold text-zinc-400 mb-2">{children}</label>
+  <label className="block text-xs font-semibold text-zinc-400 mb-2 uppercase tracking-wide">{children}</label>
 );
 
 const QuickTemaChips = ({ options, value, onChange }) => (
-  <div className="grid grid-cols-2 gap-2">
-    {options.map(tema => {
+  <div className="grid grid-cols-3 gap-1.5">
+    {options.flatMap((tema, i) => {
       const on = value === tema;
       const c = TEMA_COLORS[tema] || TEMA_COLORS['Altro'];
-      return (
+      const button = (
         <button
           key={tema}
           type="button"
           onClick={() => onChange(tema)}
-          className="flex items-center gap-2 rounded-xl px-3 py-3 text-[13.5px] font-semibold border transition-colors"
-          style={{ borderColor: on ? c.border : '#28282c', backgroundColor: on ? '#242428' : '#1c1c1f', color: on ? '#f4f4f5' : '#a1a1aa' }}
+          className="flex flex-col items-center gap-1 rounded-xl py-2 border transition-colors"
+          style={{ borderColor: on ? c.border : '#28282c', backgroundColor: on ? '#242428' : '#1c1c1f' }}
         >
-          <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: c.border }} />
-          {tema}
+          <span className="w-4 h-4 rounded-full flex-shrink-0" style={{ backgroundColor: c.border, boxShadow: on ? `0 0 0 2.5px ${c.dim}` : 'none' }} />
+          <span className="text-[9.5px] font-bold uppercase tracking-wide leading-tight" style={{ color: on ? '#f4f4f5' : '#a1a1aa' }}>{tema}</span>
         </button>
       );
+      // "Altro" va sotto "Tabacco" (stessa colonna) invece che in prima colonna:
+      // se cadrebbe in colonna 0, inseriamo una cella vuota e invisibile prima.
+      if (tema === 'Altro' && i % 3 === 0) {
+        return [<span key="altro-spacer" aria-hidden="true" />, button];
+      }
+      return [button];
     })}
   </div>
 );
@@ -1931,6 +1945,20 @@ const QuickCta = ({ children, onClick, disabled, ghost, icon: Icon, type = 'butt
   </button>
 );
 
+const QuickToggleButton = ({ label, checked, onChange }) => (
+  <button
+    type="button"
+    onClick={() => onChange(!checked)}
+    className="w-full flex items-center justify-between rounded-2xl px-4 py-3.5 mb-3.5 border transition-colors"
+    style={{ borderColor: checked ? '#FFDA2A' : '#28282c', backgroundColor: checked ? 'rgba(255,218,42,0.08)' : '#1c1c1f' }}
+  >
+    <span className="text-[14.5px] font-semibold" style={{ color: checked ? '#f4f4f5' : '#a1a1aa' }}>{label}</span>
+    <span className="w-11 h-6 rounded-full relative flex-shrink-0 transition-colors" style={{ backgroundColor: checked ? '#FFDA2A' : '#3f3f46' }}>
+      <span className="absolute top-0.5 w-5 h-5 rounded-full bg-white transition-all" style={{ left: checked ? '22px' : '2px' }} />
+    </span>
+  </button>
+);
+
 // ═══ Partecipa (utente) ═══
 const QuickPartecipaScreen = ({ user }) => {
   const [form, setForm] = useState({ title: '', youtube_url: '', tema: '', description: '', prodotto_scuola: false });
@@ -1942,6 +1970,7 @@ const QuickPartecipaScreen = ({ user }) => {
 
   const f = (field, val) => setForm(prev => ({ ...prev, [field]: val }));
   const platform = form.youtube_url.trim() ? detectPlatform(form.youtube_url) : null;
+  const cardAccent = form.tema ? (TEMA_COLORS[form.tema] || TEMA_COLORS['Altro']).border : undefined;
 
   const handleGenerateDescription = async () => {
     setGeneratingDesc(true);
@@ -2010,8 +2039,13 @@ const QuickPartecipaScreen = ({ user }) => {
       <p className="text-[13.5px] text-zinc-400 leading-relaxed mb-5 max-w-[34ch]">condividi un video YouTube o TikTok utile per l'educazione — lo esaminiamo e, se appropriato, lo aggiungiamo all'archivio.</p>
 
       <QuickCard>
+        <QuickLabel>tema</QuickLabel>
+        <QuickTemaChips options={TEMI_OPTIONS} value={form.tema} onChange={v => f('tema', v)} />
+      </QuickCard>
+
+      <QuickCard>
         <QuickLabel>link video</QuickLabel>
-        <QuickInput value={form.youtube_url} onChange={e => f('youtube_url', e.target.value)} placeholder="https://youtu.be/... oppure TikTok" />
+        <QuickInput accentColor={cardAccent} value={form.youtube_url} onChange={e => f('youtube_url', e.target.value)} placeholder="https://youtu.be/... oppure TikTok" />
         {platform && (
           <div className="flex items-center gap-2 mt-2.5 text-xs text-zinc-400">
             <span className="inline-flex items-center gap-1.5 bg-zinc-800 border border-zinc-700 rounded-full px-2.5 py-1 font-semibold text-white text-[11px]">
@@ -2026,12 +2060,7 @@ const QuickPartecipaScreen = ({ user }) => {
 
       <QuickCard>
         <QuickLabel>titolo</QuickLabel>
-        <QuickInput value={form.title} onChange={e => f('title', e.target.value)} placeholder="titolo del video" />
-      </QuickCard>
-
-      <QuickCard>
-        <QuickLabel>tema</QuickLabel>
-        <QuickTemaChips options={TEMI_OPTIONS} value={form.tema} onChange={v => f('tema', v)} />
+        <QuickInput accentColor={cardAccent} value={form.title} onChange={e => f('title', e.target.value)} placeholder="titolo del video" />
       </QuickCard>
 
       <QuickCard>
@@ -2042,8 +2071,9 @@ const QuickPartecipaScreen = ({ user }) => {
           value={form.description}
           onChange={e => f('description', e.target.value)}
           placeholder="descrivi brevemente il contenuto..."
-          rows={3}
-          className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3.5 text-[15px] text-white placeholder-zinc-500 outline-none resize-none"
+          rows={6}
+          className={`w-full bg-zinc-800 border ${cardAccent ? '' : 'border-zinc-700'} rounded-xl px-3.5 py-3.5 text-[15px] text-white placeholder-zinc-500 outline-none resize-none transition-colors`}
+          style={cardAccent ? { borderColor: cardAccent } : undefined}
         />
         {platform !== 'tiktok' && (
           <button
@@ -2059,14 +2089,11 @@ const QuickPartecipaScreen = ({ user }) => {
         {descWarning && <p className="text-xs text-amber-400 mt-2">{descWarning}</p>}
       </QuickCard>
 
-      <label className="flex items-center gap-3 px-1 py-2 mb-2 text-sm text-zinc-300">
-        <input type="checkbox" checked={form.prodotto_scuola} onChange={e => f('prodotto_scuola', e.target.checked)} className="w-4 h-4 accent-[#FFDA2A]" />
-        prodotto da scuola
-      </label>
+      <QuickToggleButton label="prodotto da scuola" checked={form.prodotto_scuola} onChange={v => f('prodotto_scuola', v)} />
 
       {error && <p className="text-sm text-red-400 mb-3 flex items-center gap-1.5"><AlertCircle size={14} />{error}</p>}
 
-      <div className="sticky bottom-28 pt-1">
+      <div className="pt-6 pb-24">
         <QuickCta onClick={handleSubmit} disabled={loading} icon={loading ? Loader2 : Send}>
           {loading ? 'invio in corso...' : 'invia ad ADAM'}
         </QuickCta>
@@ -2080,7 +2107,7 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
   const [form, setForm] = useState({
     title: '', youtube_url: '', tema: '', natura: '',
     year: new Date().getFullYear(), description: '',
-    prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: '',
+    prodotto_scuola: false, formato: 'verticale', duration: '', codice: '',
     thumbnail: '',
   });
   const [saving, setSaving] = useState(null); // 'add' | 'later' | null
@@ -2094,6 +2121,7 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
 
   const f = (field, val) => setForm(prev => ({ ...prev, [field]: val }));
   const platform = form.youtube_url.trim() ? detectPlatform(form.youtube_url) : null;
+  const cardAccent = form.tema ? (TEMA_COLORS[form.tema] || TEMA_COLORS['Altro']).border : undefined;
 
   const handleUrlBlur = async () => {
     if (detectPlatform(form.youtube_url) !== 'tiktok') return;
@@ -2110,7 +2138,7 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
 
   const resetForm = (nextCodice) => setForm({
     title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(),
-    description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: nextCodice, thumbnail: '',
+    description: '', prodotto_scuola: false, formato: 'verticale', duration: '', codice: nextCodice, thumbnail: '',
   });
 
   const handleAdd = async () => {
@@ -2183,8 +2211,7 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
     resetForm(bumpCodice(form.codice, allVideos));
   };
 
-  const NATURA_SELECT_OPTIONS = NATURE_OPTIONS.map(n => ({ value: n, label: n }));
-  const FORMATO_OPTIONS = [{ value: 'orizzontale', label: 'Orizzontale' }, { value: 'verticale', label: 'Verticale' }];
+  const NATURA_SELECT_OPTIONS = NATURE_OPTIONS.map(n => ({ value: n, label: n.toUpperCase() }));
 
   return (
     <div>
@@ -2197,8 +2224,13 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
       </div>
 
       <QuickCard>
+        <QuickLabel>tema</QuickLabel>
+        <QuickTemaChips options={TEMI_OPTIONS} value={form.tema} onChange={v => f('tema', v)} />
+      </QuickCard>
+
+      <QuickCard>
         <QuickLabel>link video</QuickLabel>
-        <QuickInput value={form.youtube_url} onChange={e => f('youtube_url', e.target.value)} onBlur={handleUrlBlur} placeholder="https://youtu.be/... oppure TikTok" />
+        <QuickInput accentColor={cardAccent} value={form.youtube_url} onChange={e => f('youtube_url', e.target.value)} onBlur={handleUrlBlur} placeholder="https://youtu.be/... oppure TikTok" />
         {platform && (
           <div className="flex items-center gap-2 mt-2.5 text-xs text-zinc-400">
             <span className="inline-flex items-center gap-1.5 bg-zinc-800 border border-zinc-700 rounded-full px-2.5 py-1 font-semibold text-white text-[11px]">
@@ -2213,33 +2245,43 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
 
       <QuickCard>
         <QuickLabel>titolo</QuickLabel>
-        <QuickInput value={form.title} onChange={e => f('title', e.target.value)} placeholder="titolo del video" />
-      </QuickCard>
-
-      <QuickCard>
-        <QuickLabel>tema</QuickLabel>
-        <QuickTemaChips options={TEMI_OPTIONS.filter(t => t !== 'Altro')} value={form.tema} onChange={v => f('tema', v)} />
+        <QuickInput accentColor={cardAccent} value={form.title} onChange={e => f('title', e.target.value)} placeholder="titolo del video" />
       </QuickCard>
 
       <QuickCard>
         <QuickLabel>natura</QuickLabel>
-        <CustomSelect value={form.natura} onChange={v => f('natura', v)} options={NATURA_SELECT_OPTIONS} />
+        <CustomSelect value={form.natura} onChange={v => f('natura', v)} options={NATURA_SELECT_OPTIONS} accentColor={cardAccent || '#FFDA2A'} coloredBorder={!!cardAccent} />
       </QuickCard>
 
       <QuickCard>
-        <div className="grid grid-cols-3 gap-2.5">
+        <div className="grid grid-cols-2 gap-2.5 mb-3.5">
           <div>
             <QuickLabel>anno</QuickLabel>
-            <QuickInput value={form.year} onChange={e => f('year', e.target.value)} inputMode="numeric" />
+            <QuickInput accentColor={cardAccent} value={form.year} onChange={e => f('year', e.target.value)} inputMode="numeric" />
           </div>
           <div>
             <QuickLabel>durata</QuickLabel>
-            <QuickInput value={form.duration} onChange={e => f('duration', e.target.value)} placeholder="1:32" />
+            <QuickInput accentColor={cardAccent} value={form.duration} onChange={e => f('duration', e.target.value)} placeholder="1:32" />
           </div>
-          <div>
-            <QuickLabel>formato</QuickLabel>
-            <CustomSelect value={form.formato} onChange={v => f('formato', v)} options={FORMATO_OPTIONS} />
-          </div>
+        </div>
+        <QuickLabel>formato</QuickLabel>
+        <div className="grid grid-cols-2 gap-2.5">
+          {[{ value: 'orizzontale', label: 'orizzontale', icon: Monitor }, { value: 'verticale', label: 'verticale', icon: Smartphone }].map(opt => {
+            const on = form.formato === opt.value;
+            const c = cardAccent || '#FFDA2A';
+            return (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => f('formato', opt.value)}
+                className="flex flex-col items-center gap-1.5 rounded-xl py-3.5 border transition-colors"
+                style={{ borderColor: on ? c : '#28282c', backgroundColor: on ? '#242428' : '#1c1c1f', color: on ? '#f4f4f5' : '#a1a1aa' }}
+              >
+                <opt.icon size={20} style={{ color: on ? c : '#71717a' }} />
+                <span className="text-[12.5px] font-semibold uppercase tracking-wide">{opt.label}</span>
+              </button>
+            );
+          })}
         </div>
       </QuickCard>
 
@@ -2249,21 +2291,19 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
           value={form.description}
           onChange={e => f('description', e.target.value)}
           placeholder="descrivi brevemente il contenuto..."
-          rows={3}
-          className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3.5 text-[15px] text-white placeholder-zinc-500 outline-none resize-none"
+          rows={6}
+          className={`w-full bg-zinc-800 border ${cardAccent ? '' : 'border-zinc-700'} rounded-xl px-3.5 py-3.5 text-[15px] text-white placeholder-zinc-500 outline-none resize-none transition-colors`}
+          style={cardAccent ? { borderColor: cardAccent } : undefined}
         />
       </QuickCard>
 
-      <label className="flex items-center gap-3 px-1 py-2 mb-2 text-sm text-zinc-300">
-        <input type="checkbox" checked={form.prodotto_scuola} onChange={e => f('prodotto_scuola', e.target.checked)} className="w-4 h-4 accent-[#FFDA2A]" />
-        prodotto da scuola
-      </label>
+      <QuickToggleButton label="prodotto da scuola" checked={form.prodotto_scuola} onChange={v => f('prodotto_scuola', v)} />
 
       {msg && <p className={`text-sm mb-3 flex items-center gap-1.5 ${msg.type === 'error' ? 'text-red-400' : ''}`} style={msg.type === 'success' ? { color: '#FFDA2A' } : {}}>
         {msg.type === 'error' ? <AlertCircle size={14} /> : <Check size={14} />}{msg.text}
       </p>}
 
-      <div className="sticky bottom-28 pt-1 flex gap-2.5">
+      <div className="pt-6 pb-24 flex gap-2.5">
         <button
           onClick={handleSaveForLater}
           disabled={saving !== null}
@@ -2410,6 +2450,11 @@ const QuickMyVideosScreen = ({ user }) => {
                         <button onClick={() => setDeleteConfirmId(sub.id)} className="p-2 text-zinc-400"><Trash2 size={15} /></button>
                       </div>
                     )}
+                    {status !== 'draft' && !isDeleteConfirm && (
+                      <div className="flex items-center gap-1 flex-shrink-0">
+                        <button onClick={() => setDeleteConfirmId(sub.id)} className="p-2 text-zinc-400"><Trash2 size={15} /></button>
+                      </div>
+                    )}
                     {isDeleteConfirm && (
                       <div className="flex items-center gap-1.5 flex-shrink-0">
                         <button onClick={() => handleDelete(sub)} disabled={deletingId === sub.id} className="text-xs font-bold text-red-400 px-2 py-1">elimina</button>
@@ -2491,7 +2536,7 @@ const QuickPlaylistScreen = ({
         )}
 
         {videos.length > 0 && (
-          <div className="sticky bottom-28 pt-1 space-y-2.5">
+          <div className="pt-6 pb-24 space-y-2.5">
             <QuickCta onClick={() => onPlay(activePlaylistId)} icon={Play}>riproduci playlist</QuickCta>
             <button onClick={() => handleShare(activePlaylist)} className="w-full flex items-center justify-center gap-2 bg-zinc-800 border border-zinc-700 text-white rounded-2xl py-3.5 font-bold text-[14px]">
               {copiedShareId === activePlaylist.id ? <><Check size={15} style={{ color: '#FFDA2A' }} /> link copiato!</> : <><Share2 size={15} /> condividi</>}
@@ -2548,13 +2593,13 @@ const QuickPlaylistScreen = ({
 // ═══ Tab bar in basso ═══
 const QuickTabBar = ({ activeSection, isAdmin, onNavigate }) => {
   const addDestination = isAdmin ? 'admin' : 'submit';
-  const addActive = activeSection === 'admin' || activeSection === 'submit';
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 flex justify-center pointer-events-none" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0), #000 40%)' }}>
       <div className="w-full max-w-[480px] px-6 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 flex items-end justify-between pointer-events-auto">
         <button
           onClick={() => onNavigate('myvideos')}
-          className={`flex flex-col items-center gap-1 w-20 transition-colors ${activeSection === 'myvideos' ? 'text-white' : 'text-zinc-500'}`}
+          className="flex flex-col items-center gap-1 w-20 transition-colors"
+          style={{ color: activeSection === 'myvideos' ? '#FFDA2A' : '#ffffff' }}
         >
           <Film size={22} />
           <span className="text-[10.5px] font-semibold">i miei video</span>
@@ -2563,7 +2608,7 @@ const QuickTabBar = ({ activeSection, isAdmin, onNavigate }) => {
         <button onClick={() => onNavigate(addDestination)} className="flex flex-col items-center -mt-7">
           <span
             className="w-14 h-14 rounded-full flex items-center justify-center transition-transform active:scale-95"
-            style={{ backgroundColor: '#FFDA2A', boxShadow: '0 10px 22px -6px rgba(255,218,42,.55)', outline: addActive ? '2.5px solid #f4f4f5' : 'none', outlineOffset: '2px' }}
+            style={{ backgroundColor: '#FFDA2A', boxShadow: '0 10px 22px -6px rgba(255,218,42,.55)' }}
           >
             <Plus size={26} className="text-black" strokeWidth={2.6} />
           </span>
@@ -2571,7 +2616,8 @@ const QuickTabBar = ({ activeSection, isAdmin, onNavigate }) => {
 
         <button
           onClick={() => onNavigate('quick-playlist')}
-          className={`flex flex-col items-center gap-1 w-20 transition-colors ${activeSection === 'quick-playlist' ? 'text-white' : 'text-zinc-500'}`}
+          className="flex flex-col items-center gap-1 w-20 transition-colors"
+          style={{ color: activeSection === 'quick-playlist' ? '#FFDA2A' : '#ffffff' }}
         >
           <List size={22} />
           <span className="text-[10.5px] font-semibold">playlist</span>
