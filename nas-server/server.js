@@ -24,6 +24,23 @@ function sanitizeFilename(name) {
   return name.replace(/[\/\\:*?"<>|]/g, '-').replace(/\s+/g, ' ').trim().slice(0, 200);
 }
 
+// Cerca ricorsivamente in ARCHIVE_PATH i file che iniziano con "{codice}-"
+// (stesso schema di naming usato da /save-video: "{codice}-{titolo}.mp4")
+function findFilesByCodice(dir, codice) {
+  let results = [];
+  let entries;
+  try { entries = readdirSync(dir, { withFileTypes: true }); } catch { return results; }
+  for (const entry of entries) {
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      results = results.concat(findFilesByCodice(full, codice));
+    } else if (entry.isFile() && entry.name.startsWith(`${codice}-`)) {
+      results.push(full);
+    }
+  }
+  return results;
+}
+
 function checkAuth(req) {
   if (!NAS_SECRET) return true;
   return (req.headers['authorization'] || '') === `Bearer ${NAS_SECRET}`;
@@ -291,6 +308,35 @@ const server = http.createServer(async (req, res) => {
     } catch (e) {
       console.error(`[${ts}] errore save-video:`, e.message);
       try { unlinkSync(destPath); } catch {}
+      return json(500, { error: e.message });
+    }
+  }
+
+  // POST /delete-video — elimina il file fisico corrispondente a un codice
+  // (cerca in tutto ARCHIVE_PATH, non solo nella cartella tema/natura attuale:
+  // il record può essere stato spostato di tema dopo il salvataggio del file)
+  if (req.url === '/delete-video') {
+    let parsed;
+    try { parsed = await parseBody(req); } catch { return json(400, { error: 'JSON non valido' }); }
+
+    const { codice } = parsed;
+    if (!codice) return json(400, { error: 'codice mancante' });
+    if (!ARCHIVE_PATH || !existsSync(ARCHIVE_PATH)) {
+      return json(503, { error: 'ARCHIVE_PATH non configurato o cartella inesistente sul NAS' });
+    }
+
+    const ts = Date.now();
+    try {
+      const matches = findFilesByCodice(ARCHIVE_PATH, codice);
+      if (!matches.length) {
+        console.log(`[${ts}] /delete-video — nessun file trovato per codice "${codice}"`);
+        return json(200, { deleted: false, reason: 'not-found' });
+      }
+      for (const f of matches) unlinkSync(f);
+      console.log(`[${ts}] /delete-video — eliminati: ${matches.join(', ')}`);
+      return json(200, { deleted: true, paths: matches.map(f => f.replace(ARCHIVE_PATH, 'ADAM')) });
+    } catch (e) {
+      console.error(`[${ts}] errore delete-video:`, e.message);
       return json(500, { error: e.message });
     }
   }

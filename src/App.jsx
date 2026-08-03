@@ -192,28 +192,28 @@ const extractTikTokId = (url) => {
   return m ? m[1] : null;
 };
 
-// Prossimo Codice ID disponibile (formato HD-YYNNNN) — usato dal tab Admin
+// Prossimo Codice ID disponibile (formato HDYYNNNN, senza trattino) — usato dal tab Admin
 // "Aggiungi" e dalla schermata equivalente della PWA quick-entry
 const getNextCodice = (allVideos) => {
   const yy = String(new Date().getFullYear()).slice(-2);
   let maxNum = 0;
   allVideos.forEach(v => {
     const c = (v.codice || v.id || '').trim();
-    const m = c.match(/^HD-(\d{2})(\d{4})$/);
+    const m = c.match(/^HD-?(\d{2})(\d{4})$/);
     if (m && m[1] === yy) {
       const n = parseInt(m[2], 10);
       if (n > maxNum) maxNum = n;
     }
   });
-  return `HD-${yy}${String(maxNum + 1).padStart(4, '0')}`;
+  return `HD${yy}${String(maxNum + 1).padStart(4, '0')}`;
 };
 
 // Incrementa direttamente dal codice appena salvato invece di ricalcolare da allVideos
 // (che non si è ancora aggiornato subito dopo un insert) — evita di riproporre lo stesso numero
 const bumpCodice = (code, allVideos) => {
   const yy = String(new Date().getFullYear()).slice(-2);
-  const m = (code || '').trim().match(/^HD-(\d{2})(\d{4})$/);
-  if (m && m[1] === yy) return `HD-${yy}${String(parseInt(m[2], 10) + 1).padStart(4, '0')}`;
+  const m = (code || '').trim().match(/^HD(\d{2})(\d{4})$/);
+  if (m && m[1] === yy) return `HD${yy}${String(parseInt(m[2], 10) + 1).padStart(4, '0')}`;
   return getNextCodice(allVideos);
 };
 
@@ -248,8 +248,33 @@ const mapDbVideo = (v) => ({
   prodottoScuola: v.prodotto_scuola || false,
   description: v.description || '',
   dataInserimento: v.data_inserimento || '',
+  createdAt: v.created_at || null,
   codice: v.codice || '',
 });
+
+// Comparatore per ordinare per inserimento, più recente prima. data_inserimento
+// (solo giorno) resta la chiave principale — per i 420 video migrati è l'unica
+// data reale disponibile (created_at è stato riempito in blocco alla creazione
+// della colonna, quindi è identico per tutti loro e da solo non direbbe nulla).
+// created_at fa da spareggio SOLO fra video con la stessa data_inserimento —
+// il caso di più video aggiunti nello stesso giorno, dove serve l'orario preciso.
+const compareVideoTime = (a, b) => {
+  const da = a.dataInserimento || '';
+  const db = b.dataInserimento || '';
+  if (da !== db) return db.localeCompare(da);
+  const ca = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+  const cb = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+  return cb - ca;
+};
+// Stessa logica di compareVideoTime ma per gli oggetti snake_case di toArchiveFormat
+const compareArchiveTime = (a, b) => {
+  const da = a.data_inserimento || '';
+  const db = b.data_inserimento || '';
+  if (da !== db) return db.localeCompare(da);
+  const ca = a.created_at ? new Date(a.created_at).getTime() : 0;
+  const cb = b.created_at ? new Date(b.created_at).getTime() : 0;
+  return cb - ca;
+};
 
 const parseDuration = (dur) => {
   if (!dur) return 0;
@@ -1274,23 +1299,26 @@ const VideoCard = ({ video, onClick, onAddToPlaylist, isInPlaylist }) => {
   );
 };
 
-const VideoModal = ({ video, onClose }) => {
+const VideoModal = ({ video, onClose, isApp = false }) => {
   const platform = detectPlatform(video.youtubeUrl);
   const videoId = platform === 'tiktok' ? extractTikTokId(video.youtubeUrl) : getYouTubeID(video.youtubeUrl);
   // Contenitore verticale per QUALSIASI video verticale (TikTok o YouTube Shorts),
   // non solo per piattaforma — altrimenti uno short YouTube resta schiacciato nel box 16:9
   const isVertical = video.format === 'verticale';
+  // Autoplay muto SOLO dentro l'app (isApp): su mobile i browser bloccano
+  // l'autoplay con audio negli iframe cross-origin (YouTube resta a caricare
+  // all'infinito con mute=0), quindi lì si parte muti (sempre permesso) con un
+  // hint una tantum. Sul sito normale l'audio in autoplay ha sempre funzionato
+  // (desktop soprattutto) — non tocchiamo quel comportamento.
   const embedSrc = platform === 'tiktok'
-    ? `https://www.tiktok.com/embed/v2/${videoId}?autoplay=1&muted=0&rel=0`
-    : `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&rel=0&modestbranding=1`;
+    ? `https://www.tiktok.com/embed/v2/${videoId}?autoplay=1&muted=${isApp ? 1 : 0}&rel=0`
+    : `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${isApp ? 1 : 0}&rel=0&modestbranding=1`;
   const [key, setKey] = useState(0);
-  // TikTok forza il video muto all'avvio (limite del loro player, non regolabile
-  // via parametri) — un hint una tantum spiega dove attivare l'audio
   const [showAudioHint, setShowAudioHint] = useState(
-    () => platform === 'tiktok' && !localStorage.getItem('adam-tiktok-audio-hint-seen')
+    () => (isApp || platform === 'tiktok') && !localStorage.getItem('adam-audio-hint-seen')
   );
   const dismissAudioHint = () => {
-    localStorage.setItem('adam-tiktok-audio-hint-seen', '1');
+    localStorage.setItem('adam-audio-hint-seen', '1');
     setShowAudioHint(false);
   };
 
@@ -1314,19 +1342,69 @@ const VideoModal = ({ video, onClose }) => {
 
   const scrollbarColor = getTemaScrollbarColor(video.tema);
 
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="relative" onClick={e => e.stopPropagation()}>
-      <div
-        className={`bg-zinc-900 rounded-xl w-full max-h-[90vh] overflow-y-auto modal-scrollbar ${isVertical ? 'max-w-[420px]' : 'max-w-6xl'}`}
-        style={{
-          scrollbarWidth: 'thin',
-          scrollbarColor: `${scrollbarColor} #18181b`,
-          '--scrollbar-color': scrollbarColor
-        }}
-      >
-        <div className="relative">
-          {isVertical ? (
+  if (isVertical && isApp) {
+    // Fullscreen solo dentro la PWA (?quick=1) — sul sito normale, anche da
+    // mobile, resta il box centrato qui sotto. Il video occupa tutto lo
+    // schermo ma il contenitore scorre: sotto (fuori vista, raggiungibile
+    // scrollando) ci sono titolo, tag e sinossi — la X resta fissa.
+    return (
+      <div className="fixed inset-0 bg-black z-50 overflow-y-auto modal-scrollbar" onClick={onClose} style={{ '--scrollbar-color': scrollbarColor }}>
+        <div
+          className="relative bg-black mx-auto"
+          style={{
+            width: 'min(100vw, calc(100dvh * 9 / 16))',
+            height: '100dvh',
+          }}
+          onClick={e => e.stopPropagation()}
+        >
+          <iframe
+            key={key}
+            className="absolute top-0 left-0 w-full h-full"
+            src={embedSrc}
+            title={video.title}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+          {showAudioHint && (
+            <button onClick={dismissAudioHint} className="absolute bottom-3 left-3 right-3 z-20 flex items-center gap-2 bg-black/85 text-white text-xs px-3 py-2 rounded-lg text-left">
+              <Volume2 size={14} className="shrink-0" style={{ color: '#FFDA2A' }} />
+              <span className="flex-1">Il video parte senza audio — tocca l'icona del volume nel player per attivarlo</span>
+              <X size={12} className="shrink-0" />
+            </button>
+          )}
+        </div>
+        <div className="bg-zinc-900 p-6" onClick={e => e.stopPropagation()}>
+          <h2 className="text-xl font-bold text-white mb-3">{video.title}</h2>
+          <div className="flex flex-wrap gap-4 mb-4 text-sm text-zinc-400">
+            <div className="flex items-center gap-1.5"><Clock size={15} /><span>{video.duration || 'N/D'}</span></div>
+            <div className="flex items-center gap-1.5"><Calendar size={15} /><span>{video.year}</span></div>
+            <div className="flex items-center gap-1.5"><Eye size={15} /><span>{video.views} visualizzazioni</span></div>
+            {video.prodottoScuola && <div className="flex items-center gap-1.5 text-purple-400"><School size={15} /><span>Prodotto da scuole</span></div>}
+          </div>
+          <div className="flex gap-2.5 mb-4">
+            <span className="px-3 py-1.5 rounded-full text-sm font-semibold" style={{ backgroundColor: TEMA_COLORS[video.tema]?.solid || '#FFDA2A', color: '#ffffff' }}>{video.tema}</span>
+            <span className="bg-blue-600/20 text-blue-400 px-3 py-1.5 rounded-full text-sm font-medium border border-blue-600/30">{video.natura}</span>
+          </div>
+          <p className="text-zinc-400 leading-relaxed">{video.description}</p>
+        </div>
+        <button onClick={onClose} className="fixed top-4 right-4 p-2 rounded-full bg-black/60 z-20" style={{ color: '#FFDA2A' }}><X size={32} /></button>
+      </div>
+    );
+  }
+
+  if (isVertical) {
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4" onClick={onClose}>
+        <div className="relative" onClick={e => e.stopPropagation()}>
+          <div
+            className="bg-zinc-900 rounded-xl w-full max-w-[420px] max-h-[90vh] overflow-y-auto modal-scrollbar"
+            style={{
+              scrollbarWidth: 'thin',
+              scrollbarColor: `${scrollbarColor} #18181b`,
+              '--scrollbar-color': scrollbarColor,
+            }}
+          >
             <div className="relative mx-auto bg-black" style={{ width: '100%', maxWidth: '360px', aspectRatio: '9 / 16' }}>
               <iframe
                 key={key}
@@ -1345,25 +1423,90 @@ const VideoModal = ({ video, onClose }) => {
                 </button>
               )}
             </div>
-          ) : (
-            <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
-              <iframe
-                key={key}
-                className="absolute top-0 left-0 w-full h-full"
-                src={embedSrc}
-                title={video.title}
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+            <div className="p-8">
+              <h2 className="text-xl font-bold text-white mb-4">{video.title}</h2>
+              <div className="flex flex-wrap gap-6 mb-6 text-sm text-zinc-400">
+                <div className="flex items-center gap-2"><Clock size={16} /><span>{video.duration || 'N/D'}</span></div>
+                <div className="flex items-center gap-2"><Calendar size={16} /><span>{video.year}</span></div>
+                <div className="flex items-center gap-2"><Eye size={16} /><span>{video.views} visualizzazioni</span></div>
+                <div className="flex items-center gap-2">
+                  {video.format === 'verticale' ? <Smartphone size={16} /> : <Monitor size={16} />}
+                  <span>{video.format}</span>
+                </div>
+                {video.prodottoScuola && <div className="flex items-center gap-2 text-purple-400"><School size={16} /><span>Prodotto da scuole</span></div>}
+                {video.codice && <div className="flex items-center gap-2 font-mono"><span>{video.codice}</span></div>}
+              </div>
+
+              <button
+                onClick={(e) => { e.stopPropagation(); window.videoModalAddToPlaylist?.(video); }}
+                className="mb-6 flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all"
+                style={{
+                  backgroundColor: window.videoModalIsInPlaylist?.(video.id) ? '#FFDA2A' : '#27272a',
+                  color: window.videoModalIsInPlaylist?.(video.id) ? '#000' : '#d4d4d8',
+                }}
+              >
+                {window.videoModalIsInPlaylist?.(video.id) ? (
+                  <><Check size={16} /><span>In Playlist</span></>
+                ) : (
+                  <><Plus size={16} /><span>Aggiungi a Playlist</span></>
+                )}
+              </button>
+              <div className="flex gap-3 mb-6">
+                <span
+                  className="px-3 py-1.5 rounded-full text-sm font-semibold"
+                  style={{ backgroundColor: TEMA_COLORS[video.tema]?.solid || '#FFDA2A', color: '#ffffff', border: 'none' }}
+                >{video.tema}</span>
+                <span className="bg-blue-600/20 text-blue-400 px-3 py-1.5 rounded-full text-sm font-medium border border-blue-600/30">{video.natura}</span>
+              </div>
+              <div className="mb-4">
+                <p className="text-zinc-400 leading-relaxed">{video.description}</p>
+              </div>
             </div>
-          )}
-          {!isVertical && (
-            <button onClick={onClose} className="absolute right-6 top-16 md:top-20 bg-black bg-opacity-80 text-white p-2 rounded-full hover:bg-opacity-100 transition-all z-10"><X size={24} /></button>
-          )}
+          </div>
+          <button onClick={onClose} className="absolute -right-16 top-0 bg-black bg-opacity-80 text-white p-2 rounded-full hover:bg-opacity-100 transition-all z-10"><X size={24} /></button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="fixed inset-0 bg-black bg-opacity-70 z-50 flex justify-center items-start p-4"
+      style={{ paddingTop: '25px' }}
+      onClick={onClose}
+    >
+      <div className="relative" onClick={e => e.stopPropagation()}>
+      <div
+        className="bg-zinc-900 rounded-xl w-full overflow-y-auto modal-scrollbar max-w-6xl mt-16"
+        style={{
+          scrollbarWidth: 'thin',
+          scrollbarColor: `${scrollbarColor} #18181b`,
+          '--scrollbar-color': scrollbarColor,
+          maxHeight: 'calc(100vh - 129px)',
+        }}
+      >
+        <div className="relative">
+          <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
+            <iframe
+              key={key}
+              className="absolute top-0 left-0 w-full h-full"
+              src={embedSrc}
+              title={video.title}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+            {showAudioHint && (
+              <button onClick={dismissAudioHint} className="absolute bottom-3 left-3 right-3 z-20 flex items-center gap-2 bg-black/85 text-white text-xs px-3 py-2 rounded-lg text-left max-w-sm">
+                <Volume2 size={14} className="shrink-0" style={{ color: '#FFDA2A' }} />
+                <span className="flex-1">Il video parte senza audio — tocca l'icona del volume nel player per attivarlo</span>
+                <X size={12} className="shrink-0" />
+              </button>
+            )}
+          </div>
         </div>
         <div className="p-8">
-          <h2 className="text-3xl font-bold text-white mb-4">{video.title}</h2>
+          <h2 className="text-xl font-bold text-white mb-4">{video.title}</h2>
          <div className="flex flex-wrap gap-6 mb-6 text-sm text-zinc-400">
             <div className="flex items-center gap-2"><Clock size={16} /><span>{video.duration || 'N/D'}</span></div>
             <div className="flex items-center gap-2"><Calendar size={16} /><span>{video.year}</span></div>
@@ -1415,12 +1558,14 @@ const VideoModal = ({ video, onClose }) => {
             >{video.tema}</span>
             <span className="bg-blue-600/20 text-blue-400 px-3 py-1.5 rounded-full text-sm font-medium border border-blue-600/30">{video.natura}</span>
           </div>
-          <div className="mb-6">
+          <div className="mb-20">
             <p className="text-zinc-400 leading-relaxed">{video.description}</p>
           </div>
         </div>
       </div>
-      {isVertical && (
+      {isApp ? (
+        <button onClick={onClose} className="fixed top-4 right-4 p-2 rounded-full bg-black/60 z-20" style={{ color: '#FFDA2A' }}><X size={32} /></button>
+      ) : (
         <button onClick={onClose} className="absolute -right-16 top-0 bg-black bg-opacity-80 text-white p-2 rounded-full hover:bg-opacity-100 transition-all z-10"><X size={24} /></button>
       )}
       </div>
@@ -1870,12 +2015,16 @@ const QuickLoadingScreen = () => {
   return (
     <div className="h-[100dvh] overflow-hidden bg-black flex items-center justify-center">
       {logoAnim ? (
-        <div className="w-40">
+        <div className="w-96 p-1 rounded-3xl border border-zinc-600">
           <Lottie
             animationData={logoAnim}
             loop
-            autoplay
             lottieRef={lottieRef}
+            onDOMLoaded={() => {
+              if (!lottieRef.current) return;
+              lottieRef.current.setSpeed(1);
+              lottieRef.current.goToAndPlay(60, true); // 60 = frame al secondo 2 (30fps)
+            }}
             onComplete={() => { if (lottieRef.current) lottieRef.current.setDirection(lottieRef.current.playDirection * -1); }}
           />
         </div>
@@ -1897,7 +2046,9 @@ const QuickCard = ({ children, className = '', accentColor, onClick }) => (
 const QuickInput = ({ accentColor, ...props }) => (
   <input
     {...props}
-    className={`w-full bg-zinc-800 border ${accentColor ? '' : 'border-zinc-700'} rounded-xl px-3.5 py-3.5 text-[15px] text-white placeholder-zinc-500 outline-none transition-colors`}
+    // text-[16px] non 15px: sotto i 16px iOS Safari zooma automaticamente
+    // la pagina al focus dell'input, causando lo scroll orizzontale
+    className={`w-full bg-zinc-800 border ${accentColor ? '' : 'border-zinc-700'} rounded-xl px-3.5 py-3.5 text-[16px] text-white placeholder-zinc-500 outline-none transition-colors`}
     style={accentColor ? { borderColor: accentColor } : undefined}
   />
 );
@@ -2071,7 +2222,7 @@ const QuickPartecipaScreen = ({ user }) => {
 
       <QuickCard>
         <QuickLabel>tema</QuickLabel>
-        <QuickTemaChips options={TEMI_OPTIONS} value={form.tema} onChange={v => f('tema', v)} />
+        <QuickTemaChips options={TEMI_OPTIONS} value={form.tema} onChange={v => f('tema', v)} variant="pill" />
       </QuickCard>
 
       <QuickCard>
@@ -2080,9 +2231,7 @@ const QuickPartecipaScreen = ({ user }) => {
         {platform && (
           <div className="flex items-center gap-2 mt-2.5 text-xs text-zinc-400">
             <span className="inline-flex items-center gap-1.5 bg-zinc-800 border border-zinc-700 rounded-full px-2.5 py-1 font-semibold text-white text-[11px]">
-              {platform === 'tiktok'
-                ? <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'linear-gradient(135deg,#25F4EE,#FE2C55)' }} />
-                : <span className="w-1.5 h-1.5 rounded-full bg-red-500" />}
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
               {platform === 'tiktok' ? 'TikTok rilevato' : 'YouTube rilevato'}
             </span>
           </div>
@@ -2103,7 +2252,7 @@ const QuickPartecipaScreen = ({ user }) => {
           onChange={e => f('description', e.target.value)}
           placeholder="descrivi brevemente il contenuto..."
           rows={6}
-          className={`w-full bg-zinc-800 border ${cardAccent ? '' : 'border-zinc-700'} rounded-xl px-3.5 py-3.5 text-[15px] text-white placeholder-zinc-500 outline-none resize-none transition-colors`}
+          className={`w-full bg-zinc-800 border ${cardAccent ? '' : 'border-zinc-700'} rounded-xl px-3.5 py-3.5 text-[16px] text-white placeholder-zinc-500 outline-none resize-none transition-colors`}
           style={cardAccent ? { borderColor: cardAccent } : undefined}
         />
         {platform !== 'tiktok' && (
@@ -2141,8 +2290,14 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
     prodotto_scuola: false, formato: 'verticale', duration: '', codice: '',
     thumbnail: '',
   });
-  const [saving, setSaving] = useState(null); // 'add' | 'later' | null
+  const [saving, setSaving] = useState(null); // 'add' | 'addNas' | 'later' | null
   const [msg, setMsg] = useState(null);
+  const [generatingSynopsis, setGeneratingSynopsis] = useState(false);
+  const [synopsisWarning, setSynopsisWarning] = useState('');
+  const [synopsisDone, setSynopsisDone] = useState(false);
+  const [savingToNas, setSavingToNas] = useState(false);
+  const [nasSaveMsg, setNasSaveMsg] = useState(null);
+  const scrollAnchorRef = useRef(null);
 
   // Dipende da allVideos (non solo mount): subito dopo il login in quick mode
   // il fetch di allVideos da Supabase potrebbe non essere ancora risolto — se
@@ -2172,16 +2327,79 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
     description: '', prodotto_scuola: false, formato: 'verticale', duration: '', codice: nextCodice, thumbnail: '',
   });
 
-  const handleAdd = async () => {
-    if (!form.title.trim()) { setMsg({ type: 'error', text: 'Titolo obbligatorio.' }); return; }
-    if (!form.codice.trim()) { setMsg({ type: 'error', text: 'Codice ID obbligatorio.' }); return; }
-    if (!form.youtube_url.trim()) { setMsg({ type: 'error', text: 'URL Video obbligatorio.' }); return; }
-    if (!form.tema) { setMsg({ type: 'error', text: 'Tema obbligatorio.' }); return; }
-    if (!form.natura) { setMsg({ type: 'error', text: 'Natura obbligatoria.' }); return; }
-    if (!form.year) { setMsg({ type: 'error', text: 'Anno obbligatorio.' }); return; }
-    if (!form.duration.trim()) { setMsg({ type: 'error', text: 'Durata obbligatoria.' }); return; }
-    if (!form.description.trim()) { setMsg({ type: 'error', text: 'Descrizione obbligatoria.' }); return; }
-    setSaving('add');
+  // Sinossi automatica da URL YouTube (via NAS: yt-dlp + trascrizione + Claude) —
+  // stesso endpoint del tab "Aggiungi" desktop. Solo YouTube: per TikTok yt-dlp
+  // sul NAS richiede login, quindi da link non funziona (identico al desktop).
+  const handleGenerateSynopsis = async () => {
+    setGeneratingSynopsis(true);
+    setSynopsisWarning('');
+    setSynopsisDone(false);
+    try {
+      const res = await fetch('/api/generate-synopsis', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          youtubeUrl: form.youtube_url,
+          title: form.title || undefined,
+          tema: form.tema || undefined,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setSynopsisWarning(data.error || 'Errore nella generazione della sinossi.'); return; }
+      setForm(prev => ({
+        ...prev,
+        ...(data.synopsis ? { description: data.synopsis } : {}),
+        ...(!prev.title.trim() && data.ytTitle ? { title: data.ytTitle } : {}),
+        ...(data.ytDuration && !prev.duration.trim() ? { duration: data.ytDuration } : {}),
+        ...(data.ytFormat ? { formato: data.ytFormat } : {}),
+      }));
+      if (data.warnings?.length) setSynopsisWarning(data.warnings.join(' '));
+      setSynopsisDone(true);
+      // scroll fino a sotto il titolo (già compilato in automatico) — così si
+      // vede subito che la generazione è finita, senza dover scrollare a mano
+      // fino alla descrizione
+      requestAnimationFrame(() => scrollAnchorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    } catch (e) {
+      setSynopsisWarning(e?.message || 'Errore di rete nella generazione della sinossi.');
+    } finally {
+      setGeneratingSynopsis(false);
+    }
+  };
+
+  const handleSaveToNas = async () => {
+    setSavingToNas(true);
+    setNasSaveMsg(null);
+    try {
+      const res = await fetch('/api/save-to-nas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          youtubeUrl: form.youtube_url,
+          codice: form.codice,
+          title: form.title,
+          tema: form.tema,
+          natura: form.natura,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) setNasSaveMsg({ ok: false, text: data.error || 'Errore salvataggio sul NAS.' });
+      else setNasSaveMsg({ ok: true, text: '✓ Video salvato su STEADYTUBE' });
+    } catch (e) {
+      setNasSaveMsg({ ok: false, text: e.message });
+    } finally {
+      setSavingToNas(false);
+    }
+  };
+
+  const doInsertVideo = async () => {
+    if (!form.title.trim()) { setMsg({ type: 'error', text: 'Titolo obbligatorio.' }); return false; }
+    if (!form.codice.trim()) { setMsg({ type: 'error', text: 'Codice ID obbligatorio.' }); return false; }
+    if (!form.youtube_url.trim()) { setMsg({ type: 'error', text: 'URL Video obbligatorio.' }); return false; }
+    if (!form.tema) { setMsg({ type: 'error', text: 'Tema obbligatorio.' }); return false; }
+    if (!form.natura) { setMsg({ type: 'error', text: 'Natura obbligatoria.' }); return false; }
+    if (!form.year) { setMsg({ type: 'error', text: 'Anno obbligatorio.' }); return false; }
+    if (!form.duration.trim()) { setMsg({ type: 'error', text: 'Durata obbligatoria.' }); return false; }
+    if (!form.description.trim()) { setMsg({ type: 'error', text: 'Descrizione obbligatoria.' }); return false; }
     setMsg(null);
     const trimmedUrl = form.youtube_url.trim();
     const platform2 = detectPlatform(trimmedUrl);
@@ -2208,15 +2426,31 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
       views: 0,
       data_inserimento: new Date().toISOString().split('T')[0],
     });
-    setSaving(null);
     if (error) {
       setMsg({ type: 'error', text: error.code === '23505' ? `Il Codice ID "${form.codice.trim()}" esiste già nell'archivio.` : error.message });
-      return;
+      return false;
     }
-    setMsg({ type: 'success', text: 'Video aggiunto all\'archivio.' });
+    setMsg({ type: 'success', text: 'Video aggiunto all\'archivio ADAM' });
     resetForm(bumpCodice(form.codice, allVideos));
+    setSynopsisWarning('');
+    setSynopsisDone(false);
+    setNasSaveMsg(null);
     onVideoApproved?.();
     fetch('/api/rebuild-catalog-cache', { method: 'POST' }).catch(() => {});
+    return true;
+  };
+
+  const handleAdd = async () => {
+    setSaving('add');
+    await doInsertVideo();
+    setSaving(null);
+  };
+
+  const handleAddAndSaveNas = async () => {
+    setSaving('addNas');
+    const ok = await doInsertVideo();
+    setSaving(null);
+    if (ok) await handleSaveToNas();
   };
 
   const handleSaveForLater = async () => {
@@ -2260,16 +2494,40 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
       </QuickCard>
 
       <QuickCard>
-        <QuickLabel>link video</QuickLabel>
+        <div className="flex items-center justify-between mb-2">
+          <QuickLabel><span className="mb-0">link video</span></QuickLabel>
+          {platform !== 'tiktok' && (
+            <button
+              type="button"
+              onClick={handleGenerateSynopsis}
+              disabled={!form.youtube_url.trim() || generatingSynopsis}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all disabled:opacity-40"
+              style={{ backgroundColor: '#FFDA2A', color: '#000' }}
+            >
+              {generatingSynopsis
+                ? <><Loader2 size={12} className="animate-spin" /> generando…</>
+                : <><Sparkles size={12} /> genera sinossi</>}
+            </button>
+          )}
+        </div>
+        {generatingSynopsis && (
+          <div className="desc-progress-track mb-2">
+            <div className="desc-progress-bar" />
+          </div>
+        )}
         <QuickInput accentColor={cardAccent} value={form.youtube_url} onChange={e => f('youtube_url', e.target.value)} onBlur={handleUrlBlur} placeholder="https://youtu.be/... oppure TikTok" />
         {platform && (
           <div className="flex items-center gap-2 mt-2.5 text-xs text-zinc-400">
             <span className="inline-flex items-center gap-1.5 bg-zinc-800 border border-zinc-700 rounded-full px-2.5 py-1 font-semibold text-white text-[11px]">
-              {platform === 'tiktok'
-                ? <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'linear-gradient(135deg,#25F4EE,#FE2C55)' }} />
-                : <span className="w-1.5 h-1.5 rounded-full bg-red-500" />}
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
               {platform === 'tiktok' ? 'TikTok rilevato' : 'YouTube rilevato'}
             </span>
+          </div>
+        )}
+        {platform === 'tiktok' && (
+          <div className="flex items-start gap-1.5 mt-2 text-[11px] text-amber-400">
+            <AlertCircle size={13} className="mt-0.5 shrink-0" />
+            <span>per TikTok la sinossi automatica da link non è disponibile — solo da desktop, caricando il file video</span>
           </div>
         )}
       </QuickCard>
@@ -2277,7 +2535,14 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
       <QuickCard>
         <QuickLabel>titolo</QuickLabel>
         <QuickInput accentColor={cardAccent} value={form.title} onChange={e => f('title', e.target.value)} placeholder="titolo del video" />
+        {synopsisDone && !generatingSynopsis && (
+          <p className="text-[11px] mt-2 flex items-center gap-1.5" style={{ color: '#FFDA2A' }}>
+            <Check size={12} strokeWidth={3} />sinossi generata — controlla i campi qui sotto
+          </p>
+        )}
       </QuickCard>
+
+      <div ref={scrollAnchorRef} />
 
       <QuickCard>
         <QuickLabel>natura</QuickLabel>
@@ -2318,14 +2583,25 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
 
       <QuickCard>
         <QuickLabel>descrizione</QuickLabel>
+        {generatingSynopsis && (
+          <div className="desc-progress-track mb-2">
+            <div className="desc-progress-bar" />
+          </div>
+        )}
         <textarea
           value={form.description}
           onChange={e => f('description', e.target.value)}
           placeholder="descrivi brevemente il contenuto..."
           rows={6}
-          className={`w-full bg-zinc-800 border ${cardAccent ? '' : 'border-zinc-700'} rounded-xl px-3.5 py-3.5 text-[15px] text-white placeholder-zinc-500 outline-none resize-none transition-colors`}
+          className={`w-full bg-zinc-800 border ${cardAccent ? '' : 'border-zinc-700'} rounded-xl px-3.5 py-3.5 text-[16px] text-white placeholder-zinc-500 outline-none resize-none transition-colors`}
           style={cardAccent ? { borderColor: cardAccent } : undefined}
         />
+        {synopsisWarning && (
+          <div className="flex items-start gap-1.5 mt-2 px-3 py-2 rounded-lg text-[11px] bg-amber-900/30 border border-amber-800/50 text-amber-400">
+            <AlertCircle size={13} className="mt-0.5 shrink-0" />
+            <span>{synopsisWarning}</span>
+          </div>
+        )}
       </QuickCard>
 
       <QuickToggleButton label="prodotto da scuola" checked={form.prodotto_scuola} onChange={v => f('prodotto_scuola', v)} />
@@ -2334,23 +2610,40 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
         {msg.type === 'error' ? <AlertCircle size={14} /> : <Check size={14} />}{msg.text}
       </p>}
 
-      <div className="pt-6 pb-24 flex gap-2.5">
+      {nasSaveMsg && (
+        <p className={`text-xs mb-3 break-all ${nasSaveMsg.ok ? '' : 'text-red-400'}`} style={nasSaveMsg.ok ? { color: '#FFDA2A' } : {}}>
+          {nasSaveMsg.text}
+        </p>
+      )}
+
+      <div className="pt-6 pb-24 space-y-2.5">
+        <div className="flex gap-2.5">
+          <button
+            onClick={handleAdd}
+            disabled={saving !== null || savingToNas}
+            className="flex-1 flex items-center justify-center gap-1.5 text-black rounded-2xl py-4 font-bold text-[14px] disabled:opacity-50"
+            style={{ backgroundColor: '#FFDA2A' }}
+          >
+            {saving === 'add' ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} strokeWidth={2.6} />}
+            aggiungi
+          </button>
+          <button
+            onClick={handleAddAndSaveNas}
+            disabled={saving !== null || savingToNas}
+            className="flex-1 flex items-center justify-center gap-1.5 text-black rounded-2xl py-4 font-bold text-[13px] disabled:opacity-50 text-center leading-tight"
+            style={{ backgroundColor: '#FFDA2A' }}
+          >
+            {(saving === 'addNas' || savingToNas) ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} strokeWidth={2.6} />}
+            aggiungi<br />+ salva video
+          </button>
+        </div>
         <button
           onClick={handleSaveForLater}
-          disabled={saving !== null}
-          className="flex-1 flex items-center justify-center gap-1.5 bg-zinc-800 border border-zinc-700 text-white rounded-2xl py-4 font-bold text-[14px] disabled:opacity-50"
+          disabled={saving !== null || savingToNas}
+          className="w-full flex items-center justify-center gap-1.5 bg-zinc-800 border border-zinc-700 text-white rounded-2xl py-4 font-bold text-[14px] disabled:opacity-50"
         >
           {saving === 'later' ? <Loader2 size={16} className="animate-spin" /> : <BookOpen size={16} />}
           salva per dopo
-        </button>
-        <button
-          onClick={handleAdd}
-          disabled={saving !== null}
-          className="flex-1 flex items-center justify-center gap-1.5 text-black rounded-2xl py-4 font-bold text-[14px] disabled:opacity-50"
-          style={{ backgroundColor: '#FFDA2A' }}
-        >
-          {saving === 'add' ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} strokeWidth={2.6} />}
-          aggiungi
         </button>
       </div>
     </div>
@@ -2447,7 +2740,7 @@ const QuickMyVideosScreen = ({ user }) => {
                     <QuickInput value={form.title ?? sub.title ?? ''} onChange={e => ef(sub.id, 'title', e.target.value)} placeholder="titolo" />
                     <QuickInput value={form.youtube_url ?? sub.youtube_url ?? ''} onChange={e => ef(sub.id, 'youtube_url', e.target.value)} placeholder="link video" />
                     <QuickTemaChips options={TEMI_OPTIONS} value={form.tema ?? sub.tema ?? ''} onChange={v => ef(sub.id, 'tema', v)} />
-                    <textarea value={form.description ?? sub.description ?? ''} onChange={e => ef(sub.id, 'description', e.target.value)} placeholder="descrizione" rows={2} className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3 text-sm text-white placeholder-zinc-500 outline-none resize-none" />
+                    <textarea value={form.description ?? sub.description ?? ''} onChange={e => ef(sub.id, 'description', e.target.value)} placeholder="descrizione" rows={2} className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3 text-[16px] text-white placeholder-zinc-500 outline-none resize-none" />
                     <div className="flex gap-2 pt-1">
                       <button onClick={() => setEditingId(null)} className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-zinc-800 text-zinc-300">annulla</button>
                       <button onClick={() => handleSave(sub)} disabled={savingId === sub.id} className="flex-1 py-2.5 rounded-xl text-sm font-bold text-black disabled:opacity-50" style={{ backgroundColor: '#FFDA2A' }}>
@@ -2518,19 +2811,258 @@ const submissionToVideo = (sub) => ({
   codice: sub.codice || '',
 });
 
+const DURATION_MIN_OPTIONS = Array.from({ length: 91 }, (_, i) => ({ value: i, label: `${i} min` }));
+const DURATION_SEC_OPTIONS = Array.from({ length: 60 }, (_, i) => ({ value: i, label: `${String(i).padStart(2, '0')} sec` }));
+
+// Card di una segnalazione in attesa (tab "I miei video" admin, quick mode).
+// Componente a livello di modulo — se fosse definito dentro QuickArchiveScreen
+// verrebbe ricreato ad ogni render (ogni tasto premuto negli input), causando
+// lo smontaggio/rimontaggio dei campi di testo e la chiusura della tastiera
+// mobile a ogni carattere digitato.
+const PendingSubmissionCard = ({
+  sub, editing, form, msg, saving, deleting, deleteConfirm,
+  onSelect, onFieldChange, onOpenEdit, onCancelEdit, onSave, onApprove,
+  onDeleteRequest, onDeleteConfirm, onDeleteCancel,
+}) => {
+  const c = TEMA_COLORS[sub.tema] || TEMA_COLORS['Altro'];
+  const cardAccent = (form.tema ?? sub.tema) ? (TEMA_COLORS[form.tema ?? sub.tema] || TEMA_COLORS['Altro']).border : undefined;
+  const busy = saving || deleting;
+
+  if (!editing) {
+    return (
+      <QuickCard className="!p-3">
+        <div className="relative">
+          <div className="flex items-center gap-3 pr-11" onClick={() => !deleteConfirm && onSelect()}>
+            <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-zinc-800">
+              <VideoThumbnail youtubeUrl={sub.youtube_url} thumbnail={null} piattaforma={detectPlatform(sub.youtube_url)} title={sub.title} className="w-full h-full object-cover" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-[15px] font-semibold truncate">{sub.title || 'senza titolo'}</p>
+              {sub.tema && (
+                <span className="inline-block text-[13px] font-bold px-2 py-0.5 rounded mt-1" style={{ backgroundColor: c.dim, color: c.border }}>{sub.tema}</span>
+              )}
+              <p className="text-[13px] text-zinc-500 mt-1">in revisione</p>
+            </div>
+          </div>
+          <button onClick={onOpenEdit} className="absolute top-0 right-0 p-2 text-zinc-400"><Pencil size={20} /></button>
+          {!deleteConfirm ? (
+            <div className="absolute top-9 right-0 flex items-center gap-2" onClick={e => e.stopPropagation()}>
+              <button onClick={onApprove} disabled={busy} className="flex items-center justify-center gap-1.5 text-black rounded-lg py-2 px-3.5 text-[13px] font-bold disabled:opacity-50" style={{ backgroundColor: '#FFDA2A' }}>
+                {saving ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} strokeWidth={2.6} />}approva
+              </button>
+              <button onClick={onDeleteRequest} className="p-2.5 text-zinc-400"><Trash2 size={20} /></button>
+            </div>
+          ) : (
+            <div className="absolute top-9 right-0 flex items-center gap-1.5" onClick={e => e.stopPropagation()}>
+              <button onClick={onDeleteConfirm} disabled={busy} className="text-xs font-bold text-red-400 px-3 py-2 rounded-lg bg-zinc-800">
+                {deleting ? 'elimino...' : 'conferma'}
+              </button>
+              <button onClick={onDeleteCancel} className="text-xs text-zinc-500 px-3 py-2 rounded-lg bg-zinc-800">annulla</button>
+            </div>
+          )}
+        </div>
+        {msg && <p className={`text-xs mt-2 flex items-center gap-1.5 ${msg.type === 'error' ? 'text-red-400' : ''}`}>{msg.type === 'error' && <AlertCircle size={12} />}{msg.text}</p>}
+      </QuickCard>
+    );
+  }
+
+  const natOptions = NATURE_OPTIONS.map(n => ({ value: n, label: n.toUpperCase() }));
+  const totalSecs = parseDuration(form.duration ?? sub.duration ?? '0:00');
+  const durMin = Math.floor(totalSecs / 60);
+  const durSec = totalSecs % 60;
+  const setDurMin = (m) => onFieldChange('duration', `${m}:${String(durSec).padStart(2, '0')}`);
+  const setDurSec = (s) => onFieldChange('duration', `${durMin}:${String(s).padStart(2, '0')}`);
+  const formatoValue = form.formato ?? sub.formato ?? 'verticale';
+
+  return (
+    <QuickCard className="!p-3.5 space-y-2.5">
+      <QuickTemaChips options={TEMI_OPTIONS} value={form.tema ?? sub.tema ?? ''} onChange={v => onFieldChange('tema', v)} variant="pill" />
+      <QuickInput accentColor={cardAccent} value={form.youtube_url ?? sub.youtube_url ?? ''} onChange={e => onFieldChange('youtube_url', e.target.value)} placeholder="link video" />
+      <QuickInput accentColor={cardAccent} value={form.title ?? sub.title ?? ''} onChange={e => onFieldChange('title', e.target.value)} placeholder="titolo" />
+      <CustomSelect value={form.natura ?? sub.natura ?? ''} onChange={v => onFieldChange('natura', v)} options={natOptions} accentColor={cardAccent || '#FFDA2A'} coloredBorder={!!cardAccent} />
+      <div>
+        <QuickInput accentColor={cardAccent} value={form.year ?? sub.year ?? ''} onChange={e => onFieldChange('year', e.target.value)} placeholder="anno" inputMode="numeric" />
+      </div>
+      <div className="grid grid-cols-2 gap-2.5">
+        <CustomSelect value={durMin} onChange={setDurMin} options={DURATION_MIN_OPTIONS} accentColor={cardAccent || '#FFDA2A'} coloredBorder={!!cardAccent} />
+        <CustomSelect value={durSec} onChange={setDurSec} options={DURATION_SEC_OPTIONS} accentColor={cardAccent || '#FFDA2A'} coloredBorder={!!cardAccent} />
+      </div>
+      <div className="grid grid-cols-2 gap-2.5">
+        {[{ value: 'orizzontale', label: 'orizzontale', icon: Monitor }, { value: 'verticale', label: 'verticale', icon: Smartphone }].map(opt => {
+          const on = formatoValue === opt.value;
+          const col = cardAccent || '#FFDA2A';
+          return (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => onFieldChange('formato', opt.value)}
+              className="flex flex-col items-center gap-1 rounded-xl py-2.5 border transition-colors"
+              style={{ borderColor: on ? col : '#28282c', backgroundColor: on ? '#242428' : '#1c1c1f', color: on ? '#f4f4f5' : '#a1a1aa' }}
+            >
+              <opt.icon size={17} style={{ color: on ? col : '#71717a' }} />
+              <span className="text-[11px] font-semibold uppercase tracking-wide">{opt.label}</span>
+            </button>
+          );
+        })}
+      </div>
+      <QuickInput accentColor={cardAccent} value={form.codice ?? sub.codice ?? ''} onChange={e => onFieldChange('codice', e.target.value)} placeholder="codice ID" />
+      <textarea
+        value={form.description ?? sub.description ?? ''}
+        onChange={e => onFieldChange('description', e.target.value)}
+        placeholder="descrizione"
+        rows={3}
+        className={`w-full bg-zinc-800 border ${cardAccent ? '' : 'border-zinc-700'} rounded-xl px-3.5 py-3 text-[16px] text-white placeholder-zinc-500 outline-none resize-none transition-colors`}
+        style={cardAccent ? { borderColor: cardAccent } : undefined}
+      />
+      <QuickToggleButton label="prodotto da scuola" checked={form.prodotto_scuola ?? sub.prodotto_scuola ?? false} onChange={v => onFieldChange('prodotto_scuola', v)} />
+      {msg && <p className={`text-xs flex items-center gap-1.5 ${msg.type === 'error' ? 'text-red-400' : ''}`}>{msg.type === 'error' && <AlertCircle size={12} />}{msg.text}</p>}
+      <div className="flex gap-2 pt-1">
+        <button onClick={onCancelEdit} className="flex-1 py-2.5 rounded-xl text-[13px] font-semibold bg-zinc-800 text-zinc-300">annulla</button>
+        <button onClick={onSave} disabled={busy} className="flex-1 py-2.5 rounded-xl text-[13px] font-bold bg-zinc-800 text-white disabled:opacity-50">
+          {saving ? 'salvo...' : 'salva'}
+        </button>
+        <button onClick={onApprove} disabled={busy} className="flex-1 py-2.5 rounded-xl text-[13px] font-bold text-black disabled:opacity-50" style={{ backgroundColor: '#FFDA2A' }}>
+          {saving ? 'approvo...' : 'approva'}
+        </button>
+      </div>
+    </QuickCard>
+  );
+};
+
+// Card di un video già online nel tab "tutti i video" (Archivio admin, quick
+// mode) — stessa struttura/pattern di PendingSubmissionCard, ma aggiorna
+// direttamente la tabella videos invece di video_submissions, e non ha
+// l'azione "approva" (il video è già pubblicato).
+const ArchiveVideoCard = ({
+  video, editing, form, msg, saving, deleting, deleteConfirm,
+  onSelect, onFieldChange, onOpenEdit, onCancelEdit, onSave,
+  onDeleteRequest, onDeleteConfirm, onDeleteCancel,
+  onAddToPlaylist, inPlaylist,
+}) => {
+  const c = TEMA_COLORS[video.tema] || TEMA_COLORS['Altro'];
+  const cardAccent = (form.tema ?? video.tema) ? (TEMA_COLORS[form.tema ?? video.tema] || TEMA_COLORS['Altro']).border : undefined;
+  const busy = saving || deleting;
+
+  if (!editing) {
+    return (
+      <QuickCard className="!p-3">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-1 min-w-0" onClick={() => !deleteConfirm && onSelect()}>
+            <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-zinc-800">
+              <VideoThumbnail youtubeUrl={video.youtubeUrl} thumbnail={video.thumbnail} piattaforma={detectPlatform(video.youtubeUrl)} title={video.title} className="w-full h-full object-cover" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-[15px] font-semibold leading-snug line-clamp-2">{video.title}</p>
+              <div className="flex items-center gap-2 text-[14.5px] text-zinc-500 mt-1">
+                {video.tema && <span className="text-[13px] font-bold px-2 py-0.5 rounded" style={{ backgroundColor: c.dim, color: c.border }}>{video.tema}</span>}
+                <span style={{ fontVariantNumeric: 'tabular-nums' }}>{video.codice}</span>
+              </div>
+            </div>
+          </div>
+          {!deleteConfirm ? (
+            <div className="flex flex-col items-end gap-2 flex-shrink-0" onClick={e => e.stopPropagation()}>
+              <button onClick={onOpenEdit} className="p-2.5 text-zinc-400"><Pencil size={20} /></button>
+              <div className="flex items-center gap-2">
+                <button onClick={onAddToPlaylist} className="p-2.5" style={{ color: inPlaylist ? '#FFDA2A' : '#a1a1aa' }}>
+                  {inPlaylist ? <Check size={20} /> : <Plus size={20} />}
+                </button>
+                <button onClick={onDeleteRequest} className="p-2.5 text-zinc-400"><Trash2 size={20} /></button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col items-end gap-1.5 flex-shrink-0" onClick={e => e.stopPropagation()}>
+              <button onClick={onDeleteConfirm} disabled={busy} className="text-xs font-bold text-red-400 px-3 py-2 rounded-lg bg-zinc-800">elimina</button>
+              <button onClick={onDeleteCancel} className="text-xs text-zinc-500 px-3 py-2 rounded-lg bg-zinc-800">annulla</button>
+            </div>
+          )}
+        </div>
+      </QuickCard>
+    );
+  }
+
+  const natOptions = NATURE_OPTIONS.map(n => ({ value: n, label: n.toUpperCase() }));
+  const totalSecs = parseDuration(form.duration ?? video.duration ?? '0:00');
+  const durMin = Math.floor(totalSecs / 60);
+  const durSec = totalSecs % 60;
+  const setDurMin = (m) => onFieldChange('duration', `${m}:${String(durSec).padStart(2, '0')}`);
+  const setDurSec = (s) => onFieldChange('duration', `${durMin}:${String(s).padStart(2, '0')}`);
+  const formatoValue = form.formato ?? video.format ?? 'orizzontale';
+
+  return (
+    <QuickCard className="!p-3.5 space-y-2.5">
+      <QuickTemaChips options={TEMI_OPTIONS} value={form.tema ?? video.tema ?? ''} onChange={v => onFieldChange('tema', v)} variant="pill" />
+      <QuickInput accentColor={cardAccent} value={form.youtubeUrl ?? video.youtubeUrl ?? ''} onChange={e => onFieldChange('youtubeUrl', e.target.value)} placeholder="link video" />
+      <QuickInput accentColor={cardAccent} value={form.title ?? video.title ?? ''} onChange={e => onFieldChange('title', e.target.value)} placeholder="titolo" />
+      <CustomSelect value={form.natura ?? video.natura ?? ''} onChange={v => onFieldChange('natura', v)} options={natOptions} accentColor={cardAccent || '#FFDA2A'} coloredBorder={!!cardAccent} />
+      <div>
+        <QuickInput accentColor={cardAccent} value={form.year ?? video.year ?? ''} onChange={e => onFieldChange('year', e.target.value)} placeholder="anno" inputMode="numeric" />
+      </div>
+      <div className="grid grid-cols-2 gap-2.5">
+        <CustomSelect value={durMin} onChange={setDurMin} options={DURATION_MIN_OPTIONS} accentColor={cardAccent || '#FFDA2A'} coloredBorder={!!cardAccent} />
+        <CustomSelect value={durSec} onChange={setDurSec} options={DURATION_SEC_OPTIONS} accentColor={cardAccent || '#FFDA2A'} coloredBorder={!!cardAccent} />
+      </div>
+      <div className="grid grid-cols-2 gap-2.5">
+        {[{ value: 'orizzontale', label: 'orizzontale', icon: Monitor }, { value: 'verticale', label: 'verticale', icon: Smartphone }].map(opt => {
+          const on = formatoValue === opt.value;
+          const col = cardAccent || '#FFDA2A';
+          return (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => onFieldChange('formato', opt.value)}
+              className="flex flex-col items-center gap-1 rounded-xl py-2.5 border transition-colors"
+              style={{ borderColor: on ? col : '#28282c', backgroundColor: on ? '#242428' : '#1c1c1f', color: on ? '#f4f4f5' : '#a1a1aa' }}
+            >
+              <opt.icon size={17} style={{ color: on ? col : '#71717a' }} />
+              <span className="text-[11px] font-semibold uppercase tracking-wide">{opt.label}</span>
+            </button>
+          );
+        })}
+      </div>
+      <QuickInput accentColor={cardAccent} value={form.codice ?? video.codice ?? ''} onChange={e => onFieldChange('codice', e.target.value)} placeholder="codice ID" />
+      <textarea
+        value={form.description ?? video.description ?? ''}
+        onChange={e => onFieldChange('description', e.target.value)}
+        placeholder="descrizione"
+        rows={3}
+        className={`w-full bg-zinc-800 border ${cardAccent ? '' : 'border-zinc-700'} rounded-xl px-3.5 py-3 text-[16px] text-white placeholder-zinc-500 outline-none resize-none transition-colors`}
+        style={cardAccent ? { borderColor: cardAccent } : undefined}
+      />
+      <QuickToggleButton label="prodotto da scuola" checked={form.prodottoScuola ?? video.prodottoScuola ?? false} onChange={v => onFieldChange('prodottoScuola', v)} />
+      {msg && <p className={`text-xs flex items-center gap-1.5 ${msg.type === 'error' ? 'text-red-400' : ''}`}>{msg.type === 'error' && <AlertCircle size={12} />}{msg.text}</p>}
+      <div className="flex gap-2 pt-1">
+        <button onClick={onCancelEdit} className="flex-1 py-2.5 rounded-xl text-[13px] font-semibold bg-zinc-800 text-zinc-300">annulla</button>
+        <button onClick={onSave} disabled={busy} className="flex-1 py-2.5 rounded-xl text-[13px] font-bold text-black disabled:opacity-50" style={{ backgroundColor: '#FFDA2A' }}>
+          {saving ? 'salvo...' : 'salva'}
+        </button>
+      </div>
+    </QuickCard>
+  );
+};
+
 // ═══ Archivio (admin) — sostituisce "I miei video" per l'admin: in cima le
 // segnalazioni in attesa di approvazione e le bozze salvate per dopo, sotto
 // tutti i video già online, ordinati per inserimento più recente, con
 // ricerca ed eliminazione — utile per controllare/rimuovere subito ciò che
 // si è appena inserito da "Aggiungi" (che finisce direttamente online,
 // senza passare da video_submissions). Tutte le card si aprono a tocco.
-const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo }) => {
+const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo, onAddToPlaylist, isInPlaylist }) => {
   const [search, setSearch] = useState('');
   const [deleteConfirmId, setDeleteConfirmId] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
   const [subs, setSubs] = useState([]);
   const [loadingSubs, setLoadingSubs] = useState(true);
-  const [pendingOpen, setPendingOpen] = useState(false);
+  const [openTab, setOpenTab] = useState('archive'); // null | 'pending' | 'archive' — "tutti i video" aperto di default
+  const [editingSubId, setEditingSubId] = useState(null);
+  const [subEditForms, setSubEditForms] = useState({});
+  const [savingSubId, setSavingSubId] = useState(null);
+  const [subMsg, setSubMsg] = useState(null); // { id, type, text }
+  const [deleteSubConfirmId, setDeleteSubConfirmId] = useState(null);
+  const [deletingSubId, setDeletingSubId] = useState(null);
+  const [editingArchiveId, setEditingArchiveId] = useState(null);
+  const [archiveEditForms, setArchiveEditForms] = useState({});
+  const [savingArchiveId, setSavingArchiveId] = useState(null);
+  const [archiveEditMsg, setArchiveEditMsg] = useState(null); // { id, type, text }
 
   useEffect(() => {
     supabase.from('video_submissions').select('*').in('status', ['pending', 'admin_draft']).order('submitted_at', { ascending: false })
@@ -2540,9 +3072,15 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo }) => {
   const pendingSubs = subs.filter(s => s.status === 'pending');
   const draftSubs = subs.filter(s => s.status === 'admin_draft');
 
-  const sorted = [...allVideos].sort((a, b) => (b.dataInserimento || '').localeCompare(a.dataInserimento || ''));
+  const sorted = [...allVideos].sort(compareVideoTime);
   const q = search.trim().toLowerCase();
-  const filtered = q ? sorted.filter(v => v.title?.toLowerCase().includes(q) || v.codice?.toLowerCase().includes(q)) : sorted;
+  const filtered = q ? sorted.filter(v =>
+    v.title?.toLowerCase().includes(q) ||
+    v.codice?.toLowerCase().includes(q) ||
+    v.tema?.toLowerCase().includes(q) ||
+    v.natura?.toLowerCase().includes(q) ||
+    v.description?.toLowerCase().includes(q)
+  ) : sorted;
 
   const handleDelete = async (video) => {
     setDeletingId(video.id);
@@ -2551,8 +3089,158 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo }) => {
       setDeleteConfirmId(null);
       onVideoApproved?.();
       fetch('/api/rebuild-catalog-cache', { method: 'POST' }).catch(() => {});
+      // best-effort: se il NAS è offline il record resta comunque eliminato
+      fetch('/api/delete-from-nas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ codice: video.codice || video.id }) }).catch(() => {});
     }
     setDeletingId(null);
+  };
+
+  const aef = (id, field, val) => setArchiveEditForms(prev => ({ ...prev, [id]: { ...(prev[id] || {}), [field]: val } }));
+
+  const openArchiveEdit = (video) => {
+    setArchiveEditForms(prev => ({
+      ...prev,
+      [video.id]: prev[video.id] || {
+        title: video.title || '', youtubeUrl: video.youtubeUrl || '', tema: video.tema || '',
+        natura: video.natura || '', year: video.year || new Date().getFullYear(), duration: video.duration || '',
+        formato: video.format || 'orizzontale', description: video.description || '',
+        prodottoScuola: video.prodottoScuola || false, codice: video.codice || '',
+      },
+    }));
+    setEditingArchiveId(video.id);
+    setArchiveEditMsg(null);
+  };
+
+  const handleSaveArchiveEdit = async (video) => {
+    const form = archiveEditForms[video.id] || {};
+    setSavingArchiveId(video.id);
+    const ytId = form.youtubeUrl ? extractYouTubeId(form.youtubeUrl) : null;
+    const { error } = await supabase.from('videos').update({
+      title: form.title?.trim() || video.title,
+      youtube_url: form.youtubeUrl?.trim() || video.youtubeUrl,
+      thumbnail: ytId ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` : video.thumbnail,
+      tema: form.tema || video.tema,
+      natura: form.natura || video.natura,
+      year: form.year ? parseInt(form.year) : video.year,
+      duration: form.duration || video.duration,
+      formato: form.formato || video.format,
+      description: form.description?.trim() ?? video.description,
+      prodotto_scuola: form.prodottoScuola ?? video.prodottoScuola,
+      codice: form.codice?.trim() || video.codice,
+    }).eq('id', video.id);
+    setSavingArchiveId(null);
+    if (error) { setArchiveEditMsg({ id: video.id, type: 'error', text: error.message }); return; }
+    setEditingArchiveId(null);
+    setArchiveEditMsg(null);
+    onVideoApproved?.();
+    fetch('/api/rebuild-catalog-cache', { method: 'POST' }).catch(() => {});
+  };
+
+  const sef = (id, field, val) => setSubEditForms(prev => ({ ...prev, [id]: { ...(prev[id] || {}), [field]: val } }));
+
+  const openSubEdit = (sub) => {
+    setSubEditForms(prev => ({
+      ...prev,
+      [sub.id]: prev[sub.id] || {
+        title: sub.title || '', youtube_url: sub.youtube_url || '', tema: sub.tema || '',
+        natura: sub.natura || '', year: sub.year || new Date().getFullYear(), duration: sub.duration || '',
+        formato: sub.formato || 'verticale', description: sub.description || '',
+        prodotto_scuola: sub.prodotto_scuola || false, codice: sub.codice || getNextCodice(allVideos),
+      },
+    }));
+    setEditingSubId(sub.id);
+    setSubMsg(null);
+  };
+
+  const handleSaveSubEdit = async (sub) => {
+    const form = subEditForms[sub.id] || {};
+    setSavingSubId(sub.id);
+    const { error } = await supabase.from('video_submissions').update({
+      title: form.title?.trim() || sub.title,
+      youtube_url: form.youtube_url?.trim() || sub.youtube_url,
+      tema: form.tema || sub.tema,
+      natura: form.natura || sub.natura,
+      year: form.year ? parseInt(form.year) : sub.year,
+      duration: form.duration || sub.duration,
+      formato: form.formato || sub.formato,
+      description: form.description?.trim() ?? sub.description,
+      prodotto_scuola: form.prodotto_scuola ?? sub.prodotto_scuola,
+      codice: form.codice?.trim() || sub.codice,
+    }).eq('id', sub.id);
+    setSavingSubId(null);
+    if (error) { setSubMsg({ id: sub.id, type: 'error', text: error.message }); return; }
+    setSubs(prev => prev.map(s => s.id === sub.id ? { ...s, ...form, year: form.year ? parseInt(form.year) : s.year } : s));
+    setEditingSubId(null);
+    setSubMsg(null);
+  };
+
+  const handleApproveSub = async (sub) => {
+    const form = subEditForms[sub.id] || {};
+    const merged = {
+      title: (form.title ?? sub.title ?? '').trim(),
+      youtube_url: (form.youtube_url ?? sub.youtube_url ?? '').trim(),
+      tema: form.tema ?? sub.tema ?? '',
+      natura: form.natura ?? sub.natura ?? '',
+      year: form.year ?? sub.year ?? '',
+      duration: (form.duration ?? sub.duration ?? '').toString().trim(),
+      formato: form.formato ?? sub.formato ?? 'verticale',
+      description: (form.description ?? sub.description ?? '').trim(),
+      prodotto_scuola: form.prodotto_scuola ?? sub.prodotto_scuola ?? false,
+      codice: (form.codice ?? sub.codice ?? '').trim(),
+    };
+    if (!merged.title || !merged.codice || !merged.youtube_url || !merged.tema || !merged.natura || !merged.year || !merged.duration || !merged.description) {
+      openSubEdit(sub);
+      setSubMsg({ id: sub.id, type: 'error', text: 'completa i campi mancanti prima di approvare' });
+      return;
+    }
+    setSavingSubId(sub.id);
+    setSubMsg(null);
+    const platform2 = detectPlatform(merged.youtube_url);
+    const ytId = extractYouTubeId(merged.youtube_url);
+    let thumb = null;
+    if (platform2 === 'tiktok') {
+      const meta = await fetchTikTokMeta(merged.youtube_url);
+      thumb = meta?.thumbnailUrl || null;
+    } else if (ytId) {
+      thumb = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+    }
+    const { error } = await supabase.from('videos').insert({
+      id: merged.codice,
+      codice: merged.codice,
+      title: merged.title,
+      youtube_url: merged.youtube_url,
+      thumbnail: thumb,
+      tema: merged.tema,
+      natura: merged.natura,
+      year: parseInt(merged.year),
+      duration: merged.duration || '0:00',
+      formato: merged.formato,
+      description: merged.description,
+      prodotto_scuola: merged.prodotto_scuola,
+      views: 0,
+      data_inserimento: new Date().toISOString().split('T')[0],
+    });
+    if (error) {
+      setSavingSubId(null);
+      setSubMsg({ id: sub.id, type: 'error', text: error.code === '23505' ? `il codice "${merged.codice}" esiste già nell'archivio` : error.message });
+      return;
+    }
+    await supabase.from('video_submissions').update({ status: 'approved' }).eq('id', sub.id);
+    setSavingSubId(null);
+    setSubs(prev => prev.filter(s => s.id !== sub.id));
+    setEditingSubId(null);
+    onVideoApproved?.();
+    fetch('/api/rebuild-catalog-cache', { method: 'POST' }).catch(() => {});
+  };
+
+  const handleDeleteSub = async (sub) => {
+    setDeletingSubId(sub.id);
+    const { error } = await supabase.from('video_submissions').delete().eq('id', sub.id);
+    setDeletingSubId(null);
+    if (error) { setSubMsg({ id: sub.id, type: 'error', text: error.message }); return; }
+    setSubs(prev => prev.filter(s => s.id !== sub.id));
+    setDeleteSubConfirmId(null);
+    if (editingSubId === sub.id) setEditingSubId(null);
   };
 
   const SectionLabel = ({ dot, children }) => (
@@ -2586,16 +3274,27 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo }) => {
       <h1 className="text-[26px] font-extrabold tracking-tight mb-1">Video online</h1>
       <p className="text-[13.5px] text-zinc-400 leading-relaxed mb-4">{allVideos.length} video pubblicati — tocca una card per guardarla, il cestino per eliminare.</p>
 
-      {!loadingSubs && pendingSubs.length > 0 && (
-        <>
-          <button type="button" onClick={() => setPendingOpen(v => !v)} className="w-full flex items-center gap-2 text-[11px] font-bold tracking-wider uppercase text-zinc-500 mt-5 mb-2.5">
-            <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: '#FFDA2A' }} />
-            <span className="flex-1 text-left">in attesa di approvazione ({pendingSubs.length})</span>
-            <ChevronDown size={14} className="transition-transform duration-200" style={{ transform: pendingOpen ? 'rotate(180deg)' : 'rotate(0deg)' }} />
-          </button>
-          {pendingOpen && pendingSubs.map(sub => <SubmissionCard key={sub.id} sub={sub} statusLabel="in revisione" />)}
-        </>
-      )}
+      <div className="grid grid-cols-2 gap-2.5 mt-5 mb-2">
+        {[
+          { key: 'archive', label: 'tutti i video', count: allVideos.length, icon: Archive },
+          { key: 'pending', label: 'in attesa', count: pendingSubs.length, icon: Clock },
+        ].map(tab => {
+          const on = openTab === tab.key;
+          return (
+            <button
+              key={tab.key}
+              type="button"
+              onClick={() => setOpenTab(prev => prev === tab.key ? null : tab.key)}
+              className="flex flex-col items-center gap-1.5 rounded-2xl py-4 border transition-colors"
+              style={{ borderColor: on ? '#FFDA2A' : '#28282c', backgroundColor: on ? '#242428' : '#1c1c1f' }}
+            >
+              <tab.icon size={26} style={{ color: on ? '#FFDA2A' : '#71717a' }} />
+              <span className="text-[13px] font-bold uppercase tracking-wide" style={{ color: on ? '#f4f4f5' : '#a1a1aa' }}>{tab.label}</span>
+              <span className="text-[11px] text-zinc-500">{tab.count}</span>
+            </button>
+          );
+        })}
+      </div>
 
       {!loadingSubs && draftSubs.length > 0 && (
         <>
@@ -2604,44 +3303,94 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo }) => {
         </>
       )}
 
-      {(pendingSubs.length > 0 || draftSubs.length > 0) && <SectionLabel dot="#10b981">tutti i video</SectionLabel>}
+      {openTab === 'pending' && (
+        <div className="mt-4">
+          {!loadingSubs && pendingSubs.length === 0 && (
+            <div className="text-center py-16 text-zinc-500 text-sm">nessuna segnalazione in attesa</div>
+          )}
+          {pendingSubs.map(sub => (
+            <PendingSubmissionCard
+              key={sub.id}
+              sub={sub}
+              editing={editingSubId === sub.id}
+              form={subEditForms[sub.id] || {}}
+              msg={subMsg?.id === sub.id ? subMsg : null}
+              saving={savingSubId === sub.id}
+              deleting={deletingSubId === sub.id}
+              deleteConfirm={deleteSubConfirmId === sub.id}
+              onSelect={() => onSelectVideo?.(submissionToVideo(sub))}
+              onFieldChange={(field, val) => sef(sub.id, field, val)}
+              onOpenEdit={() => openSubEdit(sub)}
+              onCancelEdit={() => { setEditingSubId(null); setSubMsg(null); }}
+              onSave={() => handleSaveSubEdit(sub)}
+              onApprove={() => handleApproveSub(sub)}
+              onDeleteRequest={() => setDeleteSubConfirmId(sub.id)}
+              onDeleteConfirm={() => handleDeleteSub(sub)}
+              onDeleteCancel={() => setDeleteSubConfirmId(null)}
+            />
+          ))}
+        </div>
+      )}
 
-      <QuickInput value={search} onChange={e => setSearch(e.target.value)} placeholder="cerca per titolo o codice..." />
+      {openTab === 'archive' && (
+        <div className="mt-4">
+          <div className="relative">
+            <input
+              value={search}
+              onChange={e => {
+                setSearch(e.target.value);
+                // la lista filtrata è più corta di quella completa — se lo
+                // scroll era già sceso in basso, i risultati restano fuori
+                // dalla vista e sembra che la ricerca non trovi nulla
+                e.target.closest('.overflow-y-auto')?.scrollTo({ top: 0, behavior: 'auto' });
+              }}
+              placeholder="cerca"
+              className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 pr-10 py-3.5 text-[16px] text-white placeholder-zinc-500 outline-none transition-colors"
+            />
+            {search && (
+              <button
+                type="button"
+                onClick={() => setSearch('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 p-1"
+                aria-label="azzera ricerca"
+              >
+                <X size={16} />
+              </button>
+            )}
+          </div>
 
-      <div className="mt-4">
-        {filtered.length === 0 && (
-          <div className="text-center py-16 text-zinc-500 text-sm">nessun video trovato</div>
-        )}
-        {filtered.slice(0, 60).map(video => {
-          const isDeleteConfirm = deleteConfirmId === video.id;
-          const c = TEMA_COLORS[video.tema] || TEMA_COLORS['Altro'];
-          return (
-            <QuickCard key={video.id} className="flex items-center gap-3 !p-3" onClick={() => !isDeleteConfirm && onSelectVideo?.(video)}>
-              <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 bg-zinc-800">
-                <VideoThumbnail youtubeUrl={video.youtubeUrl} thumbnail={video.thumbnail} piattaforma={detectPlatform(video.youtubeUrl)} title={video.title} className="w-full h-full object-cover" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-[13.5px] font-semibold truncate">{video.title}</p>
-                <div className="flex items-center gap-1.5 text-[11px] text-zinc-500 mt-0.5">
-                  {video.tema && <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ backgroundColor: c.dim, color: c.border }}>{video.tema}</span>}
-                  <span style={{ fontVariantNumeric: 'tabular-nums' }}>{video.codice}</span>
-                </div>
-              </div>
-              {!isDeleteConfirm ? (
-                <button onClick={e => { e.stopPropagation(); setDeleteConfirmId(video.id); }} className="p-2 text-zinc-400 flex-shrink-0"><Trash2 size={15} /></button>
-              ) : (
-                <div className="flex items-center gap-1 flex-shrink-0" onClick={e => e.stopPropagation()}>
-                  <button onClick={() => handleDelete(video)} disabled={deletingId === video.id} className="text-xs font-bold text-red-400 px-2 py-1">elimina</button>
-                  <button onClick={() => setDeleteConfirmId(null)} className="text-xs text-zinc-500 px-2 py-1">annulla</button>
-                </div>
-              )}
-            </QuickCard>
-          );
-        })}
-        {filtered.length > 60 && (
-          <p className="text-center text-xs text-zinc-600 py-3">altri {filtered.length - 60} risultati — affina la ricerca per trovarli</p>
-        )}
-      </div>
+          <div className="mt-4">
+            {filtered.length === 0 && (
+              <div className="text-center py-16 text-zinc-500 text-sm">nessun video trovato</div>
+            )}
+            {filtered.slice(0, 60).map(video => (
+              <ArchiveVideoCard
+                key={video.id}
+                video={video}
+                editing={editingArchiveId === video.id}
+                form={archiveEditForms[video.id] || {}}
+                msg={archiveEditMsg?.id === video.id ? archiveEditMsg : null}
+                saving={savingArchiveId === video.id}
+                deleting={deletingId === video.id}
+                deleteConfirm={deleteConfirmId === video.id}
+                onSelect={() => onSelectVideo?.(video)}
+                onFieldChange={(field, val) => aef(video.id, field, val)}
+                onOpenEdit={() => openArchiveEdit(video)}
+                onCancelEdit={() => { setEditingArchiveId(null); setArchiveEditMsg(null); }}
+                onSave={() => handleSaveArchiveEdit(video)}
+                onDeleteRequest={() => setDeleteConfirmId(video.id)}
+                onDeleteConfirm={() => handleDelete(video)}
+                onDeleteCancel={() => setDeleteConfirmId(null)}
+                onAddToPlaylist={() => onAddToPlaylist?.(video)}
+                inPlaylist={isInPlaylist?.(video.id)}
+              />
+            ))}
+            {filtered.length > 60 && (
+              <p className="text-center text-xs text-zinc-600 py-3">altri {filtered.length - 60} risultati — affina la ricerca per trovarli</p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -3085,21 +3834,21 @@ const AuthModal = ({ mode: initialMode, onClose, dismissible = true }) => {
               <>
                 <div>
                   <label className="block text-xs font-semibold text-zinc-400 mb-2">nome e cognome</label>
-                  <input type="text" value={nome} onChange={e => setNome(e.target.value)} placeholder="Mario Rossi" className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3.5 text-[15px] text-white placeholder-zinc-500 outline-none" />
+                  <input type="text" value={nome} onChange={e => setNome(e.target.value)} placeholder="Mario Rossi" className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3.5 text-[16px] text-white placeholder-zinc-500 outline-none" />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-zinc-400 mb-2">organizzazione / scuola</label>
-                  <input type="text" value={org} onChange={e => setOrg(e.target.value)} placeholder="es. Liceo Berchet, Milano" className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3.5 text-[15px] text-white placeholder-zinc-500 outline-none" />
+                  <input type="text" value={org} onChange={e => setOrg(e.target.value)} placeholder="es. Liceo Berchet, Milano" className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3.5 text-[16px] text-white placeholder-zinc-500 outline-none" />
                 </div>
               </>
             )}
             <div>
               <label className="block text-xs font-semibold text-zinc-400 mb-2">email</label>
-              <input type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="nome@email.it" className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3.5 text-[15px] text-white placeholder-zinc-500 outline-none" />
+              <input type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="nome@email.it" className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3.5 text-[16px] text-white placeholder-zinc-500 outline-none" />
             </div>
             <div>
               <label className="block text-xs font-semibold text-zinc-400 mb-2">password</label>
-              <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="minimo 6 caratteri" className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3.5 text-[15px] text-white placeholder-zinc-500 outline-none" />
+              <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="minimo 6 caratteri" className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3.5 text-[16px] text-white placeholder-zinc-500 outline-none" />
             </div>
           </form>
         )}
@@ -3869,15 +4618,12 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     prodotto_scuola: v.prodottoScuola ?? v.prodotto_scuola ?? false,
     description: v.description || '',
     data_inserimento: v.dataInserimento || v.data_inserimento || '',
+    created_at: v.createdAt || v.created_at || null,
     codice: v.codice || v.id || '',
   });
 
   const loadArchive = () => {
-    const sorted = allVideos.map(toArchiveFormat).sort((a, b) => {
-      const da = a.data_inserimento || '';
-      const db = b.data_inserimento || '';
-      return db.localeCompare(da);
-    });
+    const sorted = allVideos.map(toArchiveFormat).sort(compareArchiveTime);
     setArchiveVideos(sorted);
     setArchiveLoaded(true);
   };
@@ -3970,7 +4716,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
           }),
         });
         const data = await res.json();
-        setNasApproveMsg({ id: sub.id, ok: res.ok, text: res.ok ? `✓ ${data.path}` : (data.error || 'Errore salvataggio NAS.') });
+        setNasApproveMsg({ id: sub.id, ok: res.ok, text: res.ok ? '✓ Video salvato su STEADYTUBE' : (data.error || 'Errore salvataggio NAS.') });
       } catch (e) {
         setNasApproveMsg({ id: sub.id, ok: false, text: e.message });
       } finally {
@@ -4048,6 +4794,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       setDeleteConfirmId(null);
       onVideoApproved?.();
       scheduleCatalogRebuild();
+      // best-effort: se il NAS è offline il record resta comunque eliminato
+      fetch('/api/delete-from-nas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ codice: video.codice || video.id }) }).catch(() => {});
     }
     setDeletingVideoId(null);
   };
@@ -4063,6 +4811,10 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       setDeleteArchiveConfirm(false);
       onVideoApproved?.();
       scheduleCatalogRebuild();
+      // best-effort: se il NAS è offline i record restano comunque eliminati
+      ids.forEach(id => {
+        fetch('/api/delete-from-nas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ codice: id }) }).catch(() => {});
+      });
     }
     setDeletingArchive(false);
   };
@@ -4122,11 +4874,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       && (!archiveTema || v.tema === archiveTema)
       && (!archiveNatura || v.natura === archiveNatura)
       && (!archiveScuola || v.prodotto_scuola);
-  }).sort((a, b) => {
-    const da = a.data_inserimento || '';
-    const db = b.data_inserimento || '';
-    return archiveSortDesc ? db.localeCompare(da) : da.localeCompare(db);
-  }), [archiveVideos, archiveSearch, archiveTema, archiveNatura, archiveScuola, archiveSortDesc]);
+  }).sort((a, b) => archiveSortDesc ? compareArchiveTime(a, b) : compareArchiveTime(b, a)),
+  [archiveVideos, archiveSearch, archiveTema, archiveNatura, archiveScuola, archiveSortDesc]);
 
   const handleEditSave = async (sub) => {
     const ef_val = editForms[sub.id] || {};
@@ -4238,7 +4987,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       });
       const data = await res.json();
       if (!res.ok) setNasSaveMsg({ ok: false, text: data.error || 'Errore salvataggio.' });
-      else setNasSaveMsg({ ok: true, text: `✓ ${data.path}` });
+      else setNasSaveMsg({ ok: true, text: '✓ Video salvato su STEADYTUBE' });
     } catch (e) {
       setNasSaveMsg({ ok: false, text: e.message });
     } finally {
@@ -4289,7 +5038,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       setSaveMsg({ type: 'error', text: error.code === '23505' ? `Il Codice ID "${form.codice.trim()}" esiste già nell'archivio.` : error.message });
       return false;
     }
-    setSaveMsg({ type: 'success', text: 'Video aggiunto all\'archivio.' });
+    setSaveMsg({ type: 'success', text: 'Video aggiunto all\'archivio ADAM' });
     setForm({ title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: bumpCodice(form.codice, allVideos), thumbnail: '' });
     setSynopsisWarning('');
     setManualTranscript('');
@@ -5709,7 +6458,7 @@ function App() {
   // durante l'attesa reale del login/profilo.
   useEffect(() => {
     if (!isQuickMode) return;
-    const t = setTimeout(() => setQuickSplashDone(true), 2000);
+    const t = setTimeout(() => setQuickSplashDone(true), 2500);
     return () => clearTimeout(t);
   }, [isQuickMode]);
 
@@ -5940,12 +6689,12 @@ function App() {
       }
     }
     if (activeSection === 'most-viewed') filtered = [...filtered].sort((a, b) => b.views - a.views).slice(0, 20);
-    else if (activeSection === 'recent') filtered = [...filtered].sort((a, b) => new Date(b.dataInserimento) - new Date(a.dataInserimento)).slice(0, 12);
+    else if (activeSection === 'recent') filtered = [...filtered].sort(compareVideoTime).slice(0, 12);
     else if (activeSection === 'schools') {
       filtered = filtered.filter(v => v.prodottoScuola);
       filtered = schoolsSort === 'views'
         ? [...filtered].sort((a, b) => b.views - a.views)
-        : [...filtered].sort((a, b) => new Date(b.dataInserimento) - new Date(a.dataInserimento));
+        : [...filtered].sort(compareVideoTime);
     }
     if (selectedNatura !== 'Tutte') filtered = filtered.filter(v => v.natura === selectedNatura);
     
@@ -5982,7 +6731,7 @@ function App() {
         {user && quickRouted && (
           <QuickShell userProfile={userProfile} isAdmin={isAdmin} onLogout={handleLogout}>
             {activeSection === 'myvideos' && (isAdmin
-              ? <QuickArchiveScreen allVideos={allVideos} onVideoApproved={loadVideos} onSelectVideo={setSelectedVideo} />
+              ? <QuickArchiveScreen allVideos={allVideos} onVideoApproved={loadVideos} onSelectVideo={setSelectedVideo} onAddToPlaylist={handleAddToPlaylist} isInPlaylist={isInPlaylist} />
               : <QuickMyVideosScreen user={user} />)}
             {activeSection === 'quick-playlist' && (
               <QuickPlaylistScreen
@@ -6027,7 +6776,17 @@ function App() {
           <AuthModal mode={authMode} onClose={() => setShowAuthModal(false)} dismissible={false} />
         )}
 
-        {selectedVideo && <VideoModal video={selectedVideo} onClose={() => setSelectedVideo(null)} />}
+        {selectedVideo && <VideoModal video={selectedVideo} onClose={() => setSelectedVideo(null)} isApp />}
+
+        {pickPlaylistFor && (
+          <PickPlaylistModal
+            video={pickPlaylistFor}
+            playlists={playlists}
+            onAdd={addVideoToPlaylist}
+            onClose={() => setPickPlaylistFor(null)}
+            onCreatePlaylist={createPlaylist}
+          />
+        )}
 
         {isQuickMode && user && quickRouted && (
           <QuickTabBar activeSection={activeSection} isAdmin={isAdmin} onNavigate={setActiveSection} />
