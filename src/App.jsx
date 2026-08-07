@@ -6113,7 +6113,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
             </span>
           );
         };
-        const ServiceCard = ({ name, url, data, children }) => (
+        const ServiceCard = ({ name, url, data, desc, children }) => (
           <div className="bg-zinc-800 border border-zinc-700 rounded-xl p-5 space-y-3">
             <div className="flex items-center justify-between">
               <div>
@@ -6122,6 +6122,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
               </div>
               <StatusDot s={data} />
             </div>
+            {desc && <p className="text-zinc-400 text-xs leading-relaxed">{desc}</p>}
             {data?.detail && <p className="text-red-400 text-xs bg-red-950/30 rounded-lg px-3 py-2">{data.detail}</p>}
             {children}
           </div>
@@ -6147,7 +6148,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
               <div className="flex items-center justify-center py-16"><Loader2 size={24} className="animate-spin text-zinc-500" /></div>
             ) : sd ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <ServiceCard name="ScraperAPI" url="https://dashboard.scraperapi.com" data={sd.scraperapi}>
+                <ServiceCard name="ScraperAPI" url="https://dashboard.scraperapi.com" data={sd.scraperapi}
+                  desc="Sinossi automatica (piano B, quando il NAS non risponde): legge lo storyboard di YouTube e cerca brand/campagne su DuckDuckGo, aggirando i blocchi anti-bot.">
                   {sd.scraperapi?.status === 'ok' && (() => {
                     const used = sd.scraperapi.requestCount ?? 0;
                     const limit = sd.scraperapi.requestLimit ?? 0;
@@ -6173,19 +6175,22 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                   })()}
                 </ServiceCard>
 
-                <ServiceCard name="Groq (Whisper)" url="https://console.groq.com" data={sd.groq}>
+                <ServiceCard name="Groq (Whisper)" url="https://console.groq.com" data={sd.groq}
+                  desc="Trascrive l'audio dei video (Whisper, gratuito) per la sinossi automatica — sia dal NAS (link YouTube) che dal caricamento file locale (TikTok).">
                   {sd.groq?.status === 'ok' && (
                     <p className="text-zinc-500 text-xs">utilizzo disponibile su console.groq.com → Usage</p>
                   )}
                 </ServiceCard>
 
-                <ServiceCard name="Anthropic (Claude)" url="https://console.anthropic.com" data={sd.anthropic}>
+                <ServiceCard name="Anthropic (Claude)" url="https://console.anthropic.com" data={sd.anthropic}
+                  desc="Scrive il testo della sinossi a partire da fotogrammi e trascrizione — usato dal NAS, dal piano B su Vercel e dalla ricerca semantica del sito.">
                   {sd.anthropic?.status === 'ok' && (
                     <p className="text-zinc-500 text-xs">costi e token disponibili su console.anthropic.com → Usage</p>
                   )}
                 </ServiceCard>
 
-                <ServiceCard name="Vercel Blob" url="https://vercel.com/dashboard" data={sd.blob}>
+                <ServiceCard name="Vercel Blob" url="https://vercel.com/dashboard" data={sd.blob}
+                  desc="Conserva la cache del catalogo (titoli, sinossi, temi di tutti i video) usata dalla ricerca semantica — rigenerata dopo ogni modifica e ogni ora via cron.">
                   {sd.blob?.status === 'ok' && (
                     <p className="text-zinc-500 text-xs">utilizzo disponibile su Vercel Dashboard → Storage</p>
                   )}
