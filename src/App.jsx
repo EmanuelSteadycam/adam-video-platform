@@ -3240,9 +3240,15 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo, onAddTo
     const platform2 = detectPlatform(merged.youtube_url);
     const ytId = extractYouTubeId(merged.youtube_url);
     let thumb = null;
+    let finalUrl = merged.youtube_url;
     if (platform2 === 'tiktok') {
+      // Vedi commento nella versione desktop (AdminSection handleApprove):
+      // risolve sempre il link breve di condivisione nel canonico con ID
+      // numerico, altrimenti extractTikTokId fallisce e il player mostra
+      // "video non disponibile".
       const meta = await fetchTikTokMeta(merged.youtube_url);
       thumb = meta?.thumbnailUrl || null;
+      finalUrl = meta?.canonicalUrl || merged.youtube_url;
     } else if (ytId) {
       thumb = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
     }
@@ -3250,7 +3256,7 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo, onAddTo
       id: merged.codice,
       codice: merged.codice,
       title: merged.title,
-      youtube_url: merged.youtube_url,
+      youtube_url: finalUrl,
       thumbnail: thumb,
       tema: merged.tema,
       natura: merged.natura,
@@ -4702,12 +4708,16 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     const platform = detectPlatform(edited.youtube_url);
     const ytId = extractYouTubeId(edited.youtube_url);
     let thumbnailUrl = ytId ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` : null;
+    let finalUrl = edited.youtube_url;
     if (platform === 'tiktok') {
-      thumbnailUrl = edited.thumbnail || null;
-      if (!thumbnailUrl) {
-        const meta = await fetchTikTokMeta(edited.youtube_url);
-        thumbnailUrl = meta?.thumbnailUrl || null;
-      }
+      // Chi segnala da "Partecipa" incolla spesso il link breve di condivisione
+      // (vm.tiktok.com/...) — va sempre risolto in quello canonico con l'ID
+      // numerico qui, altrimenti extractTikTokId non trova nulla e il player
+      // mostra "video non disponibile" (bug scoperto il 07/08, dati corretti
+      // a mano per i video già approvati quel giorno).
+      const meta = await fetchTikTokMeta(edited.youtube_url);
+      thumbnailUrl = edited.thumbnail || meta?.thumbnailUrl || null;
+      finalUrl = meta?.canonicalUrl || edited.youtube_url;
     }
     setActionLoading(sub.id + '_approve');
     setApproveError(null);
@@ -4715,7 +4725,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     const { error: vidErr } = await supabase.from('videos').upsert({
       id: edited.codice.trim(),
       title: edited.title,
-      youtube_url: edited.youtube_url || null,
+      youtube_url: finalUrl || null,
       thumbnail: thumbnailUrl,
       duration: edited.duration || '0:00',
       year: edited.year ? parseInt(edited.year) : null,
