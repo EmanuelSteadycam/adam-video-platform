@@ -1,6 +1,10 @@
 import { YoutubeTranscript } from 'youtube-transcript';
 
-export const config = { maxDuration: 120 };
+// maxDuration alzato da 120 a 300 (limite piattaforma) — verificato con test
+// reali che il NAS, da solo processando un singolo video, può normalmente
+// impiegare più dei 120s che aveva prima: con quel limite la funzione veniva
+// uccisa da Vercel a metà, senza lasciare tempo al fallback cloud.
+export const config = { maxDuration: 300 };
 
 async function callNasServer(youtubeUrl, title, tema) {
   const nasUrl = process.env.NAS_URL;
@@ -8,7 +12,9 @@ async function callNasServer(youtubeUrl, title, tema) {
   if (!nasUrl) return null;
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 115000);
+  // Timeout NAS alzato da 115s a 200s in linea con maxDuration 300 — lascia
+  // comunque ~100s al fallback cloud se il NAS non risponde in tempo.
+  const timeout = setTimeout(() => controller.abort(), 200000);
   try {
     const res = await fetch(`${nasUrl}/synopsis`, {
       method: 'POST',
