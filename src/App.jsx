@@ -2149,6 +2149,8 @@ const QuickPartecipaScreen = ({ user }) => {
   const [error, setError] = useState(null);
   const [generatingDesc, setGeneratingDesc] = useState(false);
   const [descWarning, setDescWarning] = useState('');
+  const [synopsisDone, setSynopsisDone] = useState(false);
+  const scrollAnchorRef = useRef(null);
 
   const f = (field, val) => setForm(prev => ({ ...prev, [field]: val }));
   const platform = form.youtube_url.trim() ? detectPlatform(form.youtube_url) : null;
@@ -2157,6 +2159,7 @@ const QuickPartecipaScreen = ({ user }) => {
   const handleGenerateDescription = async () => {
     setGeneratingDesc(true);
     setDescWarning('');
+    setSynopsisDone(false);
     try {
       const res = await fetch('/api/generate-synopsis', {
         method: 'POST',
@@ -2171,6 +2174,10 @@ const QuickPartecipaScreen = ({ user }) => {
         ...(!prev.title.trim() && data.ytTitle ? { title: data.ytTitle } : {}),
       }));
       if (data.warnings?.length) setDescWarning(data.warnings.join(' '));
+      setSynopsisDone(true);
+      // scroll fino a sotto il titolo (già compilato in automatico) — stesso
+      // pattern del tab "Aggiungi" admin, così si vede subito che è finita
+      requestAnimationFrame(() => scrollAnchorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
     } catch {
       setDescWarning('Qualcosa si è addormentato dall\'altra parte — riprova più tardi.');
     } finally {
@@ -2226,7 +2233,27 @@ const QuickPartecipaScreen = ({ user }) => {
       </QuickCard>
 
       <QuickCard>
-        <QuickLabel>link video</QuickLabel>
+        <div className="flex items-center justify-between mb-2">
+          <QuickLabel><span className="mb-0">link video</span></QuickLabel>
+          {platform !== 'tiktok' && (
+            <button
+              type="button"
+              onClick={handleGenerateDescription}
+              disabled={!form.youtube_url.trim() || generatingDesc}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all disabled:opacity-40"
+              style={{ backgroundColor: '#FFDA2A', color: '#000' }}
+            >
+              {generatingDesc
+                ? <><Loader2 size={12} className="animate-spin" /> generando…</>
+                : <><Sparkles size={12} /> genera sinossi</>}
+            </button>
+          )}
+        </div>
+        {generatingDesc && (
+          <div className="desc-progress-track mb-2">
+            <div className="desc-progress-bar" />
+          </div>
+        )}
         <QuickInput accentColor={cardAccent} value={form.youtube_url} onChange={e => f('youtube_url', e.target.value)} placeholder="https://youtu.be/... oppure TikTok" />
         {platform && (
           <div className="flex items-center gap-2 mt-2.5 text-xs text-zinc-400">
@@ -2236,17 +2263,33 @@ const QuickPartecipaScreen = ({ user }) => {
             </span>
           </div>
         )}
+        {platform === 'tiktok' && (
+          <div className="flex items-start gap-1.5 mt-2 text-[11px] text-amber-400">
+            <AlertCircle size={13} className="mt-0.5 shrink-0" />
+            <span>per TikTok la sinossi automatica da link non è disponibile</span>
+          </div>
+        )}
       </QuickCard>
+
+      <div ref={scrollAnchorRef} />
 
       <QuickCard>
         <QuickLabel>titolo</QuickLabel>
         <QuickInput accentColor={cardAccent} value={form.title} onChange={e => f('title', e.target.value)} placeholder="titolo del video" />
+        {synopsisDone && !generatingDesc && (
+          <p className="text-[11px] mt-2 flex items-center gap-1.5" style={{ color: '#FFDA2A' }}>
+            <Check size={12} strokeWidth={3} />sinossi generata — controlla la descrizione qui sotto
+          </p>
+        )}
       </QuickCard>
 
       <QuickCard>
-        <div className="flex items-center justify-between mb-2">
-          <QuickLabel><span className="mb-0">descrizione <span className="text-zinc-500 font-normal">(opzionale)</span></span></QuickLabel>
-        </div>
+        <QuickLabel><span className="mb-0">descrizione <span className="text-zinc-500 font-normal">(opzionale)</span></span></QuickLabel>
+        {generatingDesc && (
+          <div className="desc-progress-track mb-2">
+            <div className="desc-progress-bar" />
+          </div>
+        )}
         <textarea
           value={form.description}
           onChange={e => f('description', e.target.value)}
@@ -2255,18 +2298,12 @@ const QuickPartecipaScreen = ({ user }) => {
           className={`w-full bg-zinc-800 border ${cardAccent ? '' : 'border-zinc-700'} rounded-xl px-3.5 py-3.5 text-[16px] text-white placeholder-zinc-500 outline-none resize-none transition-colors`}
           style={cardAccent ? { borderColor: cardAccent } : undefined}
         />
-        {platform !== 'tiktok' && (
-          <button
-            type="button"
-            onClick={handleGenerateDescription}
-            disabled={generatingDesc || !form.youtube_url.trim()}
-            className="mt-2.5 inline-flex items-center gap-1.5 border border-zinc-700 text-zinc-300 text-xs font-semibold px-3 py-1.5 rounded-full disabled:opacity-40"
-          >
-            {generatingDesc ? <Loader2 size={13} className="animate-spin" /> : <Sparkles size={13} />}
-            genera automaticamente
-          </button>
+        {descWarning && (
+          <div className="flex items-start gap-1.5 mt-2 px-3 py-2 rounded-lg text-[11px] bg-amber-900/30 border border-amber-800/50 text-amber-400">
+            <AlertCircle size={13} className="mt-0.5 shrink-0" />
+            <span>{descWarning}</span>
+          </div>
         )}
-        {descWarning && <p className="text-xs text-amber-400 mt-2">{descWarning}</p>}
       </QuickCard>
 
       <QuickToggleButton label="prodotto da scuola" checked={form.prodotto_scuola} onChange={v => f('prodotto_scuola', v)} />
@@ -2651,7 +2688,7 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
 };
 
 // ═══ I miei video ═══
-const QuickMyVideosScreen = ({ user }) => {
+const QuickMyVideosScreen = ({ user, onSelectVideo }) => {
   const [subs, setSubs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editForms, setEditForms] = useState({});
@@ -2750,37 +2787,42 @@ const QuickMyVideosScreen = ({ user }) => {
                   </div>
                 ) : (
                   <div className="flex items-center gap-3">
-                    <div className="w-11 h-11 rounded-xl bg-zinc-800 flex items-center justify-center flex-shrink-0 text-zinc-500 overflow-hidden">
-                      {ytId ? (
-                        <img src={`https://img.youtube.com/vi/${ytId}/mqdefault.jpg`} alt={sub.title} className="w-full h-full object-cover" />
-                      ) : (
-                        <PlayCircle size={18} />
-                      )}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-[14px] font-semibold truncate">{sub.title || 'senza titolo'}</p>
-                      <div className="flex items-center gap-1.5 text-[11.5px] text-zinc-500 mt-0.5">
-                        {sub.tema && <span className="text-[10.5px] font-bold px-1.5 py-0.5 rounded" style={{ backgroundColor: (TEMA_COLORS[sub.tema] || TEMA_COLORS['Altro']).dim, color: (TEMA_COLORS[sub.tema] || TEMA_COLORS['Altro']).border }}>{sub.tema}</span>}
-                        {status === 'draft' && <span>da completare</span>}
-                        {status === 'pending' && <span>in revisione</span>}
-                        {status === 'approved' && <span>in archivio</span>}
-                        {status === 'rejected' && <span>non pertinente</span>}
+                    <div
+                      className="flex items-center gap-3 min-w-0 flex-1 cursor-pointer"
+                      onClick={() => !isDeleteConfirm && sub.youtube_url && onSelectVideo?.(submissionToVideo(sub))}
+                    >
+                      <div className="w-11 h-11 rounded-xl bg-zinc-800 flex items-center justify-center flex-shrink-0 text-zinc-500 overflow-hidden">
+                        {ytId ? (
+                          <img src={`https://img.youtube.com/vi/${ytId}/mqdefault.jpg`} alt={sub.title} className="w-full h-full object-cover" />
+                        ) : (
+                          <PlayCircle size={18} />
+                        )}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[14px] font-semibold truncate">{sub.title || 'senza titolo'}</p>
+                        <div className="flex items-center gap-1.5 text-[11.5px] text-zinc-500 mt-0.5">
+                          {sub.tema && <span className="text-[10.5px] font-bold px-1.5 py-0.5 rounded" style={{ backgroundColor: (TEMA_COLORS[sub.tema] || TEMA_COLORS['Altro']).dim, color: (TEMA_COLORS[sub.tema] || TEMA_COLORS['Altro']).border }}>{sub.tema}</span>}
+                          {status === 'draft' && <span>da completare</span>}
+                          {status === 'pending' && <span>in revisione</span>}
+                          {status === 'approved' && <span>in archivio</span>}
+                          {status === 'rejected' && <span>non pertinente</span>}
+                        </div>
                       </div>
                     </div>
                     {status === 'draft' && !isDeleteConfirm && (
-                      <div className="flex items-center gap-1 flex-shrink-0">
+                      <div className="flex items-center gap-1 flex-shrink-0" onClick={e => e.stopPropagation()}>
                         <button onClick={() => { setEditingId(sub.id); setEditForms(prev => ({ ...prev, [sub.id]: {} })); }} className="p-2 text-zinc-400"><Pencil size={15} /></button>
                         <button onClick={() => handleSend(sub)} disabled={sendingId === sub.id} className="p-2" style={{ color: '#FFDA2A' }}>{sendingId === sub.id ? <Loader2 size={15} className="animate-spin" /> : <Send size={15} />}</button>
                         <button onClick={() => setDeleteConfirmId(sub.id)} className="p-2 text-zinc-400"><Trash2 size={15} /></button>
                       </div>
                     )}
                     {status !== 'draft' && !isDeleteConfirm && (
-                      <div className="flex items-center gap-1 flex-shrink-0">
+                      <div className="flex items-center gap-1 flex-shrink-0" onClick={e => e.stopPropagation()}>
                         <button onClick={() => setDeleteConfirmId(sub.id)} className="p-2 text-zinc-400"><Trash2 size={15} /></button>
                       </div>
                     )}
                     {isDeleteConfirm && (
-                      <div className="flex items-center gap-1.5 flex-shrink-0">
+                      <div className="flex items-center gap-1.5 flex-shrink-0" onClick={e => e.stopPropagation()}>
                         <button onClick={() => handleDelete(sub)} disabled={deletingId === sub.id} className="text-xs font-bold text-red-400 px-2 py-1">elimina</button>
                         <button onClick={() => setDeleteConfirmId(null)} className="text-xs text-zinc-500 px-2 py-1">annulla</button>
                       </div>
@@ -6732,7 +6774,7 @@ function App() {
           <QuickShell userProfile={userProfile} isAdmin={isAdmin} onLogout={handleLogout}>
             {activeSection === 'myvideos' && (isAdmin
               ? <QuickArchiveScreen allVideos={allVideos} onVideoApproved={loadVideos} onSelectVideo={setSelectedVideo} onAddToPlaylist={handleAddToPlaylist} isInPlaylist={isInPlaylist} />
-              : <QuickMyVideosScreen user={user} />)}
+              : <QuickMyVideosScreen user={user} onSelectVideo={setSelectedVideo} />)}
             {activeSection === 'quick-playlist' && (
               <QuickPlaylistScreen
                 user={user}
