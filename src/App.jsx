@@ -2458,6 +2458,12 @@ const QuickPartecipaScreen = ({ user }) => {
     setConfirmFinalSubmit(true);
   };
 
+  // errore mostrato anche accanto a "invia link" (non solo in fondo alla pagina,
+  // troppo lontano da questo bottone per essere notato)
+  const sendLinkError = error === 'Il link del video è obbligatorio.' || error === 'Seleziona un tema.' ? error : null;
+
+  const clearUrl = () => setForm(prev => ({ ...prev, youtube_url: '', thumbnail: '' }));
+
   if (success) {
     return (
       <div className="flex flex-col items-center justify-center text-center py-24">
@@ -2466,7 +2472,7 @@ const QuickPartecipaScreen = ({ user }) => {
         </div>
         <h1 className="text-xl font-bold mb-2">Inviato!</h1>
         <p className="text-sm text-zinc-400 max-w-[26ch] mb-6">lo esaminiamo e, se appropriato, lo aggiungiamo all'archivio.</p>
-        <button onClick={resetAll} className="text-sm font-semibold" style={{ color: '#FFDA2A' }}>
+        <button onClick={resetAll} className="uppercase text-sm font-semibold" style={{ color: '#FFDA2A' }}>
           segnala un altro video
         </button>
       </div>
@@ -2485,16 +2491,30 @@ const QuickPartecipaScreen = ({ user }) => {
       </QuickCard>
 
       <QuickCard>
-        <div className="flex items-center justify-between mb-2">
-          <QuickLabel><span className="mb-0">link video</span></QuickLabel>
-          {platform && <PlatformIcon platform={platform} />}
-        </div>
+        <QuickLabel><span className="mb-0">link video</span></QuickLabel>
         {generatingDesc && (
           <div className="desc-progress-track mb-2">
             <div className="desc-progress-bar" />
           </div>
         )}
-        <QuickInput accentColor={cardAccent} value={form.youtube_url} onChange={e => f('youtube_url', e.target.value)} onBlur={handleUrlBlur} placeholder="https://youtu.be/... oppure link TikTok/Instagram" />
+        <div className="flex items-center gap-2.5">
+          <div className="relative flex-1 min-w-0">
+            <input
+              value={form.youtube_url}
+              onChange={e => f('youtube_url', e.target.value)}
+              onBlur={handleUrlBlur}
+              placeholder="https://youtu.be/... oppure link TikTok/Instagram"
+              className={`w-full bg-zinc-800 border ${cardAccent ? '' : 'border-zinc-700'} rounded-xl pl-3.5 pr-9 py-3.5 text-[16px] text-white placeholder-zinc-500 outline-none transition-colors`}
+              style={cardAccent ? { borderColor: cardAccent } : undefined}
+            />
+            {form.youtube_url && (
+              <button type="button" onClick={clearUrl} aria-label="cancella" className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors">
+                <X size={16} />
+              </button>
+            )}
+          </div>
+          {platform && <PlatformIcon platform={platform} size={26} />}
+        </div>
         {metaLoading && <p className="text-[11px] text-zinc-500 mt-2">recupero anteprima…</p>}
         {(() => {
           const ytId = platform === 'youtube' ? extractYouTubeId(form.youtube_url) : null;
@@ -2513,7 +2533,7 @@ const QuickPartecipaScreen = ({ user }) => {
             type="button"
             onClick={handleSendLinkClick}
             disabled={!form.youtube_url.trim() || loading}
-            className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-[12px] font-semibold border border-zinc-600 text-zinc-200 disabled:opacity-40 transition-all"
+            className="uppercase flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-[12px] font-semibold border border-zinc-600 text-zinc-200 disabled:opacity-40 transition-all"
           >
             <Send size={13} /> invia link
           </button>
@@ -2521,7 +2541,7 @@ const QuickPartecipaScreen = ({ user }) => {
             type="button"
             onClick={handleGenerateDescription}
             disabled={!form.youtube_url.trim() || generatingDesc}
-            className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-[12px] font-semibold transition-all disabled:opacity-40"
+            className="uppercase flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-[12px] font-semibold transition-all disabled:opacity-40"
             style={{ backgroundColor: '#FFDA2A', color: '#000' }}
           >
             {generatingDesc
@@ -2529,14 +2549,17 @@ const QuickPartecipaScreen = ({ user }) => {
               : <><Sparkles size={13} /> genera descrizione</>}
           </button>
         </div>
+        {sendLinkError && (
+          <p className="text-[11px] text-red-400 mt-2 flex items-center gap-1.5"><AlertCircle size={12} />{sendLinkError}</p>
+        )}
         {confirmSendLink && (
           <div className="mt-2.5 bg-zinc-800/60 border border-zinc-700 rounded-lg p-3 text-[11px] text-zinc-300 space-y-2">
             <p>in questo modo ci mandi solo il link — al resto pensiamo noi.</p>
             <div className="flex gap-2">
-              <button type="button" onClick={() => setConfirmSendLink(false)} className="flex-1 py-1.5 rounded-md font-medium text-zinc-400 hover:text-white border border-zinc-600">
+              <button type="button" onClick={() => setConfirmSendLink(false)} className="uppercase flex-1 py-1.5 rounded-md font-medium text-zinc-400 hover:text-white border border-zinc-600">
                 annulla
               </button>
-              <button type="button" onClick={async () => { setConfirmSendLink(false); await doSubmit(false); }} className="flex-1 py-1.5 rounded-md font-semibold text-black" style={{ backgroundColor: '#FFDA2A' }}>
+              <button type="button" onClick={async () => { setConfirmSendLink(false); await doSubmit(false); }} className="uppercase flex-1 py-1.5 rounded-md font-semibold text-black" style={{ backgroundColor: '#FFDA2A' }}>
                 sì, invia
               </button>
             </div>
@@ -2548,7 +2571,20 @@ const QuickPartecipaScreen = ({ user }) => {
 
       <QuickCard>
         <QuickLabel>titolo</QuickLabel>
-        <QuickInput accentColor={cardAccent} value={form.title} onChange={e => f('title', e.target.value)} placeholder="titolo del video" />
+        <div className="relative">
+          <input
+            value={form.title}
+            onChange={e => f('title', e.target.value)}
+            placeholder="titolo del video"
+            className={`w-full bg-zinc-800 border ${cardAccent ? '' : 'border-zinc-700'} rounded-xl pl-3.5 pr-9 py-3.5 text-[16px] text-white placeholder-zinc-500 outline-none transition-colors`}
+            style={cardAccent ? { borderColor: cardAccent } : undefined}
+          />
+          {form.title && (
+            <button type="button" onClick={() => f('title', '')} aria-label="cancella" className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors">
+              <X size={16} />
+            </button>
+          )}
+        </div>
         {synopsisDone && !generatingDesc && (
           <p className="text-[11px] mt-2 flex items-center gap-1.5" style={{ color: '#FFDA2A' }}>
             <Check size={12} strokeWidth={3} />descrizione generata — controllala qui sotto
@@ -2587,10 +2623,10 @@ const QuickPartecipaScreen = ({ user }) => {
         <div className="mb-3 bg-zinc-800/60 border border-zinc-700 rounded-lg p-3 text-[11px] text-zinc-300 space-y-2">
           <p>hai controllato che titolo e descrizione siano corretti?</p>
           <div className="flex gap-2">
-            <button type="button" onClick={() => setConfirmFinalSubmit(false)} className="flex-1 py-1.5 rounded-md font-medium text-zinc-400 hover:text-white border border-zinc-600">
+            <button type="button" onClick={() => setConfirmFinalSubmit(false)} className="uppercase flex-1 py-1.5 rounded-md font-medium text-zinc-400 hover:text-white border border-zinc-600">
               torna a controllare
             </button>
-            <button type="button" onClick={async () => { setConfirmFinalSubmit(false); await doSubmit(true); }} className="flex-1 py-1.5 rounded-md font-semibold text-black" style={{ backgroundColor: '#FFDA2A' }}>
+            <button type="button" onClick={async () => { setConfirmFinalSubmit(false); await doSubmit(true); }} className="uppercase flex-1 py-1.5 rounded-md font-semibold text-black" style={{ backgroundColor: '#FFDA2A' }}>
               sì, invia
             </button>
           </div>
@@ -4456,6 +4492,12 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
     setConfirmFinalSubmit(true);
   };
 
+  // errore mostrato anche accanto a "Invia link" (non solo in fondo alla
+  // pagina, troppo lontano da questo bottone per essere notato)
+  const sendLinkError = error === 'Il link del video è obbligatorio.' || error === 'Seleziona un tema.' ? error : null;
+
+  const clearUrl = () => setForm(prev => ({ ...prev, youtube_url: '', thumbnail: '' }));
+
   if (!user) {
     return (
       <div className="max-w-2xl mx-auto py-24 text-center">
@@ -4476,7 +4518,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
         <h2 className="text-3xl font-bold text-white mb-4">Segnalazione inviata!</h2>
         <p className="text-zinc-400 mb-8">Grazie! Esamineremo il tuo contributo e lo aggiungeremo all'archivio ADAM se appropriato.</p>
         <button onClick={resetAll}
-          className="text-black px-8 py-3 rounded-lg font-semibold hover:brightness-110 transition-all" style={{ backgroundColor: '#FFDA2A' }}>
+          className="uppercase text-black px-8 py-3 rounded-lg font-semibold hover:brightness-110 transition-all" style={{ backgroundColor: '#FFDA2A' }}>
           Segnala un altro
         </button>
       </div>
@@ -4503,11 +4545,25 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
         )}
 
         <div>
-          <div className="flex items-center justify-between mb-1.5">
-            <label className="text-sm font-medium text-zinc-300">Link Video (YouTube, TikTok o Instagram) *</label>
-            {form.youtube_url.trim() && <PlatformIcon platform={submitPlatform} size={17} />}
+          <label className="block text-sm font-medium text-zinc-300 mb-1.5">Link Video (YouTube, TikTok o Instagram) *</label>
+          <div className="flex items-center gap-2.5">
+            <div className="relative flex-1 min-w-0">
+              <input
+                type="url"
+                value={form.youtube_url}
+                onChange={e => f('youtube_url', e.target.value)}
+                onBlur={handleUrlBlur}
+                placeholder="https://youtu.be/... oppure link TikTok/Instagram"
+                className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg pl-4 pr-9 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500"
+              />
+              {form.youtube_url && (
+                <button type="button" onClick={clearUrl} aria-label="cancella" className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors">
+                  <X size={16} />
+                </button>
+              )}
+            </div>
+            {form.youtube_url.trim() && <PlatformIcon platform={submitPlatform} size={26} />}
           </div>
-          <input type="url" value={form.youtube_url} onChange={e => f('youtube_url', e.target.value)} onBlur={handleUrlBlur} placeholder="https://youtu.be/... oppure link TikTok/Instagram" className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
           {metaLoading && <p className="text-xs text-zinc-500 mt-1.5">Recupero anteprima…</p>}
           {(() => {
             const hasPreview = submitPlatform === 'youtube' ? !!extractYouTubeId(form.youtube_url) : !!form.thumbnail;
@@ -4525,7 +4581,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
               type="button"
               onClick={handleSendLinkClick}
               disabled={!form.youtube_url.trim() || loading}
-              className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-semibold border border-zinc-600 text-zinc-200 disabled:opacity-40 transition-all"
+              className="uppercase flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-semibold border border-zinc-600 text-zinc-200 disabled:opacity-40 transition-all"
             >
               <Send size={14} /> Invia link
             </button>
@@ -4533,21 +4589,24 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
               type="button"
               onClick={handleGenerateDescription}
               disabled={!form.youtube_url.trim() || generatingDesc}
-              className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              className="uppercase flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed"
               style={{ backgroundColor: '#FFDA2A', color: '#000' }}>
               {generatingDesc
                 ? <><Loader2 size={14} className="animate-spin" /> Generando…</>
                 : <><Sparkles size={14} /> Genera descrizione</>}
             </button>
           </div>
+          {sendLinkError && (
+            <p className="text-xs text-red-400 mt-2 flex items-center gap-1.5"><AlertCircle size={13} />{sendLinkError}</p>
+          )}
           {confirmSendLink && (
             <div className="mt-2.5 bg-zinc-800/60 border border-zinc-700 rounded-lg p-3 text-xs text-zinc-300 space-y-2">
               <p>in questo modo ci mandi solo il link — al resto pensiamo noi.</p>
               <div className="flex gap-2">
-                <button type="button" onClick={() => setConfirmSendLink(false)} className="flex-1 py-1.5 rounded-md font-medium text-zinc-400 hover:text-white border border-zinc-600">
+                <button type="button" onClick={() => setConfirmSendLink(false)} className="uppercase flex-1 py-1.5 rounded-md font-medium text-zinc-400 hover:text-white border border-zinc-600">
                   Annulla
                 </button>
-                <button type="button" onClick={async () => { setConfirmSendLink(false); await handleSubmit('pending', false); }} className="flex-1 py-1.5 rounded-md font-semibold text-black" style={{ backgroundColor: '#FFDA2A' }}>
+                <button type="button" onClick={async () => { setConfirmSendLink(false); await handleSubmit('pending', false); }} className="uppercase flex-1 py-1.5 rounded-md font-semibold text-black" style={{ backgroundColor: '#FFDA2A' }}>
                   Sì, invia
                 </button>
               </div>
@@ -4568,7 +4627,14 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
 
         <div>
           <label className="block text-sm font-medium text-zinc-300 mb-1.5">Titolo *</label>
-          <input type="text" value={form.title} onChange={e => f('title', e.target.value)} placeholder="Titolo del video" className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
+          <div className="relative">
+            <input type="text" value={form.title} onChange={e => f('title', e.target.value)} placeholder="Titolo del video" className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg pl-4 pr-9 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
+            {form.title && (
+              <button type="button" onClick={() => f('title', '')} aria-label="cancella" className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors">
+                <X size={16} />
+              </button>
+            )}
+          </div>
         </div>
 
         <div>
@@ -4603,11 +4669,11 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
             <div className="flex items-center gap-2 mt-2 px-3 py-2 rounded-lg text-xs bg-zinc-800 border border-zinc-700 flex-wrap">
               <span className="text-zinc-300">Hai già generato una descrizione per questo video. Vuoi generarla di nuovo?</span>
               <button type="button" onClick={runGenerateDescription}
-                className="px-2.5 py-1 rounded-md font-semibold text-black" style={{ backgroundColor: '#FFDA2A' }}>
+                className="uppercase px-2.5 py-1 rounded-md font-semibold text-black" style={{ backgroundColor: '#FFDA2A' }}>
                 Sì, genera di nuovo
               </button>
               <button type="button" onClick={() => setConfirmRegen(false)}
-                className="px-2.5 py-1 rounded-md font-medium text-zinc-400 hover:text-white border border-zinc-600">
+                className="uppercase px-2.5 py-1 rounded-md font-medium text-zinc-400 hover:text-white border border-zinc-600">
                 Annulla
               </button>
             </div>
@@ -4627,10 +4693,10 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
           <div className="bg-zinc-800/60 border border-zinc-700 rounded-lg p-3 text-xs text-zinc-300 space-y-2">
             <p>hai controllato che titolo e descrizione siano corretti?</p>
             <div className="flex gap-2">
-              <button type="button" onClick={() => setConfirmFinalSubmit(false)} className="flex-1 py-1.5 rounded-md font-medium text-zinc-400 hover:text-white border border-zinc-600">
+              <button type="button" onClick={() => setConfirmFinalSubmit(false)} className="uppercase flex-1 py-1.5 rounded-md font-medium text-zinc-400 hover:text-white border border-zinc-600">
                 Torna a controllare
               </button>
-              <button type="button" onClick={async () => { setConfirmFinalSubmit(false); await handleSubmit('pending', true); }} className="flex-1 py-1.5 rounded-md font-semibold text-black" style={{ backgroundColor: '#FFDA2A' }}>
+              <button type="button" onClick={async () => { setConfirmFinalSubmit(false); await handleSubmit('pending', true); }} className="uppercase flex-1 py-1.5 rounded-md font-semibold text-black" style={{ backgroundColor: '#FFDA2A' }}>
                 Sì, invia
               </button>
             </div>
@@ -4639,7 +4705,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
 
         <div className="flex gap-3">
           <button type="button" onClick={() => handleSubmit('draft')} disabled={loading}
-            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg font-semibold text-zinc-300 border border-zinc-600 hover:bg-zinc-800 transition-all disabled:opacity-50">
+            className="uppercase flex-1 flex items-center justify-center gap-2 py-3 rounded-lg font-semibold text-zinc-300 border border-zinc-600 hover:bg-zinc-800 transition-all disabled:opacity-50">
             {loading ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
             Salva bozza
           </button>
