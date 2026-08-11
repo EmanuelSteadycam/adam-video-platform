@@ -66,13 +66,12 @@ export default async function handler(req, res) {
       return res.status(502).json({ error: 'Apify non ha restituito nessun risultato (video privato, rimosso, o URL non valido).' });
     }
 
-    // I link api.apify.com (key-value store) del TikTok Video Scraper sono privati
-    // per default (403 senza token) — a differenza di quelli dell'Instagram Reel
-    // Scraper, pubblici. Per non esporre mai il token al browser, ogni link
-    // api.apify.com passa dal proxy /api/apify-media invece di essere restituito
-    // così com'è (verificato dal vivo: senza questo passaggio la thumbnail TikTok
-    // risultava un'icona rotta sul telefono).
-    const viaProxy = (u) => (u && /^https:\/\/api\.apify\.com\//i.test(u) ? `/api/apify-media?u=${encodeURIComponent(u)}` : u || null);
+    // Due casi verificati dal vivo che richiedono di passare dal proxy /api/apify-media
+    // invece di restituire il link diretto al browser:
+    // 1) api.apify.com (key-value store TikTok) — privato per default, serve il token
+    // 2) fbcdn.net/cdninstagram.com (thumbnail Instagram) — CORP same-origin, il
+    //    browser blocca il caricamento diretto come <img> da dominio esterno
+    const viaProxy = (u) => (u && /^https:\/\/([^/]+\.)?(apify\.com|fbcdn\.net|cdninstagram\.com)\//i.test(u) ? `/api/apify-media?u=${encodeURIComponent(u)}` : u || null);
 
     const platform = isTikTok ? 'tiktok' : 'instagram';
     const normalized = isTikTok
