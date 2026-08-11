@@ -110,9 +110,9 @@ const VideoThumbnail = ({ youtubeUrl, thumbnail, piattaforma, title, className =
 
   const platform = piattaforma || detectPlatform(youtubeUrl);
 
-  // TikTok non ha un pattern di thumbnail prevedibile da ID come YouTube:
-  // va usata quella salvata in DB al momento dell'inserimento (via oEmbed).
-  if (platform === 'tiktok') {
+  // TikTok/Instagram non hanno un pattern di thumbnail prevedibile da ID come YouTube:
+  // va usata quella salvata in DB al momento dell'inserimento (via oEmbed/Apify).
+  if (platform === 'tiktok' || platform === 'instagram') {
     if (isError || !thumbnail) {
       return (
         <div className="w-full h-full bg-gradient-to-br from-purple-900 to-blue-900 flex items-center justify-center relative">
@@ -184,11 +184,44 @@ const extractYouTubeId = (url) => {
 // Piattaforma dedotta dall'URL stesso — nessuna colonna DB dedicata
 const detectPlatform = (url) => {
   if (!url) return 'youtube';
-  return /tiktok\.com/i.test(url) ? 'tiktok' : 'youtube';
+  if (/tiktok\.com/i.test(url)) return 'tiktok';
+  if (/instagram\.com/i.test(url)) return 'instagram';
+  return 'youtube';
+};
+
+// Icona piattaforma bianca e minimale — usata nei form al posto del vecchio
+// badge testuale "X rilevato", nel punto dove prima c'era il bottone giallo.
+const PlatformIcon = ({ platform, size = 18 }) => {
+  if (platform === 'tiktok') {
+    return (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="white" aria-label="TikTok">
+        <path d="M16.6 5.82a4.28 4.28 0 0 1-2.53-3.32V2h-3.4v13.6a2.53 2.53 0 1 1-2.53-2.53c.23 0 .46.03.68.09V9.71a5.94 5.94 0 0 0-.68-.04A5.94 5.94 0 1 0 14.07 15.6V9.02a7.66 7.66 0 0 0 4.47 1.43V7.06a4.28 4.28 0 0 1-1.94-1.24z"/>
+      </svg>
+    );
+  }
+  if (platform === 'instagram') {
+    return (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" aria-label="Instagram">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+      </svg>
+    );
+  }
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="white" aria-label="YouTube">
+      <path d="M23.5 6.2a3.02 3.02 0 0 0-2.12-2.14C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.38.56A3.02 3.02 0 0 0 .5 6.2 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.8 3.02 3.02 0 0 0 2.12 2.14C4.5 20.5 12 20.5 12 20.5s7.5 0 9.38-.56a3.02 3.02 0 0 0 2.12-2.14A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.8zM9.6 15.6V8.4l6.4 3.6z"/>
+    </svg>
+  );
 };
 const extractTikTokId = (url) => {
   if (!url) return null;
   const m = url.match(/video\/(\d+)/);
+  return m ? m[1] : null;
+};
+const extractInstagramId = (url) => {
+  if (!url) return null;
+  const m = url.match(/\/(?:p|reel|reels)\/([A-Za-z0-9_-]+)/);
   return m ? m[1] : null;
 };
 
@@ -229,6 +262,25 @@ const fetchTikTokMeta = async (url) => {
     const data = await res.json();
     if (!res.ok) return null;
     return data; // { title, thumbnailUrl, canonicalUrl, authorName }
+  } catch {
+    return null;
+  }
+};
+
+// Autofill titolo/thumbnail/URL canonico per Instagram — mirror di fetchTikTokMeta, ma
+// via Apify (Instagram Reel Scraper) invece di un oEmbed pubblico: Instagram non ne ha
+// uno senza token app Meta (Business Verification + App Review, vedi
+// [[project_privacy_policy_meta_review]]).
+const fetchInstagramMeta = async (url) => {
+  try {
+    const res = await fetch('/api/instagram-meta', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url }),
+    });
+    const data = await res.json();
+    if (!res.ok) return null;
+    return data; // { title, thumbnailUrl, canonicalUrl }
   } catch {
     return null;
   }
@@ -1249,6 +1301,11 @@ const VideoCard = ({ video, onClick, onAddToPlaylist, isInPlaylist }) => {
             <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82a4.28 4.28 0 0 1-2.53-3.32V2h-3.4v13.6a2.53 2.53 0 1 1-2.53-2.53c.23 0 .46.03.68.09V9.71a5.94 5.94 0 0 0-.68-.04A5.94 5.94 0 1 0 14.07 15.6V9.02a7.66 7.66 0 0 0 4.47 1.43V7.06a4.28 4.28 0 0 1-1.94-1.24z"/></svg>
           </div>
         )}
+        {detectPlatform(video.youtubeUrl) === 'instagram' && (
+          <div className="absolute bottom-3 left-3 p-1.5 rounded-full" style={{ background: 'radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%)' }} title="Instagram">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </div>
+        )}
         {video.prodottoScuola && (
           <div className="absolute top-3 left-3 text-black text-xs px-2 py-1 rounded-full flex items-center gap-1 font-medium" style={{ backgroundColor: '#FFDA2A' }}>
             <School size={12} />
@@ -1301,7 +1358,9 @@ const VideoCard = ({ video, onClick, onAddToPlaylist, isInPlaylist }) => {
 
 const VideoModal = ({ video, onClose, isApp = false }) => {
   const platform = detectPlatform(video.youtubeUrl);
-  const videoId = platform === 'tiktok' ? extractTikTokId(video.youtubeUrl) : getYouTubeID(video.youtubeUrl);
+  const videoId = platform === 'tiktok' ? extractTikTokId(video.youtubeUrl)
+    : platform === 'instagram' ? extractInstagramId(video.youtubeUrl)
+    : getYouTubeID(video.youtubeUrl);
   // Contenitore verticale per QUALSIASI video verticale (TikTok o YouTube Shorts),
   // non solo per piattaforma — altrimenti uno short YouTube resta schiacciato nel box 16:9
   const isVertical = video.format === 'verticale';
@@ -1310,12 +1369,17 @@ const VideoModal = ({ video, onClose, isApp = false }) => {
   // all'infinito con mute=0), quindi lì si parte muti (sempre permesso) con un
   // hint una tantum. Sul sito normale l'audio in autoplay ha sempre funzionato
   // (desktop soprattutto) — non tocchiamo quel comportamento.
+  // Instagram: nessun parametro di autoplay/mute supportato dal loro embed (verificato
+  // in browser — mostra sempre thumbnail + bottone play, l'utente avvia manualmente),
+  // quindi niente hint audio per questa piattaforma.
   const embedSrc = platform === 'tiktok'
     ? `https://www.tiktok.com/embed/v2/${videoId}?autoplay=1&muted=${isApp ? 1 : 0}&rel=0`
+    : platform === 'instagram'
+    ? `https://www.instagram.com/reel/${videoId}/embed/`
     : `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${isApp ? 1 : 0}&rel=0&modestbranding=1`;
   const [key, setKey] = useState(0);
   const [showAudioHint, setShowAudioHint] = useState(
-    () => (isApp || platform === 'tiktok') && !localStorage.getItem('adam-audio-hint-seen')
+    () => (isApp || platform === 'tiktok') && platform !== 'instagram' && !localStorage.getItem('adam-audio-hint-seen')
   );
   const dismissAudioHint = () => {
     localStorage.setItem('adam-audio-hint-seen', '1');
@@ -1960,7 +2024,7 @@ const PickPlaylistModal = ({ video, playlists, onAdd, onClose, onCreatePlaylist 
 // solo quando isQuickMode === true, in un branch di ritorno separato da App() —
 // il sito normale non la carica mai e resta bit-per-bit invariato.
 
-const QuickShell = ({ userProfile, isAdmin, onLogout, children }) => {
+const QuickShell = ({ userProfile, isAdmin, onLogout, onOpenServices, children }) => {
   const [confirmLogout, setConfirmLogout] = useState(false);
 
   return (
@@ -1980,9 +2044,16 @@ const QuickShell = ({ userProfile, isAdmin, onLogout, children }) => {
                 : <>ciao, <b className="text-white font-semibold">{userProfile?.nome || 'operatore'}</b></>}
             </div>
           </div>
-          <button onClick={() => setConfirmLogout(true)} className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-500 hover:text-white transition-colors flex-shrink-0" aria-label="esci">
-            <LogOut size={17} />
-          </button>
+          <div className="flex items-center gap-1 flex-shrink-0">
+            {isAdmin && (
+              <button onClick={onOpenServices} className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-500 hover:text-white transition-colors" aria-label="servizi">
+                <Activity size={16} />
+              </button>
+            )}
+            <button onClick={() => setConfirmLogout(true)} className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-500 hover:text-white transition-colors" aria-label="esci">
+              <LogOut size={17} />
+            </button>
+          </div>
         </div>
         <div className="flex-1 min-h-0 px-5 pt-3 pb-8 overflow-y-auto">
           {children}
@@ -1999,6 +2070,130 @@ const QuickShell = ({ userProfile, isAdmin, onLogout, children }) => {
             </div>
           </div>
         </div>
+      )}
+    </div>
+  );
+};
+
+// Equivalente mobile del tab "Servizi" desktop — raggiungibile dall'icona
+// accanto a "esci" nell'header dell'App (solo admin). Stesso endpoint
+// /api/check-usage, layout adattato alle QuickCard.
+const QuickServicesScreen = ({ onBack }) => {
+  const [servicesData, setServicesData] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const load = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/check-usage');
+      if (res.ok) setServicesData(await res.json());
+    } catch {}
+    setLoading(false);
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const StatusDot = ({ s }) => {
+    const color = s?.status === 'ok' ? '#22c55e' : s?.status === 'error' ? '#ef4444' : '#71717a';
+    const label = s?.status === 'ok' ? 'attivo' : s?.status === 'error' ? 'errore' : 'non configurato';
+    return (
+      <span className="flex items-center gap-1.5 text-[11px] font-medium flex-shrink-0" style={{ color }}>
+        <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
+        {label}
+      </span>
+    );
+  };
+
+  const UsageBar = ({ pct, label }) => {
+    const barColor = pct > 80 ? '#ef4444' : pct > 60 ? '#f59e0b' : '#22c55e';
+    return (
+      <div className="space-y-1.5 mt-2.5">
+        <div className="h-1.5 bg-zinc-700 rounded-full overflow-hidden">
+          <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, backgroundColor: barColor }} />
+        </div>
+        <div className="flex justify-between text-[10.5px]" style={{ color: barColor }}>
+          <span>{label}</span>
+          <span>{pct}%</span>
+        </div>
+      </div>
+    );
+  };
+
+  const sd = servicesData;
+
+  return (
+    <div>
+      <button onClick={onBack} className="flex items-center gap-1.5 text-zinc-400 hover:text-white transition-colors text-sm mb-4">
+        <ChevronLeft size={16} /> indietro
+      </button>
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-[22px] font-extrabold tracking-tight">Servizi</h1>
+        <button onClick={load} disabled={loading} className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-medium border border-zinc-700 text-zinc-400 disabled:opacity-50">
+          {loading ? <Loader2 size={11} className="animate-spin" /> : <RotateCcw size={11} />}
+          aggiorna
+        </button>
+      </div>
+      {loading && !sd ? (
+        <div className="flex items-center justify-center py-16"><Loader2 size={22} className="animate-spin text-zinc-500" /></div>
+      ) : sd ? (
+        <div className="space-y-3 pb-24">
+          <QuickCard>
+            <div className="flex items-center justify-between mb-1">
+              <p className="text-white font-semibold text-sm">Apify</p>
+              <StatusDot s={sd.apify} />
+            </div>
+            <p className="text-zinc-500 text-[11px] leading-relaxed">Scarica i video TikTok e i dati Instagram per la sinossi automatica.</p>
+            {sd.apify?.status === 'ok' && (() => {
+              const used = sd.apify.usedUsd ?? 0;
+              const limit = sd.apify.limitUsd ?? 0;
+              const pct = limit > 0 ? Math.min(100, Math.round((used / limit) * 100)) : 0;
+              return <UsageBar pct={pct} label={`$${used.toFixed(2)} / $${limit.toFixed(2)}`} />;
+            })()}
+            {sd.apify?.detail && <p className="text-red-400 text-[11px] mt-2">{sd.apify.detail}</p>}
+          </QuickCard>
+
+          <QuickCard>
+            <div className="flex items-center justify-between mb-1">
+              <p className="text-white font-semibold text-sm">ScraperAPI</p>
+              <StatusDot s={sd.scraperapi} />
+            </div>
+            <p className="text-zinc-500 text-[11px] leading-relaxed">Piano B per la sinossi YouTube quando il NAS non risponde.</p>
+            {sd.scraperapi?.status === 'ok' && (() => {
+              const used = sd.scraperapi.requestCount ?? 0;
+              const limit = sd.scraperapi.requestLimit ?? 0;
+              const pct = limit > 0 ? Math.min(100, Math.round((used / limit) * 100)) : 0;
+              return <UsageBar pct={pct} label={`${used.toLocaleString()} / ${limit.toLocaleString()} richieste`} />;
+            })()}
+          </QuickCard>
+
+          <QuickCard>
+            <div className="flex items-center justify-between mb-1">
+              <p className="text-white font-semibold text-sm">Groq (Whisper)</p>
+              <StatusDot s={sd.groq} />
+            </div>
+            <p className="text-zinc-500 text-[11px] leading-relaxed">Trascrive l'audio dei video per la sinossi automatica.</p>
+          </QuickCard>
+
+          <QuickCard>
+            <div className="flex items-center justify-between mb-1">
+              <p className="text-white font-semibold text-sm">Anthropic (Claude)</p>
+              <StatusDot s={sd.anthropic} />
+            </div>
+            <p className="text-zinc-500 text-[11px] leading-relaxed">Scrive il testo della sinossi e alimenta la ricerca semantica.</p>
+          </QuickCard>
+
+          <QuickCard>
+            <div className="flex items-center justify-between mb-1">
+              <p className="text-white font-semibold text-sm">Vercel Blob</p>
+              <StatusDot s={sd.blob} />
+            </div>
+            <p className="text-zinc-500 text-[11px] leading-relaxed">Cache del catalogo usata dalla ricerca semantica.</p>
+          </QuickCard>
+
+          <p className="text-zinc-600 text-[10.5px] text-center pt-1">aggiornato {new Date(sd.checkedAt).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}</p>
+        </div>
+      ) : (
+        <p className="text-zinc-500 text-sm py-4">Premi "aggiorna" per controllare i servizi.</p>
       )}
     </div>
   );
@@ -2142,26 +2337,64 @@ const QuickToggleButton = ({ label, checked, onChange }) => (
 );
 
 // ═══ Partecipa (utente) ═══
+const QUICK_PARTECIPA_INITIAL_FORM = { title: '', youtube_url: '', tema: '', description: '', prodotto_scuola: false, thumbnail: '' };
+
 const QuickPartecipaScreen = ({ user }) => {
-  const [form, setForm] = useState({ title: '', youtube_url: '', tema: '', description: '', prodotto_scuola: false });
+  const [form, setForm] = useState(QUICK_PARTECIPA_INITIAL_FORM);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
   const [generatingDesc, setGeneratingDesc] = useState(false);
   const [descWarning, setDescWarning] = useState('');
   const [synopsisDone, setSynopsisDone] = useState(false);
+  const [metaLoading, setMetaLoading] = useState(false);
+  const [confirmSendLink, setConfirmSendLink] = useState(false);
+  const [confirmFinalSubmit, setConfirmFinalSubmit] = useState(false);
   const scrollAnchorRef = useRef(null);
 
   const f = (field, val) => setForm(prev => ({ ...prev, [field]: val }));
   const platform = form.youtube_url.trim() ? detectPlatform(form.youtube_url) : null;
   const cardAccent = form.tema ? (TEMA_COLORS[form.tema] || TEMA_COLORS['Altro']).border : undefined;
 
+  // Reset completo (non solo form/success) — se una generazione resta "appesa"
+  // (rete che cade a metà, visto dal vivo con le chiamate Apify), i flag di
+  // caricamento restavano true per sempre e bloccavano il form successivo.
+  const resetAll = () => {
+    setSuccess(false);
+    setForm(QUICK_PARTECIPA_INITIAL_FORM);
+    setError(null);
+    setGeneratingDesc(false);
+    setDescWarning('');
+    setSynopsisDone(false);
+    setMetaLoading(false);
+    setConfirmSendLink(false);
+    setConfirmFinalSubmit(false);
+    setLoading(false);
+  };
+
+  const handleUrlBlur = async () => {
+    if (platform !== 'tiktok' && platform !== 'instagram') return;
+    setMetaLoading(true);
+    const meta = platform === 'tiktok' ? await fetchTikTokMeta(form.youtube_url.trim()) : await fetchInstagramMeta(form.youtube_url.trim());
+    setMetaLoading(false);
+    if (!meta) return;
+    setForm(prev => ({
+      ...prev,
+      youtube_url: meta.canonicalUrl || prev.youtube_url,
+      thumbnail: meta.thumbnailUrl || prev.thumbnail,
+      title: prev.title.trim() ? prev.title : (meta.title || prev.title),
+    }));
+  };
+
   const handleGenerateDescription = async () => {
     setGeneratingDesc(true);
     setDescWarning('');
     setSynopsisDone(false);
+    const endpoint = platform === 'tiktok' ? '/api/generate-synopsis-tiktok'
+      : platform === 'instagram' ? '/api/generate-synopsis-instagram'
+      : '/api/generate-synopsis';
     try {
-      const res = await fetch('/api/generate-synopsis', {
+      const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ youtubeUrl: form.youtube_url, title: form.title || undefined, tema: form.tema || undefined }),
@@ -2185,26 +2418,51 @@ const QuickPartecipaScreen = ({ user }) => {
     }
   };
 
-  const handleSubmit = async () => {
+  // requireTitle=false per "invia link" (l'admin completa titolo/descrizione in
+  // revisione), true per il flusso completo "invia ad ADAM" in fondo alla pagina.
+  const doSubmit = async (requireTitle) => {
     if (!form.youtube_url.trim()) { setError('Il link del video è obbligatorio.'); return; }
-    if (!form.title.trim()) { setError('Il titolo è obbligatorio.'); return; }
+    if (requireTitle && !form.title.trim()) { setError('Il titolo è obbligatorio.'); return; }
     if (!form.tema) { setError('Seleziona un tema.'); return; }
     setLoading(true);
     setError(null);
+    const p = detectPlatform(form.youtube_url.trim());
     const { error: err } = await supabase.from('video_submissions').insert({
       user_id: user.id,
-      tipo: detectPlatform(form.youtube_url.trim()),
-      title: form.title.trim(),
+      tipo: p,
+      title: form.title.trim() || null,
       youtube_url: form.youtube_url.trim(),
       tema: form.tema || null,
+      formato: (p === 'tiktok' || p === 'instagram') ? 'verticale' : 'orizzontale',
       description: form.description.trim() || null,
       prodotto_scuola: form.prodotto_scuola,
       status: 'pending',
     });
     setLoading(false);
-    if (err) setError(err.message);
-    else setSuccess(true);
+    if (err) { setError(err.message); return; }
+    setSuccess(true);
   };
+
+  const handleSendLinkClick = () => {
+    if (!form.youtube_url.trim()) { setError('Il link del video è obbligatorio.'); return; }
+    if (!form.tema) { setError('Seleziona un tema.'); return; }
+    setError(null);
+    setConfirmSendLink(true);
+  };
+
+  const handleFinalSubmitClick = () => {
+    if (!form.youtube_url.trim()) { setError('Il link del video è obbligatorio.'); return; }
+    if (!form.title.trim()) { setError('Il titolo è obbligatorio.'); return; }
+    if (!form.tema) { setError('Seleziona un tema.'); return; }
+    setError(null);
+    setConfirmFinalSubmit(true);
+  };
+
+  // errore mostrato anche accanto a "invia link" (non solo in fondo alla pagina,
+  // troppo lontano da questo bottone per essere notato)
+  const sendLinkError = error === 'Il link del video è obbligatorio.' || error === 'Seleziona un tema.' ? error : null;
+
+  const clearUrl = () => setForm(prev => ({ ...prev, youtube_url: '', thumbnail: '' }));
 
   if (success) {
     return (
@@ -2214,7 +2472,7 @@ const QuickPartecipaScreen = ({ user }) => {
         </div>
         <h1 className="text-xl font-bold mb-2">Inviato!</h1>
         <p className="text-sm text-zinc-400 max-w-[26ch] mb-6">lo esaminiamo e, se appropriato, lo aggiungiamo all'archivio.</p>
-        <button onClick={() => { setSuccess(false); setForm({ title: '', youtube_url: '', tema: '', description: '', prodotto_scuola: false }); }} className="text-sm font-semibold" style={{ color: '#FFDA2A' }}>
+        <button onClick={resetAll} className="uppercase text-sm font-semibold" style={{ color: '#FFDA2A' }}>
           segnala un altro video
         </button>
       </div>
@@ -2225,7 +2483,7 @@ const QuickPartecipaScreen = ({ user }) => {
     <div>
       <div className="text-[11px] font-bold tracking-wider uppercase mb-1" style={{ color: '#FFDA2A' }}>nuova segnalazione</div>
       <h1 className="text-[26px] font-extrabold tracking-tight mb-1">Partecipa</h1>
-      <p className="text-[13.5px] text-zinc-400 leading-relaxed mb-5 max-w-[34ch]">condividi un video YouTube o TikTok utile per l'educazione — lo esaminiamo e, se appropriato, lo aggiungiamo all'archivio.</p>
+      <p className="text-[13.5px] text-zinc-400 leading-relaxed mb-5 max-w-[34ch]">condividi un video YouTube, TikTok o Instagram utile per l'educazione — lo esaminiamo e, se appropriato, lo aggiungiamo all'archivio.</p>
 
       <QuickCard>
         <QuickLabel>tema</QuickLabel>
@@ -2233,40 +2491,78 @@ const QuickPartecipaScreen = ({ user }) => {
       </QuickCard>
 
       <QuickCard>
-        <div className="flex items-center justify-between mb-2">
-          <QuickLabel><span className="mb-0">link video</span></QuickLabel>
-          {platform !== 'tiktok' && (
-            <button
-              type="button"
-              onClick={handleGenerateDescription}
-              disabled={!form.youtube_url.trim() || generatingDesc}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all disabled:opacity-40"
-              style={{ backgroundColor: '#FFDA2A', color: '#000' }}
-            >
-              {generatingDesc
-                ? <><Loader2 size={12} className="animate-spin" /> generando…</>
-                : <><Sparkles size={12} /> genera sinossi</>}
-            </button>
-          )}
-        </div>
+        <QuickLabel><span className="mb-0">link video</span></QuickLabel>
         {generatingDesc && (
           <div className="desc-progress-track mb-2">
             <div className="desc-progress-bar" />
           </div>
         )}
-        <QuickInput accentColor={cardAccent} value={form.youtube_url} onChange={e => f('youtube_url', e.target.value)} placeholder="https://youtu.be/... oppure TikTok" />
-        {platform && (
-          <div className="flex items-center gap-2 mt-2.5 text-xs text-zinc-400">
-            <span className="inline-flex items-center gap-1.5 bg-zinc-800 border border-zinc-700 rounded-full px-2.5 py-1 font-semibold text-white text-[11px]">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              {platform === 'tiktok' ? 'TikTok rilevato' : 'YouTube rilevato'}
-            </span>
+        <div className="flex items-center gap-2.5">
+          <div className="relative flex-1 min-w-0">
+            <input
+              value={form.youtube_url}
+              onChange={e => f('youtube_url', e.target.value)}
+              onBlur={handleUrlBlur}
+              placeholder="https://youtu.be/... oppure link TikTok/Instagram"
+              className={`w-full bg-zinc-800 border ${cardAccent ? '' : 'border-zinc-700'} rounded-xl pl-3.5 pr-9 py-3.5 text-[16px] text-white placeholder-zinc-500 outline-none transition-colors`}
+              style={cardAccent ? { borderColor: cardAccent } : undefined}
+            />
+            {form.youtube_url && (
+              <button type="button" onClick={clearUrl} aria-label="cancella" className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors">
+                <X size={16} />
+              </button>
+            )}
           </div>
+          {platform && <PlatformIcon platform={platform} size={26} />}
+        </div>
+        {metaLoading && <p className="text-[11px] text-zinc-500 mt-2">recupero anteprima…</p>}
+        {(() => {
+          const ytId = platform === 'youtube' ? extractYouTubeId(form.youtube_url) : null;
+          const hasPreview = platform === 'youtube' ? !!ytId : !!form.thumbnail;
+          if (!hasPreview) return null;
+          const isVerticalPreview = platform === 'tiktok' || platform === 'instagram';
+          return (
+            <div className={`mt-2.5 rounded-lg overflow-hidden border border-zinc-700 ${isVerticalPreview ? 'w-24' : 'w-48'}`} style={{ aspectRatio: isVerticalPreview ? '9 / 16' : '16 / 9' }}>
+              <VideoThumbnail youtubeUrl={form.youtube_url} thumbnail={form.thumbnail} piattaforma={platform} title={form.title} className="w-full h-full object-cover" />
+            </div>
+          );
+        })()}
+
+        <div className="grid grid-cols-2 gap-2.5 mt-3">
+          <button
+            type="button"
+            onClick={handleSendLinkClick}
+            disabled={!form.youtube_url.trim() || loading}
+            className="uppercase flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-[12px] font-semibold border border-zinc-600 text-zinc-200 disabled:opacity-40 transition-all"
+          >
+            <Send size={13} /> invia link
+          </button>
+          <button
+            type="button"
+            onClick={handleGenerateDescription}
+            disabled={!form.youtube_url.trim() || generatingDesc}
+            className="uppercase flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-[12px] font-semibold transition-all disabled:opacity-40"
+            style={{ backgroundColor: '#FFDA2A', color: '#000' }}
+          >
+            {generatingDesc
+              ? <><Loader2 size={13} className="animate-spin" /> generando…</>
+              : <><Sparkles size={13} /> genera descrizione</>}
+          </button>
+        </div>
+        {sendLinkError && (
+          <p className="text-[11px] text-red-400 mt-2 flex items-center gap-1.5"><AlertCircle size={12} />{sendLinkError}</p>
         )}
-        {platform === 'tiktok' && (
-          <div className="flex items-start gap-1.5 mt-2 text-[11px] text-amber-400">
-            <AlertCircle size={13} className="mt-0.5 shrink-0" />
-            <span>per TikTok la sinossi automatica da link non è disponibile</span>
+        {confirmSendLink && (
+          <div className="mt-2.5 bg-zinc-800/60 border border-zinc-700 rounded-lg p-3 text-[11px] text-zinc-300 space-y-2">
+            <p>in questo modo ci mandi solo il link — al resto pensiamo noi.</p>
+            <div className="flex gap-2">
+              <button type="button" onClick={() => setConfirmSendLink(false)} className="uppercase flex-1 py-1.5 rounded-md font-medium text-zinc-400 hover:text-white border border-zinc-600">
+                annulla
+              </button>
+              <button type="button" onClick={async () => { setConfirmSendLink(false); await doSubmit(false); }} className="uppercase flex-1 py-1.5 rounded-md font-semibold text-black" style={{ backgroundColor: '#FFDA2A' }}>
+                sì, invia
+              </button>
+            </div>
           </div>
         )}
       </QuickCard>
@@ -2275,10 +2571,23 @@ const QuickPartecipaScreen = ({ user }) => {
 
       <QuickCard>
         <QuickLabel>titolo</QuickLabel>
-        <QuickInput accentColor={cardAccent} value={form.title} onChange={e => f('title', e.target.value)} placeholder="titolo del video" />
+        <div className="relative">
+          <input
+            value={form.title}
+            onChange={e => f('title', e.target.value)}
+            placeholder="titolo del video"
+            className={`w-full bg-zinc-800 border ${cardAccent ? '' : 'border-zinc-700'} rounded-xl pl-3.5 pr-9 py-3.5 text-[16px] text-white placeholder-zinc-500 outline-none transition-colors`}
+            style={cardAccent ? { borderColor: cardAccent } : undefined}
+          />
+          {form.title && (
+            <button type="button" onClick={() => f('title', '')} aria-label="cancella" className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors">
+              <X size={16} />
+            </button>
+          )}
+        </div>
         {synopsisDone && !generatingDesc && (
           <p className="text-[11px] mt-2 flex items-center gap-1.5" style={{ color: '#FFDA2A' }}>
-            <Check size={12} strokeWidth={3} />sinossi generata — controlla la descrizione qui sotto
+            <Check size={12} strokeWidth={3} />descrizione generata — controllala qui sotto
           </p>
         )}
       </QuickCard>
@@ -2310,8 +2619,22 @@ const QuickPartecipaScreen = ({ user }) => {
 
       {error && <p className="text-sm text-red-400 mb-3 flex items-center gap-1.5"><AlertCircle size={14} />{error}</p>}
 
+      {confirmFinalSubmit && (
+        <div className="mb-3 bg-zinc-800/60 border border-zinc-700 rounded-lg p-3 text-[11px] text-zinc-300 space-y-2">
+          <p>hai controllato che titolo e descrizione siano corretti?</p>
+          <div className="flex gap-2">
+            <button type="button" onClick={() => setConfirmFinalSubmit(false)} className="uppercase flex-1 py-1.5 rounded-md font-medium text-zinc-400 hover:text-white border border-zinc-600">
+              torna a controllare
+            </button>
+            <button type="button" onClick={async () => { setConfirmFinalSubmit(false); await doSubmit(true); }} className="uppercase flex-1 py-1.5 rounded-md font-semibold text-black" style={{ backgroundColor: '#FFDA2A' }}>
+              sì, invia
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="pt-6 pb-24">
-        <QuickCta onClick={handleSubmit} disabled={loading} icon={loading ? Loader2 : Send}>
+        <QuickCta onClick={handleFinalSubmitClick} disabled={loading} icon={loading ? Loader2 : Send}>
           {loading ? 'invio in corso...' : 'invia ad ADAM'}
         </QuickCta>
       </div>
@@ -2334,6 +2657,7 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
   const [synopsisDone, setSynopsisDone] = useState(false);
   const [savingToNas, setSavingToNas] = useState(false);
   const [nasSaveMsg, setNasSaveMsg] = useState(null);
+  const [metaLoading, setMetaLoading] = useState(false);
   const scrollAnchorRef = useRef(null);
 
   // Dipende da allVideos (non solo mount): subito dopo il login in quick mode
@@ -2347,8 +2671,11 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
   const cardAccent = form.tema ? (TEMA_COLORS[form.tema] || TEMA_COLORS['Altro']).border : undefined;
 
   const handleUrlBlur = async () => {
-    if (detectPlatform(form.youtube_url) !== 'tiktok') return;
-    const meta = await fetchTikTokMeta(form.youtube_url.trim());
+    const p = detectPlatform(form.youtube_url);
+    if (p !== 'tiktok' && p !== 'instagram') return;
+    setMetaLoading(true);
+    const meta = p === 'tiktok' ? await fetchTikTokMeta(form.youtube_url.trim()) : await fetchInstagramMeta(form.youtube_url.trim());
+    setMetaLoading(false);
     if (!meta) return;
     setForm(prev => ({
       ...prev,
@@ -2364,15 +2691,20 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
     description: '', prodotto_scuola: false, formato: 'verticale', duration: '', codice: nextCodice, thumbnail: '',
   });
 
-  // Sinossi automatica da URL YouTube (via NAS: yt-dlp + trascrizione + Claude) —
-  // stesso endpoint del tab "Aggiungi" desktop. Solo YouTube: per TikTok yt-dlp
-  // sul NAS richiede login, quindi da link non funziona (identico al desktop).
+  // Sinossi automatica da link — YouTube via NAS (yt-dlp+trascrizione+Claude), TikTok
+  // via Apify (scarica il video reale, stessa pipeline ffmpeg+Groq+Claude di MODO1),
+  // Instagram via Apify (solo testo: caption+trascrizione, niente fotogrammi — il
+  // download video Instagram può bloccarsi fino al timeout Apify, verificato dal vivo).
   const handleGenerateSynopsis = async () => {
     setGeneratingSynopsis(true);
     setSynopsisWarning('');
     setSynopsisDone(false);
+    const p = detectPlatform(form.youtube_url);
+    const endpoint = p === 'tiktok' ? '/api/generate-synopsis-tiktok'
+      : p === 'instagram' ? '/api/generate-synopsis-instagram'
+      : '/api/generate-synopsis';
     try {
-      const res = await fetch('/api/generate-synopsis', {
+      const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -2441,12 +2773,14 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
     const trimmedUrl = form.youtube_url.trim();
     const platform2 = detectPlatform(trimmedUrl);
     const ytId = extractYouTubeId(trimmedUrl);
-    let tiktokThumb = form.thumbnail || null;
-    if (platform2 === 'tiktok' && !tiktokThumb) {
-      const meta = await fetchTikTokMeta(trimmedUrl);
-      tiktokThumb = meta?.thumbnailUrl || null;
+    // rete di sicurezza: se l'admin non ha fatto blur sul campo URL, risolvi comunque
+    // la thumbnail prima di salvare (TikTok/Instagram non hanno un pattern prevedibile)
+    let socialThumb = form.thumbnail || null;
+    if ((platform2 === 'tiktok' || platform2 === 'instagram') && !socialThumb) {
+      const meta = platform2 === 'tiktok' ? await fetchTikTokMeta(trimmedUrl) : await fetchInstagramMeta(trimmedUrl);
+      socialThumb = meta?.thumbnailUrl || null;
     }
-    const thumbnailUrl = platform2 === 'tiktok' ? tiktokThumb : (ytId ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` : null);
+    const thumbnailUrl = (platform2 === 'tiktok' || platform2 === 'instagram') ? socialThumb : (ytId ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` : null);
     const { error } = await supabase.from('videos').insert({
       id: form.codice.trim(),
       title: form.title.trim(),
@@ -2533,7 +2867,8 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
       <QuickCard>
         <div className="flex items-center justify-between mb-2">
           <QuickLabel><span className="mb-0">link video</span></QuickLabel>
-          {platform !== 'tiktok' && (
+          <div className="flex items-center gap-2.5">
+            {platform && <PlatformIcon platform={platform} size={16} />}
             <button
               type="button"
               onClick={handleGenerateSynopsis}
@@ -2543,30 +2878,28 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
             >
               {generatingSynopsis
                 ? <><Loader2 size={12} className="animate-spin" /> generando…</>
-                : <><Sparkles size={12} /> genera sinossi</>}
+                : <><Sparkles size={12} /> genera descrizione</>}
             </button>
-          )}
+          </div>
         </div>
         {generatingSynopsis && (
           <div className="desc-progress-track mb-2">
             <div className="desc-progress-bar" />
           </div>
         )}
-        <QuickInput accentColor={cardAccent} value={form.youtube_url} onChange={e => f('youtube_url', e.target.value)} onBlur={handleUrlBlur} placeholder="https://youtu.be/... oppure TikTok" />
-        {platform && (
-          <div className="flex items-center gap-2 mt-2.5 text-xs text-zinc-400">
-            <span className="inline-flex items-center gap-1.5 bg-zinc-800 border border-zinc-700 rounded-full px-2.5 py-1 font-semibold text-white text-[11px]">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              {platform === 'tiktok' ? 'TikTok rilevato' : 'YouTube rilevato'}
-            </span>
-          </div>
-        )}
-        {platform === 'tiktok' && (
-          <div className="flex items-start gap-1.5 mt-2 text-[11px] text-amber-400">
-            <AlertCircle size={13} className="mt-0.5 shrink-0" />
-            <span>per TikTok la sinossi automatica da link non è disponibile — solo da desktop, caricando il file video</span>
-          </div>
-        )}
+        <QuickInput accentColor={cardAccent} value={form.youtube_url} onChange={e => f('youtube_url', e.target.value)} onBlur={handleUrlBlur} placeholder="https://youtu.be/... oppure link TikTok/Instagram" />
+        {metaLoading && <p className="text-[11px] text-zinc-500 mt-2">recupero anteprima…</p>}
+        {(() => {
+          const ytId = platform === 'youtube' ? extractYouTubeId(form.youtube_url) : null;
+          const hasPreview = platform === 'youtube' ? !!ytId : !!form.thumbnail;
+          if (!hasPreview) return null;
+          const isVerticalPreview = platform === 'tiktok' || platform === 'instagram';
+          return (
+            <div className={`mt-2.5 rounded-lg overflow-hidden border border-zinc-700 ${isVerticalPreview ? 'w-24' : 'w-48'}`} style={{ aspectRatio: isVerticalPreview ? '9 / 16' : '16 / 9' }}>
+              <VideoThumbnail youtubeUrl={form.youtube_url} thumbnail={form.thumbnail} piattaforma={platform} title={form.title} className="w-full h-full object-cover" />
+            </div>
+          );
+        })()}
       </QuickCard>
 
       <QuickCard>
@@ -3249,6 +3582,10 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo, onAddTo
       const meta = await fetchTikTokMeta(merged.youtube_url);
       thumb = meta?.thumbnailUrl || null;
       finalUrl = meta?.canonicalUrl || merged.youtube_url;
+    } else if (platform2 === 'instagram') {
+      const meta = await fetchInstagramMeta(merged.youtube_url);
+      thumb = meta?.thumbnailUrl || null;
+      finalUrl = meta?.canonicalUrl || merged.youtube_url;
     } else if (ytId) {
       thumb = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
     }
@@ -3608,10 +3945,12 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
 
   // Inizializza YouTube Player
   useEffect(() => {
-    // TikTok non ha un'API player JS con eventi onStateChange come YouTube:
-    // niente auto-advance a fine video, ma resta riproducibile via iframe semplice
+    // TikTok/Instagram non hanno un'API player JS con eventi onStateChange come YouTube:
+    // niente auto-advance a fine video, ma restano riproducibili via iframe semplice
     // (vedi rendering sotto) — l'utente avanza manualmente con Successivo.
-    if (!currentVideo || currentVideo.source === 'nas' || detectPlatform(currentVideo.youtubeUrl) === 'tiktok') return;
+    if (!currentVideo || currentVideo.source === 'nas') return;
+    const initialPlatform = detectPlatform(currentVideo.youtubeUrl);
+    if (initialPlatform === 'tiktok' || initialPlatform === 'instagram') return;
 
     const videoId = getYouTubeID(currentVideo.youtubeUrl);
 
@@ -3657,7 +3996,9 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
   if (!currentVideo) return null;
 
   const platform = detectPlatform(currentVideo.youtubeUrl);
-  const videoId = platform === 'tiktok' ? extractTikTokId(currentVideo.youtubeUrl) : getYouTubeID(currentVideo.youtubeUrl);
+  const videoId = platform === 'tiktok' ? extractTikTokId(currentVideo.youtubeUrl)
+    : platform === 'instagram' ? extractInstagramId(currentVideo.youtubeUrl)
+    : getYouTubeID(currentVideo.youtubeUrl);
   const getTemaColor = (tema) => {
     const colors = {
       'Alcool': '#D97706',
@@ -3726,6 +4067,19 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
                   <iframe
                     className="absolute top-0 left-0 w-full h-full"
                     src={`https://www.tiktok.com/embed/v2/${videoId}?autoplay=1&muted=0&rel=0`}
+                    title={currentVideo.title}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              </div>
+            ) : platform === 'instagram' ? (
+              <div key={`instagram-${currentIndex}`} className="w-full h-full flex items-center justify-center">
+                <div className="relative h-full bg-black" style={{ aspectRatio: '9 / 16', maxWidth: '100%' }}>
+                  <iframe
+                    className="absolute top-0 left-0 w-full h-full"
+                    src={`https://www.instagram.com/reel/${videoId}/embed/`}
                     title={currentVideo.title}
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -3997,8 +4351,10 @@ const AuthModal = ({ mode: initialMode, onClose, dismissible = true }) => {
 const NATURE_OPTIONS = ['Cortometraggio', 'Film', 'Info', 'Sequenze', 'Spot commerciale', 'Spot sociale', 'Videoclip', 'Web e social'];
 const TEMI_OPTIONS = ['Alcool', 'Azzardo', 'Digitale', 'Sostanze', 'Tabacco', 'Sessualità', 'Altro'];
 
+const SUBMIT_VIDEO_INITIAL_FORM = { title: '', youtube_url: '', tema: '', description: '', prodotto_scuola: false, thumbnail: '' };
+
 const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSaved }) => {
-  const [form, setForm] = useState({ title: '', youtube_url: '', tema: '', description: '', prodotto_scuola: false });
+  const [form, setForm] = useState(SUBMIT_VIDEO_INITIAL_FORM);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
@@ -4006,17 +4362,60 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
   const [confirmRegen, setConfirmRegen] = useState(false);
   const [generatingDesc, setGeneratingDesc] = useState(false);
   const [descWarning, setDescWarning] = useState('');
+  const [metaLoading, setMetaLoading] = useState(false);
+  const [confirmSendLink, setConfirmSendLink] = useState(false);
+  const [confirmFinalSubmit, setConfirmFinalSubmit] = useState(false);
 
   const f = (field, val) => setForm(prev => ({ ...prev, [field]: val }));
-  const resetForm = () => setForm({ title: '', youtube_url: '', tema: '', description: '', prodotto_scuola: false });
+  const resetForm = () => setForm(SUBMIT_VIDEO_INITIAL_FORM);
+
+  // Reset completo (non solo form/success) — se una generazione resta "appesa"
+  // (rete che cade a metà), i flag di caricamento restavano true per sempre e
+  // bloccavano il form alla segnalazione successiva.
+  const resetAll = () => {
+    setSuccess(false);
+    resetForm();
+    setError(null);
+    setGenCounts({});
+    setConfirmRegen(false);
+    setGeneratingDesc(false);
+    setDescWarning('');
+    setMetaLoading(false);
+    setConfirmSendLink(false);
+    setConfirmFinalSubmit(false);
+    setLoading(false);
+  };
+
+  // Anteprima thumbnail immediata: TikTok/Instagram non hanno un pattern di thumbnail
+  // prevedibile da URL come YouTube, serve risolverla via oEmbed/Apify al blur del campo.
+  const handleUrlBlur = async () => {
+    const platform = detectPlatform(form.youtube_url);
+    if (platform !== 'tiktok' && platform !== 'instagram') return;
+    setMetaLoading(true);
+    const meta = platform === 'tiktok'
+      ? await fetchTikTokMeta(form.youtube_url.trim())
+      : await fetchInstagramMeta(form.youtube_url.trim());
+    setMetaLoading(false);
+    if (!meta) return;
+    setForm(prev => ({
+      ...prev,
+      youtube_url: meta.canonicalUrl || prev.youtube_url,
+      thumbnail: meta.thumbnailUrl || prev.thumbnail,
+      title: prev.title.trim() ? prev.title : (meta.title || prev.title),
+    }));
+  };
 
   const runGenerateDescription = async () => {
     setConfirmRegen(false);
     setGeneratingDesc(true);
     setDescWarning('');
     const key = extractYouTubeId(form.youtube_url) || form.youtube_url.trim();
+    const platform = detectPlatform(form.youtube_url);
+    const endpoint = platform === 'tiktok' ? '/api/generate-synopsis-tiktok'
+      : platform === 'instagram' ? '/api/generate-synopsis-instagram'
+      : '/api/generate-synopsis';
     try {
-      const res = await fetch('/api/generate-synopsis', {
+      const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -4047,18 +4446,22 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
     runGenerateDescription();
   };
 
-  const handleSubmit = async (statusTarget) => {
+  // requireTitle=false solo per "invia link" da pending (l'admin completa in
+  // revisione) — la bozza ('draft') richiede sempre il titolo, come già oggi.
+  const handleSubmit = async (statusTarget, requireTitle = true) => {
     if (!form.youtube_url.trim()) { setError('Il link del video è obbligatorio.'); return; }
-    if (!form.title.trim()) { setError('Il titolo è obbligatorio.'); return; }
+    if (requireTitle && !form.title.trim()) { setError('Il titolo è obbligatorio.'); return; }
     if (statusTarget === 'pending' && !form.tema) { setError('Seleziona un tema.'); return; }
     setLoading(true);
     setError(null);
+    const p = detectPlatform(form.youtube_url.trim());
     const { error: err } = await supabase.from('video_submissions').insert({
       user_id: user.id,
-      tipo: detectPlatform(form.youtube_url.trim()),
-      title: form.title.trim(),
+      tipo: p,
+      title: form.title.trim() || null,
       youtube_url: form.youtube_url.trim(),
       tema: form.tema || null,
+      formato: (p === 'tiktok' || p === 'instagram') ? 'verticale' : 'orizzontale',
       description: form.description.trim() || null,
       prodotto_scuola: form.prodotto_scuola,
       status: statusTarget,
@@ -4074,12 +4477,33 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
     setLoading(false);
   };
 
+  const handleSendLinkClick = () => {
+    if (!form.youtube_url.trim()) { setError('Il link del video è obbligatorio.'); return; }
+    if (!form.tema) { setError('Seleziona un tema.'); return; }
+    setError(null);
+    setConfirmSendLink(true);
+  };
+
+  const handleFinalSubmitClick = () => {
+    if (!form.youtube_url.trim()) { setError('Il link del video è obbligatorio.'); return; }
+    if (!form.title.trim()) { setError('Il titolo è obbligatorio.'); return; }
+    if (!form.tema) { setError('Seleziona un tema.'); return; }
+    setError(null);
+    setConfirmFinalSubmit(true);
+  };
+
+  // errore mostrato anche accanto a "Invia link" (non solo in fondo alla
+  // pagina, troppo lontano da questo bottone per essere notato)
+  const sendLinkError = error === 'Il link del video è obbligatorio.' || error === 'Seleziona un tema.' ? error : null;
+
+  const clearUrl = () => setForm(prev => ({ ...prev, youtube_url: '', thumbnail: '' }));
+
   if (!user) {
     return (
       <div className="max-w-2xl mx-auto py-24 text-center">
         <Upload size={64} className="text-zinc-700 mx-auto mb-6" strokeWidth={1.5} />
         <h2 className="text-3xl font-bold text-white mb-4">Segnala un Video</h2>
-        <p className="text-zinc-400 mb-8 leading-relaxed">Hai trovato un video interessante su YouTube o TikTok? Hai prodotto contenuti educativi con i tuoi ragazzi?<br />Condividi con la community ADAM — dopo una revisione, verrà aggiunto all'archivio.</p>
+        <p className="text-zinc-400 mb-8 leading-relaxed">Hai trovato un video interessante su YouTube, TikTok o Instagram? Hai prodotto contenuti educativi con i tuoi ragazzi?<br />Condividi con la community ADAM — dopo una revisione, verrà aggiunto all'archivio.</p>
         <button onClick={onOpenAuth} className="text-black px-8 py-3 rounded-lg font-semibold hover:brightness-110 transition-all" style={{ backgroundColor: '#FFDA2A' }}>
           Accedi per segnalare
         </button>
@@ -4093,13 +4517,15 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
         <ShieldCheck size={64} className="text-[#FFDA2A] mx-auto mb-6" strokeWidth={1.5} />
         <h2 className="text-3xl font-bold text-white mb-4">Segnalazione inviata!</h2>
         <p className="text-zinc-400 mb-8">Grazie! Esamineremo il tuo contributo e lo aggiungeremo all'archivio ADAM se appropriato.</p>
-        <button onClick={() => { setSuccess(false); resetForm(); }}
-          className="text-black px-8 py-3 rounded-lg font-semibold hover:brightness-110 transition-all" style={{ backgroundColor: '#FFDA2A' }}>
+        <button onClick={resetAll}
+          className="uppercase text-black px-8 py-3 rounded-lg font-semibold hover:brightness-110 transition-all" style={{ backgroundColor: '#FFDA2A' }}>
           Segnala un altro
         </button>
       </div>
     );
   }
+
+  const submitPlatform = detectPlatform(form.youtube_url);
 
   return (
     <div className="max-w-2xl mx-auto py-8">
@@ -4108,10 +4534,10 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
       </button>
       <div className="mb-8">
         <h2 className="text-3xl font-bold text-white mb-2">Segnala un Video</h2>
-        <p className="text-zinc-400">Condividi un video YouTube o TikTok utile per l'educazione — lo esamineremo e, se appropriato, lo aggiungeremo all'archivio.</p>
+        <p className="text-zinc-400">Condividi un video YouTube, TikTok o Instagram utile per l'educazione — lo esamineremo e, se appropriato, lo aggiungeremo all'archivio.</p>
       </div>
 
-      <form onSubmit={e => { e.preventDefault(); handleSubmit('pending'); }} className="space-y-5">
+      <form onSubmit={e => { e.preventDefault(); handleFinalSubmitClick(); }} className="space-y-5">
         {error && (
           <div className="flex items-center gap-2 bg-red-900/30 border border-red-800 text-red-400 px-4 py-3 rounded-lg text-sm">
             <AlertCircle size={16} className="flex-shrink-0" />{error}
@@ -4119,13 +4545,96 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
         )}
 
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">Link Video (YouTube o TikTok) *</label>
-          <input type="url" value={form.youtube_url} onChange={e => f('youtube_url', e.target.value)} placeholder="https://youtu.be/... oppure https://www.tiktok.com/@utente/video/..." className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
+          <label className="block text-sm font-medium text-zinc-300 mb-1.5">Link Video (YouTube, TikTok o Instagram) *</label>
+          <div className="flex items-center gap-2.5">
+            <div className="relative flex-1 min-w-0">
+              <input
+                type="url"
+                value={form.youtube_url}
+                onChange={e => f('youtube_url', e.target.value)}
+                onBlur={handleUrlBlur}
+                placeholder="https://youtu.be/... oppure link TikTok/Instagram"
+                className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg pl-4 pr-9 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500"
+              />
+              {form.youtube_url && (
+                <button type="button" onClick={clearUrl} aria-label="cancella" className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors">
+                  <X size={16} />
+                </button>
+              )}
+            </div>
+            {form.youtube_url.trim() && <PlatformIcon platform={submitPlatform} size={26} />}
+          </div>
+          {metaLoading && <p className="text-xs text-zinc-500 mt-1.5">Recupero anteprima…</p>}
+          {(() => {
+            const hasPreview = submitPlatform === 'youtube' ? !!extractYouTubeId(form.youtube_url) : !!form.thumbnail;
+            if (!hasPreview) return null;
+            const isVerticalPreview = submitPlatform === 'tiktok' || submitPlatform === 'instagram';
+            return (
+              <div className={`mt-2.5 rounded-lg overflow-hidden border border-zinc-700 ${isVerticalPreview ? 'w-24' : 'w-48'}`} style={{ aspectRatio: isVerticalPreview ? '9 / 16' : '16 / 9' }}>
+                <VideoThumbnail youtubeUrl={form.youtube_url} thumbnail={form.thumbnail} piattaforma={submitPlatform} title={form.title} className="w-full h-full object-cover" />
+              </div>
+            );
+          })()}
+
+          <div className="grid grid-cols-2 gap-2.5 mt-3">
+            <button
+              type="button"
+              onClick={handleSendLinkClick}
+              disabled={!form.youtube_url.trim() || loading}
+              className="uppercase flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-semibold border border-zinc-600 text-zinc-200 disabled:opacity-40 transition-all"
+            >
+              <Send size={14} /> Invia link
+            </button>
+            <button
+              type="button"
+              onClick={handleGenerateDescription}
+              disabled={!form.youtube_url.trim() || generatingDesc}
+              className="uppercase flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              style={{ backgroundColor: '#FFDA2A', color: '#000' }}>
+              {generatingDesc
+                ? <><Loader2 size={14} className="animate-spin" /> Generando…</>
+                : <><Sparkles size={14} /> Genera descrizione</>}
+            </button>
+          </div>
+          {sendLinkError && (
+            <p className="text-xs text-red-400 mt-2 flex items-center gap-1.5"><AlertCircle size={13} />{sendLinkError}</p>
+          )}
+          {confirmSendLink && (
+            <div className="mt-2.5 bg-zinc-800/60 border border-zinc-700 rounded-lg p-3 text-xs text-zinc-300 space-y-2">
+              <p>in questo modo ci mandi solo il link — al resto pensiamo noi.</p>
+              <div className="flex gap-2">
+                <button type="button" onClick={() => setConfirmSendLink(false)} className="uppercase flex-1 py-1.5 rounded-md font-medium text-zinc-400 hover:text-white border border-zinc-600">
+                  Annulla
+                </button>
+                <button type="button" onClick={async () => { setConfirmSendLink(false); await handleSubmit('pending', false); }} className="uppercase flex-1 py-1.5 rounded-md font-semibold text-black" style={{ backgroundColor: '#FFDA2A' }}>
+                  Sì, invia
+                </button>
+              </div>
+            </div>
+          )}
+          {generatingDesc && (
+            <div className="desc-progress-track mt-2.5">
+              <div className="desc-progress-bar" />
+            </div>
+          )}
+          {descWarning && (
+            <div className="flex items-start gap-2 mt-2 px-3 py-2 rounded-lg text-xs bg-amber-900/30 border border-amber-800/50 text-amber-400">
+              <AlertCircle size={13} className="mt-0.5 shrink-0" />
+              <span>{descWarning}</span>
+            </div>
+          )}
         </div>
 
         <div>
           <label className="block text-sm font-medium text-zinc-300 mb-1.5">Titolo *</label>
-          <input type="text" value={form.title} onChange={e => f('title', e.target.value)} placeholder="Titolo del video" className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
+          <div className="relative">
+            <input type="text" value={form.title} onChange={e => f('title', e.target.value)} placeholder="Titolo del video" className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg pl-4 pr-9 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
+            {form.title && (
+              <button type="button" onClick={() => f('title', '')} aria-label="cancella" className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors">
+                <X size={16} />
+              </button>
+            )}
+          </div>
         </div>
 
         <div>
@@ -4154,51 +4663,19 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
         </div>
 
         <div>
-          <div className="flex items-center justify-between mb-1.5">
-            <label className="text-sm font-medium text-zinc-300">Descrizione <span className="text-zinc-500 font-normal">(opzionale)</span></label>
-            {/* TikTok: nessuna generazione automatica da link — l'admin scriverà la descrizione in revisione */}
-            {detectPlatform(form.youtube_url) !== 'tiktok' && (
-              <button
-                type="button"
-                onClick={handleGenerateDescription}
-                disabled={!form.youtube_url.trim() || generatingDesc}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-                style={{ backgroundColor: '#FFDA2A', color: '#000' }}>
-                {generatingDesc
-                  ? <><Loader2 size={12} className="animate-spin inline-block" /> Generando…</>
-                  : <><Sparkles size={12} className="inline-block" /> Genera descrizione automatica</>}
-              </button>
-            )}
-          </div>
-          {detectPlatform(form.youtube_url) === 'tiktok' && (
-            <div className="flex items-start gap-1.5 mb-2 text-xs text-amber-400">
-              <AlertCircle size={12} className="mt-0.5 shrink-0" />
-              <span>Per i video TikTok la descrizione automatica non è disponibile — scrivila tu (anche breve) o lasciala vuota: la completeremo in revisione.</span>
-            </div>
-          )}
-          {generatingDesc && (
-            <div className="desc-progress-track mb-2">
-              <div className="desc-progress-bar" />
-            </div>
-          )}
+          <label className="block text-sm font-medium text-zinc-300 mb-1.5">Descrizione <span className="text-zinc-500 font-normal">(opzionale)</span></label>
           <textarea value={form.description} onChange={e => f('description', e.target.value)} rows={6} placeholder="Descrivi brevemente il contenuto..." className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500 resize-none" />
           {confirmRegen && (
             <div className="flex items-center gap-2 mt-2 px-3 py-2 rounded-lg text-xs bg-zinc-800 border border-zinc-700 flex-wrap">
               <span className="text-zinc-300">Hai già generato una descrizione per questo video. Vuoi generarla di nuovo?</span>
               <button type="button" onClick={runGenerateDescription}
-                className="px-2.5 py-1 rounded-md font-semibold text-black" style={{ backgroundColor: '#FFDA2A' }}>
+                className="uppercase px-2.5 py-1 rounded-md font-semibold text-black" style={{ backgroundColor: '#FFDA2A' }}>
                 Sì, genera di nuovo
               </button>
               <button type="button" onClick={() => setConfirmRegen(false)}
-                className="px-2.5 py-1 rounded-md font-medium text-zinc-400 hover:text-white border border-zinc-600">
+                className="uppercase px-2.5 py-1 rounded-md font-medium text-zinc-400 hover:text-white border border-zinc-600">
                 Annulla
               </button>
-            </div>
-          )}
-          {descWarning && (
-            <div className="flex items-start gap-2 mt-2 px-3 py-2 rounded-lg text-xs bg-amber-900/30 border border-amber-800/50 text-amber-400">
-              <AlertCircle size={13} className="mt-0.5 shrink-0" />
-              <span>{descWarning}</span>
             </div>
           )}
         </div>
@@ -4212,9 +4689,23 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
           </button>
         </div>
 
+        {confirmFinalSubmit && (
+          <div className="bg-zinc-800/60 border border-zinc-700 rounded-lg p-3 text-xs text-zinc-300 space-y-2">
+            <p>hai controllato che titolo e descrizione siano corretti?</p>
+            <div className="flex gap-2">
+              <button type="button" onClick={() => setConfirmFinalSubmit(false)} className="uppercase flex-1 py-1.5 rounded-md font-medium text-zinc-400 hover:text-white border border-zinc-600">
+                Torna a controllare
+              </button>
+              <button type="button" onClick={async () => { setConfirmFinalSubmit(false); await handleSubmit('pending', true); }} className="uppercase flex-1 py-1.5 rounded-md font-semibold text-black" style={{ backgroundColor: '#FFDA2A' }}>
+                Sì, invia
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="flex gap-3">
           <button type="button" onClick={() => handleSubmit('draft')} disabled={loading}
-            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg font-semibold text-zinc-300 border border-zinc-600 hover:bg-zinc-800 transition-all disabled:opacity-50">
+            className="uppercase flex-1 flex items-center justify-center gap-2 py-3 rounded-lg font-semibold text-zinc-300 border border-zinc-600 hover:bg-zinc-800 transition-all disabled:opacity-50">
             {loading ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
             Salva bozza
           </button>
@@ -4373,9 +4864,9 @@ const MyVideosSection = ({ user, onNewVideo }) => {
           {isDraft && isEditing && (
             <div className="mt-4 space-y-3 border-t border-zinc-700 pt-4">
               <div>
-                <label className="block text-xs font-medium text-zinc-400 mb-1">Link Video (YouTube o TikTok)</label>
+                <label className="block text-xs font-medium text-zinc-400 mb-1">Link Video (YouTube, TikTok o Instagram)</label>
                 <input type="url" value={ef.youtube_url ?? sub.youtube_url ?? ''} onChange={e => mef(sub.id, 'youtube_url', e.target.value)}
-                  placeholder="https://youtu.be/... oppure link TikTok" className="w-full bg-zinc-900 border border-zinc-600 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500" />
+                  placeholder="https://youtu.be/... oppure link TikTok/Instagram" className="w-full bg-zinc-900 border border-zinc-600 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500" />
               </div>
               <div>
                 <label className="block text-xs font-medium text-zinc-400 mb-1">Titolo</label>
@@ -4597,11 +5088,12 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const ef = (subId, field, val) => setEditForms(prev => ({ ...prev, [subId]: { ...(prev[subId] || {}), [field]: val } }));
   const evf = (videoId, field, val) => setEditVideoForms(prev => ({ ...prev, [videoId]: { ...(prev[videoId] || {}), [field]: val } }));
 
-  // Autofill titolo/thumbnail/URL canonico quando il campo URL (tab Aggiungi) è TikTok
+  // Autofill titolo/thumbnail/URL canonico quando il campo URL (tab Aggiungi) è TikTok/Instagram
   const handleUrlBlur = async () => {
-    if (detectPlatform(form.youtube_url) !== 'tiktok') return;
+    const p = detectPlatform(form.youtube_url);
+    if (p !== 'tiktok' && p !== 'instagram') return;
     setTiktokLookupLoading(true);
-    const meta = await fetchTikTokMeta(form.youtube_url.trim());
+    const meta = p === 'tiktok' ? await fetchTikTokMeta(form.youtube_url.trim()) : await fetchInstagramMeta(form.youtube_url.trim());
     setTiktokLookupLoading(false);
     if (!meta) return;
     setForm(prev => ({
@@ -4609,16 +5101,16 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       youtube_url: meta.canonicalUrl || prev.youtube_url,
       thumbnail: meta.thumbnailUrl || prev.thumbnail,
       title: prev.title.trim() ? prev.title : (meta.title || prev.title),
-      // quasi tutto il contenuto TikTok è verticale — nessun autofill di formato
-      // arriva più da "Genera sinossi" per questa piattaforma (bottone nascosto)
+      // quasi tutto il contenuto TikTok/Instagram è verticale
       formato: 'verticale',
     }));
   };
 
   // Stessa autofill per il form di modifica inline di una submission (tab In attesa)
   const handleSubUrlBlur = async (subId, url) => {
-    if (detectPlatform(url) !== 'tiktok') return;
-    const meta = await fetchTikTokMeta(url.trim());
+    const p = detectPlatform(url);
+    if (p !== 'tiktok' && p !== 'instagram') return;
+    const meta = p === 'tiktok' ? await fetchTikTokMeta(url.trim()) : await fetchInstagramMeta(url.trim());
     if (!meta) return;
     setEditForms(prev => ({
       ...prev,
@@ -4716,6 +5208,13 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       // mostra "video non disponibile" (bug scoperto il 07/08, dati corretti
       // a mano per i video già approvati quel giorno).
       const meta = await fetchTikTokMeta(edited.youtube_url);
+      thumbnailUrl = edited.thumbnail || meta?.thumbnailUrl || null;
+      finalUrl = meta?.canonicalUrl || edited.youtube_url;
+    } else if (platform === 'instagram') {
+      // Stesso principio di TikTok: risolvi la thumbnail al momento dell'approvazione
+      // (non solo alla segnalazione) — il link potrebbe essere "vecchio" e i CDN
+      // Instagram/Apify hanno URL con scadenza.
+      const meta = await fetchInstagramMeta(edited.youtube_url);
       thumbnailUrl = edited.thumbnail || meta?.thumbnailUrl || null;
       finalUrl = meta?.canonicalUrl || edited.youtube_url;
     }
@@ -4991,9 +5490,15 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
         if (tData.transcript) setManualTranscript(tData.transcript);
         if (tData.warnings?.length) setSynopsisWarning(tData.warnings.join(' '));
       } else {
-        // MODO2: URL YouTube → NAS (yt-dlp) o fallback storyboard
+        // MODO2: URL YouTube → NAS (yt-dlp) o fallback storyboard.
+        // MODO3: TikTok/Instagram → Apify (vedi handleGenerateSynopsis in
+        // QuickAggiungiScreen per lo stesso pattern, qui è l'equivalente desktop).
+        const p = detectPlatform(form.youtube_url);
+        const endpoint = p === 'tiktok' ? '/api/generate-synopsis-tiktok'
+          : p === 'instagram' ? '/api/generate-synopsis-instagram'
+          : '/api/generate-synopsis';
         const transcript = manualTranscript.trim() || undefined;
-        const res = await fetch('/api/generate-synopsis', {
+        const res = await fetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -5061,14 +5566,14 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     const trimmedUrl = form.youtube_url.trim();
     const platform = detectPlatform(trimmedUrl);
     const ytId = extractYouTubeId(trimmedUrl);
-    // Rete di sicurezza: se è TikTok e la thumbnail non è mai stata risolta (l'admin
-    // non ha fatto blur sul campo URL), la recupera ora prima di salvare.
-    let tiktokThumb = form.thumbnail || null;
-    if (platform === 'tiktok' && !tiktokThumb) {
-      const meta = await fetchTikTokMeta(trimmedUrl);
-      tiktokThumb = meta?.thumbnailUrl || null;
+    // Rete di sicurezza: se è TikTok/Instagram e la thumbnail non è mai stata risolta
+    // (l'admin non ha fatto blur sul campo URL), la recupera ora prima di salvare.
+    let socialThumb = form.thumbnail || null;
+    if ((platform === 'tiktok' || platform === 'instagram') && !socialThumb) {
+      const meta = platform === 'tiktok' ? await fetchTikTokMeta(trimmedUrl) : await fetchInstagramMeta(trimmedUrl);
+      socialThumb = meta?.thumbnailUrl || null;
     }
-    const thumbnailUrl = platform === 'tiktok' ? tiktokThumb : (ytId ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` : null);
+    const thumbnailUrl = (platform === 'tiktok' || platform === 'instagram') ? socialThumb : (ytId ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` : null);
     const { error } = await supabase.from('videos').insert({
       id: form.codice.trim(),
       title: form.title.trim(),
@@ -5221,12 +5726,12 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                 </button>
               </div>
             </div>
-            {/* Row 2: URL video (YouTube o TikTok) + Genera sinossi */}
+            {/* Row 2: URL video (YouTube, TikTok o Instagram) + Genera descrizione */}
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="text-sm font-medium text-zinc-300">URL Video (YouTube o TikTok) *</label>
-                {/* TikTok: il download via yt-dlp sul NAS richiede login — niente sinossi da url finché non c'è un file caricato */}
-                {!(detectPlatform(form.youtube_url) === 'tiktok' && !nasFile) && (
+                <label className="text-sm font-medium text-zinc-300">URL Video (YouTube, TikTok o Instagram) *</label>
+                <div className="flex items-center gap-2.5">
+                  {form.youtube_url.trim() && <PlatformIcon platform={detectPlatform(form.youtube_url)} size={16} />}
                   <button
                     type="button"
                     onClick={handleGenerateSynopsis}
@@ -5235,18 +5740,24 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                     style={{ backgroundColor: '#FFDA2A', color: '#000' }}>
                     {generatingSynopsis
                       ? <><Loader2 size={12} className="animate-spin inline-block" /> Generando…</>
-                      : <><Sparkles size={12} className="inline-block" /> Genera sinossi</>}
+                      : <><Sparkles size={12} className="inline-block" /> Genera descrizione</>}
                   </button>
-                )}
-              </div>
-              <input type="url" value={form.youtube_url} onChange={e => f('youtube_url', e.target.value)} onBlur={handleUrlBlur} placeholder="https://youtu.be/... oppure https://www.tiktok.com/@utente/video/..." className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
-              {tiktokLookupLoading && <div className="text-xs text-zinc-500 mt-1 flex items-center gap-1"><Loader2 size={11} className="animate-spin" /> Recupero anteprima TikTok…</div>}
-              {detectPlatform(form.youtube_url) === 'tiktok' && !nasFile && (
-                <div className="flex items-start gap-1.5 mt-1.5 text-xs text-amber-400">
-                  <AlertCircle size={12} className="mt-0.5 shrink-0" />
-                  <span>Per TikTok la sinossi automatica da link non è disponibile — scarica il video (Condividi → Salva video nell'app TikTok) e caricalo qui sotto con "Carica file da STEADY_TUBE" per generarla.</span>
                 </div>
-              )}
+              </div>
+              <input type="url" value={form.youtube_url} onChange={e => f('youtube_url', e.target.value)} onBlur={handleUrlBlur} placeholder="https://youtu.be/... oppure link TikTok/Instagram" className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
+              {tiktokLookupLoading && <div className="text-xs text-zinc-500 mt-1 flex items-center gap-1"><Loader2 size={11} className="animate-spin" /> Recupero anteprima…</div>}
+              {(() => {
+                const p = detectPlatform(form.youtube_url);
+                const ytId = p === 'youtube' ? extractYouTubeId(form.youtube_url) : null;
+                const hasPreview = p === 'youtube' ? !!ytId : !!form.thumbnail;
+                if (!hasPreview) return null;
+                const isVerticalPreview = p === 'tiktok' || p === 'instagram';
+                return (
+                  <div className={`mt-2 rounded-lg overflow-hidden border border-zinc-700 ${isVerticalPreview ? 'w-24' : 'w-48'}`} style={{ aspectRatio: isVerticalPreview ? '9 / 16' : '16 / 9' }}>
+                    <VideoThumbnail youtubeUrl={form.youtube_url} thumbnail={form.thumbnail} piattaforma={p} title={form.title} className="w-full h-full object-cover" />
+                  </div>
+                );
+              })()}
             </div>
             {/* Transcript: upload file NAS o testo manuale */}
             <div className="space-y-2">
@@ -5549,10 +6060,10 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                         </div>
                         {/* Riga 2: URL Video */}
                         <div>
-                          <label className="block text-xs font-medium text-zinc-400 mb-1">Link Video (YouTube o TikTok)</label>
+                          <label className="block text-xs font-medium text-zinc-400 mb-1">Link Video (YouTube, TikTok o Instagram)</label>
                           <input type="url" value={subForm.youtube_url ?? sub.youtube_url ?? ''} onChange={e => ef(sub.id, 'youtube_url', e.target.value)}
                             onBlur={e => handleSubUrlBlur(sub.id, e.target.value)}
-                            placeholder="https://youtu.be/... oppure link TikTok" className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
+                            placeholder="https://youtu.be/... oppure link TikTok/Instagram" className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
                         </div>
                         {/* Riga 3: Titolo */}
                         <div>
@@ -6158,6 +6669,33 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
               <div className="flex items-center justify-center py-16"><Loader2 size={24} className="animate-spin text-zinc-500" /></div>
             ) : sd ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <ServiceCard name="Apify" url="https://console.apify.com/billing" data={sd.apify}
+                  desc="Scarica i video TikTok (bypassando il login-wall di yt-dlp) e i dati Instagram (caption, thumbnail, trascrizione) — usato dalla sinossi automatica di entrambe le piattaforme.">
+                  {sd.apify?.status === 'ok' && (() => {
+                    const used = sd.apify.usedUsd ?? 0;
+                    const limit = sd.apify.limitUsd ?? 0;
+                    const pct = limit > 0 ? Math.min(100, Math.round((used / limit) * 100)) : 0;
+                    const barColor = pct > 80 ? '#ef4444' : pct > 60 ? '#f59e0b' : '#22c55e';
+                    return (
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-xs text-zinc-400">
+                          <span>${used.toFixed(2)} usati</span>
+                          <span>${limit.toFixed(2)} piano {sd.apify.planTier || ''}</span>
+                        </div>
+                        <div className="h-2 bg-zinc-700 rounded-full overflow-hidden">
+                          <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, backgroundColor: barColor }} />
+                        </div>
+                        <div className="flex justify-between text-xs">
+                          <span style={{ color: barColor }}>{pct}% utilizzato</span>
+                          {sd.apify.cycleEndsAt && (
+                            <span className="text-zinc-500">rinnovo {new Date(sd.apify.cycleEndsAt).toLocaleDateString('it-IT')}</span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })()}
+                </ServiceCard>
+
                 <ServiceCard name="ScraperAPI" url="https://dashboard.scraperapi.com" data={sd.scraperapi}
                   desc="Sinossi automatica (piano B, quando il NAS non risponde): legge lo storyboard di YouTube e cerca brand/campagne su DuckDuckGo, aggirando i blocchi anti-bot.">
                   {sd.scraperapi?.status === 'ok' && (() => {
@@ -6786,7 +7324,8 @@ function App() {
     return (
       <>
         {user && quickRouted && (
-          <QuickShell userProfile={userProfile} isAdmin={isAdmin} onLogout={handleLogout}>
+          <QuickShell userProfile={userProfile} isAdmin={isAdmin} onLogout={handleLogout} onOpenServices={() => setActiveSection('services')}>
+            {activeSection === 'services' && isAdmin && <QuickServicesScreen onBack={() => setActiveSection('myvideos')} />}
             {activeSection === 'myvideos' && (isAdmin
               ? <QuickArchiveScreen allVideos={allVideos} onVideoApproved={loadVideos} onSelectVideo={setSelectedVideo} onAddToPlaylist={handleAddToPlaylist} isInPlaylist={isInPlaylist} />
               : <QuickMyVideosScreen user={user} onSelectVideo={setSelectedVideo} />)}

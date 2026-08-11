@@ -1,0 +1,97 @@
+// Dati grezzi TikTok/Instagram via Apify (caption, thumbnail, link video scaricato,
+// trascrizione se disponibile) — usato dal pannello di ispezione "test Apify" nella PWA
+// (QuickAggiungiScreen). Per l'auto-fill leggero nei form usare invece
+// api/tiktok-oembed.js / api/instagram-meta.js; per la sinossi vera (Claude)
+// api/generate-synopsis-tiktok.js / api/generate-synopsis-instagram.js.
+//
+// Richiede APIFY_TOKEN nelle env var Vercel (Settings → Environment Variables).
+
+export const config = { maxDuration: 280 };
+
+const TIKTOK_ACTOR = 'clockworks~tiktok-video-scraper';
+const INSTAGRAM_ACTOR = 'apify~instagram-reel-scraper';
+
+export default async function handler(req, res) {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  const url = req.body?.url;
+  if (!url || typeof url !== 'string') return res.status(400).json({ error: 'url mancante.' });
+
+  const token = process.env.APIFY_TOKEN;
+  if (!token) return res.status(500).json({ error: 'APIFY_TOKEN non configurato nelle env var Vercel.' });
+
+  const isTikTok = /tiktok\.com/i.test(url);
+  const isInstagram = /instagram\.com/i.test(url);
+  if (!isTikTok && !isInstagram) {
+    return res.status(400).json({ error: 'URL non riconosciuto — questo test supporta solo link TikTok o Instagram.' });
+  }
+
+  const actorId = isTikTok ? TIKTOK_ACTOR : INSTAGRAM_ACTOR;
+  const input = isTikTok
+    ? {
+        postURLs: [url],
+        scrapeRelatedVideos: false,
+        shouldDownloadVideos: true,
+        shouldDownloadCovers: true,
+        downloadSubtitlesOptions: 'NEVER_DOWNLOAD_SUBTITLES',
+      }
+    : {
+        username: [url],
+        resultsLimit: 1,
+        includeTranscript: true,
+        // Disattivato: verificato dal vivo che questo passaggio può restare bloccato
+        // per l'intero timeout dell'Actor (270s) senza errore, mentre caption/
+        // thumbnail/trascrizione arrivano in pochi secondi anche senza — vedi log
+        // run FdqbJemwyQ0kkEX1F (transcript pronto in 8s, poi 4m30 di stallo fino
+        // al timeout Apify). Da riattivare solo se serve davvero il file scaricato.
+        includeDownloadedVideo: false,
+      };
+
+  try {
+    const apifyRes = await fetch(
+      `https://api.apify.com/v2/acts/${actorId}/run-sync-get-dataset-items?token=${token}&timeout=270`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(input),
+      }
+    );
+    const items = await apifyRes.json();
+
+    if (!apifyRes.ok) {
+      return res.status(502).json({ error: `Apify ha risposto ${apifyRes.status}`, detail: items });
+    }
+    const item = Array.isArray(items) ? items[0] : null;
+    if (!item) {
+      return res.status(502).json({ error: 'Apify non ha restituito nessun risultato (video privato, rimosso, o URL non valido).' });
+    }
+
+    // Due casi verificati dal vivo che richiedono di passare dal proxy /api/apify-media
+    // invece di restituire il link diretto al browser:
+    // 1) api.apify.com (key-value store TikTok) — privato per default, serve il token
+    // 2) fbcdn.net/cdninstagram.com (thumbnail Instagram) — CORP same-origin, il
+    //    browser blocca il caricamento diretto come <img> da dominio esterno
+    const viaProxy = (u) => (u && /^https:\/\/([^/]+\.)?(apify\.com|fbcdn\.net|cdninstagram\.com)\//i.test(u) ? `/api/apify-media?u=${encodeURIComponent(u)}` : u || null);
+
+    const platform = isTikTok ? 'tiktok' : 'instagram';
+    const normalized = isTikTok
+      ? {
+          caption: item.text || '',
+          thumbnailUrl: viaProxy(item.videoMeta?.coverUrl),
+          videoUrl: viaProxy(item.mediaUrls?.[0] || item.videoMeta?.downloadAddr),
+          transcript: null,
+          durationSec: item.videoMeta?.duration ?? null,
+        }
+      : {
+          caption: item.caption || '',
+          thumbnailUrl: viaProxy(item.displayUrl),
+          videoUrl: viaProxy(item.downloadedVideo || item.videoUrl),
+          transcript: item.transcript || null,
+          durationSec: item.videoDuration ?? null,
+        };
+
+    return res.status(200).json({ platform, ...normalized, raw: item });
+  } catch (e) {
+    return res.status(500).json({ error: e.message || 'Errore imprevisto nella chiamata ad Apify.' });
+  }
+}
