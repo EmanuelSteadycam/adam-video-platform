@@ -39,7 +39,12 @@ export default async function handler(req, res) {
         username: [url],
         resultsLimit: 1,
         includeTranscript: true,
-        includeDownloadedVideo: true,
+        // Disattivato: verificato dal vivo che questo passaggio può restare bloccato
+        // per l'intero timeout dell'Actor (270s) senza errore, mentre caption/
+        // thumbnail/trascrizione arrivano in pochi secondi anche senza — vedi log
+        // run FdqbJemwyQ0kkEX1F (transcript pronto in 8s, poi 4m30 di stallo fino
+        // al timeout Apify). Da riattivare solo se serve davvero il file scaricato.
+        includeDownloadedVideo: false,
       };
 
   try {
