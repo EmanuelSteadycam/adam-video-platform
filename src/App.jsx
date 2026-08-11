@@ -555,6 +555,26 @@ const AboutSection = ({ onNavigate, onEsplora }) => {
           Partecipa →
         </button>
       </div>
+
+      {/* QR verso la versione rapida (PWA, ?quick=1) — dominio dedotto da
+          window.location.origin così non va aggiornato quando ADAM avrà un
+          dominio definitivo (oggi solo il sottodominio Vercel). */}
+      <div className="max-w-3xl mt-6">
+        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6">
+          <img
+            src={`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(`${window.location.origin}/?quick=1`)}`}
+            alt="QR per aprire ADAM dal telefono"
+            width={140}
+            height={140}
+            className="rounded-lg bg-white p-2 flex-shrink-0"
+          />
+          <div className="text-center sm:text-left">
+            <h3 className="text-white font-semibold text-lg mb-1.5">Segnala un video al volo dal telefono</h3>
+            <p className="text-zinc-400 text-sm leading-relaxed mb-2 max-w-md">Inquadra il QR con la fotocamera per aprire la versione rapida di ADAM — pensata per aggiungere un link YouTube, TikTok o Instagram in pochi tocchi, direttamente da mobile.</p>
+            <a href={`${window.location.origin}/?quick=1`} className="text-[#FFDA2A] text-sm font-semibold hover:underline break-all">apri direttamente →</a>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
