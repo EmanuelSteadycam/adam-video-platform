@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { upload as blobUpload } from '@vercel/blob/client';
-import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown, Send, ShieldCheck, AlertCircle, Loader2, LogIn, Film, BookOpen, Pencil, Trash2, Save, RotateCcw, Archive, Lightbulb, Share2, Link, Activity, Volume2 } from 'lucide-react';
+import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown, Send, ShieldCheck, AlertCircle, Loader2, LogIn, Film, BookOpen, Pencil, Trash2, Save, RotateCcw, Archive, Lightbulb, Share2, Link, Activity, Volume2, FlaskConical } from 'lucide-react';
 import Lottie from 'lottie-react';
 import { supabase } from './supabase';
 import { videos as videosData } from './videosData';
@@ -2335,6 +2335,9 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
   const [savingToNas, setSavingToNas] = useState(false);
   const [nasSaveMsg, setNasSaveMsg] = useState(null);
   const scrollAnchorRef = useRef(null);
+  // TEST temporaneo Apify (TikTok/Instagram) — non tocca il form né salva nulla,
+  // solo per valutare se Apify può sostituire yt-dlp/NAS. Da rimuovere se si scarta la pista.
+  const [apifyTest, setApifyTest] = useState({ loading: false, error: null, data: null });
 
   // Dipende da allVideos (non solo mount): subito dopo il login in quick mode
   // il fetch di allVideos da Supabase potrebbe non essere ancora risolto — se
@@ -2400,6 +2403,24 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
       setSynopsisWarning(e?.message || 'Errore di rete nella generazione della sinossi.');
     } finally {
       setGeneratingSynopsis(false);
+    }
+  };
+
+  // TEST temporaneo: chiama l'endpoint Apify (TikTok/Instagram) e mostra i dati grezzi,
+  // senza compilare il form — serve solo a verificare dal telefono se Apify funziona.
+  const handleApifyTest = async () => {
+    setApifyTest({ loading: true, error: null, data: null });
+    try {
+      const res = await fetch('/api/apify-fetch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: form.youtube_url.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setApifyTest({ loading: false, error: data.error || 'Errore Apify.', data: null }); return; }
+      setApifyTest({ loading: false, error: null, data });
+    } catch (e) {
+      setApifyTest({ loading: false, error: e?.message || 'Errore di rete.', data: null });
     }
   };
 
@@ -2565,6 +2586,43 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
           <div className="flex items-start gap-1.5 mt-2 text-[11px] text-amber-400">
             <AlertCircle size={13} className="mt-0.5 shrink-0" />
             <span>per TikTok la sinossi automatica da link non è disponibile — solo da desktop, caricando il file video</span>
+          </div>
+        )}
+        {/* TEST temporaneo Apify — visibile solo per TikTok/Instagram, non tocca il form.
+            Da rimuovere (bottone + blocco risultati sotto) se si decide di scartare la pista. */}
+        {/tiktok\.com|instagram\.com/i.test(form.youtube_url) && (
+          <div className="mt-2.5 pt-2.5 border-t border-dashed border-zinc-700">
+            <button
+              type="button"
+              onClick={handleApifyTest}
+              disabled={apifyTest.loading}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold border border-sky-700 text-sky-400 disabled:opacity-40"
+            >
+              {apifyTest.loading
+                ? <><Loader2 size={12} className="animate-spin" /> chiamo Apify…</>
+                : <><FlaskConical size={12} /> test Apify (non salva nulla)</>}
+            </button>
+            {apifyTest.error && (
+              <p className="text-[11px] text-red-400 mt-2">{apifyTest.error}</p>
+            )}
+            {apifyTest.data && (
+              <div className="mt-2.5 bg-zinc-800/60 border border-zinc-700 rounded-lg p-3 text-[11px] text-zinc-300 space-y-2">
+                <p><span className="text-zinc-500">piattaforma:</span> {apifyTest.data.platform}</p>
+                {apifyTest.data.thumbnailUrl && (
+                  <img src={apifyTest.data.thumbnailUrl} alt="thumbnail" className="w-24 rounded-md" />
+                )}
+                <p><span className="text-zinc-500">caption:</span> {apifyTest.data.caption || '(vuota)'}</p>
+                {apifyTest.data.transcript && (
+                  <p><span className="text-zinc-500">trascrizione:</span> {apifyTest.data.transcript}</p>
+                )}
+                <p><span className="text-zinc-500">durata:</span> {apifyTest.data.durationSec ?? 'n/d'}s</p>
+                {apifyTest.data.videoUrl && (
+                  <a href={apifyTest.data.videoUrl} target="_blank" rel="noreferrer" className="block break-all text-sky-400 underline">
+                    apri video scaricato (mp4)
+                  </a>
+                )}
+              </div>
+            )}
           </div>
         )}
       </QuickCard>
