@@ -49,14 +49,37 @@ async function checkBlob() {
   return { status: 'ok' };
 }
 
+async function checkApify() {
+  const token = process.env.APIFY_TOKEN;
+  if (!token) return { status: 'not_configured' };
+  try {
+    const [meRes, usageRes] = await Promise.all([
+      fetch(`https://api.apify.com/v2/users/me?token=${token}`, { signal: AbortSignal.timeout(8000) }),
+      fetch(`https://api.apify.com/v2/users/me/usage/monthly?token=${token}`, { signal: AbortSignal.timeout(8000) }),
+    ]);
+    if (!meRes.ok) return { status: 'error', detail: `HTTP ${meRes.status}` };
+    if (!usageRes.ok) return { status: 'error', detail: `HTTP ${usageRes.status}` };
+    const me = (await meRes.json()).data;
+    const usage = (await usageRes.json()).data;
+    return {
+      status: 'ok',
+      planTier: me?.plan?.tier ?? null,
+      usedUsd: usage?.totalUsageCreditsUsdAfterVolumeDiscount ?? 0,
+      limitUsd: me?.plan?.maxMonthlyUsageUsd ?? 0,
+      cycleEndsAt: usage?.usageCycle?.endAt ?? null,
+    };
+  } catch (e) { return { status: 'error', detail: e.message }; }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method Not Allowed' });
 
-  const [scraperapi, groq, anthropic, blob] = await Promise.allSettled([
+  const [scraperapi, groq, anthropic, blob, apify] = await Promise.allSettled([
     checkScraperAPI(),
     checkGroq(),
     checkAnthropic(),
     checkBlob(),
+    checkApify(),
   ]);
 
   return res.status(200).json({
@@ -64,6 +87,7 @@ export default async function handler(req, res) {
     groq: groq.value ?? { status: 'error' },
     anthropic: anthropic.value ?? { status: 'error' },
     blob: blob.value ?? { status: 'error' },
+    apify: apify.value ?? { status: 'error' },
     checkedAt: new Date().toISOString(),
   });
 }
