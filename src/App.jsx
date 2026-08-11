@@ -2424,6 +2424,28 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
     }
   };
 
+  // Compila titolo/descrizione/durata/formato dai dati Apify (solo campi vuoti,
+  // stesso criterio di handleGenerateSynopsis). Non tocca "thumbnail": per TikTok
+  // è già gestita da handleUrlBlur (oEmbed, stabile); per Instagram non esiste
+  // ancora un salvataggio persistente della thumbnail — fuori scope di questo test.
+  const handleUseApifyData = () => {
+    const d = apifyTest.data;
+    if (!d) return;
+    const toMMSS = (secs) => {
+      if (secs === null || secs === undefined) return null;
+      const total = Math.round(secs);
+      return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
+    };
+    setForm(prev => ({
+      ...prev,
+      title: prev.title.trim() ? prev.title : (d.caption || prev.title),
+      description: prev.description.trim() ? prev.description : (d.transcript || d.caption || prev.description),
+      duration: prev.duration.trim() ? prev.duration : (toMMSS(d.durationSec) || prev.duration),
+      formato: 'verticale',
+    }));
+    requestAnimationFrame(() => scrollAnchorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  };
+
   const handleSaveToNas = async () => {
     setSavingToNas(true);
     setNasSaveMsg(null);
@@ -2620,6 +2642,19 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
                   <a href={apifyTest.data.videoUrl} target="_blank" rel="noreferrer" className="block break-all text-sky-400 underline">
                     apri video scaricato (mp4)
                   </a>
+                )}
+                <button
+                  type="button"
+                  onClick={handleUseApifyData}
+                  className="w-full flex items-center justify-center gap-1.5 mt-1 py-2 rounded-lg text-[11px] font-semibold"
+                  style={{ backgroundColor: '#FFDA2A', color: '#000' }}
+                >
+                  <Check size={12} strokeWidth={3} /> usa questi dati nel form
+                </button>
+                {apifyTest.data.platform === 'instagram' && (
+                  <p className="text-[10.5px] text-amber-400/80 leading-snug">
+                    nota test: il salvataggio vero e proprio (thumbnail, player) funziona oggi solo per TikTok — Instagram non è ancora un formato riconosciuto dall'app
+                  </p>
                 )}
               </div>
             )}
