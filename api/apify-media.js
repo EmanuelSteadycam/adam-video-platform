@@ -1,5 +1,5 @@
-// TEST — proxy per i file (thumbnail/video) usati dal test Apify (TikTok/Instagram).
-// Due motivi distinti per cui serve, entrambi verificati dal vivo:
+// Proxy per i file (thumbnail/video) di Apify/Instagram-CDN usati nell'app (TikTok/
+// Instagram). Due motivi distinti per cui serve, entrambi verificati dal vivo:
 // 1) i key-value store del TikTok Video Scraper sono privati per default (403
 //    "insufficient-permissions" senza token) — per non esporre mai APIFY_TOKEN al
 //    browser, i link api.apify.com passano da qui, che aggiunge il token solo lato
@@ -8,8 +8,8 @@
 //    hanno l'header Cross-Origin-Resource-Policy: same-origin, che i browser
 //    rispettano (curl no) bloccando il caricamento diretto come <img> da un
 //    dominio esterno — passandole da qui il browser le vede come same-origin.
-// Companion di api/apify-fetch.js — stesso ciclo di vita (da rimuovere insieme se
-// si scarta la pista Apify).
+// Usato da api/apify-fetch.js, api/instagram-meta.js e dal frontend (thumbnail nei
+// form/card) ovunque un link Apify/Instagram-CDN debba essere mostrato nel browser.
 
 export const config = { maxDuration: 60 };
 

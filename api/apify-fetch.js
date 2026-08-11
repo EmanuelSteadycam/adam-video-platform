@@ -1,8 +1,8 @@
-// TEST — endpoint temporaneo per valutare Apify come alternativa a yt-dlp/NAS per
-// TikTok (login-wall) e come via per supportare Instagram senza App Review Meta.
-// Non ancora integrato nella pipeline sinossi definitiva (nessuna chiamata a Claude/Groq
-// qui) — restituisce solo i dati grezzi scaricati da Apify per ispezione.
-// Usato dal bottone "Test Apify" nella schermata Aggiungi della PWA (QuickAggiungiScreen).
+// Dati grezzi TikTok/Instagram via Apify (caption, thumbnail, link video scaricato,
+// trascrizione se disponibile) — usato dal pannello di ispezione "test Apify" nella PWA
+// (QuickAggiungiScreen). Per l'auto-fill leggero nei form usare invece
+// api/tiktok-oembed.js / api/instagram-meta.js; per la sinossi vera (Claude)
+// api/generate-synopsis-tiktok.js / api/generate-synopsis-instagram.js.
 //
 // Richiede APIFY_TOKEN nelle env var Vercel (Settings → Environment Variables).
 
