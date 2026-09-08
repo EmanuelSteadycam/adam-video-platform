@@ -298,7 +298,7 @@ const toArchiveFormat = (v) => ({
 | Scopri ADAM | `'about'` | AboutSection: Cosa/Come/Perché + Lottie logo |
 | I Formati ADAM | `'formats'` | NatureCarousel + griglia filtrata per natura |
 | I Più Visti | `'most-viewed'` | Top 20 per visualizzazioni |
-| Nuovi Inseriti | `'recent'` | Ultimi 5 video per dataInserimento |
+| Nuovi Inseriti | `'recent'` | Ultimi 50 video per dataInserimento |
 | Prodotti dalle Scuole | `'schools'` | Solo video con `prodottoScuola: true` |
 | Lasciati Ispirare | `'inspire'` | Player random + shuffle + griglia |
 | Partecipa | `'submit'` | Form segnalazione video — ex "Segnala Video" |

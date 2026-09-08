@@ -7304,7 +7304,7 @@ function App() {
       }
     }
     if (activeSection === 'most-viewed') filtered = [...filtered].sort((a, b) => b.views - a.views).slice(0, 20);
-    else if (activeSection === 'recent') filtered = [...filtered].sort(compareVideoTime).slice(0, 12);
+    else if (activeSection === 'recent') filtered = [...filtered].sort(compareVideoTime).slice(0, 50);
     else if (activeSection === 'schools') {
       filtered = filtered.filter(v => v.prodottoScuola);
       filtered = schoolsSort === 'views'
