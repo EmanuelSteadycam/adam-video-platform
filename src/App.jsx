@@ -6349,26 +6349,15 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                           {isSelected && <Check size={10} className="text-black" strokeWidth={3} />}
                         </div>
                       </label>
-                      {(() => {
-                        const ytId = extractYouTubeId(video.youtube_url);
-                        if (!ytId) return (
-                          <div className="w-[90px] h-[67px] rounded flex-shrink-0 bg-zinc-700 flex items-center justify-center">
-                            <Video size={16} className="text-zinc-500" />
-                          </div>
-                        );
-                        return (
-                          <img
-                            src={`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`}
-                            alt=""
-                            className="w-[90px] object-cover rounded flex-shrink-0 bg-zinc-700"
-                            onError={e => {
-                              if (e.target.src.includes('hqdefault')) e.target.src = `https://img.youtube.com/vi/${ytId}/mqdefault.jpg`;
-                              else if (e.target.src.includes('mqdefault')) e.target.src = `https://img.youtube.com/vi/${ytId}/default.jpg`;
-                              else { e.target.style.display = 'none'; }
-                            }}
-                          />
-                        );
-                      })()}
+                      <div className="w-[90px] h-[67px] rounded flex-shrink-0 bg-zinc-700 overflow-hidden">
+                        <VideoThumbnail
+                          youtubeUrl={video.youtube_url}
+                          thumbnail={video.thumbnail}
+                          piattaforma={detectPlatform(video.youtube_url)}
+                          title={video.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
                       <div className="flex-1 min-w-0 flex flex-col justify-between gap-1 py-0.5">
                         <div>
                           <div className="flex items-center gap-2 mb-1">
