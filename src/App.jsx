@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { upload as blobUpload } from '@vercel/blob/client';
-import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown, Send, ShieldCheck, AlertCircle, Loader2, LogIn, Film, BookOpen, Pencil, Trash2, Save, RotateCcw, Archive, Lightbulb, Share2, Link, Activity, Volume2 } from 'lucide-react';
+import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown, Send, ShieldCheck, AlertCircle, Loader2, LogIn, Film, BookOpen, Pencil, Trash2, Save, RotateCcw, Archive, Lightbulb, Share2, Link, Activity, Volume2, Copy } from 'lucide-react';
 import Lottie from 'lottie-react';
 import { supabase } from './supabase';
 import { videos as videosData } from './videosData';
@@ -166,6 +166,25 @@ const VideoThumbnail = ({ youtubeUrl, thumbnail, piattaforma, title, className =
   );
 };
 
+// Avviso "livello 1" duplicati — non bloccante: mostra il video già in archivio che
+// condivide lo stesso ID canonico del link appena inserito, chi inserisce decide se
+// procedere lo stesso. Usato in Partecipa (sito+app) e Admin (Aggiungi+In attesa).
+const DuplicateWarningBanner = ({ video, compact = false }) => {
+  if (!video) return null;
+  return (
+    <div className={`flex items-center gap-3 rounded-xl border border-amber-500/40 bg-amber-500/10 ${compact ? 'p-2' : 'p-3'}`}>
+      <div className={`${compact ? 'w-10 h-10' : 'w-14 h-14'} rounded-lg overflow-hidden flex-shrink-0 bg-zinc-800`}>
+        <VideoThumbnail youtubeUrl={video.youtubeUrl} thumbnail={video.thumbnail} piattaforma={detectPlatform(video.youtubeUrl)} title={video.title} className="w-full h-full object-cover" />
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="text-amber-400 text-xs font-semibold">⚠ questo video sembra già presente in ADAM</p>
+        <p className="text-white text-sm truncate">{video.title}</p>
+        {video.codice && <p className="text-zinc-500 text-xs font-mono">{video.codice}</p>}
+      </div>
+    </div>
+  );
+};
+
 const addRandomViews = (videos) => {
   return videos.map(video => ({
     ...video,
@@ -223,6 +242,28 @@ const extractInstagramId = (url) => {
   if (!url) return null;
   const m = url.match(/\/(?:p|reel|reels)\/([A-Za-z0-9_-]+)/);
   return m ? m[1] : null;
+};
+
+// Controllo duplicati "livello 1" — confronto esatto sul video (piattaforma + ID), non
+// sul testo del link: stesso video scritto in forme diverse (youtu.be/ID vs watch?v=ID,
+// link corto TikTok, Instagram con query string tipo ?igsh=...) va comunque riconosciuto
+// come lo stesso. Non guarda MAI il codice (HD332-56 o HD260011 sono equivalenti ai fini
+// del controllo: il codice è solo il riferimento al file fisico, non l'identità del video).
+const getCanonicalVideoKey = (url) => {
+  const platform = detectPlatform(url);
+  const id = platform === 'youtube' ? extractYouTubeId(url)
+    : platform === 'tiktok' ? extractTikTokId(url)
+    : extractInstagramId(url);
+  return id ? `${platform}:${id}` : null;
+};
+
+// Cerca nel catalogo un video con lo stesso ID canonico del link appena inserito. Usato
+// on-blur nei form di inserimento (Partecipa sito+app, Admin Aggiungi+In attesa) per
+// avvisare — mai bloccare — prima dell'invio: chi inserisce decide se procedere lo stesso.
+const findDuplicateByUrl = (url, allVideos) => {
+  const key = getCanonicalVideoKey(url);
+  if (!key || !allVideos?.length) return null;
+  return allVideos.find(v => getCanonicalVideoKey(v.youtubeUrl) === key) || null;
 };
 
 // Prossimo Codice ID disponibile (formato HDYYNNNN, senza trattino) — usato dal tab Admin
@@ -2359,7 +2400,7 @@ const QuickToggleButton = ({ label, checked, onChange }) => (
 // ═══ Partecipa (utente) ═══
 const QUICK_PARTECIPA_INITIAL_FORM = { title: '', youtube_url: '', tema: '', description: '', prodotto_scuola: false, thumbnail: '' };
 
-const QuickPartecipaScreen = ({ user }) => {
+const QuickPartecipaScreen = ({ user, allVideos }) => {
   const [form, setForm] = useState(QUICK_PARTECIPA_INITIAL_FORM);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -2375,6 +2416,8 @@ const QuickPartecipaScreen = ({ user }) => {
   const f = (field, val) => setForm(prev => ({ ...prev, [field]: val }));
   const platform = form.youtube_url.trim() ? detectPlatform(form.youtube_url) : null;
   const cardAccent = form.tema ? (TEMA_COLORS[form.tema] || TEMA_COLORS['Altro']).border : undefined;
+  // Controllo duplicati "livello 1" — derivato, si aggiorna da solo mentre si digita/incolla.
+  const duplicateMatch = useMemo(() => findDuplicateByUrl(form.youtube_url, allVideos), [form.youtube_url, allVideos]);
 
   // Reset completo (non solo form/success) — se una generazione resta "appesa"
   // (rete che cade a metà, visto dal vivo con le chiamate Apify), i flag di
@@ -2547,6 +2590,7 @@ const QuickPartecipaScreen = ({ user }) => {
             </div>
           );
         })()}
+        {duplicateMatch && <div className="mt-2.5"><DuplicateWarningBanner video={duplicateMatch} compact /></div>}
 
         <div className="grid grid-cols-2 gap-2.5 mt-3">
           <button
@@ -2689,6 +2733,7 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
   const f = (field, val) => setForm(prev => ({ ...prev, [field]: val }));
   const platform = form.youtube_url.trim() ? detectPlatform(form.youtube_url) : null;
   const cardAccent = form.tema ? (TEMA_COLORS[form.tema] || TEMA_COLORS['Altro']).border : undefined;
+  const duplicateMatch = useMemo(() => findDuplicateByUrl(form.youtube_url, allVideos), [form.youtube_url, allVideos]);
 
   const handleUrlBlur = async () => {
     const p = detectPlatform(form.youtube_url);
@@ -2920,6 +2965,7 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
             </div>
           );
         })()}
+        {duplicateMatch && <div className="mt-2.5"><DuplicateWarningBanner video={duplicateMatch} compact /></div>}
       </QuickCard>
 
       <QuickCard>
@@ -3217,7 +3263,7 @@ const DURATION_SEC_OPTIONS = Array.from({ length: 60 }, (_, i) => ({ value: i, l
 const PendingSubmissionCard = ({
   sub, editing, form, msg, saving, deleting, deleteConfirm,
   onSelect, onFieldChange, onOpenEdit, onCancelEdit, onSave, onApprove,
-  onDeleteRequest, onDeleteConfirm, onDeleteCancel,
+  onDeleteRequest, onDeleteConfirm, onDeleteCancel, allVideos,
 }) => {
   const c = TEMA_COLORS[sub.tema] || TEMA_COLORS['Altro'];
   const cardAccent = (form.tema ?? sub.tema) ? (TEMA_COLORS[form.tema ?? sub.tema] || TEMA_COLORS['Altro']).border : undefined;
@@ -3273,6 +3319,10 @@ const PendingSubmissionCard = ({
     <QuickCard className="!p-3.5 space-y-2.5">
       <QuickTemaChips options={TEMI_OPTIONS} value={form.tema ?? sub.tema ?? ''} onChange={v => onFieldChange('tema', v)} variant="pill" />
       <QuickInput accentColor={cardAccent} value={form.youtube_url ?? sub.youtube_url ?? ''} onChange={e => onFieldChange('youtube_url', e.target.value)} placeholder="link video" />
+      {(() => {
+        const dup = findDuplicateByUrl(form.youtube_url ?? sub.youtube_url, allVideos);
+        return dup ? <DuplicateWarningBanner video={dup} compact /> : null;
+      })()}
       <QuickInput accentColor={cardAccent} value={form.title ?? sub.title ?? ''} onChange={e => onFieldChange('title', e.target.value)} placeholder="titolo" />
       <CustomSelect value={form.natura ?? sub.natura ?? ''} onChange={v => onFieldChange('natura', v)} options={natOptions} accentColor={cardAccent || '#FFDA2A'} coloredBorder={!!cardAccent} />
       <div>
@@ -3732,6 +3782,7 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo, onAddTo
               onDeleteRequest={() => setDeleteSubConfirmId(sub.id)}
               onDeleteConfirm={() => handleDeleteSub(sub)}
               onDeleteCancel={() => setDeleteSubConfirmId(null)}
+              allVideos={allVideos}
             />
           ))}
         </div>
@@ -4373,7 +4424,7 @@ const TEMI_OPTIONS = ['Alcool', 'Azzardo', 'Digitale', 'Sostanze', 'Tabacco', 'S
 
 const SUBMIT_VIDEO_INITIAL_FORM = { title: '', youtube_url: '', tema: '', description: '', prodotto_scuola: false, thumbnail: '' };
 
-const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSaved }) => {
+const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSaved, allVideos }) => {
   const [form, setForm] = useState(SUBMIT_VIDEO_INITIAL_FORM);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -4546,6 +4597,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
   }
 
   const submitPlatform = detectPlatform(form.youtube_url);
+  const duplicateMatch = useMemo(() => findDuplicateByUrl(form.youtube_url, allVideos), [form.youtube_url, allVideos]);
 
   return (
     <div className="max-w-2xl mx-auto py-8">
@@ -4595,6 +4647,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
               </div>
             );
           })()}
+          {duplicateMatch && <div className="mt-2.5"><DuplicateWarningBanner video={duplicateMatch} /></div>}
 
           <div className="grid grid-cols-2 gap-2.5 mt-3">
             <button
@@ -5077,6 +5130,10 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const [selectedArchive, setSelectedArchive] = useState(new Set());
   const [deleteArchiveConfirm, setDeleteArchiveConfirm] = useState(false);
   const [deletingArchive, setDeletingArchive] = useState(false);
+  // Scan "livello 2" duplicati — a comando, mai automatico (vedi api/find-duplicate-videos.js)
+  const [dupScanLoading, setDupScanLoading] = useState(false);
+  const [dupScanGroups, setDupScanGroups] = useState(null); // null = mai lanciato, [] = nessun duplicato trovato
+  const [dupScanError, setDupScanError] = useState(null);
 
   // Utenti
   const [users, setUsers] = useState([]);
@@ -5107,6 +5164,23 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const f = (field, val) => setForm(prev => ({ ...prev, [field]: val }));
   const ef = (subId, field, val) => setEditForms(prev => ({ ...prev, [subId]: { ...(prev[subId] || {}), [field]: val } }));
   const evf = (videoId, field, val) => setEditVideoForms(prev => ({ ...prev, [videoId]: { ...(prev[videoId] || {}), [field]: val } }));
+
+  // Scan "livello 2" duplicati — a comando dal bottone in Archivio, mai automatico.
+  // Giudizio euristico su testo (titolo+sinossi), risultati da controllare a occhio.
+  const handleFindDuplicates = async () => {
+    setDupScanLoading(true);
+    setDupScanError(null);
+    try {
+      const res = await fetch('/api/find-duplicate-videos', { method: 'POST' });
+      const data = await res.json();
+      if (!res.ok) { setDupScanError(data.error || 'Errore durante lo scan.'); setDupScanGroups(null); return; }
+      setDupScanGroups(data.groups || []);
+    } catch (e) {
+      setDupScanError(e.message || 'Errore imprevisto.');
+      setDupScanGroups(null);
+    }
+    setDupScanLoading(false);
+  };
 
   // Autofill titolo/thumbnail/URL canonico quando il campo URL (tab Aggiungi) è TikTok/Instagram
   const handleUrlBlur = async () => {
@@ -5778,6 +5852,10 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                   </div>
                 );
               })()}
+              {(() => {
+                const dup = findDuplicateByUrl(form.youtube_url, allVideos);
+                return dup ? <div className="mt-2"><DuplicateWarningBanner video={dup} /></div> : null;
+              })()}
             </div>
             {/* Transcript: upload file NAS o testo manuale */}
             <div className="space-y-2">
@@ -6084,6 +6162,10 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                           <input type="url" value={subForm.youtube_url ?? sub.youtube_url ?? ''} onChange={e => ef(sub.id, 'youtube_url', e.target.value)}
                             onBlur={e => handleSubUrlBlur(sub.id, e.target.value)}
                             placeholder="https://youtu.be/... oppure link TikTok/Instagram" className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
+                          {(() => {
+                            const dup = findDuplicateByUrl(subForm.youtube_url ?? sub.youtube_url, allVideos);
+                            return dup ? <div className="mt-2"><DuplicateWarningBanner video={dup} compact /></div> : null;
+                          })()}
                         </div>
                         {/* Riga 3: Titolo */}
                         <div>
@@ -6233,11 +6315,61 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       {/* Tab: Archivio */}
       {activeTab === 'archive' && (
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-          <h3 className="text-xl font-bold text-white mb-5 flex items-center gap-2">
-            <Archive size={20} className="text-[#FFDA2A]" />
-            Archivio video
-            {archiveLoaded && <span className="text-sm font-normal text-zinc-400">({filteredArchive.length} / {archiveVideos.length})</span>}
-          </h3>
+          <div className="flex items-center justify-between gap-3 mb-5 flex-wrap">
+            <h3 className="text-xl font-bold text-white flex items-center gap-2">
+              <Archive size={20} className="text-[#FFDA2A]" />
+              Archivio video
+              {archiveLoaded && <span className="text-sm font-normal text-zinc-400">({filteredArchive.length} / {archiveVideos.length})</span>}
+            </h3>
+            <div className="flex flex-col items-end gap-1">
+              <button onClick={handleFindDuplicates} disabled={dupScanLoading}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-zinc-700 text-zinc-300 hover:border-zinc-500 hover:text-white transition-all disabled:opacity-50">
+                {dupScanLoading ? <><Loader2 size={13} className="animate-spin" /> Verifica in corso…</> : <><Copy size={13} /> Verifica duplicati</>}
+              </button>
+              {dupScanLoading && <span className="text-[11px] text-zinc-500">può richiedere fino a 2 minuti</span>}
+            </div>
+          </div>
+          {dupScanError && (
+            <div className="flex items-center gap-2 bg-red-900/30 border border-red-800 text-red-400 px-4 py-3 rounded-lg text-sm mb-4">
+              <AlertCircle size={16} className="flex-shrink-0" />{dupScanError}
+            </div>
+          )}
+          {dupScanGroups !== null && (
+            <div className="mb-5 bg-zinc-950 border border-zinc-800 rounded-xl p-4">
+              {dupScanGroups.length === 0 ? (
+                <p className="text-sm text-zinc-400 flex items-center gap-2"><Check size={15} className="text-green-500" /> Nessun duplicato trovato.</p>
+              ) : (
+                <>
+                  <p className="text-sm text-zinc-300 mb-3 font-semibold">{dupScanGroups.length} possibile{dupScanGroups.length > 1 ? 'i' : ''} duplicato{dupScanGroups.length > 1 ? 'i' : ''} — controlla a occhio, nessuna azione automatica</p>
+                  <div className="space-y-3">
+                    {dupScanGroups.map((group, gi) => (
+                      <div key={gi} className="bg-zinc-900 border border-amber-500/30 rounded-lg p-3">
+                        <p className="text-xs text-zinc-400 mb-2">{group.motivo}</p>
+                        <div className="flex flex-wrap gap-2">
+                          {group.ids.map(id => {
+                            const v = allVideos.find(av => av.id === id);
+                            if (!v) return <span key={id} className="text-xs font-mono text-zinc-500 px-2 py-1">{id} (non trovato)</span>;
+                            return (
+                              <button key={id} onClick={() => { setArchiveSearch(v.codice || v.id); }}
+                                className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-lg px-2 py-1.5 transition-all text-left">
+                                <div className="w-10 h-10 rounded overflow-hidden flex-shrink-0 bg-zinc-700">
+                                  <VideoThumbnail youtubeUrl={v.youtubeUrl} thumbnail={v.thumbnail} piattaforma={detectPlatform(v.youtubeUrl)} title={v.title} className="w-full h-full object-cover" />
+                                </div>
+                                <div className="min-w-0">
+                                  <p className="text-xs font-mono text-[#FFDA2A]">{v.codice || v.id}</p>
+                                  <p className="text-xs text-white truncate max-w-[160px]">{v.title}</p>
+                                </div>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
           {/* Filters */}
           <div className="flex gap-2 mb-3 flex-wrap items-center">
             {['', ...TEMI_OPTIONS].map(t => {
@@ -7357,7 +7489,7 @@ function App() {
                 onSharePlaylist={sharePlaylist}
               />
             )}
-            {activeSection === 'submit' && !isAdmin && <QuickPartecipaScreen user={user} />}
+            {activeSection === 'submit' && !isAdmin && <QuickPartecipaScreen user={user} allVideos={allVideos} />}
             {activeSection === 'admin' && isAdmin && <QuickAggiungiScreen userProfile={userProfile} allVideos={allVideos} onVideoApproved={loadVideos} />}
           </QuickShell>
         )}
@@ -7655,7 +7787,7 @@ function App() {
           {activeSection === 'inspire' && <InspireSection onVideoClick={handleVideoClick} onAddToPlaylist={handleAddToPlaylist} isInPlaylist={isInPlaylist} videos={allVideos} />}
           {activeSection === 'about' && <AboutSection onNavigate={setActiveSection} onEsplora={() => { setActiveSection('home'); setTimeout(() => filtersSectionRef.current?.scrollIntoView({ behavior: 'smooth' }), 120); }} />}
           {activeSection === 'shared-playlist' && sharedPlaylistRaw && <SharedPlaylistView playlistRaw={sharedPlaylistRaw} allVideos={allVideos} onVideoClick={handleVideoClick} onOpenAuth={() => { setAuthMode('login'); setShowAuthModal(true); }} onPlayShared={(vids) => { setLocalPlaylist(vids); setPlayingLocalPlaylist(true); setCurrentPlaylistIndex(0); }} onSaveShared={saveSharedPlaylist} onSaved={() => setSharedPlaylistSaved(true)} user={user} token={sharedPlaylistToken} />}
-          {activeSection === 'submit' && <SubmitVideoSection user={user} userProfile={userProfile} onOpenAuth={() => { setAuthMode('login'); setShowAuthModal(true); }} onBack={() => setActiveSection('home')} onDraftSaved={() => setActiveSection('myvideos')} />}
+          {activeSection === 'submit' && <SubmitVideoSection user={user} userProfile={userProfile} onOpenAuth={() => { setAuthMode('login'); setShowAuthModal(true); }} onBack={() => setActiveSection('home')} onDraftSaved={() => setActiveSection('myvideos')} allVideos={allVideos} />}
           {activeSection === 'admin' && <AdminSection userProfile={userProfile} onVideoApproved={loadVideos} allVideos={allVideos} />}
           {activeSection === 'myvideos' && <MyVideosSection user={user} onNewVideo={() => setActiveSection('submit')} />}
           {activeSection !== 'submit' && activeSection !== 'admin' && activeSection !== 'myvideos' && activeSection !== 'about' && activeSection !== 'shared-playlist' && (
