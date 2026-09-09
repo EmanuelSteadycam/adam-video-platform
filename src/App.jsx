@@ -337,6 +337,10 @@ const mapDbVideo = (v) => ({
   views: v.views || 0,
   format: v.formato || 'orizzontale',
   tema: v.tema || '',
+  // Rete di sicurezza durante la transizione a multi-tema: se temi non è ancora popolato
+  // (record non ancora migrato, o scritto da un punto del codice non ancora aggiornato)
+  // si ricade sul tema singolo, così nessun video resta senza etichetta.
+  temi: v.temi?.length ? v.temi : (v.tema ? [v.tema] : []),
   natura: v.natura || '',
   prodottoScuola: v.prodotto_scuola || false,
   description: v.description || '',
@@ -822,6 +826,30 @@ const TEMA_COLORS = {
   'Tabacco':    { solid: '#92400E', border: '#C9975A', dim: 'rgba(201,151,90,0.15)',  btnActive: 'rgba(201,151,90,0.50)' },
   'Sessualità': { solid: '#7C3AED', border: '#8B5CF6', dim: 'rgba(139,92,246,0.15)', btnActive: 'rgba(139,92,246,0.50)' },
   'Altro':      { solid: '#475569', border: '#64748b', dim: 'rgba(100,116,139,0.15)', btnActive: 'rgba(100,116,139,0.50)' },
+};
+
+const TEMI_OPTIONS = ['Alcool', 'Azzardo', 'Digitale', 'Sostanze', 'Tabacco', 'Sessualità', 'Altro'];
+const MAX_TEMI = 2;
+
+// Toggle multi-tema condiviso da tutti i form (Partecipa, Admin Aggiungi/Approva, sia
+// desktop che app) — regole concordate: "Altro" è mutuamente esclusivo con gli altri temi
+// (un video o parla di uno o più temi veri, o è "Altro" perché non parla di nessuno di
+// quelli — le due cose insieme non hanno senso), e si può selezionare al massimo 2 temi
+// veri insieme (oltre il limite il click su un tema non ancora selezionato non fa nulla).
+// Estrae l'array temi da una riga Supabase grezza (video o submission), con lo stesso
+// fallback sul tema singolo usato in mapDbVideo/toArchiveFormat — per i form che leggono
+// direttamente da sub/video invece che passare dal mapping.
+const asTemi = (obj) => (obj?.temi?.length ? obj.temi : (obj?.tema ? [obj.tema] : []));
+
+const toggleTema = (current, tema) => {
+  const list = current || [];
+  if (tema === 'Altro') {
+    return list.length === 1 && list[0] === 'Altro' ? [] : ['Altro'];
+  }
+  const withoutAltro = list.filter(t => t !== 'Altro');
+  if (withoutAltro.includes(tema)) return withoutAltro.filter(t => t !== tema);
+  if (withoutAltro.length >= MAX_TEMI) return withoutAltro;
+  return [...withoutAltro, tema];
 };
 
 const DualRangeSlider = ({ min, max, valueMin, valueMax, onChange, accentColor = '#FFDA2A' }) => {
@@ -2313,7 +2341,13 @@ const QuickLabel = ({ children }) => (
   <label className="block text-xs font-semibold text-zinc-400 mb-2 uppercase tracking-wide">{children}</label>
 );
 
+// Multi-selezione tema (fino a 2, "Altro" mutuamente esclusivo — vedi toggleTema). `value`
+// è un array; `onChange` riceve l'array già aggiornato dopo il click. Un tema non ancora
+// selezionato appare attenuato (non disabilitato al click, semplicemente il click non ha
+// effetto: vedi toggleTema) quando si sono già raggiunti i 2 temi veri.
 const QuickTemaChips = ({ options, value, onChange, variant = 'grid' }) => {
+  const selected = value || [];
+  const atLimit = selected.filter(t => t !== 'Altro').length >= MAX_TEMI;
   // variant "pill" — stessi bottoni pillola colorati dei filtri tema in home (FiltersSection)
   if (variant === 'pill') {
     // "Altro" subito dopo "Digitale" invece che in fondo, così riempie la
@@ -2324,15 +2358,16 @@ const QuickTemaChips = ({ options, value, onChange, variant = 'grid' }) => {
     return (
       <div className="flex flex-wrap gap-2">
         {pillOptions.map(tema => {
-          const on = value === tema;
+          const on = selected.includes(tema);
+          const dimmed = !on && atLimit && tema !== 'Altro';
           const c = TEMA_COLORS[tema] || TEMA_COLORS['Altro'];
           return (
             <button
               key={tema}
               type="button"
-              onClick={() => onChange(tema)}
+              onClick={() => onChange(toggleTema(selected, tema))}
               className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-white"
-              style={{ backgroundColor: on ? c.btnActive : 'transparent', border: `2px solid ${c.border}` }}
+              style={{ backgroundColor: on ? c.btnActive : 'transparent', border: `2px solid ${c.border}`, opacity: dimmed ? 0.35 : 1 }}
             >
               {tema}
             </button>
@@ -2345,15 +2380,16 @@ const QuickTemaChips = ({ options, value, onChange, variant = 'grid' }) => {
   return (
     <div className="grid grid-cols-3 gap-1.5">
       {options.flatMap((tema, i) => {
-        const on = value === tema;
+        const on = selected.includes(tema);
+        const dimmed = !on && atLimit && tema !== 'Altro';
         const c = TEMA_COLORS[tema] || TEMA_COLORS['Altro'];
         const button = (
           <button
             key={tema}
             type="button"
-            onClick={() => onChange(tema)}
+            onClick={() => onChange(toggleTema(selected, tema))}
             className="flex flex-col items-center gap-1 rounded-xl py-2 border transition-colors"
-            style={{ borderColor: on ? c.border : '#28282c', backgroundColor: on ? '#242428' : '#1c1c1f' }}
+            style={{ borderColor: on ? c.border : '#28282c', backgroundColor: on ? '#242428' : '#1c1c1f', opacity: dimmed ? 0.4 : 1 }}
           >
             <span className="w-4 h-4 rounded-full flex-shrink-0" style={{ backgroundColor: c.border, boxShadow: on ? `0 0 0 2.5px ${c.dim}` : 'none' }} />
             <span className="text-[9.5px] font-bold uppercase tracking-wide leading-tight" style={{ color: on ? '#f4f4f5' : '#a1a1aa' }}>{tema}</span>
@@ -2398,7 +2434,7 @@ const QuickToggleButton = ({ label, checked, onChange }) => (
 );
 
 // ═══ Partecipa (utente) ═══
-const QUICK_PARTECIPA_INITIAL_FORM = { title: '', youtube_url: '', tema: '', description: '', prodotto_scuola: false, thumbnail: '' };
+const QUICK_PARTECIPA_INITIAL_FORM = { title: '', youtube_url: '', temi: [], description: '', prodotto_scuola: false, thumbnail: '' };
 
 const QuickPartecipaScreen = ({ user, allVideos }) => {
   const [form, setForm] = useState(QUICK_PARTECIPA_INITIAL_FORM);
@@ -2415,7 +2451,7 @@ const QuickPartecipaScreen = ({ user, allVideos }) => {
 
   const f = (field, val) => setForm(prev => ({ ...prev, [field]: val }));
   const platform = form.youtube_url.trim() ? detectPlatform(form.youtube_url) : null;
-  const cardAccent = form.tema ? (TEMA_COLORS[form.tema] || TEMA_COLORS['Altro']).border : undefined;
+  const cardAccent = form.temi?.[0] ? (TEMA_COLORS[form.temi[0]] || TEMA_COLORS['Altro']).border : undefined;
   // Controllo duplicati "livello 1" — derivato, si aggiorna da solo mentre si digita/incolla.
   const duplicateMatch = useMemo(() => findDuplicateByUrl(form.youtube_url, allVideos), [form.youtube_url, allVideos]);
 
@@ -2460,7 +2496,7 @@ const QuickPartecipaScreen = ({ user, allVideos }) => {
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ youtubeUrl: form.youtube_url, title: form.title || undefined, tema: form.tema || undefined }),
+        body: JSON.stringify({ youtubeUrl: form.youtube_url, title: form.title || undefined, tema: form.temi?.[0] || undefined }),
       });
       const data = await res.json();
       if (!res.ok) { setDescWarning('Qualcosa si è addormentato dall\'altra parte — riprova più tardi.'); return; }
@@ -2486,7 +2522,7 @@ const QuickPartecipaScreen = ({ user, allVideos }) => {
   const doSubmit = async (requireTitle) => {
     if (!form.youtube_url.trim()) { setError('Il link del video è obbligatorio.'); return; }
     if (requireTitle && !form.title.trim()) { setError('Il titolo è obbligatorio.'); return; }
-    if (!form.tema) { setError('Seleziona un tema.'); return; }
+    if (!form.temi?.length) { setError('Seleziona almeno un tema.'); return; }
     setLoading(true);
     setError(null);
     const p = detectPlatform(form.youtube_url.trim());
@@ -2495,7 +2531,8 @@ const QuickPartecipaScreen = ({ user, allVideos }) => {
       tipo: p,
       title: form.title.trim() || null,
       youtube_url: form.youtube_url.trim(),
-      tema: form.tema || null,
+      tema: form.temi?.[0] || null,
+      temi: form.temi?.length ? form.temi : null,
       formato: (p === 'tiktok' || p === 'instagram') ? 'verticale' : 'orizzontale',
       description: form.description.trim() || null,
       prodotto_scuola: form.prodotto_scuola,
@@ -2508,7 +2545,7 @@ const QuickPartecipaScreen = ({ user, allVideos }) => {
 
   const handleSendLinkClick = () => {
     if (!form.youtube_url.trim()) { setError('Il link del video è obbligatorio.'); return; }
-    if (!form.tema) { setError('Seleziona un tema.'); return; }
+    if (!form.temi?.length) { setError('Seleziona almeno un tema.'); return; }
     setError(null);
     setConfirmSendLink(true);
   };
@@ -2516,14 +2553,14 @@ const QuickPartecipaScreen = ({ user, allVideos }) => {
   const handleFinalSubmitClick = () => {
     if (!form.youtube_url.trim()) { setError('Il link del video è obbligatorio.'); return; }
     if (!form.title.trim()) { setError('Il titolo è obbligatorio.'); return; }
-    if (!form.tema) { setError('Seleziona un tema.'); return; }
+    if (!form.temi?.length) { setError('Seleziona almeno un tema.'); return; }
     setError(null);
     setConfirmFinalSubmit(true);
   };
 
   // errore mostrato anche accanto a "invia link" (non solo in fondo alla pagina,
   // troppo lontano da questo bottone per essere notato)
-  const sendLinkError = error === 'Il link del video è obbligatorio.' || error === 'Seleziona un tema.' ? error : null;
+  const sendLinkError = error === 'Il link del video è obbligatorio.' || error === 'Seleziona almeno un tema.' ? error : null;
 
   const clearUrl = () => setForm(prev => ({ ...prev, youtube_url: '', thumbnail: '' }));
 
@@ -2549,8 +2586,8 @@ const QuickPartecipaScreen = ({ user, allVideos }) => {
       <p className="text-[13.5px] text-zinc-400 leading-relaxed mb-5 max-w-[34ch]">condividi un video YouTube, TikTok o Instagram utile per l'educazione — lo esaminiamo e, se appropriato, lo aggiungiamo all'archivio.</p>
 
       <QuickCard>
-        <QuickLabel>tema</QuickLabel>
-        <QuickTemaChips options={TEMI_OPTIONS} value={form.tema} onChange={v => f('tema', v)} variant="pill" />
+        <QuickLabel>tema <span className="text-zinc-500 font-normal normal-case">(fino a 2)</span></QuickLabel>
+        <QuickTemaChips options={TEMI_OPTIONS} value={form.temi} onChange={temi => f('temi', temi)} variant="pill" />
       </QuickCard>
 
       <QuickCard>
@@ -2709,7 +2746,7 @@ const QuickPartecipaScreen = ({ user, allVideos }) => {
 // ═══ Aggiungi (admin) ═══
 const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
   const [form, setForm] = useState({
-    title: '', youtube_url: '', tema: '', natura: '',
+    title: '', youtube_url: '', temi: [], natura: '',
     year: new Date().getFullYear(), description: '',
     prodotto_scuola: false, formato: 'verticale', duration: '', codice: '',
     thumbnail: '',
@@ -2732,7 +2769,7 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
 
   const f = (field, val) => setForm(prev => ({ ...prev, [field]: val }));
   const platform = form.youtube_url.trim() ? detectPlatform(form.youtube_url) : null;
-  const cardAccent = form.tema ? (TEMA_COLORS[form.tema] || TEMA_COLORS['Altro']).border : undefined;
+  const cardAccent = form.temi?.[0] ? (TEMA_COLORS[form.temi[0]] || TEMA_COLORS['Altro']).border : undefined;
   const duplicateMatch = useMemo(() => findDuplicateByUrl(form.youtube_url, allVideos), [form.youtube_url, allVideos]);
 
   const handleUrlBlur = async () => {
@@ -2752,7 +2789,7 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
   };
 
   const resetForm = (nextCodice) => setForm({
-    title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(),
+    title: '', youtube_url: '', temi: [], natura: '', year: new Date().getFullYear(),
     description: '', prodotto_scuola: false, formato: 'verticale', duration: '', codice: nextCodice, thumbnail: '',
   });
 
@@ -2775,7 +2812,7 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
         body: JSON.stringify({
           youtubeUrl: form.youtube_url,
           title: form.title || undefined,
-          tema: form.tema || undefined,
+          tema: form.temi?.[0] || undefined,
         }),
       });
       const data = await res.json();
@@ -2811,7 +2848,7 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
           youtubeUrl: form.youtube_url,
           codice: form.codice,
           title: form.title,
-          tema: form.tema,
+          tema: form.temi?.[0],
           natura: form.natura,
         }),
       });
@@ -2829,7 +2866,7 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
     if (!form.title.trim()) { setMsg({ type: 'error', text: 'Titolo obbligatorio.' }); return false; }
     if (!form.codice.trim()) { setMsg({ type: 'error', text: 'Codice ID obbligatorio.' }); return false; }
     if (!form.youtube_url.trim()) { setMsg({ type: 'error', text: 'URL Video obbligatorio.' }); return false; }
-    if (!form.tema) { setMsg({ type: 'error', text: 'Tema obbligatorio.' }); return false; }
+    if (!form.temi?.length) { setMsg({ type: 'error', text: 'Almeno un tema obbligatorio.' }); return false; }
     if (!form.natura) { setMsg({ type: 'error', text: 'Natura obbligatoria.' }); return false; }
     if (!form.year) { setMsg({ type: 'error', text: 'Anno obbligatorio.' }); return false; }
     if (!form.duration.trim()) { setMsg({ type: 'error', text: 'Durata obbligatoria.' }); return false; }
@@ -2851,7 +2888,8 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
       title: form.title.trim(),
       youtube_url: trimmedUrl || null,
       thumbnail: thumbnailUrl,
-      tema: form.tema || null,
+      tema: form.temi?.[0] || null,
+      temi: form.temi?.length ? form.temi : null,
       natura: form.natura || null,
       year: form.year ? parseInt(form.year) : null,
       description: form.description.trim() || null,
@@ -2897,7 +2935,8 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
       user_id: userProfile.id,
       title: form.title.trim(),
       youtube_url: form.youtube_url.trim() || null,
-      tema: form.tema || null,
+      tema: form.temi?.[0] || null,
+      temi: form.temi?.length ? form.temi : null,
       natura: form.natura || null,
       year: form.year ? parseInt(form.year) : null,
       description: form.description.trim() || null,
@@ -2925,8 +2964,8 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
       </div>
 
       <QuickCard>
-        <QuickLabel>tema</QuickLabel>
-        <QuickTemaChips options={TEMI_OPTIONS} value={form.tema} onChange={v => f('tema', v)} variant="pill" />
+        <QuickLabel>tema <span className="text-zinc-500 font-normal normal-case">(fino a 2)</span></QuickLabel>
+        <QuickTemaChips options={TEMI_OPTIONS} value={form.temi} onChange={temi => f('temi', temi)} variant="pill" />
       </QuickCard>
 
       <QuickCard>
@@ -3108,10 +3147,12 @@ const QuickMyVideosScreen = ({ user, onSelectVideo }) => {
   const handleSave = async (sub) => {
     const form = editForms[sub.id] || {};
     setSavingId(sub.id);
+    const nextTemi = form.temi ?? asTemi(sub);
     const { error } = await supabase.from('video_submissions').update({
       youtube_url: form.youtube_url ?? sub.youtube_url,
       title: form.title ?? sub.title,
-      tema: form.tema ?? sub.tema,
+      tema: nextTemi[0] || null,
+      temi: nextTemi.length ? nextTemi : null,
       description: form.description ?? sub.description,
       prodotto_scuola: form.prodotto_scuola ?? sub.prodotto_scuola,
     }).eq('id', sub.id).eq('status', 'draft');
@@ -3175,7 +3216,7 @@ const QuickMyVideosScreen = ({ user, onSelectVideo }) => {
                   <div className="space-y-2.5">
                     <QuickInput value={form.title ?? sub.title ?? ''} onChange={e => ef(sub.id, 'title', e.target.value)} placeholder="titolo" />
                     <QuickInput value={form.youtube_url ?? sub.youtube_url ?? ''} onChange={e => ef(sub.id, 'youtube_url', e.target.value)} placeholder="link video" />
-                    <QuickTemaChips options={TEMI_OPTIONS} value={form.tema ?? sub.tema ?? ''} onChange={v => ef(sub.id, 'tema', v)} />
+                    <QuickTemaChips options={TEMI_OPTIONS} value={form.temi ?? asTemi(sub)} onChange={temi => ef(sub.id, 'temi', temi)} />
                     <textarea value={form.description ?? sub.description ?? ''} onChange={e => ef(sub.id, 'description', e.target.value)} placeholder="descrizione" rows={2} className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3 text-[16px] text-white placeholder-zinc-500 outline-none resize-none" />
                     <div className="flex gap-2 pt-1">
                       <button onClick={() => setEditingId(null)} className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-zinc-800 text-zinc-300">annulla</button>
@@ -3266,7 +3307,8 @@ const PendingSubmissionCard = ({
   onDeleteRequest, onDeleteConfirm, onDeleteCancel, allVideos,
 }) => {
   const c = TEMA_COLORS[sub.tema] || TEMA_COLORS['Altro'];
-  const cardAccent = (form.tema ?? sub.tema) ? (TEMA_COLORS[form.tema ?? sub.tema] || TEMA_COLORS['Altro']).border : undefined;
+  const formTemi = form.temi ?? asTemi(sub);
+  const cardAccent = formTemi[0] ? (TEMA_COLORS[formTemi[0]] || TEMA_COLORS['Altro']).border : undefined;
   const busy = saving || deleting;
 
   if (!editing) {
@@ -3317,7 +3359,7 @@ const PendingSubmissionCard = ({
 
   return (
     <QuickCard className="!p-3.5 space-y-2.5">
-      <QuickTemaChips options={TEMI_OPTIONS} value={form.tema ?? sub.tema ?? ''} onChange={v => onFieldChange('tema', v)} variant="pill" />
+      <QuickTemaChips options={TEMI_OPTIONS} value={formTemi} onChange={temi => onFieldChange('temi', temi)} variant="pill" />
       <QuickInput accentColor={cardAccent} value={form.youtube_url ?? sub.youtube_url ?? ''} onChange={e => onFieldChange('youtube_url', e.target.value)} placeholder="link video" />
       {(() => {
         const dup = findDuplicateByUrl(form.youtube_url ?? sub.youtube_url, allVideos);
@@ -3385,7 +3427,8 @@ const ArchiveVideoCard = ({
   onAddToPlaylist, inPlaylist,
 }) => {
   const c = TEMA_COLORS[video.tema] || TEMA_COLORS['Altro'];
-  const cardAccent = (form.tema ?? video.tema) ? (TEMA_COLORS[form.tema ?? video.tema] || TEMA_COLORS['Altro']).border : undefined;
+  const formTemi = form.temi ?? asTemi(video);
+  const cardAccent = formTemi[0] ? (TEMA_COLORS[formTemi[0]] || TEMA_COLORS['Altro']).border : undefined;
   const busy = saving || deleting;
 
   if (!editing) {
@@ -3435,7 +3478,7 @@ const ArchiveVideoCard = ({
 
   return (
     <QuickCard className="!p-3.5 space-y-2.5">
-      <QuickTemaChips options={TEMI_OPTIONS} value={form.tema ?? video.tema ?? ''} onChange={v => onFieldChange('tema', v)} variant="pill" />
+      <QuickTemaChips options={TEMI_OPTIONS} value={formTemi} onChange={temi => onFieldChange('temi', temi)} variant="pill" />
       <QuickInput accentColor={cardAccent} value={form.youtubeUrl ?? video.youtubeUrl ?? ''} onChange={e => onFieldChange('youtubeUrl', e.target.value)} placeholder="link video" />
       <QuickInput accentColor={cardAccent} value={form.title ?? video.title ?? ''} onChange={e => onFieldChange('title', e.target.value)} placeholder="titolo" />
       <CustomSelect value={form.natura ?? video.natura ?? ''} onChange={v => onFieldChange('natura', v)} options={natOptions} accentColor={cardAccent || '#FFDA2A'} coloredBorder={!!cardAccent} />
@@ -3560,11 +3603,13 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo, onAddTo
     const form = archiveEditForms[video.id] || {};
     setSavingArchiveId(video.id);
     const ytId = form.youtubeUrl ? extractYouTubeId(form.youtubeUrl) : null;
+    const nextTemi = form.temi ?? asTemi(video);
     const { error } = await supabase.from('videos').update({
       title: form.title?.trim() || video.title,
       youtube_url: form.youtubeUrl?.trim() || video.youtubeUrl,
       thumbnail: ytId ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` : video.thumbnail,
-      tema: form.tema || video.tema,
+      tema: nextTemi[0] || null,
+      temi: nextTemi.length ? nextTemi : null,
       natura: form.natura || video.natura,
       year: form.year ? parseInt(form.year) : video.year,
       duration: form.duration || video.duration,
@@ -3600,10 +3645,12 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo, onAddTo
   const handleSaveSubEdit = async (sub) => {
     const form = subEditForms[sub.id] || {};
     setSavingSubId(sub.id);
+    const nextTemi = form.temi ?? asTemi(sub);
     const { error } = await supabase.from('video_submissions').update({
       title: form.title?.trim() || sub.title,
       youtube_url: form.youtube_url?.trim() || sub.youtube_url,
-      tema: form.tema || sub.tema,
+      tema: nextTemi[0] || null,
+      temi: nextTemi.length ? nextTemi : null,
       natura: form.natura || sub.natura,
       year: form.year ? parseInt(form.year) : sub.year,
       duration: form.duration || sub.duration,
@@ -3624,7 +3671,7 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo, onAddTo
     const merged = {
       title: (form.title ?? sub.title ?? '').trim(),
       youtube_url: (form.youtube_url ?? sub.youtube_url ?? '').trim(),
-      tema: form.tema ?? sub.tema ?? '',
+      temi: form.temi ?? asTemi(sub),
       natura: form.natura ?? sub.natura ?? '',
       year: form.year ?? sub.year ?? '',
       duration: (form.duration ?? sub.duration ?? '').toString().trim(),
@@ -3633,7 +3680,7 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo, onAddTo
       prodotto_scuola: form.prodotto_scuola ?? sub.prodotto_scuola ?? false,
       codice: (form.codice ?? sub.codice ?? '').trim(),
     };
-    if (!merged.title || !merged.codice || !merged.youtube_url || !merged.tema || !merged.natura || !merged.year || !merged.duration || !merged.description) {
+    if (!merged.title || !merged.codice || !merged.youtube_url || !merged.temi.length || !merged.natura || !merged.year || !merged.duration || !merged.description) {
       openSubEdit(sub);
       setSubMsg({ id: sub.id, type: 'error', text: 'completa i campi mancanti prima di approvare' });
       return;
@@ -3665,7 +3712,8 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo, onAddTo
       title: merged.title,
       youtube_url: finalUrl,
       thumbnail: thumb,
-      tema: merged.tema,
+      tema: merged.temi[0] || null,
+      temi: merged.temi.length ? merged.temi : null,
       natura: merged.natura,
       year: parseInt(merged.year),
       duration: merged.duration || '0:00',
@@ -4420,9 +4468,8 @@ const AuthModal = ({ mode: initialMode, onClose, dismissible = true }) => {
 
 // ─── SubmitVideoSection ────────────────────────────────────────────────────────
 const NATURE_OPTIONS = ['Cortometraggio', 'Film', 'Info', 'Sequenze', 'Spot commerciale', 'Spot sociale', 'Videoclip', 'Web e social'];
-const TEMI_OPTIONS = ['Alcool', 'Azzardo', 'Digitale', 'Sostanze', 'Tabacco', 'Sessualità', 'Altro'];
 
-const SUBMIT_VIDEO_INITIAL_FORM = { title: '', youtube_url: '', tema: '', description: '', prodotto_scuola: false, thumbnail: '' };
+const SUBMIT_VIDEO_INITIAL_FORM = { title: '', youtube_url: '', temi: [], description: '', prodotto_scuola: false, thumbnail: '' };
 
 const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSaved, allVideos }) => {
   const [form, setForm] = useState(SUBMIT_VIDEO_INITIAL_FORM);
@@ -4492,7 +4539,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
         body: JSON.stringify({
           youtubeUrl: form.youtube_url,
           title: form.title || undefined,
-          tema: form.tema || undefined,
+          tema: form.temi?.[0] || undefined,
         }),
       });
       const data = await res.json();
@@ -4522,7 +4569,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
   const handleSubmit = async (statusTarget, requireTitle = true) => {
     if (!form.youtube_url.trim()) { setError('Il link del video è obbligatorio.'); return; }
     if (requireTitle && !form.title.trim()) { setError('Il titolo è obbligatorio.'); return; }
-    if (statusTarget === 'pending' && !form.tema) { setError('Seleziona un tema.'); return; }
+    if (statusTarget === 'pending' && !form.temi?.length) { setError('Seleziona almeno un tema.'); return; }
     setLoading(true);
     setError(null);
     const p = detectPlatform(form.youtube_url.trim());
@@ -4531,7 +4578,8 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
       tipo: p,
       title: form.title.trim() || null,
       youtube_url: form.youtube_url.trim(),
-      tema: form.tema || null,
+      tema: form.temi?.[0] || null,
+      temi: form.temi?.length ? form.temi : null,
       formato: (p === 'tiktok' || p === 'instagram') ? 'verticale' : 'orizzontale',
       description: form.description.trim() || null,
       prodotto_scuola: form.prodotto_scuola,
@@ -4550,7 +4598,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
 
   const handleSendLinkClick = () => {
     if (!form.youtube_url.trim()) { setError('Il link del video è obbligatorio.'); return; }
-    if (!form.tema) { setError('Seleziona un tema.'); return; }
+    if (!form.temi?.length) { setError('Seleziona almeno un tema.'); return; }
     setError(null);
     setConfirmSendLink(true);
   };
@@ -4558,14 +4606,14 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
   const handleFinalSubmitClick = () => {
     if (!form.youtube_url.trim()) { setError('Il link del video è obbligatorio.'); return; }
     if (!form.title.trim()) { setError('Il titolo è obbligatorio.'); return; }
-    if (!form.tema) { setError('Seleziona un tema.'); return; }
+    if (!form.temi?.length) { setError('Seleziona almeno un tema.'); return; }
     setError(null);
     setConfirmFinalSubmit(true);
   };
 
   // errore mostrato anche accanto a "Invia link" (non solo in fondo alla
   // pagina, troppo lontano da questo bottone per essere notato)
-  const sendLinkError = error === 'Il link del video è obbligatorio.' || error === 'Seleziona un tema.' ? error : null;
+  const sendLinkError = error === 'Il link del video è obbligatorio.' || error === 'Seleziona almeno un tema.' ? error : null;
 
   const clearUrl = () => setForm(prev => ({ ...prev, youtube_url: '', thumbnail: '' }));
 
@@ -4711,21 +4759,22 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">Tema *</label>
+          <label className="block text-sm font-medium text-zinc-300 mb-1.5">Tema * <span className="text-zinc-500 font-normal">(fino a 2)</span></label>
           <div className="flex flex-wrap gap-2">
             {TEMI_OPTIONS.map(tema => {
               const c = TEMA_COLORS[tema];
-              const active = form.tema === tema;
+              const active = (form.temi || []).includes(tema);
+              const dimmed = !active && (form.temi || []).filter(t => t !== 'Altro').length >= MAX_TEMI && tema !== 'Altro';
               return (
                 <button
                   key={tema}
                   type="button"
-                  onClick={() => f('tema', active ? '' : tema)}
+                  onClick={() => f('temi', toggleTema(form.temi, tema))}
                   className="px-4 py-2 rounded-lg text-sm font-medium transition-all text-white"
                   style={{
                     backgroundColor: active ? c.btnActive : 'transparent',
                     border: `2px solid ${c.border}`,
-                    opacity: 1,
+                    opacity: dimmed ? 0.35 : 1,
                   }}
                 >
                   {tema}
@@ -4819,10 +4868,12 @@ const MyVideosSection = ({ user, onNewVideo }) => {
   const handleSaveDraft = async (sub) => {
     const ef = myEditForms[sub.id] || {};
     setMySavingId(sub.id);
+    const nextTemi = ef.temi ?? asTemi(sub);
     const { error } = await supabase.from('video_submissions').update({
       youtube_url: ef.youtube_url ?? sub.youtube_url,
       title: ef.title ?? sub.title,
-      tema: ef.tema ?? sub.tema,
+      tema: nextTemi[0] || null,
+      temi: nextTemi.length ? nextTemi : null,
       description: ef.description ?? sub.description,
       prodotto_scuola: ef.prodotto_scuola ?? sub.prodotto_scuola,
     }).eq('id', sub.id).eq('status', 'draft');
@@ -4947,15 +4998,17 @@ const MyVideosSection = ({ user, onNewVideo }) => {
                   className="w-full bg-zinc-900 border border-zinc-600 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500" />
               </div>
               <div>
-                <label className="block text-xs font-medium text-zinc-400 mb-1">Tema</label>
+                <label className="block text-xs font-medium text-zinc-400 mb-1">Tema <span className="text-zinc-500 font-normal">(fino a 2)</span></label>
                 <div className="flex flex-wrap gap-2">
                   {TEMI_OPTIONS.map(tema => {
                     const c = TEMA_COLORS[tema];
-                    const active = (ef.tema ?? sub.tema) === tema;
+                    const efTemi = ef.temi ?? asTemi(sub);
+                    const active = efTemi.includes(tema);
+                    const dimmed = !active && efTemi.filter(t => t !== 'Altro').length >= MAX_TEMI && tema !== 'Altro';
                     return (
-                      <button key={tema} type="button" onClick={() => mef(sub.id, 'tema', tema)}
+                      <button key={tema} type="button" onClick={() => mef(sub.id, 'temi', toggleTema(efTemi, tema))}
                         className="px-3 py-1.5 rounded-lg text-xs font-medium text-white transition-all"
-                        style={{ backgroundColor: active ? c.btnActive : 'transparent', border: `2px solid ${c.border}` }}>
+                        style={{ backgroundColor: active ? c.btnActive : 'transparent', border: `2px solid ${c.border}`, opacity: dimmed ? 0.35 : 1 }}>
                         {tema}
                       </button>
                     );
@@ -5067,7 +5120,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const [submissions, setSubmissions] = useState([]);
   const [loadingSubs, setLoadingSubs] = useState(true);
   const [form, setForm] = useState({
-    title: '', youtube_url: '', tema: '', natura: '',
+    title: '', youtube_url: '', temi: [], natura: '',
     year: new Date().getFullYear(), description: '',
     prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: '',
     thumbnail: '',
@@ -5248,6 +5301,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     views: v.views || 0,
     formato: v.format || v.formato || 'orizzontale',
     tema: v.tema || '',
+    temi: v.temi?.length ? v.temi : (v.tema ? [v.tema] : []),
     natura: v.natura || '',
     prodotto_scuola: v.prodottoScuola ?? v.prodotto_scuola ?? false,
     description: v.description || '',
@@ -5290,6 +5344,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
 
   const handleApprove = async (sub, saveToNas = false) => {
     const edited = { ...sub, ...(editForms[sub.id] || {}) };
+    const editedTemi = edited.temi?.length ? edited.temi : asTemi(edited);
     if (!edited.codice?.trim()) { setApproveError(sub.id + ':Il campo Codice ID è obbligatorio'); return; }
     const platform = detectPlatform(edited.youtube_url);
     const ytId = extractYouTubeId(edited.youtube_url);
@@ -5324,7 +5379,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       year: edited.year ? parseInt(edited.year) : null,
       views: 0,
       formato: edited.formato || 'orizzontale',
-      tema: edited.tema || null,
+      tema: editedTemi[0] || null,
+      temi: editedTemi.length ? editedTemi : null,
       natura: edited.natura || null,
       prodotto_scuola: edited.prodotto_scuola || false,
       description: edited.description || null,
@@ -5356,7 +5412,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
             youtubeUrl: edited.youtube_url,
             codice: edited.codice.trim(),
             title: edited.title,
-            tema: edited.tema,
+            tema: editedTemi[0],
             natura: edited.natura,
           }),
         });
@@ -5405,6 +5461,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     setSavingVideoId(video.id);
     const newUrl = vf.youtube_url ?? video.youtube_url;
     const ytId = newUrl ? extractYouTubeId(newUrl) : null;
+    const newTemi = vf.temi ?? asTemi(video);
     const fullRecord = {
       id: video.id,
       title: vf.title ?? video.title,
@@ -5413,7 +5470,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       duration: vf.duration ?? video.duration ?? '0:00',
       year: vf.year !== undefined ? (vf.year ? parseInt(vf.year) : null) : (video.year || null),
       formato: vf.formato ?? video.formato ?? 'orizzontale',
-      tema: vf.tema !== undefined ? (vf.tema || null) : (video.tema || null),
+      tema: newTemi[0] || null,
+      temi: newTemi.length ? newTemi : null,
       natura: vf.natura !== undefined ? (vf.natura || null) : (video.natura || null),
       prodotto_scuola: vf.prodotto_scuola ?? video.prodotto_scuola ?? false,
       description: vf.description ?? video.description ?? null,
@@ -5516,7 +5574,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const filteredArchive = useMemo(() => archiveVideos.filter(v => {
     const s = archiveSearch.toLowerCase();
     return (!s || v.title?.toLowerCase().includes(s) || v.description?.toLowerCase().includes(s))
-      && (!archiveTema || v.tema === archiveTema)
+      && (!archiveTema || asTemi(v).includes(archiveTema))
       && (!archiveNatura || v.natura === archiveNatura)
       && (!archiveScuola || v.prodotto_scuola);
   }).sort((a, b) => archiveSortDesc ? compareArchiveTime(a, b) : compareArchiveTime(b, a)),
@@ -5525,10 +5583,12 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const handleEditSave = async (sub) => {
     const ef_val = editForms[sub.id] || {};
     setActionLoading(sub.id + '_edit');
+    const editSaveTemi = ef_val.temi ?? asTemi(sub);
     const { error } = await supabase.from('video_submissions').update({
       youtube_url: ef_val.youtube_url ?? sub.youtube_url,
       title: ef_val.title ?? sub.title,
-      tema: ef_val.tema ?? sub.tema,
+      tema: editSaveTemi[0] || null,
+      temi: editSaveTemi.length ? editSaveTemi : null,
       natura: ef_val.natura ?? sub.natura,
       year: ef_val.year ?? sub.year,
       formato: ef_val.formato ?? sub.formato,
@@ -5565,13 +5625,13 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
           tRes = await fetch('/api/transcribe', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ blobUrl: blob.url, title: form.title, tema: form.tema }),
+            body: JSON.stringify({ blobUrl: blob.url, title: form.title, tema: form.temi?.[0] }),
           });
         } else {
           const fd = new FormData();
           fd.append('file', nasFile);
           if (form.title) fd.append('title', form.title);
-          if (form.tema) fd.append('tema', form.tema);
+          if (form.temi?.[0]) fd.append('tema', form.temi[0]);
           tRes = await fetch('/api/transcribe', { method: 'POST', body: fd });
         }
         const tData = await tRes.json();
@@ -5598,7 +5658,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
           body: JSON.stringify({
             youtubeUrl: form.youtube_url,
             title: form.title || undefined,
-            tema: form.tema || undefined,
+            tema: form.temi?.[0] || undefined,
             transcript,
           }),
         });
@@ -5632,7 +5692,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
           youtubeUrl: form.youtube_url,
           codice: form.codice,
           title: form.title,
-          tema: form.tema,
+          tema: form.temi?.[0],
           natura: form.natura,
         }),
       });
@@ -5650,7 +5710,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     if (!form.title.trim()) { setSaveMsg({ type: 'error', text: 'Titolo obbligatorio.' }); return false; }
     if (!form.codice.trim()) { setSaveMsg({ type: 'error', text: 'Codice ID obbligatorio.' }); return false; }
     if (!form.youtube_url.trim()) { setSaveMsg({ type: 'error', text: 'URL Video obbligatorio.' }); return false; }
-    if (!form.tema) { setSaveMsg({ type: 'error', text: 'Tema obbligatorio.' }); return false; }
+    if (!form.temi?.length) { setSaveMsg({ type: 'error', text: 'Almeno un tema obbligatorio.' }); return false; }
     if (!form.natura) { setSaveMsg({ type: 'error', text: 'Natura obbligatoria.' }); return false; }
     if (!form.year) { setSaveMsg({ type: 'error', text: 'Anno obbligatorio.' }); return false; }
     if (!form.duration.trim()) { setSaveMsg({ type: 'error', text: 'Durata obbligatoria.' }); return false; }
@@ -5673,7 +5733,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       title: form.title.trim(),
       youtube_url: trimmedUrl || null,
       thumbnail: thumbnailUrl,
-      tema: form.tema || null,
+      tema: form.temi?.[0] || null,
+      temi: form.temi?.length ? form.temi : null,
       natura: form.natura || null,
       year: form.year ? parseInt(form.year) : null,
       description: form.description.trim() || null,
@@ -5690,7 +5751,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       return false;
     }
     setSaveMsg({ type: 'success', text: 'Video aggiunto all\'archivio ADAM' });
-    setForm({ title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: bumpCodice(form.codice, allVideos), thumbnail: '' });
+    setForm({ title: '', youtube_url: '', temi: [], natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: bumpCodice(form.codice, allVideos), thumbnail: '' });
     setSynopsisWarning('');
     setManualTranscript('');
     setShowTranscriptInput(false);
@@ -5720,7 +5781,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       user_id: userProfile.id,
       title: form.title.trim(),
       youtube_url: form.youtube_url.trim() || null,
-      tema: form.tema || null,
+      tema: form.temi?.[0] || null,
+      temi: form.temi?.length ? form.temi : null,
       natura: form.natura || null,
       year: form.year ? parseInt(form.year) : null,
       description: form.description.trim() || null,
@@ -5733,7 +5795,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       setSaveMsg({ type: 'error', text: error.message });
       setSaving(false);
     } else {
-      setForm({ title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: bumpCodice(form.codice, allVideos), thumbnail: '' });
+      setForm({ title: '', youtube_url: '', temi: [], natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: bumpCodice(form.codice, allVideos), thumbnail: '' });
       setSynopsisWarning('');
       setManualTranscript('');
       setShowTranscriptInput(false);
@@ -5916,17 +5978,18 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
             {/* Row 4: Tema buttons + Natura */}
             <div className="grid gap-4" style={{ gridTemplateColumns: 'auto 1fr' }}>
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Tema *</label>
+                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Tema * <span className="text-zinc-500 font-normal">(fino a 2)</span></label>
                 <div className="flex gap-1.5">
                   {TEMI_OPTIONS.map(t => {
                     const c = TEMA_COLORS[t];
-                    const isSelected = form.tema === t;
+                    const isSelected = (form.temi || []).includes(t);
+                    const dimmed = !isSelected && (form.temi || []).filter(x => x !== 'Altro').length >= MAX_TEMI && t !== 'Altro';
                     return (
-                      <button key={t} type="button" onClick={() => f('tema', isSelected ? '' : t)}
+                      <button key={t} type="button" onClick={() => f('temi', toggleTema(form.temi, t))}
                         className="px-3 py-2 rounded-lg text-xs font-semibold transition-all border-2"
                         style={isSelected
                           ? { backgroundColor: c.btnActive, borderColor: c.border, color: '#fff' }
-                          : { backgroundColor: 'transparent', borderColor: c.border, color: '#fff', opacity: 0.6 }}>
+                          : { backgroundColor: 'transparent', borderColor: c.border, color: '#fff', opacity: dimmed ? 0.3 : 0.6 }}>
                         {t}
                       </button>
                     );
@@ -5974,8 +6037,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
             {/* Row 7: Action buttons */}
             {(() => {
               const codicieDuplicato = form.codice.trim() && allVideos.some(v => v.id === form.codice.trim());
-              const canSaveNas = !!(form.youtube_url.trim() && form.codice.trim() && form.tema && form.natura);
-              const canSubmit = !!(form.title.trim() && form.codice.trim() && form.youtube_url.trim() && form.tema && form.natura && form.year && form.duration.trim() && form.description.trim() && !codicieDuplicato);
+              const canSaveNas = !!(form.youtube_url.trim() && form.codice.trim() && form.temi?.length && form.natura);
+              const canSubmit = !!(form.title.trim() && form.codice.trim() && form.youtube_url.trim() && form.temi?.length && form.natura && form.year && form.duration.trim() && form.description.trim() && !codicieDuplicato);
               return (
                 <div className="space-y-2 pt-1">
                   <div className="flex gap-3">
@@ -6053,9 +6116,10 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                           <p className="text-white font-semibold text-sm mb-1">{subForm.title ?? sub.title}</p>
                           {/* Riga 3: Tema + Natura + Anno */}
                           <div className="flex flex-wrap gap-2 text-xs">
-                            {(subForm.tema ?? sub.tema) && (() => { const c = TEMA_COLORS[subForm.tema ?? sub.tema]; return (
-                              <span className="px-2 py-0.5 rounded font-semibold" style={{ backgroundColor: c?.solid || '#52525b', color: '#fff' }}>{subForm.tema ?? sub.tema}</span>
-                            ); })()}
+                            {(subForm.temi ?? asTemi(sub)).map(t => {
+                              const c = TEMA_COLORS[t];
+                              return <span key={t} className="px-2 py-0.5 rounded font-semibold" style={{ backgroundColor: c?.solid || '#52525b', color: '#fff' }}>{t}</span>;
+                            })}
                             {(subForm.natura ?? sub.natura) && <span className="px-2 py-0.5 rounded font-medium bg-blue-600/20 border border-blue-600/30 text-white">{subForm.natura ?? sub.natura}</span>}
                             {(subForm.year ?? sub.year) && <span className="text-zinc-400">{subForm.year ?? sub.year}</span>}
                           </div>
@@ -6176,9 +6240,24 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                         {/* Riga 4: Tema + Natura */}
                         <div className="grid grid-cols-2 gap-3">
                           <div>
-                            <label className="block text-xs font-medium text-zinc-400 mb-1">Tema</label>
-                            <CustomSelect value={subForm.tema ?? sub.tema ?? ''} onChange={v => ef(sub.id, 'tema', v)} accentColor="#FFDA2A"
-                              options={[{ value: '', label: 'Non specificato' }, ...TEMI_OPTIONS.map(t => ({ value: t, label: t }))]} />
+                            <label className="block text-xs font-medium text-zinc-400 mb-1">Tema <span className="text-zinc-500 font-normal">(fino a 2)</span></label>
+                            <div className="flex flex-wrap gap-1.5">
+                              {TEMI_OPTIONS.map(t => {
+                                const subTemi = subForm.temi ?? asTemi(sub);
+                                const on = subTemi.includes(t);
+                                const dimmed = !on && subTemi.filter(x => x !== 'Altro').length >= MAX_TEMI && t !== 'Altro';
+                                const c = TEMA_COLORS[t];
+                                return (
+                                  <button key={t} type="button" onClick={() => ef(sub.id, 'temi', toggleTema(subTemi, t))}
+                                    className="px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all border-2"
+                                    style={on
+                                      ? { backgroundColor: c.btnActive, borderColor: c.border, color: '#fff' }
+                                      : { backgroundColor: 'transparent', borderColor: c.border, color: '#fff', opacity: dimmed ? 0.3 : 0.6 }}>
+                                    {t}
+                                  </button>
+                                );
+                              })}
+                            </div>
                           </div>
                           <div>
                             <label className="block text-xs font-medium text-zinc-400 mb-1">Natura</label>
@@ -6585,9 +6664,24 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                         {/* Row 4: Tema + Natura */}
                         <div className="grid grid-cols-2 gap-3">
                           <div>
-                            <label className="block text-xs font-medium text-zinc-400 mb-1">Tema</label>
-                            <CustomSelect value={vf.tema ?? video.tema ?? ''} onChange={v => evf(video.id, 'tema', v)} accentColor="#FFDA2A"
-                              options={[{ value: '', label: 'Non specificato' }, ...TEMI_OPTIONS.map(t => ({ value: t, label: t }))]} />
+                            <label className="block text-xs font-medium text-zinc-400 mb-1">Tema <span className="text-zinc-500 font-normal">(fino a 2)</span></label>
+                            <div className="flex flex-wrap gap-1.5">
+                              {TEMI_OPTIONS.map(t => {
+                                const vTemi = vf.temi ?? asTemi(video);
+                                const on = vTemi.includes(t);
+                                const dimmed = !on && vTemi.filter(x => x !== 'Altro').length >= MAX_TEMI && t !== 'Altro';
+                                const c = TEMA_COLORS[t];
+                                return (
+                                  <button key={t} type="button" onClick={() => evf(video.id, 'temi', toggleTema(vTemi, t))}
+                                    className="px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all border-2"
+                                    style={on
+                                      ? { backgroundColor: c.btnActive, borderColor: c.border, color: '#fff' }
+                                      : { backgroundColor: 'transparent', borderColor: c.border, color: '#fff', opacity: dimmed ? 0.3 : 0.6 }}>
+                                    {t}
+                                  </button>
+                                );
+                              })}
+                            </div>
                           </div>
                           <div>
                             <label className="block text-xs font-medium text-zinc-400 mb-1">Natura</label>
