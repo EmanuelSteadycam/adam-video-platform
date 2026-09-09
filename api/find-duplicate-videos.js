@@ -52,6 +52,7 @@ export default async function handler(req, res) {
 
 Di seguito il catalogo completo, uno per riga, nel formato:
 ID|tema|natura|titolo|sinossi
+(il campo tema può contenere più temi separati da virgola)
 
 ${catalog}
 

@@ -1369,6 +1369,9 @@ const VideoCard = ({ video, onClick, onAddToPlaylist, isInPlaylist }) => {
     return colors[tema] || '#6b7280';
   };
 
+  const temi = asTemi(video);
+  const secondaryTema = temi[1];
+
   return (
     <div onClick={onClick} className="group cursor-pointer bg-zinc-900 rounded-lg overflow-hidden transition-all duration-300 transform hover:scale-105">
       <div className="relative overflow-hidden aspect-video">
@@ -1403,8 +1406,11 @@ const VideoCard = ({ video, onClick, onAddToPlaylist, isInPlaylist }) => {
         )}
       </div>
       
-      {/* Linea colorata tematica */}
-      <div className="h-1" style={{ backgroundColor: getTemaColor(video.tema) }}></div>
+      {/* Linea colorata tematica — bicolore quando il video ha un secondo tema */}
+      <div className="h-1 flex">
+        <div className="h-full" style={{ flex: secondaryTema ? 7 : 1, backgroundColor: getTemaColor(temi[0] || video.tema) }}></div>
+        {secondaryTema && <div className="h-full" style={{ flex: 3, backgroundColor: getTemaColor(secondaryTema) }}></div>}
+      </div>
       
       {/* Pulsante Playlist */}
       <button
@@ -1438,14 +1444,25 @@ const VideoCard = ({ video, onClick, onAddToPlaylist, isInPlaylist }) => {
             )}
           </div>
         </div>
-        {/* Info Natura */}
-        <div className="text-xs text-zinc-500">{video.natura}</div>
+        {/* Info Natura + eventuale tema secondario (discreto, il primario è nella striscia) */}
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-xs text-zinc-500">{video.natura}</span>
+          {secondaryTema && (
+            <span
+              className="text-[10px] font-semibold px-1.5 py-0.5 rounded shrink-0"
+              style={{ backgroundColor: `${getTemaColor(secondaryTema)}22`, color: getTemaColor(secondaryTema) }}
+            >
+              {secondaryTema}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );
 };
 
 const VideoModal = ({ video, onClose, isApp = false }) => {
+  const temiList = asTemi(video);
   const platform = detectPlatform(video.youtubeUrl);
   const videoId = platform === 'tiktok' ? extractTikTokId(video.youtubeUrl)
     : platform === 'instagram' ? extractInstagramId(video.youtubeUrl)
@@ -1536,7 +1553,9 @@ const VideoModal = ({ video, onClose, isApp = false }) => {
             {video.prodottoScuola && <div className="flex items-center gap-1.5 text-purple-400"><School size={15} /><span>Prodotto da scuole</span></div>}
           </div>
           <div className="flex gap-2.5 mb-4">
-            <span className="px-3 py-1.5 rounded-full text-sm font-semibold" style={{ backgroundColor: TEMA_COLORS[video.tema]?.solid || '#FFDA2A', color: '#ffffff' }}>{video.tema}</span>
+            {temiList.map(t => (
+              <span key={t} className="px-3 py-1.5 rounded-full text-sm font-semibold" style={{ backgroundColor: TEMA_COLORS[t]?.solid || '#FFDA2A', color: '#ffffff' }}>{t}</span>
+            ))}
             <span className="bg-blue-600/20 text-blue-400 px-3 py-1.5 rounded-full text-sm font-medium border border-blue-600/30">{video.natura}</span>
           </div>
           <p className="text-zinc-400 leading-relaxed">{video.description}</p>
@@ -1604,11 +1623,14 @@ const VideoModal = ({ video, onClose, isApp = false }) => {
                   <><Plus size={16} /><span>Aggiungi a Playlist</span></>
                 )}
               </button>
-              <div className="flex gap-3 mb-6">
-                <span
-                  className="px-3 py-1.5 rounded-full text-sm font-semibold"
-                  style={{ backgroundColor: TEMA_COLORS[video.tema]?.solid || '#FFDA2A', color: '#ffffff', border: 'none' }}
-                >{video.tema}</span>
+              <div className="flex flex-wrap gap-3 mb-6">
+                {temiList.map(t => (
+                  <span
+                    key={t}
+                    className="px-3 py-1.5 rounded-full text-sm font-semibold"
+                    style={{ backgroundColor: TEMA_COLORS[t]?.solid || '#FFDA2A', color: '#ffffff', border: 'none' }}
+                  >{t}</span>
+                ))}
                 <span className="bg-blue-600/20 text-blue-400 px-3 py-1.5 rounded-full text-sm font-medium border border-blue-600/30">{video.natura}</span>
               </div>
               <div className="mb-4">
@@ -1700,15 +1722,18 @@ const VideoModal = ({ video, onClose, isApp = false }) => {
               </>
             )}
           </button>
-          <div className="flex gap-3 mb-6">
-            <span
-              className="px-3 py-1.5 rounded-full text-sm font-semibold"
-              style={{
-                backgroundColor: TEMA_COLORS[video.tema]?.solid || '#FFDA2A',
-                color: '#ffffff',
-                border: 'none',
-              }}
-            >{video.tema}</span>
+          <div className="flex flex-wrap gap-3 mb-6">
+            {temiList.map(t => (
+              <span
+                key={t}
+                className="px-3 py-1.5 rounded-full text-sm font-semibold"
+                style={{
+                  backgroundColor: TEMA_COLORS[t]?.solid || '#FFDA2A',
+                  color: '#ffffff',
+                  border: 'none',
+                }}
+              >{t}</span>
+            ))}
             <span className="bg-blue-600/20 text-blue-400 px-3 py-1.5 rounded-full text-sm font-medium border border-blue-600/30">{video.natura}</span>
           </div>
           <div className="mb-20">
@@ -3241,7 +3266,7 @@ const QuickMyVideosScreen = ({ user, onSelectVideo }) => {
                       <div className="min-w-0 flex-1">
                         <p className="text-[14px] font-semibold truncate">{sub.title || 'senza titolo'}</p>
                         <div className="flex items-center gap-1.5 text-[11.5px] text-zinc-500 mt-0.5">
-                          {sub.tema && <span className="text-[10.5px] font-bold px-1.5 py-0.5 rounded" style={{ backgroundColor: (TEMA_COLORS[sub.tema] || TEMA_COLORS['Altro']).dim, color: (TEMA_COLORS[sub.tema] || TEMA_COLORS['Altro']).border }}>{sub.tema}</span>}
+                          {asTemi(sub).map(t => <span key={t} className="text-[10.5px] font-bold px-1.5 py-0.5 rounded" style={{ backgroundColor: (TEMA_COLORS[t] || TEMA_COLORS['Altro']).dim, color: (TEMA_COLORS[t] || TEMA_COLORS['Altro']).border }}>{t}</span>)}
                           {status === 'draft' && <span>da completare</span>}
                           {status === 'pending' && <span>in revisione</span>}
                           {status === 'approved' && <span>in archivio</span>}
@@ -3285,6 +3310,7 @@ const submissionToVideo = (sub) => ({
   youtubeUrl: sub.youtube_url,
   format: sub.formato || 'orizzontale',
   tema: sub.tema,
+  temi: asTemi(sub),
   natura: sub.natura,
   year: sub.year,
   duration: sub.duration,
@@ -3321,9 +3347,9 @@ const PendingSubmissionCard = ({
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-[15px] font-semibold truncate">{sub.title || 'senza titolo'}</p>
-              {sub.tema && (
-                <span className="inline-block text-[13px] font-bold px-2 py-0.5 rounded mt-1" style={{ backgroundColor: c.dim, color: c.border }}>{sub.tema}</span>
-              )}
+              {asTemi(sub).map(t => { const tc = TEMA_COLORS[t] || TEMA_COLORS['Altro']; return (
+                <span key={t} className="inline-block text-[13px] font-bold px-2 py-0.5 rounded mt-1 mr-1" style={{ backgroundColor: tc.dim, color: tc.border }}>{t}</span>
+              ); })}
               <p className="text-[13px] text-zinc-500 mt-1">in revisione</p>
             </div>
           </div>
@@ -3442,7 +3468,9 @@ const ArchiveVideoCard = ({
             <div className="min-w-0 flex-1">
               <p className="text-[15px] font-semibold leading-snug line-clamp-2">{video.title}</p>
               <div className="flex items-center gap-2 text-[14.5px] text-zinc-500 mt-1">
-                {video.tema && <span className="text-[13px] font-bold px-2 py-0.5 rounded" style={{ backgroundColor: c.dim, color: c.border }}>{video.tema}</span>}
+                {asTemi(video).map(t => { const tc = TEMA_COLORS[t] || TEMA_COLORS['Altro']; return (
+                  <span key={t} className="text-[13px] font-bold px-2 py-0.5 rounded" style={{ backgroundColor: tc.dim, color: tc.border }}>{t}</span>
+                ); })}
                 <span style={{ fontVariantNumeric: 'tabular-nums' }}>{video.codice}</span>
               </div>
             </div>
@@ -3763,7 +3791,9 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo, onAddTo
         <div className="min-w-0 flex-1">
           <p className="text-[13.5px] font-semibold truncate">{sub.title || 'senza titolo'}</p>
           <div className="flex items-center gap-1.5 text-[11px] text-zinc-500 mt-0.5">
-            {sub.tema && <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ backgroundColor: c.dim, color: c.border }}>{sub.tema}</span>}
+            {asTemi(sub).map(t => { const tc = TEMA_COLORS[t] || TEMA_COLORS['Altro']; return (
+              <span key={t} className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ backgroundColor: tc.dim, color: tc.border }}>{t}</span>
+            ); })}
             <span>{statusLabel}</span>
           </div>
         </div>
@@ -4937,9 +4967,9 @@ const MyVideosSection = ({ user, onNewVideo }) => {
                 <span className="text-xs px-2 py-0.5 rounded-full font-semibold flex-shrink-0"
                   style={{ color: badge.color, backgroundColor: badge.bg }}>{badge.label}</span>
               </div>
-              {sub.tema && (() => { const c = TEMA_COLORS[sub.tema]; return (
-                <span className="inline-block text-xs px-2 py-0.5 rounded font-semibold mr-1" style={{ backgroundColor: c?.solid || '#52525b', color: '#fff' }}>{sub.tema}</span>
-              ); })()}
+              {asTemi(sub).map(t => { const c = TEMA_COLORS[t]; return (
+                <span key={t} className="inline-block text-xs px-2 py-0.5 rounded font-semibold mr-1" style={{ backgroundColor: c?.solid || '#52525b', color: '#fff' }}>{t}</span>
+              ); })}
               {sub.youtube_url && (
                 <a href={sub.youtube_url} target="_blank" rel="noopener noreferrer"
                   className="text-xs text-blue-400 hover:underline mt-1 block truncate">{sub.youtube_url}</a>
@@ -6372,9 +6402,9 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                     <div className="flex-1 min-w-0">
                       <p className="text-white text-sm font-medium truncate">{sub.title}</p>
                       <div className="flex flex-wrap gap-1.5 mt-1">
-                        {sub.tema && (() => { const c = TEMA_COLORS[sub.tema]; return (
-                          <span className="text-xs px-1.5 py-0.5 rounded font-semibold" style={{ backgroundColor: c?.solid || '#52525b', color: '#fff' }}>{sub.tema}</span>
-                        ); })()}
+                        {asTemi(sub).map(t => { const c = TEMA_COLORS[t]; return (
+                          <span key={t} className="text-xs px-1.5 py-0.5 rounded font-semibold" style={{ backgroundColor: c?.solid || '#52525b', color: '#fff' }}>{t}</span>
+                        ); })}
                         {sub.natura && <span className="text-xs px-1.5 py-0.5 rounded bg-blue-600/20 border border-blue-600/30 text-white">{sub.natura}</span>}
                       </div>
                     </div>
@@ -6578,10 +6608,10 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                             <p className="text-white text-sm font-medium truncate">{video.title}</p>
                           </div>
                           <div className="flex flex-wrap gap-1.5 items-center">
-                            {video.tema && (() => { const c = TEMA_COLORS[video.tema]; return (
-                              <span className="text-xs px-1.5 py-0.5 rounded font-semibold"
-                                style={{ backgroundColor: c?.solid || '#52525b', color: '#fff' }}>{video.tema}</span>
-                            ); })()}
+                            {asTemi(video).map(t => { const c = TEMA_COLORS[t]; return (
+                              <span key={t} className="text-xs px-1.5 py-0.5 rounded font-semibold"
+                                style={{ backgroundColor: c?.solid || '#52525b', color: '#fff' }}>{t}</span>
+                            ); })}
                             {video.natura && <span className="text-xs px-1.5 py-0.5 rounded bg-blue-600/20 border border-blue-600/30 text-white">{video.natura}</span>}
                             {video.prodotto_scuola && (
                               <span className="text-xs px-1.5 py-0.5 rounded bg-zinc-700 text-zinc-300 flex items-center gap-1">
@@ -7529,7 +7559,9 @@ function App() {
     if (selectedNatura !== 'Tutte') filtered = filtered.filter(v => v.natura === selectedNatura);
     
     // Applica filtri avanzati
-    if (filters.tema !== 'Tutti') filtered = filtered.filter(v => v.tema === filters.tema);
+    // Multi-tema: il filtro tema è "contiene" — un video con più temi compare sotto
+    // ciascuno dei suoi temi, non solo sotto il primo (che è ciò che `v.tema` riflette).
+    if (filters.tema !== 'Tutti') filtered = filtered.filter(v => asTemi(v).includes(filters.tema));
     if (filters.natura !== 'Tutti') { const naturaVal = filters.natura === 'Sequenza' ? 'Sequenze' : filters.natura; filtered = filtered.filter(v => v.natura === naturaVal); }
     if (filters.year !== 'Tutti') filtered = filtered.filter(v => v.year === parseInt(filters.year));
     if (filters.scuola === 'Scuole') filtered = filtered.filter(v => v.prodottoScuola);
@@ -7546,6 +7578,42 @@ function App() {
         return true;
       });
       filtered = [...filtered].sort((a, b) => parseDuration(a.duration) - parseDuration(b.duration));
+    }
+
+    // Boost multi-tema (additivo): con un filtro tema attivo (es. Alcool), se il testo di
+    // ricerca nomina un ALTRO tema (es. "azzardo"), i video il cui array `temi` contiene
+    // SIA il tema filtrato SIA quel secondo tema vengono AGGIUNTI ai risultati (unione con
+    // i match testuali) e portati in cima — anche se la parola non compare in
+    // titolo/sinossi. Si legge `temi`, non marcatori nascosti nella sinossi. Limitato alla
+    // vista principale (niente sezioni con taglio tipo "più visti"/"recenti"/"scuole") e
+    // non col filtro durata attivo (ha un suo ordinamento per durata).
+    if (
+      searchQuery && filters.tema !== 'Tutti' &&
+      !durMinActive && !durMaxActive &&
+      !['most-viewed', 'recent', 'schools'].includes(activeSection)
+    ) {
+      const q = searchQuery.toLowerCase();
+      const secondaryTemi = TEMI_OPTIONS.filter(
+        t => t !== 'Altro' && t !== filters.tema && q.includes(t.toLowerCase())
+      );
+      if (secondaryTemi.length) {
+        const naturaVal = filters.natura === 'Sequenza' ? 'Sequenze' : filters.natura;
+        const passesOtherFilters = (v) =>
+          (selectedNatura === 'Tutte' || v.natura === selectedNatura) &&
+          (filters.natura === 'Tutti' || v.natura === naturaVal) &&
+          (filters.year === 'Tutti' || v.year === parseInt(filters.year)) &&
+          (filters.scuola !== 'Scuole' || v.prodottoScuola) &&
+          (filters.scuola !== 'Altri' || !v.prodottoScuola);
+        const already = new Set(filtered.map(v => v.id));
+        const extra = allVideos.filter(v =>
+          !already.has(v.id) &&
+          asTemi(v).includes(filters.tema) &&
+          asTemi(v).some(t => secondaryTemi.includes(t)) &&
+          passesOtherFilters(v)
+        );
+        const isCross = (v) => asTemi(v).some(t => secondaryTemi.includes(t));
+        filtered = [...filtered, ...extra].sort((a, b) => (isCross(a) ? 0 : 1) - (isCross(b) ? 0 : 1));
+      }
     }
 
     return filtered;
