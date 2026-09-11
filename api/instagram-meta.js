@@ -9,6 +9,8 @@
 
 export const config = { maxDuration: 60 };
 
+import { persistThumbnailToBlob } from './_lib/persistThumbnail.js';
+
 const INSTAGRAM_ACTOR = 'apify~instagram-reel-scraper';
 
 // I link api.apify.com/fbcdn.net/cdninstagram.com richiedono il proxy /api/apify-media:
@@ -42,9 +44,16 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: 'Video Instagram non trovato o non pubblico.' });
     }
 
+    // La thumbnail Instagram (displayUrl) è firmata con scadenza — viene ri-ospitata su
+    // Vercel Blob (fetch server-side diretto, nessun proxy necessario: il CORP header di
+    // Instagram blocca solo il browser, non fetch server-to-server) così il link salvato
+    // nel DB non si rompe dopo qualche settimana. Se il re-hosting fallisce, fallback sul
+    // proxy /api/apify-media (funziona comunque finché il link originale non scade).
+    const persistedThumbnail = await persistThumbnailToBlob(item.displayUrl, 'instagram');
+
     return res.status(200).json({
       title: item.caption || '',
-      thumbnailUrl: viaProxy(item.displayUrl),
+      thumbnailUrl: persistedThumbnail || viaProxy(item.displayUrl),
       canonicalUrl: item.url || url,
     });
   } catch (e) {

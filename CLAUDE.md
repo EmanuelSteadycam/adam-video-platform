@@ -298,7 +298,7 @@ const toArchiveFormat = (v) => ({
 | Scopri ADAM | `'about'` | AboutSection: Cosa/Come/Perché + Lottie logo |
 | I Formati ADAM | `'formats'` | NatureCarousel + griglia filtrata per natura |
 | I Più Visti | `'most-viewed'` | Top 20 per visualizzazioni |
-| Nuovi Inseriti | `'recent'` | Ultimi 5 video per dataInserimento |
+| Nuovi Inseriti | `'recent'` | Ultimi 50 video per dataInserimento |
 | Prodotti dalle Scuole | `'schools'` | Solo video con `prodottoScuola: true` |
 | Lasciati Ispirare | `'inspire'` | Player random + shuffle + griglia |
 | Partecipa | `'submit'` | Form segnalazione video — ex "Segnala Video" |
@@ -371,7 +371,7 @@ Pannello admin con **5 tab**. Riceve prop: `userProfile`, `onVideoApproved`, `al
 - **Sort toggle**: pulsante ↕ alterna ordine cronologico crescente/decrescente (`archiveSortDesc`)
 - **Selezione multipla**: checkbox gialle + "Seleziona tutti" + "Elimina selezionati (N)" con conferma
 - Ogni riga: thumbnail | ID (giallo) | titolo + link YouTube | badges tema/natura/anno/scuola | [✎ Modifica] [🗑 Elimina]
-- **Thumbnail**: costruita dinamicamente da `extractYouTubeId(youtube_url)` con fallback `hqdefault → mqdefault → default.jpg` (non dipende dal campo `thumbnail` del DB)
+- **Thumbnail**: renderizzata con `VideoThumbnail` (platform-aware, come nel resto del sito) — per YouTube costruita dinamicamente da `extractYouTubeId(youtube_url)` con fallback `hqdefault → mqdefault → default.jpg`; per TikTok/Instagram usa il campo `thumbnail` del DB (link Vercel Blob permanente, vedi `api/_lib/persistThumbnail.js`), perché quei due non hanno un pattern prevedibile da ID come YouTube
 - **Lista senza max-height**: scorre con la pagina (rimosso `max-h-[560px]`)
 - **Modifica inline**: stesso ordine del tab "+ Aggiungi" (Tipo+Codice | URL | Titolo | Tema+Natura | Anno+Durata+Formato | Descrizione | Data+Views) + [Annulla] [Salva] → Supabase `upsert`
 - **Elimina**: conferma inline → delete da `videos` + aggiorna lista locale
