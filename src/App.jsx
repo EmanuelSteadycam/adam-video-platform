@@ -1408,8 +1408,8 @@ const VideoCard = ({ video, onClick, onAddToPlaylist, isInPlaylist }) => {
       
       {/* Linea colorata tematica — bicolore quando il video ha un secondo tema */}
       <div className="h-1 flex">
-        <div className="h-full" style={{ flex: secondaryTema ? 7 : 1, backgroundColor: getTemaColor(temi[0] || video.tema) }}></div>
-        {secondaryTema && <div className="h-full" style={{ flex: 3, backgroundColor: getTemaColor(secondaryTema) }}></div>}
+        <div className="h-full" style={{ flex: secondaryTema ? 8 : 1, backgroundColor: getTemaColor(temi[0] || video.tema) }}></div>
+        {secondaryTema && <div className="h-full" style={{ flex: 2, backgroundColor: getTemaColor(secondaryTema) }}></div>}
       </div>
       
       {/* Pulsante Playlist */}
@@ -1429,7 +1429,22 @@ const VideoCard = ({ video, onClick, onAddToPlaylist, isInPlaylist }) => {
       </button>
       
       <div className="p-4">
-        <h3 className="font-medium text-white mb-2 line-clamp-2 text-sm group-hover:text-zinc-300 transition-colors">{video.title}</h3>
+        {/* Titolo + eventuale tema secondario (appena sotto la porzione colorata corrispondente nella striscia) */}
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <h3 className="font-medium text-white line-clamp-2 text-sm group-hover:text-zinc-300 transition-colors">{video.title}</h3>
+          {secondaryTema && (
+            <span
+              className="text-[10px] font-semibold px-1.5 py-0.5 rounded shrink-0 transition-colors duration-200 group-hover:bg-[var(--tema-hover-bg)]"
+              style={{
+                border: `1.5px solid ${TEMA_COLORS[secondaryTema]?.border || getTemaColor(secondaryTema)}`,
+                color: '#fff',
+                '--tema-hover-bg': TEMA_COLORS[secondaryTema]?.dim || 'transparent',
+              }}
+            >
+              {secondaryTema}
+            </span>
+          )}
+        </div>
         <div className="flex items-center justify-between text-xs text-zinc-400 mb-2">
           <div className="flex items-center gap-3">
             <span>{video.year}</span>
@@ -1444,18 +1459,8 @@ const VideoCard = ({ video, onClick, onAddToPlaylist, isInPlaylist }) => {
             )}
           </div>
         </div>
-        {/* Info Natura + eventuale tema secondario (discreto, il primario è nella striscia) */}
-        <div className="flex items-center justify-between gap-2">
-          <span className="text-xs text-zinc-500">{video.natura}</span>
-          {secondaryTema && (
-            <span
-              className="text-[10px] font-semibold px-1.5 py-0.5 rounded shrink-0"
-              style={{ backgroundColor: `${getTemaColor(secondaryTema)}22`, color: getTemaColor(secondaryTema) }}
-            >
-              {secondaryTema}
-            </span>
-          )}
-        </div>
+        {/* Natura */}
+        <span className="text-xs text-zinc-500">{video.natura}</span>
       </div>
     </div>
   );
@@ -2611,7 +2616,7 @@ const QuickPartecipaScreen = ({ user, allVideos }) => {
       <p className="text-[13.5px] text-zinc-400 leading-relaxed mb-5 max-w-[34ch]">condividi un video YouTube, TikTok o Instagram utile per l'educazione — lo esaminiamo e, se appropriato, lo aggiungiamo all'archivio.</p>
 
       <QuickCard>
-        <QuickLabel>tema <span className="text-zinc-500 font-normal normal-case">(fino a 2)</span></QuickLabel>
+        <QuickLabel>tema <span className="text-zinc-500 font-normal normal-case">(max 2)</span></QuickLabel>
         <QuickTemaChips options={TEMI_OPTIONS} value={form.temi} onChange={temi => f('temi', temi)} variant="pill" />
       </QuickCard>
 
@@ -2989,7 +2994,7 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
       </div>
 
       <QuickCard>
-        <QuickLabel>tema <span className="text-zinc-500 font-normal normal-case">(fino a 2)</span></QuickLabel>
+        <QuickLabel>tema <span className="text-zinc-500 font-normal normal-case">(max 2)</span></QuickLabel>
         <QuickTemaChips options={TEMI_OPTIONS} value={form.temi} onChange={temi => f('temi', temi)} variant="pill" />
       </QuickCard>
 
@@ -4789,7 +4794,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">Tema * <span className="text-zinc-500 font-normal">(fino a 2)</span></label>
+          <label className="block text-sm font-medium text-zinc-300 mb-1.5">Tema * <span className="text-zinc-500 font-normal">(max 2)</span></label>
           <div className="flex flex-wrap gap-2">
             {TEMI_OPTIONS.map(tema => {
               const c = TEMA_COLORS[tema];
@@ -5028,7 +5033,7 @@ const MyVideosSection = ({ user, onNewVideo }) => {
                   className="w-full bg-zinc-900 border border-zinc-600 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500" />
               </div>
               <div>
-                <label className="block text-xs font-medium text-zinc-400 mb-1">Tema <span className="text-zinc-500 font-normal">(fino a 2)</span></label>
+                <label className="block text-xs font-medium text-zinc-400 mb-1">Tema <span className="text-zinc-500 font-normal">(max 2)</span></label>
                 <div className="flex flex-wrap gap-2">
                   {TEMI_OPTIONS.map(tema => {
                     const c = TEMA_COLORS[tema];
@@ -6006,20 +6011,20 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
               <input type="text" value={form.title} onChange={e => f('title', e.target.value)} required placeholder="Titolo del video" className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
             </div>
             {/* Row 4: Tema buttons + Natura */}
-            <div className="grid gap-4" style={{ gridTemplateColumns: 'auto 1fr' }}>
+            <div className="grid gap-4" style={{ gridTemplateColumns: '1fr 11rem' }}>
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Tema * <span className="text-zinc-500 font-normal">(fino a 2)</span></label>
-                <div className="flex gap-1.5">
+                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Tema * <span className="text-zinc-500 font-normal">(max 2)</span></label>
+                <div className="flex flex-wrap gap-1.5">
                   {TEMI_OPTIONS.map(t => {
                     const c = TEMA_COLORS[t];
                     const isSelected = (form.temi || []).includes(t);
                     const dimmed = !isSelected && (form.temi || []).filter(x => x !== 'Altro').length >= MAX_TEMI && t !== 'Altro';
                     return (
                       <button key={t} type="button" onClick={() => f('temi', toggleTema(form.temi, t))}
-                        className="px-3 py-2 rounded-lg text-xs font-semibold transition-all border-2"
+                        className="px-3 py-2 rounded-lg text-sm font-semibold transition-all border-2"
                         style={isSelected
                           ? { backgroundColor: c.btnActive, borderColor: c.border, color: '#fff' }
-                          : { backgroundColor: 'transparent', borderColor: c.border, color: '#fff', opacity: dimmed ? 0.3 : 0.6 }}>
+                          : { backgroundColor: 'transparent', borderColor: c.border, color: '#fff', opacity: dimmed ? 0.35 : 1 }}>
                         {t}
                       </button>
                     );
@@ -6268,9 +6273,9 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                             className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500" />
                         </div>
                         {/* Riga 4: Tema + Natura */}
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid gap-3" style={{ gridTemplateColumns: '1fr 11rem' }}>
                           <div>
-                            <label className="block text-xs font-medium text-zinc-400 mb-1">Tema <span className="text-zinc-500 font-normal">(fino a 2)</span></label>
+                            <label className="block text-xs font-medium text-zinc-400 mb-1">Tema <span className="text-zinc-500 font-normal">(max 2)</span></label>
                             <div className="flex flex-wrap gap-1.5">
                               {TEMI_OPTIONS.map(t => {
                                 const subTemi = subForm.temi ?? asTemi(sub);
@@ -6279,10 +6284,10 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                                 const c = TEMA_COLORS[t];
                                 return (
                                   <button key={t} type="button" onClick={() => ef(sub.id, 'temi', toggleTema(subTemi, t))}
-                                    className="px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all border-2"
+                                    className="px-3 py-2 rounded-lg text-sm font-semibold transition-all border-2"
                                     style={on
                                       ? { backgroundColor: c.btnActive, borderColor: c.border, color: '#fff' }
-                                      : { backgroundColor: 'transparent', borderColor: c.border, color: '#fff', opacity: dimmed ? 0.3 : 0.6 }}>
+                                      : { backgroundColor: 'transparent', borderColor: c.border, color: '#fff', opacity: dimmed ? 0.35 : 1 }}>
                                     {t}
                                   </button>
                                 );
@@ -6692,9 +6697,9 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                             className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500" />
                         </div>
                         {/* Row 4: Tema + Natura */}
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid gap-3" style={{ gridTemplateColumns: '1fr 11rem' }}>
                           <div>
-                            <label className="block text-xs font-medium text-zinc-400 mb-1">Tema <span className="text-zinc-500 font-normal">(fino a 2)</span></label>
+                            <label className="block text-xs font-medium text-zinc-400 mb-1">Tema <span className="text-zinc-500 font-normal">(max 2)</span></label>
                             <div className="flex flex-wrap gap-1.5">
                               {TEMI_OPTIONS.map(t => {
                                 const vTemi = vf.temi ?? asTemi(video);
@@ -6703,10 +6708,10 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                                 const c = TEMA_COLORS[t];
                                 return (
                                   <button key={t} type="button" onClick={() => evf(video.id, 'temi', toggleTema(vTemi, t))}
-                                    className="px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all border-2"
+                                    className="px-3 py-2 rounded-lg text-sm font-semibold transition-all border-2"
                                     style={on
                                       ? { backgroundColor: c.btnActive, borderColor: c.border, color: '#fff' }
-                                      : { backgroundColor: 'transparent', borderColor: c.border, color: '#fff', opacity: dimmed ? 0.3 : 0.6 }}>
+                                      : { backgroundColor: 'transparent', borderColor: c.border, color: '#fff', opacity: dimmed ? 0.35 : 1 }}>
                                     {t}
                                   </button>
                                 );
