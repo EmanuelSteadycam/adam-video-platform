@@ -10,6 +10,15 @@
 
 html, body {
   background-color: #000;
+}
+
+html {
+  /* NON mettere overflow-x anche su body: con overflow impostato su ENTRAMBI,
+     Chrome tratta body come un contenitore di scroll a sé — lo scroll reale
+     avviene su html ma `position: sticky` nei figli viene calcolato rispetto
+     a body (che resta sempre a scrollTop 0), quindi l'header sticky smette
+     di restare fissato in alto e scompare scrollando. Un solo overflow-x
+     hidden (qui, su html) basta a prevenire lo scroll orizzontale. */
   overflow-x: hidden;
 }
 

@@ -965,6 +965,10 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
   const activeTema = currentFilters.tema;
   const activeBorderColor = TEMA_COLORS[activeTema]?.border || '#3f3f46';
   const accentColor = TEMA_COLORS[activeTema]?.border ?? '#FFDA2A';
+  // Selezione multipla tema in ricerca (fino a 2, intersezione — vedi filteredVideos):
+  // simmetrica al max 2 temi già previsto in fase di inserimento.
+  const selectedTemi = [currentFilters.tema, currentFilters.tema2].filter(t => t && t !== 'Tutti');
+  const atTemaLimit = selectedTemi.filter(t => t !== 'Altro').length >= MAX_TEMI;
 
   // Conta filtri avanzati attivi
   const durActive = currentFilters.durationMin !== SNAP_POINTS[0] || currentFilters.durationMax !== SNAP_POINTS[SNAP_POINTS.length - 1];
@@ -978,7 +982,7 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
   const hasAnyFilter = activeTema !== 'Tutti' || advancedCount > 0 || searchQuery;
 
   const resetAll = () => {
-    onFilterChange({ tema: 'Tutti', natura: 'Tutti', year: 'Tutti', scuola: 'Tutti', durationMin: SNAP_POINTS[0], durationMax: SNAP_POINTS[SNAP_POINTS.length - 1] });
+    onFilterChange({ tema: 'Tutti', tema2: null, natura: 'Tutti', year: 'Tutti', scuola: 'Tutti', durationMin: SNAP_POINTS[0], durationMax: SNAP_POINTS[SNAP_POINTS.length - 1] });
     onSearchChange('');
   };
 
@@ -1079,7 +1083,7 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <div className="flex flex-wrap gap-2">
                 <button
-                  onClick={() => onFilterChange({ ...currentFilters, tema: 'Tutti' })}
+                  onClick={() => onFilterChange({ ...currentFilters, tema: 'Tutti', tema2: null })}
                   onMouseEnter={() => setHoveredTema('Tutti')}
                   onMouseLeave={() => setHoveredTema(null)}
                   className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-white"
@@ -1093,18 +1097,27 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
                 {['Alcool', 'Azzardo', 'Digitale', 'Sostanze', 'Tabacco', 'Sessualità', 'Altro'].map(tema => {
                   const c = TEMA_COLORS[tema];
                   const noVideos = tema === 'Sostanze' || tema === 'Tabacco' || tema === 'Sessualità' || tema === 'Altro';
+                  // Selezione multipla (fino a 2, "Altro" mutuamente esclusivo — vedi toggleTema),
+                  // simmetrica al form di inserimento: si può filtrare per video che hanno
+                  // ENTRAMBI i temi selezionati insieme (intersezione), non solo il primo.
+                  const isOn = selectedTemi.includes(tema);
+                  const dimmed = !isOn && atTemaLimit && tema !== 'Altro';
                   return (
                     <button
                       key={tema}
-                      onClick={() => onFilterChange({ ...currentFilters, tema })}
+                      onClick={() => {
+                        const next = toggleTema(selectedTemi, tema);
+                        onFilterChange({ ...currentFilters, tema: next[0] || 'Tutti', tema2: next[1] || null });
+                      }}
                       onMouseEnter={() => setHoveredTema(tema)}
                       onMouseLeave={() => setHoveredTema(null)}
                       className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-white"
                       style={{
-                        backgroundColor: activeTema === tema ? c.btnActive : hoveredTema === tema ? c.dim : 'transparent',
+                        backgroundColor: isOn ? c.btnActive : hoveredTema === tema ? c.dim : 'transparent',
                         border: `2px solid ${c.border}`,
+                        opacity: dimmed ? 0.35 : 1,
                       }}
-                      title={noVideos ? 'Nessun video disponibile' : ''}
+                      title={noVideos ? 'Nessun video disponibile' : (dimmed ? 'Puoi selezionare al massimo 2 temi' : '')}
                     >
                       {tema}
                     </button>
@@ -1408,8 +1421,8 @@ const VideoCard = ({ video, onClick, onAddToPlaylist, isInPlaylist }) => {
       
       {/* Linea colorata tematica — bicolore quando il video ha un secondo tema */}
       <div className="h-1 flex">
-        <div className="h-full" style={{ flex: secondaryTema ? 8 : 1, backgroundColor: getTemaColor(temi[0] || video.tema) }}></div>
-        {secondaryTema && <div className="h-full" style={{ flex: 2, backgroundColor: getTemaColor(secondaryTema) }}></div>}
+        <div className="h-full" style={{ flex: secondaryTema ? 3 : 1, backgroundColor: getTemaColor(temi[0] || video.tema) }}></div>
+        {secondaryTema && <div className="h-full" style={{ flex: 1, backgroundColor: getTemaColor(secondaryTema) }}></div>}
       </div>
       
       {/* Pulsante Playlist */}
@@ -1439,6 +1452,7 @@ const VideoCard = ({ video, onClick, onAddToPlaylist, isInPlaylist }) => {
                 border: `1.5px solid ${TEMA_COLORS[secondaryTema]?.border || getTemaColor(secondaryTema)}`,
                 color: '#fff',
                 '--tema-hover-bg': TEMA_COLORS[secondaryTema]?.dim || 'transparent',
+                transform: 'translateX(4px)',
               }}
             >
               {secondaryTema}
@@ -7062,6 +7076,7 @@ function App() {
   const [schoolsSort, setSchoolsSort] = useState('date'); // 'date' | 'views'
   const [filters, setFilters] = useState({
     tema: 'Tutti',
+    tema2: null,
     natura: 'Tutti',
     year: 'Tutti',
     scuola: 'Tutti',
@@ -7268,7 +7283,7 @@ function App() {
       if (!prev) return prev;
       return { ...prev, [field]: (field === 'keywords' || field === 'excludeKeywords') ? [] : null };
     });
-    if (field === 'tema') setFilters(f => ({ ...f, tema: 'Tutti' }));
+    if (field === 'tema') setFilters(f => ({ ...f, tema: 'Tutti', tema2: null }));
     if (field === 'natura') setFilters(f => ({ ...f, natura: 'Tutti' }));
     if (field === 'scuola') setFilters(f => ({ ...f, scuola: 'Tutti' }));
     if (field === 'durationMax') setFilters(f => ({ ...f, durationMax: SNAP_POINTS[SNAP_POINTS.length - 1] }));
@@ -7346,16 +7361,18 @@ function App() {
     setQuickRouted(true);
   }, [isQuickMode, quickRouted, authChecked, quickSplashDone, user, profileLoaded, userProfile]);
 
-  // Sync selectedTemaTag con filters.tema (es. click bottoni FiltersSection in home)
+  // Sync selectedTemaTag con filters.tema/tema2 (es. click bottoni FiltersSection in home) —
+  // con 2 temi selezionati insieme (intersezione) il chip in header mostra entrambi.
   useEffect(() => {
     const TEMA_TAG_COLORS = { Alcool: '#D97706', Azzardo: '#BE123C', Digitale: '#3b82f6', Sostanze: '#10b981', Tabacco: '#C9975A', Sessualità: '#8B5CF6' };
     if (filters.tema !== 'Tutti') {
-      setSelectedTemaTag({ label: filters.tema, color: TEMA_TAG_COLORS[filters.tema] });
+      const label = filters.tema2 ? `${filters.tema} + ${filters.tema2}` : filters.tema;
+      setSelectedTemaTag({ label, color: TEMA_TAG_COLORS[filters.tema] });
     } else {
       setSelectedTemaTag(null);
       setTagWidth(0);
     }
-  }, [filters.tema]);
+  }, [filters.tema, filters.tema2]);
 
   // ─── Apre il modal e incrementa le visualizzazioni ────────────────────────────
   const handleVideoClick = (video) => {
@@ -7567,6 +7584,9 @@ function App() {
     // Multi-tema: il filtro tema è "contiene" — un video con più temi compare sotto
     // ciascuno dei suoi temi, non solo sotto il primo (che è ciò che `v.tema` riflette).
     if (filters.tema !== 'Tutti') filtered = filtered.filter(v => asTemi(v).includes(filters.tema));
+    // Secondo tema in ricerca (fino a 2, come nell'inserimento): intersezione — il video
+    // deve avere ENTRAMBI i temi selezionati insieme, non solo uno dei due.
+    if (filters.tema2) filtered = filtered.filter(v => asTemi(v).includes(filters.tema2));
     if (filters.natura !== 'Tutti') { const naturaVal = filters.natura === 'Sequenza' ? 'Sequenze' : filters.natura; filtered = filtered.filter(v => v.natura === naturaVal); }
     if (filters.year !== 'Tutti') filtered = filtered.filter(v => v.year === parseInt(filters.year));
     if (filters.scuola === 'Scuole') filtered = filtered.filter(v => v.prodottoScuola);
@@ -7593,7 +7613,7 @@ function App() {
     // vista principale (niente sezioni con taglio tipo "più visti"/"recenti"/"scuole") e
     // non col filtro durata attivo (ha un suo ordinamento per durata).
     if (
-      searchQuery && filters.tema !== 'Tutti' &&
+      searchQuery && filters.tema !== 'Tutti' && !filters.tema2 &&
       !durMinActive && !durMaxActive &&
       !['most-viewed', 'recent', 'schools'].includes(activeSection)
     ) {
@@ -7731,7 +7751,7 @@ function App() {
       ].map(({ section, label, icon: Icon }) => (
         <li key={section}>
           <button
-            onClick={() => { setActiveSection(section); setSelectedNatura('Tutte'); setFilters(f => ({ ...f, tema: 'Tutti' })); setSelectedTemaTag(null); setIsMobileMenuOpen(false); }}
+            onClick={() => { setActiveSection(section); setSelectedNatura('Tutte'); setFilters(f => ({ ...f, tema: 'Tutti', tema2: null })); setSelectedTemaTag(null); setIsMobileMenuOpen(false); }}
             className={`w-full text-left px-4 py-3 rounded-lg transition-colors flex items-center gap-3 ${activeSection === section ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'}`}
           >
             <Icon size={18} className="flex-shrink-0" />
@@ -7798,7 +7818,7 @@ function App() {
             ].map(({ label, color }) => (
               <button
                 key={label}
-                onClick={() => { setFilters(f => ({ ...f, tema: label })); setIsSearchFocused(false); setTimeout(() => headerSearchRef.current?.focus(), 50); }}
+                onClick={() => { setFilters(f => ({ ...f, tema: label, tema2: null })); setIsSearchFocused(false); setTimeout(() => headerSearchRef.current?.focus(), 50); }}
                 className="w-full text-left px-4 py-2 text-white hover:bg-zinc-800 transition-colors text-sm flex items-center gap-2"
               >
                 <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
@@ -7816,7 +7836,7 @@ function App() {
           >
             {selectedTemaTag.label}
             <button
-              onMouseDown={(e) => { e.preventDefault(); setSelectedTemaTag(null); setTagWidth(0); setFilters(f => ({ ...f, tema: 'Tutti' })); }}
+              onMouseDown={(e) => { e.preventDefault(); setSelectedTemaTag(null); setTagWidth(0); setFilters(f => ({ ...f, tema: 'Tutti', tema2: null })); }}
               className="hover:opacity-70"
             ><X size={10} /></button>
           </span>
@@ -7836,7 +7856,7 @@ function App() {
         )}
         {(searchQuery || selectedTemaTag || (activeSection === 'formats' && selectedNatura !== 'Tutte')) && (
           <button
-            onClick={() => { setSearchQuery(''); setSelectedTemaTag(null); setTagWidth(0); setFilters(f => ({ ...f, tema: 'Tutti' })); setSelectedNatura('Tutte'); setNaturaTagWidth(0); }}
+            onClick={() => { setSearchQuery(''); setSelectedTemaTag(null); setTagWidth(0); setFilters(f => ({ ...f, tema: 'Tutti', tema2: null })); setSelectedNatura('Tutte'); setNaturaTagWidth(0); }}
             className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors"
           >
             <X size={18} />
