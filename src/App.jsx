@@ -5234,6 +5234,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const [archiveLoaded, setArchiveLoaded] = useState(false);
   const [archiveSearch, setArchiveSearch] = useState('');
   const [archiveTema, setArchiveTema] = useState('');
+  // 2° tema selezionabile insieme al primo (intersezione), stesso schema di FiltersSection in home.
+  const [archiveTema2, setArchiveTema2] = useState(null);
   const [archiveNatura, setArchiveNatura] = useState('');
   const [archiveScuola, setArchiveScuola] = useState(false);
   const [archiveSortDesc, setArchiveSortDesc] = useState(true);
@@ -5249,6 +5251,13 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const [dupScanLoading, setDupScanLoading] = useState(false);
   const [dupScanGroups, setDupScanGroups] = useState(null); // null = mai lanciato, [] = nessun duplicato trovato
   const [dupScanError, setDupScanError] = useState(null);
+  // Backfill "fase 3" multitema — a comando, mai automatico (vedi api/find-secondary-temi.js)
+  const [secTemiLoading, setSecTemiLoading] = useState(false);
+  const [secTemiCandidates, setSecTemiCandidates] = useState(null); // null = mai lanciato, [] = nessun candidato (o scan in corso)
+  const [secTemiError, setSecTemiError] = useState(null);
+  const [secTemiProgress, setSecTemiProgress] = useState(null); // "2/4" mentre itera i chunk, null altrimenti
+  const [secTemiDoneIds, setSecTemiDoneIds] = useState(new Set()); // confermati o scartati in questa sessione di review
+  const [secTemiSavingId, setSecTemiSavingId] = useState(null);
 
   // Utenti
   const [users, setUsers] = useState([]);
@@ -5295,6 +5304,61 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       setDupScanGroups(null);
     }
     setDupScanLoading(false);
+  };
+
+  // Backfill "fase 3" multitema — a comando dal bottone in Archivio, mai automatico.
+  // Propone un possibile 2° tema per i video con un solo tema reale, ad alta confidenza.
+  // L'endpoint divide il catalogo in chunk (vedi api/find-secondary-temi.js — un giro unico
+  // su tutti i ~456 candidati supera i timeout pratici end-to-end): si chiama in sequenza
+  // una volta per chunk, accumulando i risultati man mano — così anche se un chunk fallisce
+  // a metà, quelli già trovati restano visibili e utilizzabili invece di perdersi tutti.
+  const handleFindSecondaryTemi = async () => {
+    setSecTemiLoading(true);
+    setSecTemiError(null);
+    setSecTemiCandidates([]);
+    setSecTemiDoneIds(new Set());
+    let chunkIndex = 0;
+    let totalChunks = 1;
+    const all = [];
+    try {
+      while (chunkIndex < totalChunks) {
+        setSecTemiProgress(totalChunks > 1 ? `${chunkIndex + 1}/${totalChunks}` : null);
+        const res = await fetch('/api/find-secondary-temi', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chunkIndex }),
+        });
+        const data = await res.json();
+        if (!res.ok) { setSecTemiError(data.error || `Errore durante il chunk ${chunkIndex + 1}.`); break; }
+        all.push(...(data.candidates || []));
+        setSecTemiCandidates([...all]); // aggiornamento incrementale, visibile subito
+        totalChunks = data.totalChunks || 1;
+        chunkIndex += 1;
+      }
+    } catch (e) {
+      setSecTemiError(e.message || 'Errore imprevisto.');
+    }
+    setSecTemiProgress(null);
+    setSecTemiLoading(false);
+  };
+
+  // Conferma: scrive temi:[temaAttuale, temaSuggerito] per QUEL video soltanto. Mai in blocco.
+  // Un video può avere al massimo 2 temi: se lo scan ha proposto più suggerimenti diversi
+  // per lo stesso id (capita, es. sia "Sessualità" sia "Digitale"), il Set è chiavato per
+  // id — confermarne uno nasconde automaticamente anche gli altri per lo stesso video, non
+  // c'è più posto per un 3° tema.
+  const handleConfirmSecondaryTema = async (cand) => {
+    setSecTemiSavingId(cand.id);
+    const { error } = await supabase.from('videos').update({ temi: [cand.temaAttuale, cand.temaSuggerito] }).eq('id', cand.id);
+    setSecTemiSavingId(null);
+    if (error) { alert('Errore salvataggio: ' + error.message); return; }
+    setSecTemiDoneIds(prev => new Set(prev).add(cand.id));
+    onVideoApproved?.();
+    scheduleCatalogRebuild();
+  };
+
+  const handleDiscardSecondaryTema = (id) => {
+    setSecTemiDoneIds(prev => new Set(prev).add(id));
   };
 
   // Autofill titolo/thumbnail/URL canonico quando il campo URL (tab Aggiungi) è TikTok/Instagram
@@ -5637,10 +5701,11 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     const s = archiveSearch.toLowerCase();
     return (!s || v.title?.toLowerCase().includes(s) || v.description?.toLowerCase().includes(s))
       && (!archiveTema || asTemi(v).includes(archiveTema))
+      && (!archiveTema2 || asTemi(v).includes(archiveTema2))
       && (!archiveNatura || v.natura === archiveNatura)
       && (!archiveScuola || v.prodotto_scuola);
   }).sort((a, b) => archiveSortDesc ? compareArchiveTime(a, b) : compareArchiveTime(b, a)),
-  [archiveVideos, archiveSearch, archiveTema, archiveNatura, archiveScuola, archiveSortDesc]);
+  [archiveVideos, archiveSearch, archiveTema, archiveTema2, archiveNatura, archiveScuola, archiveSortDesc]);
 
   const handleEditSave = async (sub) => {
     const ef_val = editForms[sub.id] || {};
@@ -6462,12 +6527,21 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
               Archivio video
               {archiveLoaded && <span className="text-sm font-normal text-zinc-400">({filteredArchive.length} / {archiveVideos.length})</span>}
             </h3>
-            <div className="flex flex-col items-end gap-1">
-              <button onClick={handleFindDuplicates} disabled={dupScanLoading}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-zinc-700 text-zinc-300 hover:border-zinc-500 hover:text-white transition-all disabled:opacity-50">
-                {dupScanLoading ? <><Loader2 size={13} className="animate-spin" /> Verifica in corso…</> : <><Copy size={13} /> Verifica duplicati</>}
-              </button>
-              {dupScanLoading && <span className="text-[11px] text-zinc-500">può richiedere fino a 2 minuti</span>}
+            <div className="flex items-start gap-2 flex-wrap">
+              <div className="flex flex-col items-end gap-1">
+                <button onClick={handleFindDuplicates} disabled={dupScanLoading}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-zinc-700 text-zinc-300 hover:border-zinc-500 hover:text-white transition-all disabled:opacity-50">
+                  {dupScanLoading ? <><Loader2 size={13} className="animate-spin" /> Verifica in corso…</> : <><Copy size={13} /> Verifica duplicati</>}
+                </button>
+                {dupScanLoading && <span className="text-[11px] text-zinc-500">può richiedere fino a 2 minuti</span>}
+              </div>
+              <div className="flex flex-col items-end gap-1">
+                <button onClick={handleFindSecondaryTemi} disabled={secTemiLoading}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-zinc-700 text-zinc-300 hover:border-zinc-500 hover:text-white transition-all disabled:opacity-50">
+                  {secTemiLoading ? <><Loader2 size={13} className="animate-spin" /> Verifica in corso{secTemiProgress ? ` (${secTemiProgress})` : '…'}</> : <><Sparkles size={13} /> Verifica temi secondari</>}
+                </button>
+                {secTemiLoading && <span className="text-[11px] text-zinc-500">un paio di minuti per chunk</span>}
+              </div>
             </div>
           </div>
           {dupScanError && (
@@ -6475,6 +6549,62 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
               <AlertCircle size={16} className="flex-shrink-0" />{dupScanError}
             </div>
           )}
+          {secTemiError && (
+            <div className="flex items-center gap-2 bg-red-900/30 border border-red-800 text-red-400 px-4 py-3 rounded-lg text-sm mb-4">
+              <AlertCircle size={16} className="flex-shrink-0" />{secTemiError}
+            </div>
+          )}
+          {secTemiCandidates !== null && (() => {
+            const visible = secTemiCandidates.filter(c => !secTemiDoneIds.has(c.id));
+            return (
+              <div className="mb-5 bg-zinc-950 border border-zinc-800 rounded-xl p-4">
+                {secTemiCandidates.length === 0 ? (
+                  secTemiLoading
+                    ? <p className="text-sm text-zinc-400">scansione in corso…</p>
+                    : <p className="text-sm text-zinc-400 flex items-center gap-2"><Check size={15} className="text-green-500" /> Nessun secondo tema plausibile trovato.</p>
+                ) : visible.length === 0 ? (
+                  <p className="text-sm text-zinc-400 flex items-center gap-2"><Check size={15} className="text-green-500" /> Tutti i {secTemiCandidates.length} candidati sono stati esaminati.</p>
+                ) : (
+                  <>
+                    <p className="text-sm text-zinc-300 mb-3 font-semibold">{visible.length} candidat{visible.length > 1 ? 'i' : 'o'} da rivedere — nessuna scrittura automatica, conferma o scarta uno per uno</p>
+                    <div className="space-y-2">
+                      {visible.map(cand => {
+                        const v = allVideos.find(av => av.id === cand.id);
+                        const saving = secTemiSavingId === cand.id;
+                        return (
+                          <div key={cand.id} className="bg-zinc-900 border border-amber-500/30 rounded-lg p-3 flex items-center gap-3 flex-wrap">
+                            <div className="w-10 h-10 rounded overflow-hidden flex-shrink-0 bg-zinc-700">
+                              {v && <VideoThumbnail youtubeUrl={v.youtubeUrl} thumbnail={v.thumbnail} piattaforma={detectPlatform(v.youtubeUrl)} title={v.title} className="w-full h-full object-cover" />}
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <p className="text-xs font-mono text-[#FFDA2A]">{v?.codice || cand.id}</p>
+                              <p className="text-xs text-white truncate">{v?.title || cand.id}</p>
+                              <p className="text-[11px] text-zinc-400 mt-0.5">
+                                <span style={{ color: TEMA_COLORS[cand.temaAttuale]?.border }}>{cand.temaAttuale}</span>
+                                {' + '}
+                                <span style={{ color: TEMA_COLORS[cand.temaSuggerito]?.border }}>{cand.temaSuggerito}</span>
+                                {' — '}{cand.motivo}
+                              </p>
+                            </div>
+                            <div className="flex items-center gap-2 flex-shrink-0">
+                              <button onClick={() => handleDiscardSecondaryTema(cand.id)} disabled={saving}
+                                className="px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition-all disabled:opacity-50">
+                                Scarta
+                              </button>
+                              <button onClick={() => handleConfirmSecondaryTema(cand)} disabled={saving}
+                                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-black transition-all disabled:opacity-50" style={{ backgroundColor: '#FFDA2A' }}>
+                                {saving ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />} Conferma
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
+              </div>
+            );
+          })()}
           {dupScanGroups !== null && (
             <div className="mb-5 bg-zinc-950 border border-zinc-800 rounded-xl p-4">
               {dupScanGroups.length === 0 ? (
@@ -6513,24 +6643,37 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
           )}
           {/* Filters */}
           <div className="flex gap-2 mb-3 flex-wrap items-center">
-            {['', ...TEMI_OPTIONS].map(t => {
-              const active = archiveTema === t;
-              const c = TEMA_COLORS[t];
-              const style = t === ''
-                ? active
-                  ? { backgroundColor: '#52525b', borderColor: '#52525b', color: '#fff' }
-                  : { backgroundColor: 'transparent', borderColor: '#3f3f46', color: '#71717a' }
-                : active
-                  ? { backgroundColor: c?.solid, borderColor: c?.solid, color: '#fff' }
-                  : { backgroundColor: 'transparent', borderColor: c?.border, color: '#fff' };
-              return (
-                <button key={t || 'tutti'} onClick={() => setArchiveTema(t)}
-                  className="px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all"
-                  style={style}>
-                  {t || 'Tutti'}
-                </button>
-              );
-            })}
+            {(() => {
+              // Selezione multipla tema, fino a 2 (intersezione) — stesso schema di
+              // FiltersSection in home: riusa toggleTema/MAX_TEMI, "Altro" esclusivo.
+              const selectedArchiveTemi = [archiveTema, archiveTema2].filter(Boolean);
+              const atLimit = selectedArchiveTemi.filter(t => t !== 'Altro').length >= MAX_TEMI;
+              return ['', ...TEMI_OPTIONS].map(t => {
+                const active = t === '' ? selectedArchiveTemi.length === 0 : selectedArchiveTemi.includes(t);
+                const dimmed = t !== '' && !active && atLimit && t !== 'Altro';
+                const c = TEMA_COLORS[t];
+                const style = t === ''
+                  ? active
+                    ? { backgroundColor: '#52525b', borderColor: '#52525b', color: '#fff' }
+                    : { backgroundColor: 'transparent', borderColor: '#3f3f46', color: '#71717a' }
+                  : active
+                    ? { backgroundColor: c?.solid, borderColor: c?.solid, color: '#fff' }
+                    : { backgroundColor: 'transparent', borderColor: c?.border, color: '#fff', opacity: dimmed ? 0.35 : 1 };
+                return (
+                  <button key={t || 'tutti'}
+                    onClick={() => {
+                      if (t === '') { setArchiveTema(''); setArchiveTema2(null); return; }
+                      const next = toggleTema(selectedArchiveTemi, t);
+                      setArchiveTema(next[0] || '');
+                      setArchiveTema2(next[1] || null);
+                    }}
+                    className="px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all"
+                    style={style}>
+                    {t || 'Tutti'}
+                  </button>
+                );
+              });
+            })()}
             <button onClick={() => setArchiveScuola(v => !v)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all"
               style={archiveScuola
