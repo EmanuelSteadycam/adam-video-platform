@@ -291,6 +291,19 @@ const bumpCodice = (code, allVideos) => {
   return getNextCodice(allVideos);
 };
 
+// TikTok/Instagram non hanno un vero "titolo" — oEmbed/metadati restituiscono l'intera
+// didascalia del post, che può arrivare a migliaia di caratteri e contenere a-capo (spezza
+// il formato riga-per-riga della cache di ricerca semantica, vedi rebuild-catalog-cache.js).
+// Troncato a un limite leggibile come titolo in griglia/modal — chi segnala/inserisce può
+// comunque modificarlo a mano prima di salvare, e il testo integrale resta comunque nella
+// sinossi generata dall'AI (description), quindi non si perde nulla.
+const AUTOFILL_TITLE_MAX = 60;
+const sanitizeAutofillTitle = (title) => {
+  const flat = (title || '').replace(/\s*\n+\s*/g, ' ').trim();
+  if (flat.length <= AUTOFILL_TITLE_MAX) return flat;
+  return flat.slice(0, AUTOFILL_TITLE_MAX).trim() + '…'; // taglio netto, non a fine parola
+};
+
 // Autofill titolo/thumbnail/URL canonico per TikTok — chiamato al blur del campo URL
 // nei form (admin + Partecipa). Nessuna auth richiesta (oEmbed pubblico TikTok).
 const fetchTikTokMeta = async (url) => {
@@ -302,7 +315,7 @@ const fetchTikTokMeta = async (url) => {
     });
     const data = await res.json();
     if (!res.ok) return null;
-    return data; // { title, thumbnailUrl, canonicalUrl, authorName }
+    return { ...data, title: sanitizeAutofillTitle(data.title) }; // { title, thumbnailUrl, canonicalUrl, authorName }
   } catch {
     return null;
   }
@@ -321,7 +334,7 @@ const fetchInstagramMeta = async (url) => {
     });
     const data = await res.json();
     if (!res.ok) return null;
-    return data; // { title, thumbnailUrl, canonicalUrl }
+    return { ...data, title: sanitizeAutofillTitle(data.title) }; // { title, thumbnailUrl, canonicalUrl }
   } catch {
     return null;
   }
@@ -7605,41 +7618,6 @@ function App() {
       filtered = [...filtered].sort((a, b) => parseDuration(a.duration) - parseDuration(b.duration));
     }
 
-    // Boost multi-tema (additivo): con un filtro tema attivo (es. Alcool), se il testo di
-    // ricerca nomina un ALTRO tema (es. "azzardo"), i video il cui array `temi` contiene
-    // SIA il tema filtrato SIA quel secondo tema vengono AGGIUNTI ai risultati (unione con
-    // i match testuali) e portati in cima — anche se la parola non compare in
-    // titolo/sinossi. Si legge `temi`, non marcatori nascosti nella sinossi. Limitato alla
-    // vista principale (niente sezioni con taglio tipo "più visti"/"recenti"/"scuole") e
-    // non col filtro durata attivo (ha un suo ordinamento per durata).
-    if (
-      searchQuery && filters.tema !== 'Tutti' && !filters.tema2 &&
-      !durMinActive && !durMaxActive &&
-      !['most-viewed', 'recent', 'schools'].includes(activeSection)
-    ) {
-      const q = searchQuery.toLowerCase();
-      const secondaryTemi = TEMI_OPTIONS.filter(
-        t => t !== 'Altro' && t !== filters.tema && q.includes(t.toLowerCase())
-      );
-      if (secondaryTemi.length) {
-        const naturaVal = filters.natura === 'Sequenza' ? 'Sequenze' : filters.natura;
-        const passesOtherFilters = (v) =>
-          (selectedNatura === 'Tutte' || v.natura === selectedNatura) &&
-          (filters.natura === 'Tutti' || v.natura === naturaVal) &&
-          (filters.year === 'Tutti' || v.year === parseInt(filters.year)) &&
-          (filters.scuola !== 'Scuole' || v.prodottoScuola) &&
-          (filters.scuola !== 'Altri' || !v.prodottoScuola);
-        const already = new Set(filtered.map(v => v.id));
-        const extra = allVideos.filter(v =>
-          !already.has(v.id) &&
-          asTemi(v).includes(filters.tema) &&
-          asTemi(v).some(t => secondaryTemi.includes(t)) &&
-          passesOtherFilters(v)
-        );
-        const isCross = (v) => asTemi(v).some(t => secondaryTemi.includes(t));
-        filtered = [...filtered, ...extra].sort((a, b) => (isCross(a) ? 0 : 1) - (isCross(b) ? 0 : 1));
-      }
-    }
 
     return filtered;
   }, [allVideos, searchQuery, activeSection, selectedNatura, filters, schoolsSort, smartInterpretation, semanticIds]);

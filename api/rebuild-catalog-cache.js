@@ -41,7 +41,7 @@ export default async function handler(req, res) {
     const catalogText = (videos || [])
       .map(v => {
         const temi = (v.temi?.length ? v.temi : (v.tema ? [v.tema] : [])).join(',');
-        return `${v.id}|${temi}|${v.natura || ''}|${(v.title || '').replace(/\|/g, '/')}|${(v.description || '').replace(/\n/g, ' ').replace(/\|/g, '/')}`;
+        return `${v.id}|${temi}|${v.natura || ''}|${(v.title || '').replace(/\n/g, ' ').replace(/\|/g, '/')}|${(v.description || '').replace(/\n/g, ' ').replace(/\|/g, '/')}`;
       })
       .join('\n');
 
