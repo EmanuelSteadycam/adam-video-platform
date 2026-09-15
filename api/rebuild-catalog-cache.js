@@ -33,11 +33,16 @@ export default async function handler(req, res) {
   try {
     const { data: videos, error: fetchError } = await supabase
       .from('videos')
-      .select('id, tema, natura, title, description');
+      .select('id, tema, temi, natura, title, description');
     if (fetchError) return res.status(500).json({ error: `Errore lettura videos: ${fetchError.message}` });
 
+    // Campo tema: lista separata da virgola (multi-tema). Fallback sul tema singolo per i
+    // record non ancora migrati. api/semantic-search.js legge questo campo con match "contiene".
     const catalogText = (videos || [])
-      .map(v => `${v.id}|${v.tema || ''}|${v.natura || ''}|${(v.title || '').replace(/\|/g, '/')}|${(v.description || '').replace(/\n/g, ' ').replace(/\|/g, '/')}`)
+      .map(v => {
+        const temi = (v.temi?.length ? v.temi : (v.tema ? [v.tema] : [])).join(',');
+        return `${v.id}|${temi}|${v.natura || ''}|${(v.title || '').replace(/\n/g, ' ').replace(/\|/g, '/')}|${(v.description || '').replace(/\n/g, ' ').replace(/\|/g, '/')}`;
+      })
       .join('\n');
 
     const myTimestamp = Date.now();

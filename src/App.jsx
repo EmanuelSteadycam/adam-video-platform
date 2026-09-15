@@ -291,6 +291,19 @@ const bumpCodice = (code, allVideos) => {
   return getNextCodice(allVideos);
 };
 
+// TikTok/Instagram non hanno un vero "titolo" — oEmbed/metadati restituiscono l'intera
+// didascalia del post, che può arrivare a migliaia di caratteri e contenere a-capo (spezza
+// il formato riga-per-riga della cache di ricerca semantica, vedi rebuild-catalog-cache.js).
+// Troncato a un limite leggibile come titolo in griglia/modal — chi segnala/inserisce può
+// comunque modificarlo a mano prima di salvare, e il testo integrale resta comunque nella
+// sinossi generata dall'AI (description), quindi non si perde nulla.
+const AUTOFILL_TITLE_MAX = 60;
+const sanitizeAutofillTitle = (title) => {
+  const flat = (title || '').replace(/\s*\n+\s*/g, ' ').trim();
+  if (flat.length <= AUTOFILL_TITLE_MAX) return flat;
+  return flat.slice(0, AUTOFILL_TITLE_MAX).trim() + '…'; // taglio netto, non a fine parola
+};
+
 // Autofill titolo/thumbnail/URL canonico per TikTok — chiamato al blur del campo URL
 // nei form (admin + Partecipa). Nessuna auth richiesta (oEmbed pubblico TikTok).
 const fetchTikTokMeta = async (url) => {
@@ -302,7 +315,7 @@ const fetchTikTokMeta = async (url) => {
     });
     const data = await res.json();
     if (!res.ok) return null;
-    return data; // { title, thumbnailUrl, canonicalUrl, authorName }
+    return { ...data, title: sanitizeAutofillTitle(data.title) }; // { title, thumbnailUrl, canonicalUrl, authorName }
   } catch {
     return null;
   }
@@ -321,7 +334,7 @@ const fetchInstagramMeta = async (url) => {
     });
     const data = await res.json();
     if (!res.ok) return null;
-    return data; // { title, thumbnailUrl, canonicalUrl }
+    return { ...data, title: sanitizeAutofillTitle(data.title) }; // { title, thumbnailUrl, canonicalUrl }
   } catch {
     return null;
   }
@@ -337,6 +350,10 @@ const mapDbVideo = (v) => ({
   views: v.views || 0,
   format: v.formato || 'orizzontale',
   tema: v.tema || '',
+  // Rete di sicurezza durante la transizione a multi-tema: se temi non è ancora popolato
+  // (record non ancora migrato, o scritto da un punto del codice non ancora aggiornato)
+  // si ricade sul tema singolo, così nessun video resta senza etichetta.
+  temi: v.temi?.length ? v.temi : (v.tema ? [v.tema] : []),
   natura: v.natura || '',
   prodottoScuola: v.prodotto_scuola || false,
   description: v.description || '',
@@ -824,6 +841,30 @@ const TEMA_COLORS = {
   'Altro':      { solid: '#475569', border: '#64748b', dim: 'rgba(100,116,139,0.15)', btnActive: 'rgba(100,116,139,0.50)' },
 };
 
+const TEMI_OPTIONS = ['Alcool', 'Azzardo', 'Digitale', 'Sostanze', 'Tabacco', 'Sessualità', 'Altro'];
+const MAX_TEMI = 2;
+
+// Toggle multi-tema condiviso da tutti i form (Partecipa, Admin Aggiungi/Approva, sia
+// desktop che app) — regole concordate: "Altro" è mutuamente esclusivo con gli altri temi
+// (un video o parla di uno o più temi veri, o è "Altro" perché non parla di nessuno di
+// quelli — le due cose insieme non hanno senso), e si può selezionare al massimo 2 temi
+// veri insieme (oltre il limite il click su un tema non ancora selezionato non fa nulla).
+// Estrae l'array temi da una riga Supabase grezza (video o submission), con lo stesso
+// fallback sul tema singolo usato in mapDbVideo/toArchiveFormat — per i form che leggono
+// direttamente da sub/video invece che passare dal mapping.
+const asTemi = (obj) => (obj?.temi?.length ? obj.temi : (obj?.tema ? [obj.tema] : []));
+
+const toggleTema = (current, tema) => {
+  const list = current || [];
+  if (tema === 'Altro') {
+    return list.length === 1 && list[0] === 'Altro' ? [] : ['Altro'];
+  }
+  const withoutAltro = list.filter(t => t !== 'Altro');
+  if (withoutAltro.includes(tema)) return withoutAltro.filter(t => t !== tema);
+  if (withoutAltro.length >= MAX_TEMI) return withoutAltro;
+  return [...withoutAltro, tema];
+};
+
 const DualRangeSlider = ({ min, max, valueMin, valueMax, onChange, accentColor = '#FFDA2A' }) => {
   const trackRef = useRef(null);
   const draggingRef = useRef(null);
@@ -937,6 +978,10 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
   const activeTema = currentFilters.tema;
   const activeBorderColor = TEMA_COLORS[activeTema]?.border || '#3f3f46';
   const accentColor = TEMA_COLORS[activeTema]?.border ?? '#FFDA2A';
+  // Selezione multipla tema in ricerca (fino a 2, intersezione — vedi filteredVideos):
+  // simmetrica al max 2 temi già previsto in fase di inserimento.
+  const selectedTemi = [currentFilters.tema, currentFilters.tema2].filter(t => t && t !== 'Tutti');
+  const atTemaLimit = selectedTemi.filter(t => t !== 'Altro').length >= MAX_TEMI;
 
   // Conta filtri avanzati attivi
   const durActive = currentFilters.durationMin !== SNAP_POINTS[0] || currentFilters.durationMax !== SNAP_POINTS[SNAP_POINTS.length - 1];
@@ -950,7 +995,7 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
   const hasAnyFilter = activeTema !== 'Tutti' || advancedCount > 0 || searchQuery;
 
   const resetAll = () => {
-    onFilterChange({ tema: 'Tutti', natura: 'Tutti', year: 'Tutti', scuola: 'Tutti', durationMin: SNAP_POINTS[0], durationMax: SNAP_POINTS[SNAP_POINTS.length - 1] });
+    onFilterChange({ tema: 'Tutti', tema2: null, natura: 'Tutti', year: 'Tutti', scuola: 'Tutti', durationMin: SNAP_POINTS[0], durationMax: SNAP_POINTS[SNAP_POINTS.length - 1] });
     onSearchChange('');
   };
 
@@ -1051,7 +1096,7 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <div className="flex flex-wrap gap-2">
                 <button
-                  onClick={() => onFilterChange({ ...currentFilters, tema: 'Tutti' })}
+                  onClick={() => onFilterChange({ ...currentFilters, tema: 'Tutti', tema2: null })}
                   onMouseEnter={() => setHoveredTema('Tutti')}
                   onMouseLeave={() => setHoveredTema(null)}
                   className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-white"
@@ -1065,18 +1110,27 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
                 {['Alcool', 'Azzardo', 'Digitale', 'Sostanze', 'Tabacco', 'Sessualità', 'Altro'].map(tema => {
                   const c = TEMA_COLORS[tema];
                   const noVideos = tema === 'Sostanze' || tema === 'Tabacco' || tema === 'Sessualità' || tema === 'Altro';
+                  // Selezione multipla (fino a 2, "Altro" mutuamente esclusivo — vedi toggleTema),
+                  // simmetrica al form di inserimento: si può filtrare per video che hanno
+                  // ENTRAMBI i temi selezionati insieme (intersezione), non solo il primo.
+                  const isOn = selectedTemi.includes(tema);
+                  const dimmed = !isOn && atTemaLimit && tema !== 'Altro';
                   return (
                     <button
                       key={tema}
-                      onClick={() => onFilterChange({ ...currentFilters, tema })}
+                      onClick={() => {
+                        const next = toggleTema(selectedTemi, tema);
+                        onFilterChange({ ...currentFilters, tema: next[0] || 'Tutti', tema2: next[1] || null });
+                      }}
                       onMouseEnter={() => setHoveredTema(tema)}
                       onMouseLeave={() => setHoveredTema(null)}
                       className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-white"
                       style={{
-                        backgroundColor: activeTema === tema ? c.btnActive : hoveredTema === tema ? c.dim : 'transparent',
+                        backgroundColor: isOn ? c.btnActive : hoveredTema === tema ? c.dim : 'transparent',
                         border: `2px solid ${c.border}`,
+                        opacity: dimmed ? 0.35 : 1,
                       }}
-                      title={noVideos ? 'Nessun video disponibile' : ''}
+                      title={noVideos ? 'Nessun video disponibile' : (dimmed ? 'Puoi selezionare al massimo 2 temi' : '')}
                     >
                       {tema}
                     </button>
@@ -1341,6 +1395,9 @@ const VideoCard = ({ video, onClick, onAddToPlaylist, isInPlaylist }) => {
     return colors[tema] || '#6b7280';
   };
 
+  const temi = asTemi(video);
+  const secondaryTema = temi[1];
+
   return (
     <div onClick={onClick} className="group cursor-pointer bg-zinc-900 rounded-lg overflow-hidden transition-all duration-300 transform hover:scale-105">
       <div className="relative overflow-hidden aspect-video">
@@ -1375,8 +1432,11 @@ const VideoCard = ({ video, onClick, onAddToPlaylist, isInPlaylist }) => {
         )}
       </div>
       
-      {/* Linea colorata tematica */}
-      <div className="h-1" style={{ backgroundColor: getTemaColor(video.tema) }}></div>
+      {/* Linea colorata tematica — bicolore quando il video ha un secondo tema */}
+      <div className="h-1 flex">
+        <div className="h-full" style={{ flex: secondaryTema ? 3 : 1, backgroundColor: getTemaColor(temi[0] || video.tema) }}></div>
+        {secondaryTema && <div className="h-full" style={{ flex: 1, backgroundColor: getTemaColor(secondaryTema) }}></div>}
+      </div>
       
       {/* Pulsante Playlist */}
       <button
@@ -1395,7 +1455,23 @@ const VideoCard = ({ video, onClick, onAddToPlaylist, isInPlaylist }) => {
       </button>
       
       <div className="p-4">
-        <h3 className="font-medium text-white mb-2 line-clamp-2 text-sm group-hover:text-zinc-300 transition-colors">{video.title}</h3>
+        {/* Titolo + eventuale tema secondario (appena sotto la porzione colorata corrispondente nella striscia) */}
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <h3 className="font-medium text-white line-clamp-2 text-sm group-hover:text-zinc-300 transition-colors">{video.title}</h3>
+          {secondaryTema && (
+            <span
+              className="text-[10px] font-semibold px-1.5 py-0.5 rounded shrink-0 transition-colors duration-200 group-hover:bg-[var(--tema-hover-bg)]"
+              style={{
+                border: `1.5px solid ${TEMA_COLORS[secondaryTema]?.border || getTemaColor(secondaryTema)}`,
+                color: '#fff',
+                '--tema-hover-bg': TEMA_COLORS[secondaryTema]?.dim || 'transparent',
+                transform: 'translateX(4px)',
+              }}
+            >
+              {secondaryTema}
+            </span>
+          )}
+        </div>
         <div className="flex items-center justify-between text-xs text-zinc-400 mb-2">
           <div className="flex items-center gap-3">
             <span>{video.year}</span>
@@ -1410,14 +1486,15 @@ const VideoCard = ({ video, onClick, onAddToPlaylist, isInPlaylist }) => {
             )}
           </div>
         </div>
-        {/* Info Natura */}
-        <div className="text-xs text-zinc-500">{video.natura}</div>
+        {/* Natura */}
+        <span className="text-xs text-zinc-500">{video.natura}</span>
       </div>
     </div>
   );
 };
 
 const VideoModal = ({ video, onClose, isApp = false }) => {
+  const temiList = asTemi(video);
   const platform = detectPlatform(video.youtubeUrl);
   const videoId = platform === 'tiktok' ? extractTikTokId(video.youtubeUrl)
     : platform === 'instagram' ? extractInstagramId(video.youtubeUrl)
@@ -1508,7 +1585,9 @@ const VideoModal = ({ video, onClose, isApp = false }) => {
             {video.prodottoScuola && <div className="flex items-center gap-1.5 text-purple-400"><School size={15} /><span>Prodotto da scuole</span></div>}
           </div>
           <div className="flex gap-2.5 mb-4">
-            <span className="px-3 py-1.5 rounded-full text-sm font-semibold" style={{ backgroundColor: TEMA_COLORS[video.tema]?.solid || '#FFDA2A', color: '#ffffff' }}>{video.tema}</span>
+            {temiList.map(t => (
+              <span key={t} className="px-3 py-1.5 rounded-full text-sm font-semibold" style={{ backgroundColor: TEMA_COLORS[t]?.solid || '#FFDA2A', color: '#ffffff' }}>{t}</span>
+            ))}
             <span className="bg-blue-600/20 text-blue-400 px-3 py-1.5 rounded-full text-sm font-medium border border-blue-600/30">{video.natura}</span>
           </div>
           <p className="text-zinc-400 leading-relaxed">{video.description}</p>
@@ -1576,11 +1655,14 @@ const VideoModal = ({ video, onClose, isApp = false }) => {
                   <><Plus size={16} /><span>Aggiungi a Playlist</span></>
                 )}
               </button>
-              <div className="flex gap-3 mb-6">
-                <span
-                  className="px-3 py-1.5 rounded-full text-sm font-semibold"
-                  style={{ backgroundColor: TEMA_COLORS[video.tema]?.solid || '#FFDA2A', color: '#ffffff', border: 'none' }}
-                >{video.tema}</span>
+              <div className="flex flex-wrap gap-3 mb-6">
+                {temiList.map(t => (
+                  <span
+                    key={t}
+                    className="px-3 py-1.5 rounded-full text-sm font-semibold"
+                    style={{ backgroundColor: TEMA_COLORS[t]?.solid || '#FFDA2A', color: '#ffffff', border: 'none' }}
+                  >{t}</span>
+                ))}
                 <span className="bg-blue-600/20 text-blue-400 px-3 py-1.5 rounded-full text-sm font-medium border border-blue-600/30">{video.natura}</span>
               </div>
               <div className="mb-4">
@@ -1672,15 +1754,18 @@ const VideoModal = ({ video, onClose, isApp = false }) => {
               </>
             )}
           </button>
-          <div className="flex gap-3 mb-6">
-            <span
-              className="px-3 py-1.5 rounded-full text-sm font-semibold"
-              style={{
-                backgroundColor: TEMA_COLORS[video.tema]?.solid || '#FFDA2A',
-                color: '#ffffff',
-                border: 'none',
-              }}
-            >{video.tema}</span>
+          <div className="flex flex-wrap gap-3 mb-6">
+            {temiList.map(t => (
+              <span
+                key={t}
+                className="px-3 py-1.5 rounded-full text-sm font-semibold"
+                style={{
+                  backgroundColor: TEMA_COLORS[t]?.solid || '#FFDA2A',
+                  color: '#ffffff',
+                  border: 'none',
+                }}
+              >{t}</span>
+            ))}
             <span className="bg-blue-600/20 text-blue-400 px-3 py-1.5 rounded-full text-sm font-medium border border-blue-600/30">{video.natura}</span>
           </div>
           <div className="mb-20">
@@ -2313,7 +2398,13 @@ const QuickLabel = ({ children }) => (
   <label className="block text-xs font-semibold text-zinc-400 mb-2 uppercase tracking-wide">{children}</label>
 );
 
+// Multi-selezione tema (fino a 2, "Altro" mutuamente esclusivo — vedi toggleTema). `value`
+// è un array; `onChange` riceve l'array già aggiornato dopo il click. Un tema non ancora
+// selezionato appare attenuato (non disabilitato al click, semplicemente il click non ha
+// effetto: vedi toggleTema) quando si sono già raggiunti i 2 temi veri.
 const QuickTemaChips = ({ options, value, onChange, variant = 'grid' }) => {
+  const selected = value || [];
+  const atLimit = selected.filter(t => t !== 'Altro').length >= MAX_TEMI;
   // variant "pill" — stessi bottoni pillola colorati dei filtri tema in home (FiltersSection)
   if (variant === 'pill') {
     // "Altro" subito dopo "Digitale" invece che in fondo, così riempie la
@@ -2324,15 +2415,16 @@ const QuickTemaChips = ({ options, value, onChange, variant = 'grid' }) => {
     return (
       <div className="flex flex-wrap gap-2">
         {pillOptions.map(tema => {
-          const on = value === tema;
+          const on = selected.includes(tema);
+          const dimmed = !on && atLimit && tema !== 'Altro';
           const c = TEMA_COLORS[tema] || TEMA_COLORS['Altro'];
           return (
             <button
               key={tema}
               type="button"
-              onClick={() => onChange(tema)}
+              onClick={() => onChange(toggleTema(selected, tema))}
               className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-white"
-              style={{ backgroundColor: on ? c.btnActive : 'transparent', border: `2px solid ${c.border}` }}
+              style={{ backgroundColor: on ? c.btnActive : 'transparent', border: `2px solid ${c.border}`, opacity: dimmed ? 0.35 : 1 }}
             >
               {tema}
             </button>
@@ -2345,15 +2437,16 @@ const QuickTemaChips = ({ options, value, onChange, variant = 'grid' }) => {
   return (
     <div className="grid grid-cols-3 gap-1.5">
       {options.flatMap((tema, i) => {
-        const on = value === tema;
+        const on = selected.includes(tema);
+        const dimmed = !on && atLimit && tema !== 'Altro';
         const c = TEMA_COLORS[tema] || TEMA_COLORS['Altro'];
         const button = (
           <button
             key={tema}
             type="button"
-            onClick={() => onChange(tema)}
+            onClick={() => onChange(toggleTema(selected, tema))}
             className="flex flex-col items-center gap-1 rounded-xl py-2 border transition-colors"
-            style={{ borderColor: on ? c.border : '#28282c', backgroundColor: on ? '#242428' : '#1c1c1f' }}
+            style={{ borderColor: on ? c.border : '#28282c', backgroundColor: on ? '#242428' : '#1c1c1f', opacity: dimmed ? 0.4 : 1 }}
           >
             <span className="w-4 h-4 rounded-full flex-shrink-0" style={{ backgroundColor: c.border, boxShadow: on ? `0 0 0 2.5px ${c.dim}` : 'none' }} />
             <span className="text-[9.5px] font-bold uppercase tracking-wide leading-tight" style={{ color: on ? '#f4f4f5' : '#a1a1aa' }}>{tema}</span>
@@ -2398,7 +2491,7 @@ const QuickToggleButton = ({ label, checked, onChange }) => (
 );
 
 // ═══ Partecipa (utente) ═══
-const QUICK_PARTECIPA_INITIAL_FORM = { title: '', youtube_url: '', tema: '', description: '', prodotto_scuola: false, thumbnail: '' };
+const QUICK_PARTECIPA_INITIAL_FORM = { title: '', youtube_url: '', temi: [], description: '', prodotto_scuola: false, thumbnail: '' };
 
 const QuickPartecipaScreen = ({ user, allVideos }) => {
   const [form, setForm] = useState(QUICK_PARTECIPA_INITIAL_FORM);
@@ -2415,7 +2508,7 @@ const QuickPartecipaScreen = ({ user, allVideos }) => {
 
   const f = (field, val) => setForm(prev => ({ ...prev, [field]: val }));
   const platform = form.youtube_url.trim() ? detectPlatform(form.youtube_url) : null;
-  const cardAccent = form.tema ? (TEMA_COLORS[form.tema] || TEMA_COLORS['Altro']).border : undefined;
+  const cardAccent = form.temi?.[0] ? (TEMA_COLORS[form.temi[0]] || TEMA_COLORS['Altro']).border : undefined;
   // Controllo duplicati "livello 1" — derivato, si aggiorna da solo mentre si digita/incolla.
   const duplicateMatch = useMemo(() => findDuplicateByUrl(form.youtube_url, allVideos), [form.youtube_url, allVideos]);
 
@@ -2460,7 +2553,7 @@ const QuickPartecipaScreen = ({ user, allVideos }) => {
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ youtubeUrl: form.youtube_url, title: form.title || undefined, tema: form.tema || undefined }),
+        body: JSON.stringify({ youtubeUrl: form.youtube_url, title: form.title || undefined, tema: form.temi?.[0] || undefined }),
       });
       const data = await res.json();
       if (!res.ok) { setDescWarning('Qualcosa si è addormentato dall\'altra parte — riprova più tardi.'); return; }
@@ -2486,7 +2579,7 @@ const QuickPartecipaScreen = ({ user, allVideos }) => {
   const doSubmit = async (requireTitle) => {
     if (!form.youtube_url.trim()) { setError('Il link del video è obbligatorio.'); return; }
     if (requireTitle && !form.title.trim()) { setError('Il titolo è obbligatorio.'); return; }
-    if (!form.tema) { setError('Seleziona un tema.'); return; }
+    if (!form.temi?.length) { setError('Seleziona almeno un tema.'); return; }
     setLoading(true);
     setError(null);
     const p = detectPlatform(form.youtube_url.trim());
@@ -2495,7 +2588,8 @@ const QuickPartecipaScreen = ({ user, allVideos }) => {
       tipo: p,
       title: form.title.trim() || null,
       youtube_url: form.youtube_url.trim(),
-      tema: form.tema || null,
+      tema: form.temi?.[0] || null,
+      temi: form.temi?.length ? form.temi : null,
       formato: (p === 'tiktok' || p === 'instagram') ? 'verticale' : 'orizzontale',
       description: form.description.trim() || null,
       prodotto_scuola: form.prodotto_scuola,
@@ -2508,7 +2602,7 @@ const QuickPartecipaScreen = ({ user, allVideos }) => {
 
   const handleSendLinkClick = () => {
     if (!form.youtube_url.trim()) { setError('Il link del video è obbligatorio.'); return; }
-    if (!form.tema) { setError('Seleziona un tema.'); return; }
+    if (!form.temi?.length) { setError('Seleziona almeno un tema.'); return; }
     setError(null);
     setConfirmSendLink(true);
   };
@@ -2516,14 +2610,14 @@ const QuickPartecipaScreen = ({ user, allVideos }) => {
   const handleFinalSubmitClick = () => {
     if (!form.youtube_url.trim()) { setError('Il link del video è obbligatorio.'); return; }
     if (!form.title.trim()) { setError('Il titolo è obbligatorio.'); return; }
-    if (!form.tema) { setError('Seleziona un tema.'); return; }
+    if (!form.temi?.length) { setError('Seleziona almeno un tema.'); return; }
     setError(null);
     setConfirmFinalSubmit(true);
   };
 
   // errore mostrato anche accanto a "invia link" (non solo in fondo alla pagina,
   // troppo lontano da questo bottone per essere notato)
-  const sendLinkError = error === 'Il link del video è obbligatorio.' || error === 'Seleziona un tema.' ? error : null;
+  const sendLinkError = error === 'Il link del video è obbligatorio.' || error === 'Seleziona almeno un tema.' ? error : null;
 
   const clearUrl = () => setForm(prev => ({ ...prev, youtube_url: '', thumbnail: '' }));
 
@@ -2549,8 +2643,8 @@ const QuickPartecipaScreen = ({ user, allVideos }) => {
       <p className="text-[13.5px] text-zinc-400 leading-relaxed mb-5 max-w-[34ch]">condividi un video YouTube, TikTok o Instagram utile per l'educazione — lo esaminiamo e, se appropriato, lo aggiungiamo all'archivio.</p>
 
       <QuickCard>
-        <QuickLabel>tema</QuickLabel>
-        <QuickTemaChips options={TEMI_OPTIONS} value={form.tema} onChange={v => f('tema', v)} variant="pill" />
+        <QuickLabel>tema <span className="text-zinc-500 font-normal normal-case">(max 2)</span></QuickLabel>
+        <QuickTemaChips options={TEMI_OPTIONS} value={form.temi} onChange={temi => f('temi', temi)} variant="pill" />
       </QuickCard>
 
       <QuickCard>
@@ -2709,7 +2803,7 @@ const QuickPartecipaScreen = ({ user, allVideos }) => {
 // ═══ Aggiungi (admin) ═══
 const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
   const [form, setForm] = useState({
-    title: '', youtube_url: '', tema: '', natura: '',
+    title: '', youtube_url: '', temi: [], natura: '',
     year: new Date().getFullYear(), description: '',
     prodotto_scuola: false, formato: 'verticale', duration: '', codice: '',
     thumbnail: '',
@@ -2732,7 +2826,7 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
 
   const f = (field, val) => setForm(prev => ({ ...prev, [field]: val }));
   const platform = form.youtube_url.trim() ? detectPlatform(form.youtube_url) : null;
-  const cardAccent = form.tema ? (TEMA_COLORS[form.tema] || TEMA_COLORS['Altro']).border : undefined;
+  const cardAccent = form.temi?.[0] ? (TEMA_COLORS[form.temi[0]] || TEMA_COLORS['Altro']).border : undefined;
   const duplicateMatch = useMemo(() => findDuplicateByUrl(form.youtube_url, allVideos), [form.youtube_url, allVideos]);
 
   const handleUrlBlur = async () => {
@@ -2752,7 +2846,7 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
   };
 
   const resetForm = (nextCodice) => setForm({
-    title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(),
+    title: '', youtube_url: '', temi: [], natura: '', year: new Date().getFullYear(),
     description: '', prodotto_scuola: false, formato: 'verticale', duration: '', codice: nextCodice, thumbnail: '',
   });
 
@@ -2775,7 +2869,7 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
         body: JSON.stringify({
           youtubeUrl: form.youtube_url,
           title: form.title || undefined,
-          tema: form.tema || undefined,
+          tema: form.temi?.[0] || undefined,
         }),
       });
       const data = await res.json();
@@ -2811,7 +2905,7 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
           youtubeUrl: form.youtube_url,
           codice: form.codice,
           title: form.title,
-          tema: form.tema,
+          tema: form.temi?.[0],
           natura: form.natura,
         }),
       });
@@ -2829,7 +2923,7 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
     if (!form.title.trim()) { setMsg({ type: 'error', text: 'Titolo obbligatorio.' }); return false; }
     if (!form.codice.trim()) { setMsg({ type: 'error', text: 'Codice ID obbligatorio.' }); return false; }
     if (!form.youtube_url.trim()) { setMsg({ type: 'error', text: 'URL Video obbligatorio.' }); return false; }
-    if (!form.tema) { setMsg({ type: 'error', text: 'Tema obbligatorio.' }); return false; }
+    if (!form.temi?.length) { setMsg({ type: 'error', text: 'Almeno un tema obbligatorio.' }); return false; }
     if (!form.natura) { setMsg({ type: 'error', text: 'Natura obbligatoria.' }); return false; }
     if (!form.year) { setMsg({ type: 'error', text: 'Anno obbligatorio.' }); return false; }
     if (!form.duration.trim()) { setMsg({ type: 'error', text: 'Durata obbligatoria.' }); return false; }
@@ -2851,7 +2945,8 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
       title: form.title.trim(),
       youtube_url: trimmedUrl || null,
       thumbnail: thumbnailUrl,
-      tema: form.tema || null,
+      tema: form.temi?.[0] || null,
+      temi: form.temi?.length ? form.temi : null,
       natura: form.natura || null,
       year: form.year ? parseInt(form.year) : null,
       description: form.description.trim() || null,
@@ -2897,7 +2992,8 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
       user_id: userProfile.id,
       title: form.title.trim(),
       youtube_url: form.youtube_url.trim() || null,
-      tema: form.tema || null,
+      tema: form.temi?.[0] || null,
+      temi: form.temi?.length ? form.temi : null,
       natura: form.natura || null,
       year: form.year ? parseInt(form.year) : null,
       description: form.description.trim() || null,
@@ -2925,8 +3021,8 @@ const QuickAggiungiScreen = ({ userProfile, allVideos, onVideoApproved }) => {
       </div>
 
       <QuickCard>
-        <QuickLabel>tema</QuickLabel>
-        <QuickTemaChips options={TEMI_OPTIONS} value={form.tema} onChange={v => f('tema', v)} variant="pill" />
+        <QuickLabel>tema <span className="text-zinc-500 font-normal normal-case">(max 2)</span></QuickLabel>
+        <QuickTemaChips options={TEMI_OPTIONS} value={form.temi} onChange={temi => f('temi', temi)} variant="pill" />
       </QuickCard>
 
       <QuickCard>
@@ -3108,10 +3204,12 @@ const QuickMyVideosScreen = ({ user, onSelectVideo }) => {
   const handleSave = async (sub) => {
     const form = editForms[sub.id] || {};
     setSavingId(sub.id);
+    const nextTemi = form.temi ?? asTemi(sub);
     const { error } = await supabase.from('video_submissions').update({
       youtube_url: form.youtube_url ?? sub.youtube_url,
       title: form.title ?? sub.title,
-      tema: form.tema ?? sub.tema,
+      tema: nextTemi[0] || null,
+      temi: nextTemi.length ? nextTemi : null,
       description: form.description ?? sub.description,
       prodotto_scuola: form.prodotto_scuola ?? sub.prodotto_scuola,
     }).eq('id', sub.id).eq('status', 'draft');
@@ -3175,7 +3273,7 @@ const QuickMyVideosScreen = ({ user, onSelectVideo }) => {
                   <div className="space-y-2.5">
                     <QuickInput value={form.title ?? sub.title ?? ''} onChange={e => ef(sub.id, 'title', e.target.value)} placeholder="titolo" />
                     <QuickInput value={form.youtube_url ?? sub.youtube_url ?? ''} onChange={e => ef(sub.id, 'youtube_url', e.target.value)} placeholder="link video" />
-                    <QuickTemaChips options={TEMI_OPTIONS} value={form.tema ?? sub.tema ?? ''} onChange={v => ef(sub.id, 'tema', v)} />
+                    <QuickTemaChips options={TEMI_OPTIONS} value={form.temi ?? asTemi(sub)} onChange={temi => ef(sub.id, 'temi', temi)} />
                     <textarea value={form.description ?? sub.description ?? ''} onChange={e => ef(sub.id, 'description', e.target.value)} placeholder="descrizione" rows={2} className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3.5 py-3 text-[16px] text-white placeholder-zinc-500 outline-none resize-none" />
                     <div className="flex gap-2 pt-1">
                       <button onClick={() => setEditingId(null)} className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-zinc-800 text-zinc-300">annulla</button>
@@ -3200,7 +3298,7 @@ const QuickMyVideosScreen = ({ user, onSelectVideo }) => {
                       <div className="min-w-0 flex-1">
                         <p className="text-[14px] font-semibold truncate">{sub.title || 'senza titolo'}</p>
                         <div className="flex items-center gap-1.5 text-[11.5px] text-zinc-500 mt-0.5">
-                          {sub.tema && <span className="text-[10.5px] font-bold px-1.5 py-0.5 rounded" style={{ backgroundColor: (TEMA_COLORS[sub.tema] || TEMA_COLORS['Altro']).dim, color: (TEMA_COLORS[sub.tema] || TEMA_COLORS['Altro']).border }}>{sub.tema}</span>}
+                          {asTemi(sub).map(t => <span key={t} className="text-[10.5px] font-bold px-1.5 py-0.5 rounded" style={{ backgroundColor: (TEMA_COLORS[t] || TEMA_COLORS['Altro']).dim, color: (TEMA_COLORS[t] || TEMA_COLORS['Altro']).border }}>{t}</span>)}
                           {status === 'draft' && <span>da completare</span>}
                           {status === 'pending' && <span>in revisione</span>}
                           {status === 'approved' && <span>in archivio</span>}
@@ -3244,6 +3342,7 @@ const submissionToVideo = (sub) => ({
   youtubeUrl: sub.youtube_url,
   format: sub.formato || 'orizzontale',
   tema: sub.tema,
+  temi: asTemi(sub),
   natura: sub.natura,
   year: sub.year,
   duration: sub.duration,
@@ -3266,7 +3365,8 @@ const PendingSubmissionCard = ({
   onDeleteRequest, onDeleteConfirm, onDeleteCancel, allVideos,
 }) => {
   const c = TEMA_COLORS[sub.tema] || TEMA_COLORS['Altro'];
-  const cardAccent = (form.tema ?? sub.tema) ? (TEMA_COLORS[form.tema ?? sub.tema] || TEMA_COLORS['Altro']).border : undefined;
+  const formTemi = form.temi ?? asTemi(sub);
+  const cardAccent = formTemi[0] ? (TEMA_COLORS[formTemi[0]] || TEMA_COLORS['Altro']).border : undefined;
   const busy = saving || deleting;
 
   if (!editing) {
@@ -3279,9 +3379,9 @@ const PendingSubmissionCard = ({
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-[15px] font-semibold truncate">{sub.title || 'senza titolo'}</p>
-              {sub.tema && (
-                <span className="inline-block text-[13px] font-bold px-2 py-0.5 rounded mt-1" style={{ backgroundColor: c.dim, color: c.border }}>{sub.tema}</span>
-              )}
+              {asTemi(sub).map(t => { const tc = TEMA_COLORS[t] || TEMA_COLORS['Altro']; return (
+                <span key={t} className="inline-block text-[13px] font-bold px-2 py-0.5 rounded mt-1 mr-1" style={{ backgroundColor: tc.dim, color: tc.border }}>{t}</span>
+              ); })}
               <p className="text-[13px] text-zinc-500 mt-1">in revisione</p>
             </div>
           </div>
@@ -3317,7 +3417,7 @@ const PendingSubmissionCard = ({
 
   return (
     <QuickCard className="!p-3.5 space-y-2.5">
-      <QuickTemaChips options={TEMI_OPTIONS} value={form.tema ?? sub.tema ?? ''} onChange={v => onFieldChange('tema', v)} variant="pill" />
+      <QuickTemaChips options={TEMI_OPTIONS} value={formTemi} onChange={temi => onFieldChange('temi', temi)} variant="pill" />
       <QuickInput accentColor={cardAccent} value={form.youtube_url ?? sub.youtube_url ?? ''} onChange={e => onFieldChange('youtube_url', e.target.value)} placeholder="link video" />
       {(() => {
         const dup = findDuplicateByUrl(form.youtube_url ?? sub.youtube_url, allVideos);
@@ -3385,7 +3485,8 @@ const ArchiveVideoCard = ({
   onAddToPlaylist, inPlaylist,
 }) => {
   const c = TEMA_COLORS[video.tema] || TEMA_COLORS['Altro'];
-  const cardAccent = (form.tema ?? video.tema) ? (TEMA_COLORS[form.tema ?? video.tema] || TEMA_COLORS['Altro']).border : undefined;
+  const formTemi = form.temi ?? asTemi(video);
+  const cardAccent = formTemi[0] ? (TEMA_COLORS[formTemi[0]] || TEMA_COLORS['Altro']).border : undefined;
   const busy = saving || deleting;
 
   if (!editing) {
@@ -3399,7 +3500,9 @@ const ArchiveVideoCard = ({
             <div className="min-w-0 flex-1">
               <p className="text-[15px] font-semibold leading-snug line-clamp-2">{video.title}</p>
               <div className="flex items-center gap-2 text-[14.5px] text-zinc-500 mt-1">
-                {video.tema && <span className="text-[13px] font-bold px-2 py-0.5 rounded" style={{ backgroundColor: c.dim, color: c.border }}>{video.tema}</span>}
+                {asTemi(video).map(t => { const tc = TEMA_COLORS[t] || TEMA_COLORS['Altro']; return (
+                  <span key={t} className="text-[13px] font-bold px-2 py-0.5 rounded" style={{ backgroundColor: tc.dim, color: tc.border }}>{t}</span>
+                ); })}
                 <span style={{ fontVariantNumeric: 'tabular-nums' }}>{video.codice}</span>
               </div>
             </div>
@@ -3435,7 +3538,7 @@ const ArchiveVideoCard = ({
 
   return (
     <QuickCard className="!p-3.5 space-y-2.5">
-      <QuickTemaChips options={TEMI_OPTIONS} value={form.tema ?? video.tema ?? ''} onChange={v => onFieldChange('tema', v)} variant="pill" />
+      <QuickTemaChips options={TEMI_OPTIONS} value={formTemi} onChange={temi => onFieldChange('temi', temi)} variant="pill" />
       <QuickInput accentColor={cardAccent} value={form.youtubeUrl ?? video.youtubeUrl ?? ''} onChange={e => onFieldChange('youtubeUrl', e.target.value)} placeholder="link video" />
       <QuickInput accentColor={cardAccent} value={form.title ?? video.title ?? ''} onChange={e => onFieldChange('title', e.target.value)} placeholder="titolo" />
       <CustomSelect value={form.natura ?? video.natura ?? ''} onChange={v => onFieldChange('natura', v)} options={natOptions} accentColor={cardAccent || '#FFDA2A'} coloredBorder={!!cardAccent} />
@@ -3560,11 +3663,13 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo, onAddTo
     const form = archiveEditForms[video.id] || {};
     setSavingArchiveId(video.id);
     const ytId = form.youtubeUrl ? extractYouTubeId(form.youtubeUrl) : null;
+    const nextTemi = form.temi ?? asTemi(video);
     const { error } = await supabase.from('videos').update({
       title: form.title?.trim() || video.title,
       youtube_url: form.youtubeUrl?.trim() || video.youtubeUrl,
       thumbnail: ytId ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` : video.thumbnail,
-      tema: form.tema || video.tema,
+      tema: nextTemi[0] || null,
+      temi: nextTemi.length ? nextTemi : null,
       natura: form.natura || video.natura,
       year: form.year ? parseInt(form.year) : video.year,
       duration: form.duration || video.duration,
@@ -3600,10 +3705,12 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo, onAddTo
   const handleSaveSubEdit = async (sub) => {
     const form = subEditForms[sub.id] || {};
     setSavingSubId(sub.id);
+    const nextTemi = form.temi ?? asTemi(sub);
     const { error } = await supabase.from('video_submissions').update({
       title: form.title?.trim() || sub.title,
       youtube_url: form.youtube_url?.trim() || sub.youtube_url,
-      tema: form.tema || sub.tema,
+      tema: nextTemi[0] || null,
+      temi: nextTemi.length ? nextTemi : null,
       natura: form.natura || sub.natura,
       year: form.year ? parseInt(form.year) : sub.year,
       duration: form.duration || sub.duration,
@@ -3624,7 +3731,7 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo, onAddTo
     const merged = {
       title: (form.title ?? sub.title ?? '').trim(),
       youtube_url: (form.youtube_url ?? sub.youtube_url ?? '').trim(),
-      tema: form.tema ?? sub.tema ?? '',
+      temi: form.temi ?? asTemi(sub),
       natura: form.natura ?? sub.natura ?? '',
       year: form.year ?? sub.year ?? '',
       duration: (form.duration ?? sub.duration ?? '').toString().trim(),
@@ -3633,7 +3740,7 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo, onAddTo
       prodotto_scuola: form.prodotto_scuola ?? sub.prodotto_scuola ?? false,
       codice: (form.codice ?? sub.codice ?? '').trim(),
     };
-    if (!merged.title || !merged.codice || !merged.youtube_url || !merged.tema || !merged.natura || !merged.year || !merged.duration || !merged.description) {
+    if (!merged.title || !merged.codice || !merged.youtube_url || !merged.temi.length || !merged.natura || !merged.year || !merged.duration || !merged.description) {
       openSubEdit(sub);
       setSubMsg({ id: sub.id, type: 'error', text: 'completa i campi mancanti prima di approvare' });
       return;
@@ -3665,7 +3772,8 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo, onAddTo
       title: merged.title,
       youtube_url: finalUrl,
       thumbnail: thumb,
-      tema: merged.tema,
+      tema: merged.temi[0] || null,
+      temi: merged.temi.length ? merged.temi : null,
       natura: merged.natura,
       year: parseInt(merged.year),
       duration: merged.duration || '0:00',
@@ -3715,7 +3823,9 @@ const QuickArchiveScreen = ({ allVideos, onVideoApproved, onSelectVideo, onAddTo
         <div className="min-w-0 flex-1">
           <p className="text-[13.5px] font-semibold truncate">{sub.title || 'senza titolo'}</p>
           <div className="flex items-center gap-1.5 text-[11px] text-zinc-500 mt-0.5">
-            {sub.tema && <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ backgroundColor: c.dim, color: c.border }}>{sub.tema}</span>}
+            {asTemi(sub).map(t => { const tc = TEMA_COLORS[t] || TEMA_COLORS['Altro']; return (
+              <span key={t} className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ backgroundColor: tc.dim, color: tc.border }}>{t}</span>
+            ); })}
             <span>{statusLabel}</span>
           </div>
         </div>
@@ -4420,9 +4530,8 @@ const AuthModal = ({ mode: initialMode, onClose, dismissible = true }) => {
 
 // ─── SubmitVideoSection ────────────────────────────────────────────────────────
 const NATURE_OPTIONS = ['Cortometraggio', 'Film', 'Info', 'Sequenze', 'Spot commerciale', 'Spot sociale', 'Videoclip', 'Web e social'];
-const TEMI_OPTIONS = ['Alcool', 'Azzardo', 'Digitale', 'Sostanze', 'Tabacco', 'Sessualità', 'Altro'];
 
-const SUBMIT_VIDEO_INITIAL_FORM = { title: '', youtube_url: '', tema: '', description: '', prodotto_scuola: false, thumbnail: '' };
+const SUBMIT_VIDEO_INITIAL_FORM = { title: '', youtube_url: '', temi: [], description: '', prodotto_scuola: false, thumbnail: '' };
 
 const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSaved, allVideos }) => {
   const [form, setForm] = useState(SUBMIT_VIDEO_INITIAL_FORM);
@@ -4492,7 +4601,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
         body: JSON.stringify({
           youtubeUrl: form.youtube_url,
           title: form.title || undefined,
-          tema: form.tema || undefined,
+          tema: form.temi?.[0] || undefined,
         }),
       });
       const data = await res.json();
@@ -4522,7 +4631,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
   const handleSubmit = async (statusTarget, requireTitle = true) => {
     if (!form.youtube_url.trim()) { setError('Il link del video è obbligatorio.'); return; }
     if (requireTitle && !form.title.trim()) { setError('Il titolo è obbligatorio.'); return; }
-    if (statusTarget === 'pending' && !form.tema) { setError('Seleziona un tema.'); return; }
+    if (statusTarget === 'pending' && !form.temi?.length) { setError('Seleziona almeno un tema.'); return; }
     setLoading(true);
     setError(null);
     const p = detectPlatform(form.youtube_url.trim());
@@ -4531,7 +4640,8 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
       tipo: p,
       title: form.title.trim() || null,
       youtube_url: form.youtube_url.trim(),
-      tema: form.tema || null,
+      tema: form.temi?.[0] || null,
+      temi: form.temi?.length ? form.temi : null,
       formato: (p === 'tiktok' || p === 'instagram') ? 'verticale' : 'orizzontale',
       description: form.description.trim() || null,
       prodotto_scuola: form.prodotto_scuola,
@@ -4550,7 +4660,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
 
   const handleSendLinkClick = () => {
     if (!form.youtube_url.trim()) { setError('Il link del video è obbligatorio.'); return; }
-    if (!form.tema) { setError('Seleziona un tema.'); return; }
+    if (!form.temi?.length) { setError('Seleziona almeno un tema.'); return; }
     setError(null);
     setConfirmSendLink(true);
   };
@@ -4558,14 +4668,14 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
   const handleFinalSubmitClick = () => {
     if (!form.youtube_url.trim()) { setError('Il link del video è obbligatorio.'); return; }
     if (!form.title.trim()) { setError('Il titolo è obbligatorio.'); return; }
-    if (!form.tema) { setError('Seleziona un tema.'); return; }
+    if (!form.temi?.length) { setError('Seleziona almeno un tema.'); return; }
     setError(null);
     setConfirmFinalSubmit(true);
   };
 
   // errore mostrato anche accanto a "Invia link" (non solo in fondo alla
   // pagina, troppo lontano da questo bottone per essere notato)
-  const sendLinkError = error === 'Il link del video è obbligatorio.' || error === 'Seleziona un tema.' ? error : null;
+  const sendLinkError = error === 'Il link del video è obbligatorio.' || error === 'Seleziona almeno un tema.' ? error : null;
 
   const clearUrl = () => setForm(prev => ({ ...prev, youtube_url: '', thumbnail: '' }));
 
@@ -4711,21 +4821,22 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">Tema *</label>
+          <label className="block text-sm font-medium text-zinc-300 mb-1.5">Tema * <span className="text-zinc-500 font-normal">(max 2)</span></label>
           <div className="flex flex-wrap gap-2">
             {TEMI_OPTIONS.map(tema => {
               const c = TEMA_COLORS[tema];
-              const active = form.tema === tema;
+              const active = (form.temi || []).includes(tema);
+              const dimmed = !active && (form.temi || []).filter(t => t !== 'Altro').length >= MAX_TEMI && tema !== 'Altro';
               return (
                 <button
                   key={tema}
                   type="button"
-                  onClick={() => f('tema', active ? '' : tema)}
+                  onClick={() => f('temi', toggleTema(form.temi, tema))}
                   className="px-4 py-2 rounded-lg text-sm font-medium transition-all text-white"
                   style={{
                     backgroundColor: active ? c.btnActive : 'transparent',
                     border: `2px solid ${c.border}`,
-                    opacity: 1,
+                    opacity: dimmed ? 0.35 : 1,
                   }}
                 >
                   {tema}
@@ -4819,10 +4930,12 @@ const MyVideosSection = ({ user, onNewVideo }) => {
   const handleSaveDraft = async (sub) => {
     const ef = myEditForms[sub.id] || {};
     setMySavingId(sub.id);
+    const nextTemi = ef.temi ?? asTemi(sub);
     const { error } = await supabase.from('video_submissions').update({
       youtube_url: ef.youtube_url ?? sub.youtube_url,
       title: ef.title ?? sub.title,
-      tema: ef.tema ?? sub.tema,
+      tema: nextTemi[0] || null,
+      temi: nextTemi.length ? nextTemi : null,
       description: ef.description ?? sub.description,
       prodotto_scuola: ef.prodotto_scuola ?? sub.prodotto_scuola,
     }).eq('id', sub.id).eq('status', 'draft');
@@ -4886,9 +4999,9 @@ const MyVideosSection = ({ user, onNewVideo }) => {
                 <span className="text-xs px-2 py-0.5 rounded-full font-semibold flex-shrink-0"
                   style={{ color: badge.color, backgroundColor: badge.bg }}>{badge.label}</span>
               </div>
-              {sub.tema && (() => { const c = TEMA_COLORS[sub.tema]; return (
-                <span className="inline-block text-xs px-2 py-0.5 rounded font-semibold mr-1" style={{ backgroundColor: c?.solid || '#52525b', color: '#fff' }}>{sub.tema}</span>
-              ); })()}
+              {asTemi(sub).map(t => { const c = TEMA_COLORS[t]; return (
+                <span key={t} className="inline-block text-xs px-2 py-0.5 rounded font-semibold mr-1" style={{ backgroundColor: c?.solid || '#52525b', color: '#fff' }}>{t}</span>
+              ); })}
               {sub.youtube_url && (
                 <a href={sub.youtube_url} target="_blank" rel="noopener noreferrer"
                   className="text-xs text-blue-400 hover:underline mt-1 block truncate">{sub.youtube_url}</a>
@@ -4947,15 +5060,17 @@ const MyVideosSection = ({ user, onNewVideo }) => {
                   className="w-full bg-zinc-900 border border-zinc-600 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500" />
               </div>
               <div>
-                <label className="block text-xs font-medium text-zinc-400 mb-1">Tema</label>
+                <label className="block text-xs font-medium text-zinc-400 mb-1">Tema <span className="text-zinc-500 font-normal">(max 2)</span></label>
                 <div className="flex flex-wrap gap-2">
                   {TEMI_OPTIONS.map(tema => {
                     const c = TEMA_COLORS[tema];
-                    const active = (ef.tema ?? sub.tema) === tema;
+                    const efTemi = ef.temi ?? asTemi(sub);
+                    const active = efTemi.includes(tema);
+                    const dimmed = !active && efTemi.filter(t => t !== 'Altro').length >= MAX_TEMI && tema !== 'Altro';
                     return (
-                      <button key={tema} type="button" onClick={() => mef(sub.id, 'tema', tema)}
+                      <button key={tema} type="button" onClick={() => mef(sub.id, 'temi', toggleTema(efTemi, tema))}
                         className="px-3 py-1.5 rounded-lg text-xs font-medium text-white transition-all"
-                        style={{ backgroundColor: active ? c.btnActive : 'transparent', border: `2px solid ${c.border}` }}>
+                        style={{ backgroundColor: active ? c.btnActive : 'transparent', border: `2px solid ${c.border}`, opacity: dimmed ? 0.35 : 1 }}>
                         {tema}
                       </button>
                     );
@@ -5067,7 +5182,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const [submissions, setSubmissions] = useState([]);
   const [loadingSubs, setLoadingSubs] = useState(true);
   const [form, setForm] = useState({
-    title: '', youtube_url: '', tema: '', natura: '',
+    title: '', youtube_url: '', temi: [], natura: '',
     year: new Date().getFullYear(), description: '',
     prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: '',
     thumbnail: '',
@@ -5119,6 +5234,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const [archiveLoaded, setArchiveLoaded] = useState(false);
   const [archiveSearch, setArchiveSearch] = useState('');
   const [archiveTema, setArchiveTema] = useState('');
+  // 2° tema selezionabile insieme al primo (intersezione), stesso schema di FiltersSection in home.
+  const [archiveTema2, setArchiveTema2] = useState(null);
   const [archiveNatura, setArchiveNatura] = useState('');
   const [archiveScuola, setArchiveScuola] = useState(false);
   const [archiveSortDesc, setArchiveSortDesc] = useState(true);
@@ -5134,6 +5251,20 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const [dupScanLoading, setDupScanLoading] = useState(false);
   const [dupScanGroups, setDupScanGroups] = useState(null); // null = mai lanciato, [] = nessun duplicato trovato
   const [dupScanError, setDupScanError] = useState(null);
+  // Backfill "fase 3" multitema — a comando, mai automatico (vedi api/find-secondary-temi.js)
+  const [secTemiLoading, setSecTemiLoading] = useState(false);
+  const [secTemiCandidates, setSecTemiCandidates] = useState(null); // null = mai lanciato, [] = nessun candidato (o scan in corso)
+  const [secTemiError, setSecTemiError] = useState(null);
+  const [secTemiProgress, setSecTemiProgress] = useState(null); // "2/4" mentre itera i chunk, null altrimenti
+  // Lock anti-doppio-avvio: un ref (non uno state) perché deve essere letto/scritto in modo
+  // sincrono nello stesso istante del click, senza aspettare un giro di render — un secondo
+  // click/chiamata mentre uno scan è già in corso (es. l'utente riclicca "Verifica temi
+  // secondari" pensando che si sia bloccato, magari dopo che il Mac è uscito da standby e lo
+  // scan sospeso si è "risvegliato" da solo) altrimenti fa partire 2 scan indipendenti che
+  // scrivono nella stessa lista — bug reale riscontrato dal vivo (duplicati esatti ripetuti).
+  const secTemiRunningRef = useRef(false);
+  const [secTemiDoneIds, setSecTemiDoneIds] = useState(new Set()); // confermati o scartati in questa sessione di review
+  const [secTemiSavingId, setSecTemiSavingId] = useState(null);
 
   // Utenti
   const [users, setUsers] = useState([]);
@@ -5180,6 +5311,81 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       setDupScanGroups(null);
     }
     setDupScanLoading(false);
+  };
+
+  // Backfill "fase 3" multitema — a comando dal bottone in Archivio, mai automatico.
+  // Propone un possibile 2° tema per i video con un solo tema reale, ad alta confidenza.
+  // L'endpoint divide il catalogo in chunk (vedi api/find-secondary-temi.js — un giro unico
+  // su tutti i ~456 candidati supera i timeout pratici end-to-end): si chiama in sequenza
+  // una volta per chunk, accumulando i risultati man mano — così anche se un chunk fallisce
+  // a metà, quelli già trovati restano visibili e utilizzabili invece di perdersi tutti.
+  const handleFindSecondaryTemi = async () => {
+    if (secTemiRunningRef.current) return; // scan già in corso, ignora il click/chiamata
+    secTemiRunningRef.current = true;
+    setSecTemiLoading(true);
+    setSecTemiError(null);
+    setSecTemiCandidates([]);
+    setSecTemiDoneIds(new Set());
+    let chunkIndex = 0;
+    let totalChunks = 1;
+    // Snapshot dei candidati (vedi api/find-secondary-temi.js) catturato dalla prima
+    // risposta e ripassato indietro identico per tutti i chunk successivi — se confermi
+    // un candidato mentre lo scan è ancora in corso (normale: si conferma man mano) NON
+    // deve alterare il pool degli altri chunk già decisi, altrimenti gli stessi video
+    // tornano proposti più volte (bug reale riscontrato e corretto).
+    let candidateLines = null;
+    const all = [];
+    try {
+      while (chunkIndex < totalChunks) {
+        setSecTemiProgress(totalChunks > 1 ? `${chunkIndex + 1}/${totalChunks}` : null);
+        const res = await fetch('/api/find-secondary-temi', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chunkIndex, candidateLines }),
+        });
+        const data = await res.json();
+        if (!res.ok) { setSecTemiError(data.error || `Errore durante il chunk ${chunkIndex + 1}.`); break; }
+        // Dedup difensivo su (id + temaSuggerito) — non dovrebbe mai servire (ogni video è in
+        // UN SOLO chunk grazie allo snapshot sopra), ma protegge comunque da un'eventuale
+        // ripetizione dello stesso elemento nell'array restituito dal modello in una singola
+        // risposta, o da un secondo scan avviato per errore mentre uno era già in corso.
+        const seen = new Set(all.map(c => `${c.id}|${c.temaSuggerito}`));
+        for (const c of (data.candidates || [])) {
+          const key = `${c.id}|${c.temaSuggerito}`;
+          if (seen.has(key)) continue;
+          seen.add(key);
+          all.push(c);
+        }
+        setSecTemiCandidates([...all]); // aggiornamento incrementale, visibile subito
+        totalChunks = data.totalChunks || 1;
+        candidateLines = data.candidateLines || candidateLines;
+        chunkIndex += 1;
+      }
+    } catch (e) {
+      setSecTemiError(e.message || 'Errore imprevisto.');
+    }
+    setSecTemiProgress(null);
+    setSecTemiLoading(false);
+    secTemiRunningRef.current = false;
+  };
+
+  // Conferma: scrive temi:[temaAttuale, temaSuggerito] per QUEL video soltanto. Mai in blocco.
+  // Un video può avere al massimo 2 temi: se lo scan ha proposto più suggerimenti diversi
+  // per lo stesso id (capita, es. sia "Sessualità" sia "Digitale"), il Set è chiavato per
+  // id — confermarne uno nasconde automaticamente anche gli altri per lo stesso video, non
+  // c'è più posto per un 3° tema.
+  const handleConfirmSecondaryTema = async (cand) => {
+    setSecTemiSavingId(cand.id);
+    const { error } = await supabase.from('videos').update({ temi: [cand.temaAttuale, cand.temaSuggerito] }).eq('id', cand.id);
+    setSecTemiSavingId(null);
+    if (error) { alert('Errore salvataggio: ' + error.message); return; }
+    setSecTemiDoneIds(prev => new Set(prev).add(cand.id));
+    onVideoApproved?.();
+    scheduleCatalogRebuild();
+  };
+
+  const handleDiscardSecondaryTema = (id) => {
+    setSecTemiDoneIds(prev => new Set(prev).add(id));
   };
 
   // Autofill titolo/thumbnail/URL canonico quando il campo URL (tab Aggiungi) è TikTok/Instagram
@@ -5248,6 +5454,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     views: v.views || 0,
     formato: v.format || v.formato || 'orizzontale',
     tema: v.tema || '',
+    temi: v.temi?.length ? v.temi : (v.tema ? [v.tema] : []),
     natura: v.natura || '',
     prodotto_scuola: v.prodottoScuola ?? v.prodotto_scuola ?? false,
     description: v.description || '',
@@ -5290,6 +5497,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
 
   const handleApprove = async (sub, saveToNas = false) => {
     const edited = { ...sub, ...(editForms[sub.id] || {}) };
+    const editedTemi = edited.temi?.length ? edited.temi : asTemi(edited);
     if (!edited.codice?.trim()) { setApproveError(sub.id + ':Il campo Codice ID è obbligatorio'); return; }
     const platform = detectPlatform(edited.youtube_url);
     const ytId = extractYouTubeId(edited.youtube_url);
@@ -5324,7 +5532,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       year: edited.year ? parseInt(edited.year) : null,
       views: 0,
       formato: edited.formato || 'orizzontale',
-      tema: edited.tema || null,
+      tema: editedTemi[0] || null,
+      temi: editedTemi.length ? editedTemi : null,
       natura: edited.natura || null,
       prodotto_scuola: edited.prodotto_scuola || false,
       description: edited.description || null,
@@ -5356,7 +5565,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
             youtubeUrl: edited.youtube_url,
             codice: edited.codice.trim(),
             title: edited.title,
-            tema: edited.tema,
+            tema: editedTemi[0],
             natura: edited.natura,
           }),
         });
@@ -5405,6 +5614,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     setSavingVideoId(video.id);
     const newUrl = vf.youtube_url ?? video.youtube_url;
     const ytId = newUrl ? extractYouTubeId(newUrl) : null;
+    const newTemi = vf.temi ?? asTemi(video);
     const fullRecord = {
       id: video.id,
       title: vf.title ?? video.title,
@@ -5413,7 +5623,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       duration: vf.duration ?? video.duration ?? '0:00',
       year: vf.year !== undefined ? (vf.year ? parseInt(vf.year) : null) : (video.year || null),
       formato: vf.formato ?? video.formato ?? 'orizzontale',
-      tema: vf.tema !== undefined ? (vf.tema || null) : (video.tema || null),
+      tema: newTemi[0] || null,
+      temi: newTemi.length ? newTemi : null,
       natura: vf.natura !== undefined ? (vf.natura || null) : (video.natura || null),
       prodotto_scuola: vf.prodotto_scuola ?? video.prodotto_scuola ?? false,
       description: vf.description ?? video.description ?? null,
@@ -5515,20 +5726,23 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
 
   const filteredArchive = useMemo(() => archiveVideos.filter(v => {
     const s = archiveSearch.toLowerCase();
-    return (!s || v.title?.toLowerCase().includes(s) || v.description?.toLowerCase().includes(s))
-      && (!archiveTema || v.tema === archiveTema)
+    return (!s || v.title?.toLowerCase().includes(s) || v.description?.toLowerCase().includes(s) || v.codice?.toLowerCase().includes(s) || v.id?.toLowerCase().includes(s))
+      && (!archiveTema || asTemi(v).includes(archiveTema))
+      && (!archiveTema2 || asTemi(v).includes(archiveTema2))
       && (!archiveNatura || v.natura === archiveNatura)
       && (!archiveScuola || v.prodotto_scuola);
   }).sort((a, b) => archiveSortDesc ? compareArchiveTime(a, b) : compareArchiveTime(b, a)),
-  [archiveVideos, archiveSearch, archiveTema, archiveNatura, archiveScuola, archiveSortDesc]);
+  [archiveVideos, archiveSearch, archiveTema, archiveTema2, archiveNatura, archiveScuola, archiveSortDesc]);
 
   const handleEditSave = async (sub) => {
     const ef_val = editForms[sub.id] || {};
     setActionLoading(sub.id + '_edit');
+    const editSaveTemi = ef_val.temi ?? asTemi(sub);
     const { error } = await supabase.from('video_submissions').update({
       youtube_url: ef_val.youtube_url ?? sub.youtube_url,
       title: ef_val.title ?? sub.title,
-      tema: ef_val.tema ?? sub.tema,
+      tema: editSaveTemi[0] || null,
+      temi: editSaveTemi.length ? editSaveTemi : null,
       natura: ef_val.natura ?? sub.natura,
       year: ef_val.year ?? sub.year,
       formato: ef_val.formato ?? sub.formato,
@@ -5565,13 +5779,13 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
           tRes = await fetch('/api/transcribe', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ blobUrl: blob.url, title: form.title, tema: form.tema }),
+            body: JSON.stringify({ blobUrl: blob.url, title: form.title, tema: form.temi?.[0] }),
           });
         } else {
           const fd = new FormData();
           fd.append('file', nasFile);
           if (form.title) fd.append('title', form.title);
-          if (form.tema) fd.append('tema', form.tema);
+          if (form.temi?.[0]) fd.append('tema', form.temi[0]);
           tRes = await fetch('/api/transcribe', { method: 'POST', body: fd });
         }
         const tData = await tRes.json();
@@ -5598,7 +5812,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
           body: JSON.stringify({
             youtubeUrl: form.youtube_url,
             title: form.title || undefined,
-            tema: form.tema || undefined,
+            tema: form.temi?.[0] || undefined,
             transcript,
           }),
         });
@@ -5632,7 +5846,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
           youtubeUrl: form.youtube_url,
           codice: form.codice,
           title: form.title,
-          tema: form.tema,
+          tema: form.temi?.[0],
           natura: form.natura,
         }),
       });
@@ -5650,7 +5864,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     if (!form.title.trim()) { setSaveMsg({ type: 'error', text: 'Titolo obbligatorio.' }); return false; }
     if (!form.codice.trim()) { setSaveMsg({ type: 'error', text: 'Codice ID obbligatorio.' }); return false; }
     if (!form.youtube_url.trim()) { setSaveMsg({ type: 'error', text: 'URL Video obbligatorio.' }); return false; }
-    if (!form.tema) { setSaveMsg({ type: 'error', text: 'Tema obbligatorio.' }); return false; }
+    if (!form.temi?.length) { setSaveMsg({ type: 'error', text: 'Almeno un tema obbligatorio.' }); return false; }
     if (!form.natura) { setSaveMsg({ type: 'error', text: 'Natura obbligatoria.' }); return false; }
     if (!form.year) { setSaveMsg({ type: 'error', text: 'Anno obbligatorio.' }); return false; }
     if (!form.duration.trim()) { setSaveMsg({ type: 'error', text: 'Durata obbligatoria.' }); return false; }
@@ -5673,7 +5887,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       title: form.title.trim(),
       youtube_url: trimmedUrl || null,
       thumbnail: thumbnailUrl,
-      tema: form.tema || null,
+      tema: form.temi?.[0] || null,
+      temi: form.temi?.length ? form.temi : null,
       natura: form.natura || null,
       year: form.year ? parseInt(form.year) : null,
       description: form.description.trim() || null,
@@ -5690,7 +5905,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       return false;
     }
     setSaveMsg({ type: 'success', text: 'Video aggiunto all\'archivio ADAM' });
-    setForm({ title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: bumpCodice(form.codice, allVideos), thumbnail: '' });
+    setForm({ title: '', youtube_url: '', temi: [], natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: bumpCodice(form.codice, allVideos), thumbnail: '' });
     setSynopsisWarning('');
     setManualTranscript('');
     setShowTranscriptInput(false);
@@ -5720,7 +5935,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       user_id: userProfile.id,
       title: form.title.trim(),
       youtube_url: form.youtube_url.trim() || null,
-      tema: form.tema || null,
+      tema: form.temi?.[0] || null,
+      temi: form.temi?.length ? form.temi : null,
       natura: form.natura || null,
       year: form.year ? parseInt(form.year) : null,
       description: form.description.trim() || null,
@@ -5733,7 +5949,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       setSaveMsg({ type: 'error', text: error.message });
       setSaving(false);
     } else {
-      setForm({ title: '', youtube_url: '', tema: '', natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: bumpCodice(form.codice, allVideos), thumbnail: '' });
+      setForm({ title: '', youtube_url: '', temi: [], natura: '', year: new Date().getFullYear(), description: '', prodotto_scuola: false, formato: 'orizzontale', duration: '', codice: bumpCodice(form.codice, allVideos), thumbnail: '' });
       setSynopsisWarning('');
       setManualTranscript('');
       setShowTranscriptInput(false);
@@ -5914,19 +6130,20 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
               <input type="text" value={form.title} onChange={e => f('title', e.target.value)} required placeholder="Titolo del video" className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
             </div>
             {/* Row 4: Tema buttons + Natura */}
-            <div className="grid gap-4" style={{ gridTemplateColumns: 'auto 1fr' }}>
+            <div className="grid gap-4" style={{ gridTemplateColumns: '1fr 11rem' }}>
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Tema *</label>
-                <div className="flex gap-1.5">
+                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Tema * <span className="text-zinc-500 font-normal">(max 2)</span></label>
+                <div className="flex flex-wrap gap-1.5">
                   {TEMI_OPTIONS.map(t => {
                     const c = TEMA_COLORS[t];
-                    const isSelected = form.tema === t;
+                    const isSelected = (form.temi || []).includes(t);
+                    const dimmed = !isSelected && (form.temi || []).filter(x => x !== 'Altro').length >= MAX_TEMI && t !== 'Altro';
                     return (
-                      <button key={t} type="button" onClick={() => f('tema', isSelected ? '' : t)}
-                        className="px-3 py-2 rounded-lg text-xs font-semibold transition-all border-2"
+                      <button key={t} type="button" onClick={() => f('temi', toggleTema(form.temi, t))}
+                        className="px-3 py-2 rounded-lg text-sm font-semibold transition-all border-2"
                         style={isSelected
                           ? { backgroundColor: c.btnActive, borderColor: c.border, color: '#fff' }
-                          : { backgroundColor: 'transparent', borderColor: c.border, color: '#fff', opacity: 0.6 }}>
+                          : { backgroundColor: 'transparent', borderColor: c.border, color: '#fff', opacity: dimmed ? 0.35 : 1 }}>
                         {t}
                       </button>
                     );
@@ -5974,8 +6191,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
             {/* Row 7: Action buttons */}
             {(() => {
               const codicieDuplicato = form.codice.trim() && allVideos.some(v => v.id === form.codice.trim());
-              const canSaveNas = !!(form.youtube_url.trim() && form.codice.trim() && form.tema && form.natura);
-              const canSubmit = !!(form.title.trim() && form.codice.trim() && form.youtube_url.trim() && form.tema && form.natura && form.year && form.duration.trim() && form.description.trim() && !codicieDuplicato);
+              const canSaveNas = !!(form.youtube_url.trim() && form.codice.trim() && form.temi?.length && form.natura);
+              const canSubmit = !!(form.title.trim() && form.codice.trim() && form.youtube_url.trim() && form.temi?.length && form.natura && form.year && form.duration.trim() && form.description.trim() && !codicieDuplicato);
               return (
                 <div className="space-y-2 pt-1">
                   <div className="flex gap-3">
@@ -6053,9 +6270,10 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                           <p className="text-white font-semibold text-sm mb-1">{subForm.title ?? sub.title}</p>
                           {/* Riga 3: Tema + Natura + Anno */}
                           <div className="flex flex-wrap gap-2 text-xs">
-                            {(subForm.tema ?? sub.tema) && (() => { const c = TEMA_COLORS[subForm.tema ?? sub.tema]; return (
-                              <span className="px-2 py-0.5 rounded font-semibold" style={{ backgroundColor: c?.solid || '#52525b', color: '#fff' }}>{subForm.tema ?? sub.tema}</span>
-                            ); })()}
+                            {(subForm.temi ?? asTemi(sub)).map(t => {
+                              const c = TEMA_COLORS[t];
+                              return <span key={t} className="px-2 py-0.5 rounded font-semibold" style={{ backgroundColor: c?.solid || '#52525b', color: '#fff' }}>{t}</span>;
+                            })}
                             {(subForm.natura ?? sub.natura) && <span className="px-2 py-0.5 rounded font-medium bg-blue-600/20 border border-blue-600/30 text-white">{subForm.natura ?? sub.natura}</span>}
                             {(subForm.year ?? sub.year) && <span className="text-zinc-400">{subForm.year ?? sub.year}</span>}
                           </div>
@@ -6174,11 +6392,26 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                             className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500" />
                         </div>
                         {/* Riga 4: Tema + Natura */}
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid gap-3" style={{ gridTemplateColumns: '1fr 11rem' }}>
                           <div>
-                            <label className="block text-xs font-medium text-zinc-400 mb-1">Tema</label>
-                            <CustomSelect value={subForm.tema ?? sub.tema ?? ''} onChange={v => ef(sub.id, 'tema', v)} accentColor="#FFDA2A"
-                              options={[{ value: '', label: 'Non specificato' }, ...TEMI_OPTIONS.map(t => ({ value: t, label: t }))]} />
+                            <label className="block text-xs font-medium text-zinc-400 mb-1">Tema <span className="text-zinc-500 font-normal">(max 2)</span></label>
+                            <div className="flex flex-wrap gap-1.5">
+                              {TEMI_OPTIONS.map(t => {
+                                const subTemi = subForm.temi ?? asTemi(sub);
+                                const on = subTemi.includes(t);
+                                const dimmed = !on && subTemi.filter(x => x !== 'Altro').length >= MAX_TEMI && t !== 'Altro';
+                                const c = TEMA_COLORS[t];
+                                return (
+                                  <button key={t} type="button" onClick={() => ef(sub.id, 'temi', toggleTema(subTemi, t))}
+                                    className="px-3 py-2 rounded-lg text-sm font-semibold transition-all border-2"
+                                    style={on
+                                      ? { backgroundColor: c.btnActive, borderColor: c.border, color: '#fff' }
+                                      : { backgroundColor: 'transparent', borderColor: c.border, color: '#fff', opacity: dimmed ? 0.35 : 1 }}>
+                                    {t}
+                                  </button>
+                                );
+                              })}
+                            </div>
                           </div>
                           <div>
                             <label className="block text-xs font-medium text-zinc-400 mb-1">Natura</label>
@@ -6293,9 +6526,9 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                     <div className="flex-1 min-w-0">
                       <p className="text-white text-sm font-medium truncate">{sub.title}</p>
                       <div className="flex flex-wrap gap-1.5 mt-1">
-                        {sub.tema && (() => { const c = TEMA_COLORS[sub.tema]; return (
-                          <span className="text-xs px-1.5 py-0.5 rounded font-semibold" style={{ backgroundColor: c?.solid || '#52525b', color: '#fff' }}>{sub.tema}</span>
-                        ); })()}
+                        {asTemi(sub).map(t => { const c = TEMA_COLORS[t]; return (
+                          <span key={t} className="text-xs px-1.5 py-0.5 rounded font-semibold" style={{ backgroundColor: c?.solid || '#52525b', color: '#fff' }}>{t}</span>
+                        ); })}
                         {sub.natura && <span className="text-xs px-1.5 py-0.5 rounded bg-blue-600/20 border border-blue-600/30 text-white">{sub.natura}</span>}
                       </div>
                     </div>
@@ -6321,12 +6554,21 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
               Archivio video
               {archiveLoaded && <span className="text-sm font-normal text-zinc-400">({filteredArchive.length} / {archiveVideos.length})</span>}
             </h3>
-            <div className="flex flex-col items-end gap-1">
-              <button onClick={handleFindDuplicates} disabled={dupScanLoading}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-zinc-700 text-zinc-300 hover:border-zinc-500 hover:text-white transition-all disabled:opacity-50">
-                {dupScanLoading ? <><Loader2 size={13} className="animate-spin" /> Verifica in corso…</> : <><Copy size={13} /> Verifica duplicati</>}
-              </button>
-              {dupScanLoading && <span className="text-[11px] text-zinc-500">può richiedere fino a 2 minuti</span>}
+            <div className="flex items-start gap-2 flex-wrap">
+              <div className="flex flex-col items-end gap-1">
+                <button onClick={handleFindDuplicates} disabled={dupScanLoading}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-zinc-700 text-zinc-300 hover:border-zinc-500 hover:text-white transition-all disabled:opacity-50">
+                  {dupScanLoading ? <><Loader2 size={13} className="animate-spin" /> Verifica in corso…</> : <><Copy size={13} /> Verifica duplicati</>}
+                </button>
+                {dupScanLoading && <span className="text-[11px] text-zinc-500">può richiedere fino a 2 minuti</span>}
+              </div>
+              <div className="flex flex-col items-end gap-1">
+                <button onClick={handleFindSecondaryTemi} disabled={secTemiLoading}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-zinc-700 text-zinc-300 hover:border-zinc-500 hover:text-white transition-all disabled:opacity-50">
+                  {secTemiLoading ? <><Loader2 size={13} className="animate-spin" /> Verifica in corso{secTemiProgress ? ` (${secTemiProgress})` : '…'}</> : <><Sparkles size={13} /> Verifica temi secondari</>}
+                </button>
+                {secTemiLoading && <span className="text-[11px] text-zinc-500">un paio di minuti per chunk</span>}
+              </div>
             </div>
           </div>
           {dupScanError && (
@@ -6334,13 +6576,73 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
               <AlertCircle size={16} className="flex-shrink-0" />{dupScanError}
             </div>
           )}
+          {secTemiError && (
+            <div className="flex items-center gap-2 bg-red-900/30 border border-red-800 text-red-400 px-4 py-3 rounded-lg text-sm mb-4">
+              <AlertCircle size={16} className="flex-shrink-0" />{secTemiError}
+            </div>
+          )}
+          {secTemiCandidates !== null && (() => {
+            const visible = secTemiCandidates.filter(c => !secTemiDoneIds.has(c.id));
+            return (
+              <div className="mb-5 bg-zinc-950 border border-zinc-800 rounded-xl p-4">
+                {secTemiCandidates.length === 0 ? (
+                  secTemiLoading
+                    ? <p className="text-sm text-zinc-400">scansione in corso…</p>
+                    : <p className="text-sm text-zinc-400 flex items-center gap-2"><Check size={15} className="text-green-500" /> Nessun secondo tema plausibile trovato.</p>
+                ) : visible.length === 0 ? (
+                  <p className="text-sm text-zinc-400 flex items-center gap-2"><Check size={15} className="text-green-500" /> Tutti i {secTemiCandidates.length} candidati sono stati esaminati.</p>
+                ) : (
+                  <>
+                    <p className="text-sm text-zinc-300 mb-3 font-semibold">{visible.length} candidat{visible.length > 1 ? 'i' : 'o'} da rivedere — nessuna scrittura automatica, conferma o scarta uno per uno</p>
+                    <div className="space-y-2">
+                      {visible.map(cand => {
+                        const v = allVideos.find(av => av.id === cand.id);
+                        const saving = secTemiSavingId === cand.id;
+                        return (
+                          <div key={`${cand.id}-${cand.temaSuggerito}`} className="bg-zinc-900 border border-amber-500/30 rounded-lg p-3 flex items-center gap-3 flex-wrap">
+                            <div className="w-10 h-10 rounded overflow-hidden flex-shrink-0 bg-zinc-700">
+                              {v && <VideoThumbnail youtubeUrl={v.youtubeUrl} thumbnail={v.thumbnail} piattaforma={detectPlatform(v.youtubeUrl)} title={v.title} className="w-full h-full object-cover" />}
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <p className="text-xs font-mono text-[#FFDA2A]">{v?.codice || cand.id}</p>
+                              <p className="text-xs text-white truncate">{v?.title || cand.id}</p>
+                              {v?.youtubeUrl && (
+                                <a href={v.youtubeUrl} target="_blank" rel="noopener noreferrer"
+                                  className="text-[11px] text-blue-400 hover:underline truncate block">{v.youtubeUrl}</a>
+                              )}
+                              <p className="text-[11px] text-zinc-400 mt-0.5">
+                                <span style={{ color: TEMA_COLORS[cand.temaAttuale]?.border }}>{cand.temaAttuale}</span>
+                                {' + '}
+                                <span style={{ color: TEMA_COLORS[cand.temaSuggerito]?.border }}>{cand.temaSuggerito}</span>
+                                {' — '}{cand.motivo}
+                              </p>
+                            </div>
+                            <div className="flex items-center gap-2 flex-shrink-0">
+                              <button onClick={() => handleDiscardSecondaryTema(cand.id)} disabled={saving}
+                                className="px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition-all disabled:opacity-50">
+                                Scarta
+                              </button>
+                              <button onClick={() => handleConfirmSecondaryTema(cand)} disabled={saving}
+                                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-black transition-all disabled:opacity-50" style={{ backgroundColor: '#FFDA2A' }}>
+                                {saving ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />} Conferma
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
+              </div>
+            );
+          })()}
           {dupScanGroups !== null && (
             <div className="mb-5 bg-zinc-950 border border-zinc-800 rounded-xl p-4">
               {dupScanGroups.length === 0 ? (
                 <p className="text-sm text-zinc-400 flex items-center gap-2"><Check size={15} className="text-green-500" /> Nessun duplicato trovato.</p>
               ) : (
                 <>
-                  <p className="text-sm text-zinc-300 mb-3 font-semibold">{dupScanGroups.length} possibile{dupScanGroups.length > 1 ? 'i' : ''} duplicato{dupScanGroups.length > 1 ? 'i' : ''} — controlla a occhio, nessuna azione automatica</p>
+                  <p className="text-sm text-zinc-300 mb-3 font-semibold">{dupScanGroups.length} possibil{dupScanGroups.length > 1 ? 'i' : 'e'} duplicat{dupScanGroups.length > 1 ? 'i' : 'o'} — controlla a occhio, nessuna azione automatica</p>
                   <div className="space-y-3">
                     {dupScanGroups.map((group, gi) => (
                       <div key={gi} className="bg-zinc-900 border border-amber-500/30 rounded-lg p-3">
@@ -6372,24 +6674,37 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
           )}
           {/* Filters */}
           <div className="flex gap-2 mb-3 flex-wrap items-center">
-            {['', ...TEMI_OPTIONS].map(t => {
-              const active = archiveTema === t;
-              const c = TEMA_COLORS[t];
-              const style = t === ''
-                ? active
-                  ? { backgroundColor: '#52525b', borderColor: '#52525b', color: '#fff' }
-                  : { backgroundColor: 'transparent', borderColor: '#3f3f46', color: '#71717a' }
-                : active
-                  ? { backgroundColor: c?.solid, borderColor: c?.solid, color: '#fff' }
-                  : { backgroundColor: 'transparent', borderColor: c?.border, color: '#fff' };
-              return (
-                <button key={t || 'tutti'} onClick={() => setArchiveTema(t)}
-                  className="px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all"
-                  style={style}>
-                  {t || 'Tutti'}
-                </button>
-              );
-            })}
+            {(() => {
+              // Selezione multipla tema, fino a 2 (intersezione) — stesso schema di
+              // FiltersSection in home: riusa toggleTema/MAX_TEMI, "Altro" esclusivo.
+              const selectedArchiveTemi = [archiveTema, archiveTema2].filter(Boolean);
+              const atLimit = selectedArchiveTemi.filter(t => t !== 'Altro').length >= MAX_TEMI;
+              return ['', ...TEMI_OPTIONS].map(t => {
+                const active = t === '' ? selectedArchiveTemi.length === 0 : selectedArchiveTemi.includes(t);
+                const dimmed = t !== '' && !active && atLimit && t !== 'Altro';
+                const c = TEMA_COLORS[t];
+                const style = t === ''
+                  ? active
+                    ? { backgroundColor: '#52525b', borderColor: '#52525b', color: '#fff' }
+                    : { backgroundColor: 'transparent', borderColor: '#3f3f46', color: '#71717a' }
+                  : active
+                    ? { backgroundColor: c?.solid, borderColor: c?.solid, color: '#fff' }
+                    : { backgroundColor: 'transparent', borderColor: c?.border, color: '#fff', opacity: dimmed ? 0.35 : 1 };
+                return (
+                  <button key={t || 'tutti'}
+                    onClick={() => {
+                      if (t === '') { setArchiveTema(''); setArchiveTema2(null); return; }
+                      const next = toggleTema(selectedArchiveTemi, t);
+                      setArchiveTema(next[0] || '');
+                      setArchiveTema2(next[1] || null);
+                    }}
+                    className="px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all"
+                    style={style}>
+                    {t || 'Tutti'}
+                  </button>
+                );
+              });
+            })()}
             <button onClick={() => setArchiveScuola(v => !v)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all"
               style={archiveScuola
@@ -6499,10 +6814,10 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                             <p className="text-white text-sm font-medium truncate">{video.title}</p>
                           </div>
                           <div className="flex flex-wrap gap-1.5 items-center">
-                            {video.tema && (() => { const c = TEMA_COLORS[video.tema]; return (
-                              <span className="text-xs px-1.5 py-0.5 rounded font-semibold"
-                                style={{ backgroundColor: c?.solid || '#52525b', color: '#fff' }}>{video.tema}</span>
-                            ); })()}
+                            {asTemi(video).map(t => { const c = TEMA_COLORS[t]; return (
+                              <span key={t} className="text-xs px-1.5 py-0.5 rounded font-semibold"
+                                style={{ backgroundColor: c?.solid || '#52525b', color: '#fff' }}>{t}</span>
+                            ); })}
                             {video.natura && <span className="text-xs px-1.5 py-0.5 rounded bg-blue-600/20 border border-blue-600/30 text-white">{video.natura}</span>}
                             {video.prodotto_scuola && (
                               <span className="text-xs px-1.5 py-0.5 rounded bg-zinc-700 text-zinc-300 flex items-center gap-1">
@@ -6583,11 +6898,26 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                             className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500" />
                         </div>
                         {/* Row 4: Tema + Natura */}
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid gap-3" style={{ gridTemplateColumns: '1fr 11rem' }}>
                           <div>
-                            <label className="block text-xs font-medium text-zinc-400 mb-1">Tema</label>
-                            <CustomSelect value={vf.tema ?? video.tema ?? ''} onChange={v => evf(video.id, 'tema', v)} accentColor="#FFDA2A"
-                              options={[{ value: '', label: 'Non specificato' }, ...TEMI_OPTIONS.map(t => ({ value: t, label: t }))]} />
+                            <label className="block text-xs font-medium text-zinc-400 mb-1">Tema <span className="text-zinc-500 font-normal">(max 2)</span></label>
+                            <div className="flex flex-wrap gap-1.5">
+                              {TEMI_OPTIONS.map(t => {
+                                const vTemi = vf.temi ?? asTemi(video);
+                                const on = vTemi.includes(t);
+                                const dimmed = !on && vTemi.filter(x => x !== 'Altro').length >= MAX_TEMI && t !== 'Altro';
+                                const c = TEMA_COLORS[t];
+                                return (
+                                  <button key={t} type="button" onClick={() => evf(video.id, 'temi', toggleTema(vTemi, t))}
+                                    className="px-3 py-2 rounded-lg text-sm font-semibold transition-all border-2"
+                                    style={on
+                                      ? { backgroundColor: c.btnActive, borderColor: c.border, color: '#fff' }
+                                      : { backgroundColor: 'transparent', borderColor: c.border, color: '#fff', opacity: dimmed ? 0.35 : 1 }}>
+                                    {t}
+                                  </button>
+                                );
+                              })}
+                            </div>
                           </div>
                           <div>
                             <label className="block text-xs font-medium text-zinc-400 mb-1">Natura</label>
@@ -6933,6 +7263,7 @@ function App() {
   const [schoolsSort, setSchoolsSort] = useState('date'); // 'date' | 'views'
   const [filters, setFilters] = useState({
     tema: 'Tutti',
+    tema2: null,
     natura: 'Tutti',
     year: 'Tutti',
     scuola: 'Tutti',
@@ -7139,7 +7470,7 @@ function App() {
       if (!prev) return prev;
       return { ...prev, [field]: (field === 'keywords' || field === 'excludeKeywords') ? [] : null };
     });
-    if (field === 'tema') setFilters(f => ({ ...f, tema: 'Tutti' }));
+    if (field === 'tema') setFilters(f => ({ ...f, tema: 'Tutti', tema2: null }));
     if (field === 'natura') setFilters(f => ({ ...f, natura: 'Tutti' }));
     if (field === 'scuola') setFilters(f => ({ ...f, scuola: 'Tutti' }));
     if (field === 'durationMax') setFilters(f => ({ ...f, durationMax: SNAP_POINTS[SNAP_POINTS.length - 1] }));
@@ -7217,16 +7548,18 @@ function App() {
     setQuickRouted(true);
   }, [isQuickMode, quickRouted, authChecked, quickSplashDone, user, profileLoaded, userProfile]);
 
-  // Sync selectedTemaTag con filters.tema (es. click bottoni FiltersSection in home)
+  // Sync selectedTemaTag con filters.tema/tema2 (es. click bottoni FiltersSection in home) —
+  // con 2 temi selezionati insieme (intersezione) il chip in header mostra entrambi.
   useEffect(() => {
     const TEMA_TAG_COLORS = { Alcool: '#D97706', Azzardo: '#BE123C', Digitale: '#3b82f6', Sostanze: '#10b981', Tabacco: '#C9975A', Sessualità: '#8B5CF6' };
     if (filters.tema !== 'Tutti') {
-      setSelectedTemaTag({ label: filters.tema, color: TEMA_TAG_COLORS[filters.tema] });
+      const label = filters.tema2 ? `${filters.tema} + ${filters.tema2}` : filters.tema;
+      setSelectedTemaTag({ label, color: TEMA_TAG_COLORS[filters.tema] });
     } else {
       setSelectedTemaTag(null);
       setTagWidth(0);
     }
-  }, [filters.tema]);
+  }, [filters.tema, filters.tema2]);
 
   // ─── Apre il modal e incrementa le visualizzazioni ────────────────────────────
   const handleVideoClick = (video) => {
@@ -7435,7 +7768,12 @@ function App() {
     if (selectedNatura !== 'Tutte') filtered = filtered.filter(v => v.natura === selectedNatura);
     
     // Applica filtri avanzati
-    if (filters.tema !== 'Tutti') filtered = filtered.filter(v => v.tema === filters.tema);
+    // Multi-tema: il filtro tema è "contiene" — un video con più temi compare sotto
+    // ciascuno dei suoi temi, non solo sotto il primo (che è ciò che `v.tema` riflette).
+    if (filters.tema !== 'Tutti') filtered = filtered.filter(v => asTemi(v).includes(filters.tema));
+    // Secondo tema in ricerca (fino a 2, come nell'inserimento): intersezione — il video
+    // deve avere ENTRAMBI i temi selezionati insieme, non solo uno dei due.
+    if (filters.tema2) filtered = filtered.filter(v => asTemi(v).includes(filters.tema2));
     if (filters.natura !== 'Tutti') { const naturaVal = filters.natura === 'Sequenza' ? 'Sequenze' : filters.natura; filtered = filtered.filter(v => v.natura === naturaVal); }
     if (filters.year !== 'Tutti') filtered = filtered.filter(v => v.year === parseInt(filters.year));
     if (filters.scuola === 'Scuole') filtered = filtered.filter(v => v.prodottoScuola);
@@ -7453,6 +7791,7 @@ function App() {
       });
       filtered = [...filtered].sort((a, b) => parseDuration(a.duration) - parseDuration(b.duration));
     }
+
 
     return filtered;
   }, [allVideos, searchQuery, activeSection, selectedNatura, filters, schoolsSort, smartInterpretation, semanticIds]);
@@ -7564,7 +7903,7 @@ function App() {
       ].map(({ section, label, icon: Icon }) => (
         <li key={section}>
           <button
-            onClick={() => { setActiveSection(section); setSelectedNatura('Tutte'); setFilters(f => ({ ...f, tema: 'Tutti' })); setSelectedTemaTag(null); setIsMobileMenuOpen(false); }}
+            onClick={() => { setActiveSection(section); setSelectedNatura('Tutte'); setFilters(f => ({ ...f, tema: 'Tutti', tema2: null })); setSelectedTemaTag(null); setIsMobileMenuOpen(false); }}
             className={`w-full text-left px-4 py-3 rounded-lg transition-colors flex items-center gap-3 ${activeSection === section ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'}`}
           >
             <Icon size={18} className="flex-shrink-0" />
@@ -7631,7 +7970,7 @@ function App() {
             ].map(({ label, color }) => (
               <button
                 key={label}
-                onClick={() => { setFilters(f => ({ ...f, tema: label })); setIsSearchFocused(false); setTimeout(() => headerSearchRef.current?.focus(), 50); }}
+                onClick={() => { setFilters(f => ({ ...f, tema: label, tema2: null })); setIsSearchFocused(false); setTimeout(() => headerSearchRef.current?.focus(), 50); }}
                 className="w-full text-left px-4 py-2 text-white hover:bg-zinc-800 transition-colors text-sm flex items-center gap-2"
               >
                 <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
@@ -7649,7 +7988,7 @@ function App() {
           >
             {selectedTemaTag.label}
             <button
-              onMouseDown={(e) => { e.preventDefault(); setSelectedTemaTag(null); setTagWidth(0); setFilters(f => ({ ...f, tema: 'Tutti' })); }}
+              onMouseDown={(e) => { e.preventDefault(); setSelectedTemaTag(null); setTagWidth(0); setFilters(f => ({ ...f, tema: 'Tutti', tema2: null })); }}
               className="hover:opacity-70"
             ><X size={10} /></button>
           </span>
@@ -7669,7 +8008,7 @@ function App() {
         )}
         {(searchQuery || selectedTemaTag || (activeSection === 'formats' && selectedNatura !== 'Tutte')) && (
           <button
-            onClick={() => { setSearchQuery(''); setSelectedTemaTag(null); setTagWidth(0); setFilters(f => ({ ...f, tema: 'Tutti' })); setSelectedNatura('Tutte'); setNaturaTagWidth(0); }}
+            onClick={() => { setSearchQuery(''); setSelectedTemaTag(null); setTagWidth(0); setFilters(f => ({ ...f, tema: 'Tutti', tema2: null })); setSelectedNatura('Tutte'); setNaturaTagWidth(0); }}
             className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors"
           >
             <X size={18} />

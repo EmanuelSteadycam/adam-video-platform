@@ -40,9 +40,9 @@ function filterCatalogByTemaNatura(catalogText, tema, natura) {
     .split('\n')
     .filter(line => {
       const parts = line.split('|');
-      const lineTema = parts[1] || '';
+      const lineTemi = (parts[1] || '').split(',').filter(Boolean);
       const lineNatura = parts[2] || '';
-      return (!tema || lineTema === tema) && (!natura || lineNatura === natura);
+      return (!tema || lineTemi.includes(tema)) && (!natura || lineNatura === natura);
     })
     .join('\n');
 }
@@ -78,6 +78,7 @@ export default async function handler(req, res) {
 
 Di seguito il catalogo dei video candidati, uno per riga, nel formato:
 ID|tema|natura|titolo|sinossi
+(il campo tema può contenere più temi separati da virgola)
 
 ${catalog}
 
