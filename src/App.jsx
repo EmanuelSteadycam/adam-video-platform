@@ -5726,7 +5726,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
 
   const filteredArchive = useMemo(() => archiveVideos.filter(v => {
     const s = archiveSearch.toLowerCase();
-    return (!s || v.title?.toLowerCase().includes(s) || v.description?.toLowerCase().includes(s))
+    return (!s || v.title?.toLowerCase().includes(s) || v.description?.toLowerCase().includes(s) || v.codice?.toLowerCase().includes(s) || v.id?.toLowerCase().includes(s))
       && (!archiveTema || asTemi(v).includes(archiveTema))
       && (!archiveTema2 || asTemi(v).includes(archiveTema2))
       && (!archiveNatura || v.natura === archiveNatura)
@@ -6642,7 +6642,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                 <p className="text-sm text-zinc-400 flex items-center gap-2"><Check size={15} className="text-green-500" /> Nessun duplicato trovato.</p>
               ) : (
                 <>
-                  <p className="text-sm text-zinc-300 mb-3 font-semibold">{dupScanGroups.length} possibile{dupScanGroups.length > 1 ? 'i' : ''} duplicato{dupScanGroups.length > 1 ? 'i' : ''} — controlla a occhio, nessuna azione automatica</p>
+                  <p className="text-sm text-zinc-300 mb-3 font-semibold">{dupScanGroups.length} possibil{dupScanGroups.length > 1 ? 'i' : 'e'} duplicat{dupScanGroups.length > 1 ? 'i' : 'o'} — controlla a occhio, nessuna azione automatica</p>
                   <div className="space-y-3">
                     {dupScanGroups.map((group, gi) => (
                       <div key={gi} className="bg-zinc-900 border border-amber-500/30 rounded-lg p-3">
