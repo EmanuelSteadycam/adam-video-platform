@@ -5256,6 +5256,13 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const [secTemiCandidates, setSecTemiCandidates] = useState(null); // null = mai lanciato, [] = nessun candidato (o scan in corso)
   const [secTemiError, setSecTemiError] = useState(null);
   const [secTemiProgress, setSecTemiProgress] = useState(null); // "2/4" mentre itera i chunk, null altrimenti
+  // Lock anti-doppio-avvio: un ref (non uno state) perché deve essere letto/scritto in modo
+  // sincrono nello stesso istante del click, senza aspettare un giro di render — un secondo
+  // click/chiamata mentre uno scan è già in corso (es. l'utente riclicca "Verifica temi
+  // secondari" pensando che si sia bloccato, magari dopo che il Mac è uscito da standby e lo
+  // scan sospeso si è "risvegliato" da solo) altrimenti fa partire 2 scan indipendenti che
+  // scrivono nella stessa lista — bug reale riscontrato dal vivo (duplicati esatti ripetuti).
+  const secTemiRunningRef = useRef(false);
   const [secTemiDoneIds, setSecTemiDoneIds] = useState(new Set()); // confermati o scartati in questa sessione di review
   const [secTemiSavingId, setSecTemiSavingId] = useState(null);
 
@@ -5313,12 +5320,20 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   // una volta per chunk, accumulando i risultati man mano — così anche se un chunk fallisce
   // a metà, quelli già trovati restano visibili e utilizzabili invece di perdersi tutti.
   const handleFindSecondaryTemi = async () => {
+    if (secTemiRunningRef.current) return; // scan già in corso, ignora il click/chiamata
+    secTemiRunningRef.current = true;
     setSecTemiLoading(true);
     setSecTemiError(null);
     setSecTemiCandidates([]);
     setSecTemiDoneIds(new Set());
     let chunkIndex = 0;
     let totalChunks = 1;
+    // Snapshot dei candidati (vedi api/find-secondary-temi.js) catturato dalla prima
+    // risposta e ripassato indietro identico per tutti i chunk successivi — se confermi
+    // un candidato mentre lo scan è ancora in corso (normale: si conferma man mano) NON
+    // deve alterare il pool degli altri chunk già decisi, altrimenti gli stessi video
+    // tornano proposti più volte (bug reale riscontrato e corretto).
+    let candidateLines = null;
     const all = [];
     try {
       while (chunkIndex < totalChunks) {
@@ -5326,13 +5341,24 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
         const res = await fetch('/api/find-secondary-temi', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ chunkIndex }),
+          body: JSON.stringify({ chunkIndex, candidateLines }),
         });
         const data = await res.json();
         if (!res.ok) { setSecTemiError(data.error || `Errore durante il chunk ${chunkIndex + 1}.`); break; }
-        all.push(...(data.candidates || []));
+        // Dedup difensivo su (id + temaSuggerito) — non dovrebbe mai servire (ogni video è in
+        // UN SOLO chunk grazie allo snapshot sopra), ma protegge comunque da un'eventuale
+        // ripetizione dello stesso elemento nell'array restituito dal modello in una singola
+        // risposta, o da un secondo scan avviato per errore mentre uno era già in corso.
+        const seen = new Set(all.map(c => `${c.id}|${c.temaSuggerito}`));
+        for (const c of (data.candidates || [])) {
+          const key = `${c.id}|${c.temaSuggerito}`;
+          if (seen.has(key)) continue;
+          seen.add(key);
+          all.push(c);
+        }
         setSecTemiCandidates([...all]); // aggiornamento incrementale, visibile subito
         totalChunks = data.totalChunks || 1;
+        candidateLines = data.candidateLines || candidateLines;
         chunkIndex += 1;
       }
     } catch (e) {
@@ -5340,6 +5366,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     }
     setSecTemiProgress(null);
     setSecTemiLoading(false);
+    secTemiRunningRef.current = false;
   };
 
   // Conferma: scrive temi:[temaAttuale, temaSuggerito] per QUEL video soltanto. Mai in blocco.
@@ -6572,13 +6599,17 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                         const v = allVideos.find(av => av.id === cand.id);
                         const saving = secTemiSavingId === cand.id;
                         return (
-                          <div key={cand.id} className="bg-zinc-900 border border-amber-500/30 rounded-lg p-3 flex items-center gap-3 flex-wrap">
+                          <div key={`${cand.id}-${cand.temaSuggerito}`} className="bg-zinc-900 border border-amber-500/30 rounded-lg p-3 flex items-center gap-3 flex-wrap">
                             <div className="w-10 h-10 rounded overflow-hidden flex-shrink-0 bg-zinc-700">
                               {v && <VideoThumbnail youtubeUrl={v.youtubeUrl} thumbnail={v.thumbnail} piattaforma={detectPlatform(v.youtubeUrl)} title={v.title} className="w-full h-full object-cover" />}
                             </div>
                             <div className="min-w-0 flex-1">
                               <p className="text-xs font-mono text-[#FFDA2A]">{v?.codice || cand.id}</p>
                               <p className="text-xs text-white truncate">{v?.title || cand.id}</p>
+                              {v?.youtubeUrl && (
+                                <a href={v.youtubeUrl} target="_blank" rel="noopener noreferrer"
+                                  className="text-[11px] text-blue-400 hover:underline truncate block">{v.youtubeUrl}</a>
+                              )}
                               <p className="text-[11px] text-zinc-400 mt-0.5">
                                 <span style={{ color: TEMA_COLORS[cand.temaAttuale]?.border }}>{cand.temaAttuale}</span>
                                 {' + '}

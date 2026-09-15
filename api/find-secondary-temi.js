@@ -49,30 +49,41 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
   if (!process.env.ANTHROPIC_API_KEY) return res.status(500).json({ error: 'ANTHROPIC_API_KEY non configurata.' });
 
-  const fullCatalog = await loadCatalogCache();
-  if (!fullCatalog) {
-    return res.status(503).json({ error: 'Catalogo non ancora disponibile.' });
+  // Snapshot stabile per tutta la scansione: se il chiamante lo passa indietro (chunk
+  // 2, 3, 4...) lo si usa così com'è, SENZA rileggere il catalogo dal vivo. Bug reale
+  // riscontrato e corretto: confermare un candidato durante lo scan (uso normale — si
+  // conferma man mano che i chunk arrivano) fa scattare scheduleCatalogRebuild(), che
+  // 8s dopo riscrive la cache SENZA più quel video (ora ha 2 temi). Se ogni chunk
+  // rileggesse il catalogo fresco e affettasse per POSIZIONE, un solo video rimosso
+  // dall'inizio della lista fa scorrere di 1 posizione tutti quelli dopo — i confini
+  // fissi chunkIndex*CHUNK_SIZE finiscono per includere video già inviati in un chunk
+  // precedente, "tantissimi duplicati" proposti più volte. Fix: il chunk 0 calcola lo
+  // snapshot dal catalogo e lo restituisce per intero nella risposta; i chunk
+  // successivi lo passano indietro nel body — niente più riletture a metà scansione.
+  let candidateLines = Array.isArray(req.body?.candidateLines) ? req.body.candidateLines : null;
+  if (!candidateLines) {
+    const fullCatalog = await loadCatalogCache();
+    if (!fullCatalog) {
+      return res.status(503).json({ error: 'Catalogo non ancora disponibile.' });
+    }
+    // Pre-filtro: passiamo all'AI SOLO i video con esattamente un tema reale (esclusi
+    // "Altro" e quelli già a 2+ temi) — riduce i token e impedisce all'AI di proporre
+    // candidati fuori scope.
+    candidateLines = fullCatalog.split('\n').filter(line => {
+      const parts = line.split('|');
+      if (parts.length < 5) return false; // riga malformata, ignorata (difensivo)
+      const temi = (parts[1] || '').split(',').filter(Boolean);
+      return temi.length === 1 && TEMI_REALI.includes(temi[0]);
+    });
   }
-
-  // Pre-filtro lato server: passiamo all'AI SOLO i video con esattamente un tema reale
-  // (esclusi "Altro" e quelli già a 2+ temi) — riduce i token e impedisce all'AI di
-  // proporre candidati fuori scope.
-  const candidateLines = fullCatalog.split('\n').filter(line => {
-    const parts = line.split('|');
-    if (parts.length < 5) return false; // riga malformata, ignorata (difensivo)
-    const temi = (parts[1] || '').split(',').filter(Boolean);
-    return temi.length === 1 && TEMI_REALI.includes(temi[0]);
-  });
-  if (!candidateLines.length) return res.status(200).json({ candidates: [], totalChunks: 0, chunkIndex: 0 });
+  if (!candidateLines.length) return res.status(200).json({ candidates: [], totalChunks: 0, chunkIndex: 0, candidateLines: [] });
 
   // Un solo chunk per richiesta (vedi commento sopra) — il chiamante itera chunkIndex da 0
-  // a totalChunks-1. totalChunks è ricalcolato ad ogni chiamata dallo stesso identico
-  // pre-filtro, quindi resta stabile per tutta la durata di una scansione (a meno che nel
-  // frattempo un altro admin non confermi/modifichi temi — caso raro, non gestito).
+  // a totalChunks-1, passando indietro `candidateLines` da questo stesso punto in poi.
   const totalChunks = Math.max(1, Math.ceil(candidateLines.length / CHUNK_SIZE));
   const chunkIndex = Number.isInteger(req.body?.chunkIndex) ? req.body.chunkIndex : 0;
   const chunkLines = candidateLines.slice(chunkIndex * CHUNK_SIZE, (chunkIndex + 1) * CHUNK_SIZE);
-  if (!chunkLines.length) return res.status(200).json({ candidates: [], totalChunks, chunkIndex });
+  if (!chunkLines.length) return res.status(200).json({ candidates: [], totalChunks, chunkIndex, candidateLines });
 
   // currentTemaById costruita SOLO dal chunk inviato al modello in QUESTA richiesta — un id
   // proposto per un video fuori da questo chunk (mai visto dal modello in questa chiamata)
@@ -161,7 +172,7 @@ Massimo ${MAX_CANDIDATES_PER_CHUNK} candidati. Se nessun video ha un secondo tem
       .filter(c => TEMI_REALI.includes(c.temaSuggerito) && c.temaSuggerito !== c.temaAttuale)
       .slice(0, MAX_CANDIDATES_PER_CHUNK);
 
-    return res.status(200).json({ candidates, totalChunks, chunkIndex, usage: result.usage || null });
+    return res.status(200).json({ candidates, totalChunks, chunkIndex, candidateLines, usage: result.usage || null });
   } catch (e) {
     const timedOut = e.name === 'AbortError';
     return res.status(timedOut ? 504 : 500).json({ error: timedOut ? 'Timeout nella richiesta a Claude.' : (e.message || 'Errore interno.') });
