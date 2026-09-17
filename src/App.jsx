@@ -608,7 +608,7 @@ const AboutSection = ({ onNavigate, onEsplora }) => {
         </button>
         <button
           onClick={() => onNavigate('submit')}
-          className="flex-1 bg-[#FFDA2A] hover:brightness-110 text-black px-6 py-4 rounded-xl font-semibold transition-all"
+          className="flex-1 bg-[#FFDA2A] hover:bg-yellow-600 text-black px-6 py-4 rounded-xl font-semibold transition-all"
         >
           Partecipa →
         </button>
@@ -1943,7 +1943,7 @@ const PlaylistSidebar = ({
                 {localPlaylist.length === 0 && (
                   <button
                     onClick={() => { onClose(); onOpenAuth(); }}
-                    className="ml-auto text-xs text-black px-3 py-1.5 rounded-lg font-semibold flex-shrink-0 hover:brightness-110 transition-all"
+                    className="ml-auto text-xs text-black px-3 py-1.5 rounded-lg font-semibold flex-shrink-0 hover:bg-yellow-600 transition-all"
                     style={{ backgroundColor: '#FFDA2A' }}
                   >
                     Accedi
@@ -4515,7 +4515,7 @@ const AuthModal = ({ mode: initialMode, onClose, dismissible = true }) => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-lg font-semibold text-black transition-all hover:brightness-110 disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-lg font-semibold text-black transition-all hover:bg-yellow-600 disabled:opacity-50"
               style={{ backgroundColor: '#FFDA2A' }}
             >
               {loading ? <Loader2 size={18} className="animate-spin" /> : mode === 'login' ? <LogIn size={18} /> : <Send size={18} />}
@@ -4699,7 +4699,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
         <h2 className="text-3xl font-bold text-white mb-4">Segnalazione inviata!</h2>
         <p className="text-zinc-400 mb-8">Grazie! Esamineremo il tuo contributo e lo aggiungeremo all'archivio ADAM se appropriato.</p>
         <button onClick={resetAll}
-          className="uppercase text-black px-8 py-3 rounded-lg font-semibold hover:brightness-110 transition-all" style={{ backgroundColor: '#FFDA2A' }}>
+          className="uppercase text-black px-8 py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-all" style={{ backgroundColor: '#FFDA2A' }}>
           Segnala un altro
         </button>
       </div>
@@ -4894,7 +4894,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
             Salva bozza
           </button>
           <button type="submit" disabled={loading}
-            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg font-semibold text-black hover:brightness-110 transition-all disabled:opacity-50"
+            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg font-semibold text-black hover:bg-yellow-600 transition-all disabled:opacity-50"
             style={{ backgroundColor: '#FFDA2A' }}>
             {loading ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
             Invia all'admin
@@ -5117,7 +5117,7 @@ const MyVideosSection = ({ user, onNewVideo }) => {
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-3xl font-bold text-white">I miei video</h2>
         <button onClick={onNewVideo}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-black hover:brightness-110 transition-all text-sm"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-black hover:bg-yellow-600 transition-all text-sm"
           style={{ backgroundColor: '#FFDA2A' }}>
           <Plus size={16} /> Nuovo video
         </button>
@@ -5128,7 +5128,7 @@ const MyVideosSection = ({ user, onNewVideo }) => {
           <Upload size={64} className="text-zinc-700 mx-auto mb-4" strokeWidth={1.5} />
           <p className="text-zinc-400 mb-4">Non hai ancora segnalato nessun video.</p>
           <button onClick={onNewVideo}
-            className="text-black px-6 py-3 rounded-lg font-semibold hover:brightness-110 transition-all"
+            className="text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-all"
             style={{ backgroundColor: '#FFDA2A' }}>
             Segnala il primo
           </button>
