@@ -4683,7 +4683,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
     return (
       <div className="max-w-2xl mx-auto py-24 text-center">
         <Upload size={64} className="text-zinc-700 mx-auto mb-6" strokeWidth={1.5} />
-        <h2 className="text-3xl font-bold text-white mb-4">Segnala un Video</h2>
+        <h2 className="text-3xl font-bold text-white mb-4">Proponi un video</h2>
         <p className="text-zinc-400 mb-8 leading-relaxed">Hai trovato un video interessante su YouTube, TikTok o Instagram? Hai prodotto contenuti educativi con i tuoi ragazzi?<br />Condividi con la community ADAM — dopo una revisione, verrà aggiunto all'archivio.</p>
         <button onClick={onOpenAuth} className="text-black px-8 py-3 rounded-lg font-semibold hover:brightness-110 transition-all" style={{ backgroundColor: '#FFDA2A' }}>
           Accedi per segnalare
@@ -4715,7 +4715,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
         <ChevronLeft size={18} /> Torna all'archivio
       </button>
       <div className="mb-8">
-        <h2 className="text-3xl font-bold text-white mb-2">Segnala un Video</h2>
+        <h2 className="text-3xl font-bold text-white mb-2">Proponi un video</h2>
         <p className="text-zinc-400">Condividi un video YouTube, TikTok o Instagram utile per l'educazione — lo esamineremo e, se appropriato, lo aggiungeremo all'archivio.</p>
       </div>
 
@@ -8382,7 +8382,7 @@ function App() {
     className="flex items-center gap-2 text-black px-3 lg:px-4 py-2.5 rounded-lg hover:bg-yellow-500 transition-all font-medium text-sm"
     style={{ backgroundColor: '#FFDA2A' }}>
     <Upload size={18} />
-    <span className="hidden sm:inline">Segnala</span>
+    <span className="hidden sm:inline">Partecipa</span>
   </button>
   {user ? (
     <div className="relative" ref={userMenuRef}>
@@ -8400,7 +8400,7 @@ function App() {
             <List size={15} /> I miei video
           </button>
           <button onClick={() => { setActiveSection('submit'); setShowUserMenu(false); }} className="block w-full text-left px-4 py-3 text-zinc-300 hover:bg-zinc-800 transition-colors text-sm flex items-center gap-2">
-            <Upload size={15} /> Segnala un video
+            <Upload size={15} /> Partecipa
           </button>
           {userProfile?.role === 'admin' && (
             <button onClick={() => { setActiveSection('admin'); setShowUserMenu(false); }} className="block w-full text-left px-4 py-3 text-zinc-300 hover:bg-zinc-800 transition-colors text-sm flex items-center gap-2">
