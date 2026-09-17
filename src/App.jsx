@@ -7536,6 +7536,10 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [], onSelectVi
   );
 };
 
+// Sezioni raggiungibili senza login, uniche restaurabili da un reload a freddo
+// (?section=...) — vedi navigazione mobile via History API più sotto in App()
+const PUBLIC_SECTIONS = ['home', 'about', 'formats', 'most-viewed', 'recent', 'schools', 'inspire'];
+
 // ─── App ───────────────────────────────────────────────────────────────────────
 function App() {
   const [user, setUser] = useState(null);
@@ -7550,7 +7554,15 @@ function App() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeSection, setActiveSection] = useState('home');
+  // Ripristina la sezione da ?section= al primo caricamento (solo le sezioni
+  // pubbliche — quelle che richiedono login vengono raggiunte solo navigando
+  // dentro l'app a sessione già inizializzata, mai da un reload a freddo)
+  const [activeSection, setActiveSection] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('quick') === '1' || params.get('playlist')) return 'home';
+    const s = params.get('section');
+    return PUBLIC_SECTIONS.includes(s) ? s : 'home';
+  });
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [selectedTemaTag, setSelectedTemaTag] = useState(null);
   const [tagWidth, setTagWidth] = useState(0);
@@ -7560,6 +7572,7 @@ function App() {
   const filtersSectionRef = useRef(null);
   const [filtersInView, setFiltersInView] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
 
   useEffect(() => {
     const handler = (e) => {
@@ -7816,6 +7829,38 @@ function App() {
   };
 
   useEffect(() => { loadVideos(); }, []);
+
+  // ─── Navigazione mobile: il "back" del browser cambia sezione invece di
+  // uscire dal sito ────────────────────────────────────────────────────────
+  // L'app è single-page (activeSection è solo stato React, non URL), quindi
+  // senza questo il tasto/gesto "indietro" del browser ricaricava la pagina
+  // da zero tornando in Home invece di riportare alla sezione precedente.
+  // isPopStateNav evita che il popstate stesso rientri nell'effect sotto e
+  // pushi una nuova entry (altrimenti "indietro" spingerebbe avanti di nuovo).
+  const isPopStateNav = useRef(false);
+  const historyInitialized = useRef(false);
+  useEffect(() => {
+    if (isQuickMode) return; // la modalità quick gestisce le sezioni da sé
+    if (isPopStateNav.current) { isPopStateNav.current = false; return; }
+    const url = new URL(window.location.href);
+    url.searchParams.set('section', activeSection);
+    if (!historyInitialized.current) {
+      window.history.replaceState({ section: activeSection }, '', url);
+      historyInitialized.current = true;
+    } else {
+      window.history.pushState({ section: activeSection }, '', url);
+    }
+  }, [activeSection, isQuickMode]);
+
+  useEffect(() => {
+    if (isQuickMode) return;
+    const onPopState = (e) => {
+      isPopStateNav.current = true;
+      setActiveSection(e.state?.section || 'home');
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, [isQuickMode]);
 
   const loadSharedPlaylist = async (token) => {
     const { data } = await supabase.from('playlists').select('*').eq('share_token', token).eq('is_public', true).single();
@@ -8256,17 +8301,34 @@ function App() {
 </aside>
       <div className="lg:ml-64 flex-1">
         <header className="bg-black sticky top-0 z-40">
-  <div className="px-4 lg:px-8 py-4 flex items-center justify-between gap-2 lg:gap-6">
-    <button
-      onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-      className="lg:hidden text-white p-2"
-    >
-      <Menu size={24} />
-    </button>
-    {/* Search bar — invisibile in home finché FiltersSection è in vista */}
+  <div className="px-4 lg:px-8 py-4 flex flex-wrap md:flex-nowrap items-center justify-between gap-2 lg:gap-6">
+    <div className="flex items-center">
+      <button
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        className="lg:hidden text-white p-2"
+      >
+        <Menu size={24} />
+      </button>
+      {/* Icona ricerca mobile — su schermi < md la barra di ricerca è nascosta
+          (spazio insufficiente in riga), quindi qui si apre/chiude in una
+          seconda riga sotto l'header (vedi order-last sul div sottostante).
+          Non serve in Home: lì la ricerca è già nella FiltersSection più sotto.
+          Raggruppata con l'hamburger (stesso div, niente gap) così restano
+          vicine invece di essere separate da justify-between sulla riga. */}
+      {activeSection !== 'home' && (
+        <button
+          onClick={() => setShowMobileSearch(v => !v)}
+          className="md:hidden text-white p-2"
+        >
+          {showMobileSearch ? <X size={22} /> : <Search size={22} />}
+        </button>
+      )}
+    </div>
+    {/* Search bar — invisibile in home finché FiltersSection è in vista (desktop);
+        su mobile appare in una riga a parte solo quando aperta con l'icona sopra */}
     <div
-      className="flex-1 max-w-2xl hidden md:block"
-      style={{ opacity: (activeSection === 'home' && filtersInView) ? 0 : 1, pointerEvents: (activeSection === 'home' && filtersInView) ? 'none' : 'auto', transition: 'opacity 0.3s' }}
+      className={`flex-1 max-w-2xl order-last md:order-none w-full md:w-auto basis-full md:basis-auto mt-2 md:mt-0 ${(showMobileSearch && activeSection !== 'home') ? 'block' : 'hidden'} md:block`}
+      style={{ opacity: (!showMobileSearch && activeSection === 'home' && filtersInView) ? 0 : 1, pointerEvents: (!showMobileSearch && activeSection === 'home' && filtersInView) ? 'none' : 'auto', transition: 'opacity 0.3s' }}
     >
       <div className="relative">
         {isSearchFocused && (
