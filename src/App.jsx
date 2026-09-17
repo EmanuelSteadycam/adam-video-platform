@@ -5178,7 +5178,7 @@ const MyVideosSection = ({ user, onNewVideo }) => {
 };
 
 // ─── AdminSection ──────────────────────────────────────────────────────────────
-const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
+const AdminSection = ({ userProfile, onVideoApproved, allVideos = [], onSelectVideo }) => {
   const [submissions, setSubmissions] = useState([]);
   const [loadingSubs, setLoadingSubs] = useState(true);
   const [form, setForm] = useState({
@@ -5644,6 +5644,18 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     const sorted = allVideos.map(toArchiveFormat).sort(compareArchiveTime);
     setArchiveVideos(sorted);
     setArchiveLoaded(true);
+  };
+
+  // Riconverte una riga dell'Archivio (formato snake_case di toArchiveFormat) nel
+  // formato camelCase atteso da VideoModal, per l'anteprima da Admin → Archivio
+  const openArchivePreview = (video) => {
+    onSelectVideo?.({
+      ...video,
+      youtubeUrl: video.youtube_url,
+      format: video.formato,
+      prodottoScuola: video.prodotto_scuola,
+      dataInserimento: video.data_inserimento,
+    });
   };
 
   const loadPending = async () => {
@@ -7077,7 +7089,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                           {isSelected && <Check size={10} className="text-black" strokeWidth={3} />}
                         </div>
                       </label>
-                      <div className="w-[90px] h-[67px] rounded flex-shrink-0 bg-zinc-700 overflow-hidden">
+                      <div className="w-[90px] h-[67px] rounded flex-shrink-0 bg-zinc-700 overflow-hidden cursor-pointer" onClick={() => openArchivePreview(video)}>
                         <VideoThumbnail
                           youtubeUrl={video.youtube_url}
                           thumbnail={video.thumbnail}
@@ -7092,7 +7104,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                             {video.codice && (
                               <span className="text-xs font-mono font-bold text-[#FFDA2A] flex-shrink-0">{video.codice}</span>
                             )}
-                            <p className="text-white text-sm font-medium truncate">{video.title}</p>
+                            <p className="text-white text-sm font-medium truncate cursor-pointer hover:underline" onClick={() => openArchivePreview(video)}>{video.title}</p>
                           </div>
                           <div className="flex flex-wrap gap-1.5 items-center">
                             {asTemi(video).map(t => { const c = TEMA_COLORS[t]; return (
@@ -8426,7 +8438,7 @@ function App() {
           {activeSection === 'about' && <AboutSection onNavigate={setActiveSection} onEsplora={() => { setActiveSection('home'); setTimeout(() => filtersSectionRef.current?.scrollIntoView({ behavior: 'smooth' }), 120); }} />}
           {activeSection === 'shared-playlist' && sharedPlaylistRaw && <SharedPlaylistView playlistRaw={sharedPlaylistRaw} allVideos={allVideos} onVideoClick={handleVideoClick} onOpenAuth={() => { setAuthMode('login'); setShowAuthModal(true); }} onPlayShared={(vids) => { setLocalPlaylist(vids); setPlayingLocalPlaylist(true); setCurrentPlaylistIndex(0); }} onSaveShared={saveSharedPlaylist} onSaved={() => setSharedPlaylistSaved(true)} user={user} token={sharedPlaylistToken} />}
           {activeSection === 'submit' && <SubmitVideoSection user={user} userProfile={userProfile} onOpenAuth={() => { setAuthMode('login'); setShowAuthModal(true); }} onBack={() => setActiveSection('home')} onDraftSaved={() => setActiveSection('myvideos')} allVideos={allVideos} />}
-          {activeSection === 'admin' && <AdminSection userProfile={userProfile} onVideoApproved={loadVideos} allVideos={allVideos} />}
+          {activeSection === 'admin' && <AdminSection userProfile={userProfile} onVideoApproved={loadVideos} allVideos={allVideos} onSelectVideo={setSelectedVideo} />}
           {activeSection === 'myvideos' && <MyVideosSection user={user} onNewVideo={() => setActiveSection('submit')} />}
           {activeSection !== 'submit' && activeSection !== 'admin' && activeSection !== 'myvideos' && activeSection !== 'about' && activeSection !== 'shared-playlist' && (
           <>
