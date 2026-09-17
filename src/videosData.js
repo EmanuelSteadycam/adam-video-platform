@@ -5870,9 +5870,9 @@ export const videos = [
   {
     "id": "HD1921-33",
     "title": "Pokerstars",
-    "youtubeUrl": "https://youtu.be/jKP54y_1xAY",
-    "thumbnail": "https://img.youtube.com/vi/jKP54y_1xAY/maxresdefault.jpg",
-    "duration": "0:00",
+    "youtubeUrl": "https://youtu.be/IbHF-SOVYJU",
+    "thumbnail": "https://img.youtube.com/vi/IbHF-SOVYJU/maxresdefault.jpg",
+    "duration": "0:11",
     "year": 2011,
     "views": 0,
     "format": "orizzontale",

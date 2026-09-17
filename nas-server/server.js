@@ -427,6 +427,46 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
+  // POST /move-file — sposta (rename, stesso volume) un file da un percorso
+  // relativo a un altro, mantenendo il nome originale (a differenza di
+  // /migrate-legacy-file, che rinomina nello schema {codice}-{titolo}.ext).
+  // Usato per operazioni di riordino manuale dell'archivio (es. spostare i
+  // file "orfani" rimasti in una sottocartella di ADAM OLD nella sua root).
+  // Body: { oldRelativePath, newRelativePath }. Non sovrascrive mai un file
+  // già esistente a destinazione (409 senza toccare nulla).
+  if (req.url === '/move-file') {
+    let parsed;
+    try { parsed = await parseBody(req); } catch { return json(400, { error: 'JSON non valido' }); }
+
+    const { oldRelativePath, newRelativePath } = parsed;
+    if (!oldRelativePath || !newRelativePath) {
+      return json(400, { error: 'Campi obbligatori: oldRelativePath, newRelativePath' });
+    }
+    if (!ARCHIVE_PATH || !existsSync(ARCHIVE_PATH)) {
+      return json(503, { error: 'ARCHIVE_PATH non configurato o cartella inesistente sul NAS' });
+    }
+
+    const oldPath = join(ARCHIVE_PATH, oldRelativePath);
+    const newPath = join(ARCHIVE_PATH, newRelativePath);
+    if (!existsSync(oldPath)) {
+      return json(404, { error: `File di origine non trovato: ${oldRelativePath}` });
+    }
+    if (existsSync(newPath)) {
+      return json(409, { error: `Esiste già un file a destinazione: ${newRelativePath}` });
+    }
+
+    const ts = Date.now();
+    try {
+      mkdirSync(join(newPath, '..'), { recursive: true });
+      renameSync(oldPath, newPath);
+      console.log(`[${ts}] /move-file — "${oldRelativePath}" → "${newRelativePath}"`);
+      return json(200, { moved: true, newPath: newRelativePath });
+    } catch (e) {
+      console.error(`[${ts}] errore move-file:`, e.message);
+      return json(500, { error: e.message });
+    }
+  }
+
   return json(404, { error: 'Not found' });
 });
 
