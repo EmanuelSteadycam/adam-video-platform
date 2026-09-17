@@ -77,13 +77,16 @@ profilazione pubblicitaria o tracciamento a fini di marketing.
 
 ## 3. Perché usiamo questi dati (finalità e base giuridica)
 
-| Dato | Finalità | Base giuridica |
-|---|---|---|
-| Email, password | Creazione e gestione dell'account, accesso sicuro | Esecuzione di un servizio richiesto dall'utente |
-| Nome, organizzazione | Contestualizzare l'uso della piattaforma da parte di educatori/enti | Esecuzione di un servizio richiesto dall'utente |
-| Segnalazioni video | Valutare e, se pertinenti, aggiungere video all'archivio | Esecuzione di un servizio richiesto dall'utente |
-| Playlist | Consentire di organizzare e condividere selezioni di video | Esecuzione di un servizio richiesto dall'utente |
-| Dati tecnici di navigazione | Sicurezza, funzionamento e diagnosi della piattaforma | Legittimo interesse del titolare |
+- **Email, password** — creazione e gestione dell'account, accesso sicuro.
+  *Base giuridica: esecuzione di un servizio richiesto dall'utente.*
+- **Nome, organizzazione** — contestualizzare l'uso della piattaforma da parte di
+  educatori/enti. *Base giuridica: esecuzione di un servizio richiesto dall'utente.*
+- **Segnalazioni video** — valutare e, se pertinenti, aggiungere video
+  all'archivio. *Base giuridica: esecuzione di un servizio richiesto dall'utente.*
+- **Playlist** — consentire di organizzare e condividere selezioni di video.
+  *Base giuridica: esecuzione di un servizio richiesto dall'utente.*
+- **Dati tecnici di navigazione** — sicurezza, funzionamento e diagnosi della
+  piattaforma. *Base giuridica: legittimo interesse del titolare.*
 
 Non utilizziamo i dati per finalità diverse da quelle sopra indicate, né li
 vendiamo a terzi.

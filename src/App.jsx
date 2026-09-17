@@ -693,7 +693,7 @@ const HeroSection = ({ onVideoClick, videos = [], onScopri }) => {
       <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-black from-50% to-transparent" />
       <div className="absolute inset-0">
   {logoAnim && (
-    <div className="absolute left-4 md:left-8 top-[20%] -translate-y-1/2 w-48 md:w-80">
+    <div className="absolute left-[1px] md:left-[17px] top-[-15px] w-48 md:w-80">
   <Lottie
     animationData={logoAnim}
     loop={true}
@@ -709,7 +709,7 @@ const HeroSection = ({ onVideoClick, videos = [], onScopri }) => {
     {['ARCHIVIO', 'DIGITALE', 'ADDICTION E', 'MEDIA'].map((word, i) => (
       <span
         key={word}
-        className="tagline-word text-white/50 text-[11px] md:text-[13px] tracking-[0.25em] uppercase leading-tight font-light"
+        className="tagline-word text-white/50 text-[14px] md:text-[17px] tracking-[0.25em] uppercase leading-tight font-light"
         style={{ animationDelay: `${0.8 + i * 0.15}s` }}
       >
         <span style={{ color: '#FFDA2A' }}>{word[0]}</span>{word.slice(1)}
@@ -1670,7 +1670,7 @@ const VideoModal = ({ video, onClose, isApp = false }) => {
               </div>
             </div>
           </div>
-          <button onClick={onClose} className="absolute -right-16 top-0 bg-black bg-opacity-80 text-white p-2 rounded-full hover:bg-opacity-100 transition-all z-10"><X size={24} /></button>
+          <button onClick={onClose} className="fixed top-4 right-4 bg-black bg-opacity-80 text-white p-2 rounded-full hover:bg-opacity-100 transition-all z-20"><X size={28} /></button>
         </div>
       </div>
     );
@@ -1776,7 +1776,7 @@ const VideoModal = ({ video, onClose, isApp = false }) => {
       {isApp ? (
         <button onClick={onClose} className="fixed top-4 right-4 p-2 rounded-full bg-black/60 z-20" style={{ color: '#FFDA2A' }}><X size={32} /></button>
       ) : (
-        <button onClick={onClose} className="absolute -right-16 top-0 bg-black bg-opacity-80 text-white p-2 rounded-full hover:bg-opacity-100 transition-all z-10"><X size={24} /></button>
+        <button onClick={onClose} className="fixed top-4 right-4 bg-black bg-opacity-80 text-white p-2 rounded-full hover:bg-opacity-100 transition-all z-20"><X size={28} /></button>
       )}
       </div>
     </div>
