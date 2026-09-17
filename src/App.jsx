@@ -4684,7 +4684,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
       <div className="max-w-2xl mx-auto py-24 text-center">
         <Upload size={64} className="text-zinc-700 mx-auto mb-6" strokeWidth={1.5} />
         <h2 className="text-3xl font-bold text-white mb-4">Proponi un video</h2>
-        <p className="text-zinc-400 mb-8 leading-relaxed">Hai trovato un video interessante su YouTube, TikTok o Instagram? Hai prodotto contenuti educativi con i tuoi ragazzi?<br />Condividi con la community ADAM — dopo una revisione, verrà aggiunto all'archivio.</p>
+        <p className="text-zinc-400 mb-8 leading-relaxed">Hai trovato un video interessante su YouTube, TikTok o Instagram?<br />Hai prodotto contenuti educativi con i tuoi ragazzi?<br />Condividi con la community ADAM — dopo una revisione, verrà aggiunto all'archivio.</p>
         <button onClick={onOpenAuth} className="text-black px-8 py-3 rounded-lg font-semibold hover:brightness-110 transition-all" style={{ backgroundColor: '#FFDA2A' }}>
           Accedi per segnalare
         </button>
