@@ -4124,30 +4124,40 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
 
   useEffect(() => { onNextRef.current = onNext; }, [onNext]);
 
-  // Inizializza YouTube Player
+  // Inizializza / aggiorna il player YouTube.
+  // IMPORTANTE: dal secondo video in poi riusiamo lo STESSO player con
+  // loadVideoById() invece di distruggerlo e ricrearne uno nuovo. Un iframe
+  // YouTube appena creato richiede un gesto diretto dell'utente per l'autoplay
+  // (il browser lo blocca altrimenti) — il primo video parte perché nasce dal
+  // click su "Riproduci Playlist", ma un iframe ricreato da zero ad ogni
+  // avanzamento (come succedeva prima) perdeva quel permesso, quindi dal
+  // secondo video in poi l'autoplay si bloccava e serviva cliccare Play a
+  // mano. Riusando lo stesso iframe/player l'autoplay resta valido per tutta
+  // la playlist, come nel player nativo di YouTube.
   useEffect(() => {
     // TikTok/Instagram non hanno un'API player JS con eventi onStateChange come YouTube:
     // niente auto-advance a fine video, ma restano riproducibili via iframe semplice
     // (vedi rendering sotto) — l'utente avanza manualmente con Successivo.
-    if (!currentVideo || currentVideo.source === 'nas') return;
-    const initialPlatform = detectPlatform(currentVideo.youtubeUrl);
-    if (initialPlatform === 'tiktok' || initialPlatform === 'instagram') return;
+    if (!currentVideo || currentVideo.source === 'nas') {
+      if (playerRef.current) { try { playerRef.current.destroy(); } catch (e) {} playerRef.current = null; }
+      return;
+    }
+    const platform = detectPlatform(currentVideo.youtubeUrl);
+    if (platform === 'tiktok' || platform === 'instagram') {
+      if (playerRef.current) { try { playerRef.current.destroy(); } catch (e) {} playerRef.current = null; }
+      return;
+    }
 
     const videoId = getYouTubeID(currentVideo.youtubeUrl);
 
+    // Player YouTube già attivo: cambia solo il video, stesso iframe
+    if (playerRef.current && typeof playerRef.current.loadVideoById === 'function') {
+      playerRef.current.loadVideoById(videoId);
+      return;
+    }
+
     const initPlayer = () => {
       if (!window.YT || !window.YT.Player) return;
-
-      // Distruggi il player precedente
-      if (playerRef.current) {
-        try { playerRef.current.destroy(); } catch (e) {}
-        playerRef.current = null;
-      }
-
-      // Ricrea il div contenitore per evitare conflitti con l'API
-      if (containerRef.current) {
-        containerRef.current.innerHTML = '<div id="yt-playlist-player" style="width:100%;height:100%"></div>';
-      }
 
       playerRef.current = new window.YT.Player('yt-playlist-player', {
         videoId,
@@ -4165,14 +4175,17 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
     } else {
       window.onYouTubeIframeAPIReady = initPlayer;
     }
+  }, [currentIndex]);
 
+  // Distrugge il player alla chiusura del componente (non ad ogni cambio video)
+  useEffect(() => {
     return () => {
       if (playerRef.current) {
         try { playerRef.current.destroy(); } catch (e) {}
         playerRef.current = null;
       }
     };
-  }, [currentIndex]);
+  }, []);
 
   if (!currentVideo) return null;
 
@@ -4270,7 +4283,7 @@ const PlaylistPlayer = ({ playlist, currentIndex, onClose, onNext, onPrevious })
               </div>
             ) : (
               <div
-                key={`yt-${currentIndex}`}
+                key="yt-player"
                 ref={containerRef}
                 className="w-full h-full"
               >
