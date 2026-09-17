@@ -1,7 +1,7 @@
 'use strict';
 const http = require('http');
 const { execSync, spawn } = require('child_process');
-const { readFileSync, mkdirSync, readdirSync, unlinkSync, existsSync } = require('fs');
+const { readFileSync, mkdirSync, readdirSync, unlinkSync, existsSync, renameSync } = require('fs');
 const { tmpdir } = require('os');
 const { join } = require('path');
 
@@ -36,6 +36,26 @@ function findFilesByCodice(dir, codice) {
       results = results.concat(findFilesByCodice(full, codice));
     } else if (entry.isFile() && entry.name.startsWith(`${codice}-`)) {
       results.push(full);
+    }
+  }
+  return results;
+}
+
+// Elenca ricorsivamente i percorsi relativi (a partire da ARCHIVE_PATH) di
+// tutti i file — usato per il controllo incrociato "video presenti anche su
+// NAS" in Admin → Archivio (un'unica scansione, poi il confronto con i codici
+// avviene lato client). Il percorso relativo (non solo il nome) serve a
+// distinguere i file del vecchio archivio (ADAM OLD/{TEMA}/{cartella
+// numerata}/{NN titolo}.mp4) da quelli del nuovo schema ({codice}-titolo.mp4).
+function listAllFileNames(dir, base = dir) {
+  let results = [];
+  let entries;
+  try { entries = readdirSync(dir, { withFileTypes: true }); } catch { return results; }
+  for (const entry of entries) {
+    if (entry.isDirectory()) {
+      results = results.concat(listAllFileNames(join(dir, entry.name), base));
+    } else if (entry.isFile()) {
+      results.push(join(dir, entry.name).replace(base + '/', ''));
     }
   }
   return results;
@@ -337,6 +357,72 @@ const server = http.createServer(async (req, res) => {
       return json(200, { deleted: true, paths: matches.map(f => f.replace(ARCHIVE_PATH, 'ADAM')) });
     } catch (e) {
       console.error(`[${ts}] errore delete-video:`, e.message);
+      return json(500, { error: e.message });
+    }
+  }
+
+  // POST /list-files — elenco di tutti i file presenti nell'archivio, come
+  // percorso relativo ad ARCHIVE_PATH (es. "ALCOOL/SPOT SOCIALE/HD245-Birra
+  // Heineken.mp4" per il nuovo schema, "ADAM OLD/ALCOOL/1930 ADAM ALCOOL Spot
+  // commerciali/03 Aperol...mp4" per il vecchio) — usato dall'app per
+  // verificare quali video hanno davvero una copia fisica sul NAS, e per
+  // individuare i file del vecchio archivio da migrare al nuovo schema
+  if (req.url === '/list-files') {
+    if (!ARCHIVE_PATH || !existsSync(ARCHIVE_PATH)) {
+      return json(503, { error: 'ARCHIVE_PATH non configurato o cartella inesistente sul NAS' });
+    }
+    try {
+      const files = listAllFileNames(ARCHIVE_PATH);
+      return json(200, { files });
+    } catch (e) {
+      return json(500, { error: e.message });
+    }
+  }
+
+  // POST /migrate-legacy-file — sposta (rename, stesso volume, nessuna copia
+  // né cancellazione separata) un file del vecchio archivio (ADAM OLD/...) nel
+  // nuovo schema {ARCHIVE_PATH}/{TEMA}/{NATURA}/{codice}-{titolo}.mp4.
+  // Body: { oldRelativePath, tema, natura, codice, title }. Non sovrascrive
+  // mai un file già esistente a destinazione — in quel caso risponde 409
+  // senza toccare nulla, così il chiamante può segnalarlo invece di perdere
+  // dati.
+  if (req.url === '/migrate-legacy-file') {
+    let parsed;
+    try { parsed = await parseBody(req); } catch { return json(400, { error: 'JSON non valido' }); }
+
+    const { oldRelativePath, tema, natura, codice, title } = parsed;
+    if (!oldRelativePath || !tema || !natura || !codice) {
+      return json(400, { error: 'Campi obbligatori: oldRelativePath, tema, natura, codice' });
+    }
+    if (!ARCHIVE_PATH || !existsSync(ARCHIVE_PATH)) {
+      return json(503, { error: 'ARCHIVE_PATH non configurato o cartella inesistente sul NAS' });
+    }
+
+    const oldPath = join(ARCHIVE_PATH, oldRelativePath);
+    if (!existsSync(oldPath)) {
+      return json(404, { error: `File di origine non trovato: ${oldRelativePath}` });
+    }
+
+    const ext = oldPath.includes('.') ? oldPath.slice(oldPath.lastIndexOf('.')) : '.mp4';
+    const safeTema = sanitizeFilename(tema);
+    const safNatura = sanitizeFilename(natura);
+    const safeTitle = sanitizeFilename(title || codice);
+    const newFilename = `${codice}-${safeTitle}${ext}`;
+    const newDir = join(ARCHIVE_PATH, safeTema, safNatura);
+    const newPath = join(newDir, newFilename);
+
+    if (existsSync(newPath)) {
+      return json(409, { error: `Esiste già un file a destinazione: ${safeTema}/${safNatura}/${newFilename}` });
+    }
+
+    const ts = Date.now();
+    try {
+      mkdirSync(newDir, { recursive: true });
+      renameSync(oldPath, newPath);
+      console.log(`[${ts}] /migrate-legacy-file — "${oldRelativePath}" → "${safeTema}/${safNatura}/${newFilename}"`);
+      return json(200, { moved: true, newPath: `${safeTema}/${safNatura}/${newFilename}` });
+    } catch (e) {
+      console.error(`[${ts}] errore migrate-legacy-file:`, e.message);
       return json(500, { error: e.message });
     }
   }

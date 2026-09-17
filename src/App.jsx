@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { upload as blobUpload } from '@vercel/blob/client';
-import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown, Send, ShieldCheck, AlertCircle, Loader2, LogIn, Film, BookOpen, Pencil, Trash2, Save, RotateCcw, Archive, Lightbulb, Share2, Link, Activity, Volume2, Copy } from 'lucide-react';
+import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown, Send, ShieldCheck, AlertCircle, Loader2, LogIn, Film, BookOpen, Pencil, Trash2, Save, RotateCcw, Archive, Lightbulb, Share2, Link, Activity, Volume2, Copy, Database } from 'lucide-react';
 import Lottie from 'lottie-react';
 import { supabase } from './supabase';
 import { videos as videosData } from './videosData';
@@ -5211,6 +5211,9 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const [nasApproveChecked, setNasApproveChecked] = useState({});
   const [nasApprovingId, setNasApprovingId] = useState(null);
   const [nasApproveMsg, setNasApproveMsg] = useState(null);
+  // Generazione sinossi inline nel tab In attesa (form Modifica)
+  const [generatingSynopsisId, setGeneratingSynopsisId] = useState(null);
+  const [synopsisWarningSub, setSynopsisWarningSub] = useState(null); // { id, text }
 
   // Tab
   const [activeTab, setActiveTab] = useState('add');
@@ -5256,6 +5259,14 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   const [secTemiCandidates, setSecTemiCandidates] = useState(null); // null = mai lanciato, [] = nessun candidato (o scan in corso)
   const [secTemiError, setSecTemiError] = useState(null);
   const [secTemiProgress, setSecTemiProgress] = useState(null); // "2/4" mentre itera i chunk, null altrimenti
+  // Controllo incrociato "video presenti anche su NAS" — a comando, mai automatico
+  // (a differenza del resto dell'Archivio, richiede raggiungere il NAS residenziale)
+  const [nasFilesLoading, setNasFilesLoading] = useState(false);
+  const [nasFiles, setNasFiles] = useState(null); // null = mai verificato, altrimenti elenco percorsi relativi
+  const [nasFilesError, setNasFilesError] = useState(null);
+  const [nasMigrating, setNasMigrating] = useState(false);
+  const [nasMigrateReport, setNasMigrateReport] = useState(null); // { moved: [], skipped: [] }
+  const [nasSavingArchiveId, setNasSavingArchiveId] = useState(null);
   // Lock anti-doppio-avvio: un ref (non uno state) perché deve essere letto/scritto in modo
   // sincrono nello stesso istante del click, senza aspettare un giro di render — un secondo
   // click/chiamata mentre uno scan è già in corso (es. l'utente riclicca "Verifica temi
@@ -5311,6 +5322,114 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       setDupScanGroups(null);
     }
     setDupScanLoading(false);
+  };
+
+  // Controllo incrociato "video presenti anche su NAS" — un'unica scansione
+  // dell'archivio fisico sul NAS, poi il confronto con i codici avviene qui
+  // (vedi isOnNas sotto) invece che ripetere una richiesta per ogni video.
+  // Dopo la scansione lancia subito la migrazione automatica dei file trovati
+  // nel vecchio schema (ADAM OLD) — vedi handleMigrateLegacyFiles.
+  const handleCheckNasFiles = async () => {
+    setNasFilesLoading(true);
+    setNasFilesError(null);
+    setNasMigrateReport(null);
+    try {
+      const res = await fetch('/api/list-nas-files', { method: 'POST' });
+      const data = await res.json();
+      if (!res.ok) { setNasFilesError(data.error || 'Errore nel controllo NAS.'); return; }
+      setNasFiles(data.files || []);
+      await handleMigrateLegacyFiles(data.files || []);
+    } catch (e) {
+      setNasFilesError(e.message || 'Errore imprevisto.');
+    } finally {
+      setNasFilesLoading(false);
+    }
+  };
+
+  // Vecchio schema: codice tipo "HD1930-03" → dentro ADAM OLD/{TEMA}/, una
+  // cartella il cui nome INIZIA con "1930" (es. "1930 ADAM ALCOOL Spot
+  // commerciali"), e dentro quella un file il cui nome inizia col numero "03"
+  // seguito da uno spazio (es. "03 Aperol...mp4") — schema spiegato dall'utente
+  // il 2026-09-16, verificato dal vivo su ALCOOL. Confronto numerico (non
+  // stringa) sul numero-file per tollerare eventuale padding diverso.
+  const OLD_SCHEME_RE = /^HD(\d+)-(\d+)$/;
+  const findLegacyMatches = (video, files) => {
+    const codice = (video.codice || video.id || '').trim();
+    const m = codice.match(OLD_SCHEME_RE);
+    if (!m) return [];
+    const folderNum = m[1];
+    const fileNum = parseInt(m[2], 10);
+    return files.filter(f => {
+      if (!f.startsWith('ADAM OLD/')) return false;
+      const parts = f.split('/');
+      const filename = parts[parts.length - 1];
+      const parentFolder = parts[parts.length - 2] || '';
+      if (!parentFolder.startsWith(folderNum)) return false;
+      const fnMatch = filename.match(/^(\d+)\s/);
+      return !!fnMatch && parseInt(fnMatch[1], 10) === fileNum;
+    });
+  };
+
+  // Stato del controllo incrociato per un video, usato per il badge in Archivio:
+  // null = mai verificato, 'ok' = file già nel nuovo schema, 'legacy' = trovato
+  // un solo file corrispondente in ADAM OLD (da migrare), 'ambiguous' = più di
+  // un file corrisponde (nessuna azione automatica, va controllato a mano),
+  // 'missing' = nessun file trovato, né nuovo né vecchio schema
+  const nasStatus = (video, files = nasFiles) => {
+    if (!files) return null;
+    const codice = (video.codice || video.id || '').trim();
+    if (!codice) return 'missing';
+    if (files.some(f => f.split('/').pop().startsWith(`${codice}-`))) return 'ok';
+    const legacy = findLegacyMatches(video, files);
+    if (legacy.length === 1) return 'legacy';
+    if (legacy.length > 1) return 'ambiguous';
+    return 'missing';
+  };
+
+  // Mantenuto per compatibilità semantica nel resto del file (badge semplice)
+  const isOnNas = (video) => {
+    const s = nasStatus(video);
+    return s === null ? null : s === 'ok';
+  };
+
+  // Migrazione automatica: per ogni video con esattamente un file legacy
+  // corrispondente, sposta il file (rename, stesso volume) nel nuovo schema
+  // usando tema/natura DAL RECORD (non dalla vecchia cartella). Mai in
+  // parallelo (un file alla volta, così il report riga per riga resta
+  // leggibile e non si sovraccarica il NAS), mai sovrascrive una destinazione
+  // già esistente (il server risponde 409 in quel caso, registrato come skip).
+  const handleMigrateLegacyFiles = async (files) => {
+    const toMigrate = allVideos.filter(v => nasStatus(v, files) === 'legacy');
+    if (!toMigrate.length) { setNasMigrateReport({ moved: [], skipped: [] }); return; }
+    setNasMigrating(true);
+    const moved = [];
+    const skipped = [];
+    let currentFiles = files;
+    for (const video of toMigrate) {
+      const matches = findLegacyMatches(video, currentFiles);
+      if (matches.length !== 1) { skipped.push({ video, reason: 'diventato ambiguo durante la migrazione' }); continue; }
+      const temi = video.temi?.length ? video.temi : asTemi(video);
+      const tema = temi[0] || video.tema;
+      if (!tema || !video.natura) { skipped.push({ video, reason: 'tema o natura mancante sul record' }); continue; }
+      try {
+        const res = await fetch('/api/migrate-legacy-file', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ oldRelativePath: matches[0], tema, natura: video.natura, codice: video.codice || video.id, title: video.title }),
+        });
+        const data = await res.json();
+        if (!res.ok) { skipped.push({ video, reason: data.error || `Errore HTTP ${res.status}` }); continue; }
+        moved.push({ video, newPath: data.newPath });
+        // aggiorna la lista file in memoria così i prossimi controlli in questo stesso giro
+        // (findLegacyMatches/nasStatus) vedono già il file spostato, senza ri-scansionare il NAS
+        currentFiles = currentFiles.filter(f => f !== matches[0]).concat(`${data.newPath}`);
+      } catch (e) {
+        skipped.push({ video, reason: e.message || 'Errore di rete' });
+      }
+    }
+    setNasFiles(currentFiles);
+    setNasMigrateReport({ moved, skipped });
+    setNasMigrating(false);
   };
 
   // Backfill "fase 3" multitema — a comando dal bottone in Archivio, mai automatico.
@@ -5423,6 +5542,53 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     }));
   };
 
+  // Genera descrizione per una segnalazione nel tab In attesa (stessa logica di
+  // handleGenerateSynopsis nel tab Aggiungi, ma legge/scrive su editForms[sub.id]
+  // invece che sullo stato `form` — i due tab hanno form locali separati)
+  const handleGenerateSynopsisForSub = async (sub) => {
+    const subForm = editForms[sub.id] || {};
+    const url = (subForm.youtube_url ?? sub.youtube_url ?? '').trim();
+    if (!url) return;
+    setGeneratingSynopsisId(sub.id);
+    setSynopsisWarningSub(null);
+    try {
+      const p = detectPlatform(url);
+      const endpoint = p === 'tiktok' ? '/api/generate-synopsis-tiktok'
+        : p === 'instagram' ? '/api/generate-synopsis-instagram'
+        : '/api/generate-synopsis';
+      const title = subForm.title ?? sub.title;
+      const temi = subForm.temi ?? asTemi(sub);
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          youtubeUrl: url,
+          title: title || undefined,
+          tema: temi?.[0] || undefined,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setSynopsisWarningSub({ id: sub.id, text: data.error || 'Errore nella generazione della sinossi.' }); return; }
+      const curTitle = (subForm.title ?? sub.title ?? '').trim();
+      const curDuration = (subForm.duration ?? sub.duration ?? '').trim();
+      setEditForms(prev => ({
+        ...prev,
+        [sub.id]: {
+          ...(prev[sub.id] || {}),
+          ...(data.synopsis ? { description: data.synopsis } : {}),
+          ...(!curTitle && data.ytTitle ? { title: data.ytTitle } : {}),
+          ...(data.ytDuration && !curDuration ? { duration: data.ytDuration } : {}),
+          ...(data.ytFormat ? { formato: data.ytFormat } : {}),
+        },
+      }));
+      if (data.warnings?.length) setSynopsisWarningSub({ id: sub.id, text: data.warnings.join(' ') });
+    } catch (e) {
+      setSynopsisWarningSub({ id: sub.id, text: e?.message || 'Errore di rete nella generazione della sinossi.' });
+    } finally {
+      setGeneratingSynopsisId(null);
+    }
+  };
+
   useEffect(() => {
     if (userProfile?.role !== 'admin') return;
     supabase.from('video_submissions').select('*').in('status', ['pending', 'admin_draft']).order('submitted_at', { ascending: false })
@@ -5435,6 +5601,17 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
   useEffect(() => {
     if (archiveLoaded) loadArchive();
   }, [allVideos]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Toast esito "Salva anche su NAS" durante l'approvazione — la riga della
+  // segnalazione viene rimossa dalla lista subito dopo l'approvazione (prima che
+  // il salvataggio NAS, asincrono, sia finito), quindi un messaggio agganciato
+  // alla riga (com'era prima) non aveva più dove comparire: non veniva mai
+  // mostrato, nemmeno in caso di errore. Il toast fisso non dipende dalla riga.
+  useEffect(() => {
+    if (!nasApproveMsg || nasApproveMsg.ok === null) return; // ok === null = ancora in corso, non auto-chiudere
+    const t = setTimeout(() => setNasApproveMsg(null), 6000);
+    return () => clearTimeout(t);
+  }, [nasApproveMsg]);
 
   const loadRejected = async () => {
     setLoadingRejected(true);
@@ -5491,6 +5668,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     if (tab === 'pending') loadPending();
     if (tab === 'rejected') loadRejected();
     if (tab === 'archive' && !archiveLoaded) loadArchive();
+    if (tab === 'archive' && nasFiles === null && !nasFilesLoading) handleCheckNasFiles();
     if (tab === 'users' && !usersLoaded) loadUsers();
     if (tab === 'services') loadServices();
   };
@@ -5550,13 +5728,24 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
     const { error: subErr } = await supabase.from('video_submissions').update({ status: 'approved' }).eq('id', sub.id);
     if (subErr) {
       setApproveError(sub.id + ':Video salvato, ma errore aggiornamento segnalazione: ' + subErr.message);
-    } else {
+    }
+    // Rimuove la riga (e chiude il form Modifica se aperto) dalla lista "In attesa".
+    // Se è in corso anche il salvataggio su SteadyTube, questo viene richiamato SOLO
+    // dopo che quel salvataggio è concluso (vedi sotto) — così la scheda resta visibile
+    // per tutta la durata dell'operazione, invece di sparire subito lasciando solo il
+    // toast come unico segnale.
+    const closeRow = () => {
+      if (subErr) return;
       setSubmissions(prev => prev.filter(s => s.id !== sub.id));
       onVideoApproved?.();
-    }
-    // 3. Facoltativo: salva anche il file fisico su NAS (checkbox "Salva anche su NAS")
+    };
+    // 3. Facoltativo: salva anche il file fisico su NAS (checkbox "Salva anche su SteadyTube")
     if (saveToNas && !subErr && !vidErr) {
       setNasApprovingId(sub.id);
+      // ok: null = operazione in corso — il toast resta visibile con questo testo
+      // finché non arriva una risposta, così non sparisce nel nulla e non si è
+      // tentati di chiudere la pagina prima di sapere se è andata a buon fine
+      setNasApproveMsg({ id: sub.id, ok: null, text: 'Salvataggio su SteadyTube in corso — attendi prima di chiudere…' });
       try {
         const res = await fetch('/api/save-to-nas', {
           method: 'POST',
@@ -5576,6 +5765,9 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       } finally {
         setNasApprovingId(null);
       }
+      closeRow();
+    } else {
+      closeRow();
     }
     setActionLoading(null);
   };
@@ -5640,6 +5832,36 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
       scheduleCatalogRebuild();
     }
     setSavingVideoId(null);
+  };
+
+  // Salva su NAS un video già in Archivio (icona rossa/ambra) — stesso endpoint
+  // usato in "In attesa" (/api/save-to-nas), ma richiamabile in qualsiasi momento
+  // da un video già approvato, non solo in fase di approvazione. Usa i valori
+  // eventualmente modificati nel form inline, altrimenti quelli già salvati.
+  const handleSaveVideoToNas = async (video) => {
+    const vf = editVideoForms[video.id] || {};
+    const temi = vf.temi ?? asTemi(video);
+    const tema = temi[0] || video.tema;
+    const natura = vf.natura ?? video.natura;
+    const codice = (vf.codice ?? video.codice ?? video.id ?? '').trim();
+    const youtubeUrl = vf.youtube_url ?? video.youtube_url;
+    const title = vf.title ?? video.title;
+    setNasSavingArchiveId(video.id);
+    setNasApproveMsg({ id: video.id, ok: null, text: 'Salvataggio su SteadyTube in corso — attendi prima di chiudere…' });
+    try {
+      const res = await fetch('/api/save-to-nas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ youtubeUrl, codice, title, tema, natura }),
+      });
+      const data = await res.json();
+      setNasApproveMsg({ id: video.id, ok: res.ok, text: res.ok ? '✓ Video salvato su STEADYTUBE' : (data.error || 'Errore salvataggio NAS.') });
+      if (res.ok) await handleCheckNasFiles(); // ri-scansiona per aggiornare subito l'icona, senza dover ricaricare la pagina
+    } catch (e) {
+      setNasApproveMsg({ id: video.id, ok: false, text: e.message });
+    } finally {
+      setNasSavingArchiveId(null);
+    }
   };
 
   const handleDeleteVideo = async (video) => {
@@ -5972,6 +6194,20 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
 
   return (
     <div className="max-w-3xl mx-auto py-8 space-y-6">
+      {/* Toast esito salvataggio NAS durante l'approvazione — fisso, non legato
+          alla riga della segnalazione (che a quel punto è già sparita dalla lista) */}
+      {nasApproveMsg && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 max-w-md bg-zinc-800 border rounded-xl shadow-xl px-4 py-2.5 text-sm"
+          style={{ borderColor: nasApproveMsg.ok === null ? 'rgba(255,218,42,0.4)' : nasApproveMsg.ok ? 'rgba(16,185,129,0.4)' : 'rgba(239,68,68,0.4)' }}>
+          {nasApproveMsg.ok === null ? <Loader2 size={16} className="animate-spin text-[#FFDA2A] flex-shrink-0" />
+            : nasApproveMsg.ok ? <Check size={16} className="text-emerald-400 flex-shrink-0" />
+            : <AlertCircle size={16} className="text-red-400 flex-shrink-0" />}
+          <span className={nasApproveMsg.ok === null ? 'text-[#FFDA2A]' : nasApproveMsg.ok ? 'text-emerald-400' : 'text-red-400'}>{nasApproveMsg.text}</span>
+          {nasApproveMsg.ok !== null && (
+            <button onClick={() => setNasApproveMsg(null)} className="text-zinc-500 hover:text-zinc-300 ml-1 flex-shrink-0"><X size={14} /></button>
+          )}
+        </div>
+      )}
       {/* Header */}
       <div className="flex items-center gap-3">
         <ShieldCheck size={28} className="text-[#FFDA2A]" />
@@ -6310,7 +6546,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                                       checked={!!nasApproveChecked[sub.id]}
                                       onChange={e => setNasApproveChecked(prev => ({ ...prev, [sub.id]: e.target.checked }))}
                                       className="accent-[#FFDA2A]" />
-                                    Salva anche su NAS
+                                    Salva anche su SteadyTube
                                   </label>
                                   <button onClick={() => handleApprove(sub, !!nasApproveChecked[sub.id])}
                                     disabled={actionLoading === sub.id + '_approve' || nasApprovingId === sub.id || !hasCodice || codiceEsiste}
@@ -6320,9 +6556,6 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                                     Approva{!hasCodice && <span className="text-[10px] text-zinc-500 ml-0.5">(codice mancante)</span>}
                                     {codiceEsiste && <span className="text-[10px] text-red-400 ml-0.5">(ID duplicato)</span>}
                                   </button>
-                                  {nasApproveMsg?.id === sub.id && (
-                                    <span className={`text-xs ${nasApproveMsg.ok ? 'text-green-400' : 'text-red-400'}`}>{nasApproveMsg.text}</span>
-                                  )}
                                 </>
                               );
                             })()}
@@ -6374,12 +6607,26 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                             </button>
                           </div>
                         </div>
-                        {/* Riga 2: URL Video */}
+                        {/* Riga 2: URL Video + Genera descrizione */}
                         <div>
-                          <label className="block text-xs font-medium text-zinc-400 mb-1">Link Video (YouTube, TikTok o Instagram)</label>
+                          <div className="flex items-center justify-between mb-1">
+                            <label className="text-xs font-medium text-zinc-400">Link Video (YouTube, TikTok o Instagram)</label>
+                            <button type="button"
+                              onClick={() => handleGenerateSynopsisForSub(sub)}
+                              disabled={!(subForm.youtube_url ?? sub.youtube_url ?? '').trim() || generatingSynopsisId === sub.id}
+                              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                              style={{ backgroundColor: '#FFDA2A', color: '#000' }}>
+                              {generatingSynopsisId === sub.id
+                                ? <><Loader2 size={11} className="animate-spin inline-block" /> Generando…</>
+                                : <><Sparkles size={11} className="inline-block" /> Genera descrizione</>}
+                            </button>
+                          </div>
                           <input type="url" value={subForm.youtube_url ?? sub.youtube_url ?? ''} onChange={e => ef(sub.id, 'youtube_url', e.target.value)}
                             onBlur={e => handleSubUrlBlur(sub.id, e.target.value)}
                             placeholder="https://youtu.be/... oppure link TikTok/Instagram" className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-3 py-2 text-sm placeholder-zinc-500 outline-none focus:border-zinc-500" />
+                          {synopsisWarningSub?.id === sub.id && (
+                            <p className="text-xs text-amber-400 mt-1.5">{synopsisWarningSub.text}</p>
+                          )}
                           {(() => {
                             const dup = findDuplicateByUrl(subForm.youtube_url ?? sub.youtube_url, allVideos);
                             return dup ? <div className="mt-2"><DuplicateWarningBanner video={dup} compact /></div> : null;
@@ -6569,8 +6816,42 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                 </button>
                 {secTemiLoading && <span className="text-[11px] text-zinc-500">un paio di minuti per chunk</span>}
               </div>
+              <div className="flex flex-col items-end gap-1">
+                {(nasFilesLoading || nasMigrating) && (
+                  <span className="flex items-center gap-1.5 text-xs text-zinc-500">
+                    <Loader2 size={13} className="animate-spin" />
+                    {nasFilesLoading ? 'Verifica NAS in corso…' : 'Migrazione vecchi file…'}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
+          {nasFilesError && (
+            <div className="flex items-center gap-2 bg-red-900/30 border border-red-800 text-red-400 px-4 py-3 rounded-lg text-sm mb-4">
+              <AlertCircle size={16} className="flex-shrink-0" />{nasFilesError}
+            </div>
+          )}
+          {nasMigrateReport && (nasMigrateReport.moved.length > 0 || nasMigrateReport.skipped.length > 0) && (
+            <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-4 mb-4 text-sm">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-zinc-300 font-semibold">Migrazione file da ADAM OLD completata</p>
+                <button onClick={() => setNasMigrateReport(null)} className="text-zinc-500 hover:text-zinc-300"><X size={14} /></button>
+              </div>
+              {nasMigrateReport.moved.length > 0 && (
+                <p className="text-emerald-400 mb-1.5 flex items-center gap-1.5"><Check size={13} /> {nasMigrateReport.moved.length} file spostati nel nuovo schema</p>
+              )}
+              {nasMigrateReport.skipped.length > 0 && (
+                <div>
+                  <p className="text-amber-400 mb-1 flex items-center gap-1.5"><AlertCircle size={13} /> {nasMigrateReport.skipped.length} saltati (nessuna modifica fatta):</p>
+                  <ul className="text-xs text-zinc-400 space-y-0.5 pl-5 list-disc">
+                    {nasMigrateReport.skipped.map(({ video, reason }) => (
+                      <li key={video.id}><span className="text-[#FFDA2A] font-mono">{video.codice || video.id}</span> — {reason}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
           {dupScanError && (
             <div className="flex items-center gap-2 bg-red-900/30 border border-red-800 text-red-400 px-4 py-3 rounded-lg text-sm mb-4">
               <AlertCircle size={16} className="flex-shrink-0" />{dupScanError}
@@ -6819,6 +7100,18 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                                 style={{ backgroundColor: c?.solid || '#52525b', color: '#fff' }}>{t}</span>
                             ); })}
                             {video.natura && <span className="text-xs px-1.5 py-0.5 rounded bg-blue-600/20 border border-blue-600/30 text-white">{video.natura}</span>}
+                            {(() => {
+                              const status = nasStatus(video);
+                              const colorClass = status === 'ok' ? 'text-emerald-400'
+                                : status === 'ambiguous' ? 'text-amber-400'
+                                : status === 'missing' ? 'text-red-400'
+                                : 'text-zinc-600';
+                              const label = status === 'ok' ? 'Archiviato su NAS'
+                                : status === 'ambiguous' ? 'NAS ambiguo — più file candidati, controlla a mano'
+                                : status === 'missing' ? 'Non presente sul NAS'
+                                : 'Verifica NAS in corso…';
+                              return <Database size={15} className={colorClass} title={label} />;
+                            })()}
                             {video.prodotto_scuola && (
                               <span className="text-xs px-1.5 py-0.5 rounded bg-zinc-700 text-zinc-300 flex items-center gap-1">
                                 <School size={10} /> Scuola
@@ -6858,6 +7151,12 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                               style={isEditing ? { borderColor: '#FFDA2A', color: '#FFDA2A', backgroundColor: 'rgba(255,218,42,0.05)' } : {}}>
                               <Pencil size={12} /> Modifica
                             </button>
+                            {nasStatus(video) !== 'ok' && (
+                              <button onClick={() => handleSaveVideoToNas(video)} disabled={nasSavingArchiveId === video.id}
+                                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-zinc-600 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all disabled:opacity-50">
+                                {nasSavingArchiveId === video.id ? <Loader2 size={12} className="animate-spin" /> : <Database size={12} />} SteadyTube
+                              </button>
+                            )}
                             <button onClick={() => { setDeleteConfirmId(video.id); setEditingVideoId(null); }}
                               className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-zinc-600 hover:border-red-600 text-zinc-400 hover:text-red-400 transition-all">
                               <Trash2 size={12} />
@@ -6963,7 +7262,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [] }) => {
                           </div>
                         </div>
                         {/* Row 8: Buttons */}
-                        <div className="flex gap-2 justify-end pt-1">
+                        <div className="flex gap-2 justify-end items-center pt-1">
                           <button onClick={() => { setEditingVideoId(null); setEditVideoForms(prev => { const n = { ...prev }; delete n[video.id]; return n; }); }}
                             className="px-4 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 transition-all">
                             Annulla
