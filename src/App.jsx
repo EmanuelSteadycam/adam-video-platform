@@ -8192,9 +8192,9 @@ function App() {
         return true;
       });
       filtered = [...filtered].sort((a, b) => parseDuration(a.duration) - parseDuration(b.duration));
-    } else if (activeSection === 'home') {
+    } else if (activeSection === 'home' || activeSection === 'formats') {
       // Video placeholder (link non disponibile online) restano nell'archivio ma
-      // vanno relegati in fondo alla home invece di comparire mescolati agli altri.
+      // vanno relegati in fondo invece di comparire mescolati agli altri.
       const isPlaceholder = v => getYouTubeID(v.youtubeUrl) === PLACEHOLDER_VIDEO_ID;
       filtered = [...filtered.filter(v => !isPlaceholder(v)), ...filtered.filter(isPlaceholder)];
     }
