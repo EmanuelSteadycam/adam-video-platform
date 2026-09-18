@@ -8131,7 +8131,7 @@ function App() {
       // relegati in fondo alla classifica, non mescolati per numero di views.
       const isPlaceholder = v => getYouTubeID(v.youtubeUrl) === PLACEHOLDER_VIDEO_ID;
       const sorted = [...filtered].sort((a, b) => b.views - a.views);
-      filtered = [...sorted.filter(v => !isPlaceholder(v)), ...sorted.filter(isPlaceholder)].slice(0, 30);
+      filtered = [...sorted.filter(v => !isPlaceholder(v)), ...sorted.filter(isPlaceholder)].slice(0, 50);
     }
     else if (activeSection === 'recent') filtered = [...filtered].sort(compareVideoTime).slice(0, 50);
     else if (activeSection === 'schools') {
