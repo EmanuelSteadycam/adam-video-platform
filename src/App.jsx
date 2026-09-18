@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { upload as blobUpload } from '@vercel/blob/client';
-import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown, Send, ShieldCheck, AlertCircle, Loader2, LogIn, Film, BookOpen, Pencil, Trash2, Save, RotateCcw, Archive, Lightbulb, Share2, Link, Activity, Volume2, Copy, Database } from 'lucide-react';
+import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown, Send, ShieldCheck, AlertCircle, Loader2, LogIn, Film, BookOpen, Pencil, Trash2, Save, RotateCcw, Archive, Lightbulb, Share2, Link, Activity, Volume2, Copy, Database, QrCode } from 'lucide-react';
 import Lottie from 'lottie-react';
 import { supabase } from './supabase';
 import { videos as videosData } from './videosData';
@@ -631,6 +631,33 @@ const AboutSection = ({ onNavigate, onEsplora }) => {
             <p className="text-zinc-400 text-sm leading-relaxed mb-2 max-w-md">Inquadra il QR con la fotocamera per aprire la versione rapida di ADAM — pensata per aggiungere un link YouTube, TikTok o Instagram in pochi tocchi, direttamente da mobile.</p>
             <a href={`${window.location.origin}/?quick=1`} className="text-[#FFDA2A] text-sm font-semibold hover:underline break-all">apri direttamente →</a>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Lost2Section = () => {
+  const homeUrl = 'https://adam.centrosteadycam.it';
+  return (
+    <div className="px-4 md:px-8 py-10 flex flex-col items-center text-center">
+      <div className="max-w-xl">
+        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">LOST IN TRASLATION 2</h2>
+        <p className="text-zinc-400 leading-relaxed text-sm md:text-base mb-1">
+          Oggi presentiamo ADAM, l'archivio digitale su addiction e media.
+        </p>
+        <p className="text-zinc-400 leading-relaxed text-sm md:text-base mb-8">
+          Inquadra il QR code con lo smartphone per aprire subito la home di ADAM.
+        </p>
+        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 sm:p-8 inline-flex flex-col items-center gap-4">
+          <img
+            src={`https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(homeUrl)}`}
+            alt="QR per aprire la home di ADAM"
+            width={220}
+            height={220}
+            className="rounded-lg bg-white p-2"
+          />
+          <a href={homeUrl} className="text-[#FFDA2A] text-sm font-semibold hover:underline break-all">{homeUrl}</a>
         </div>
       </div>
     </div>
@@ -7551,7 +7578,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [], onSelectVi
 
 // Sezioni raggiungibili senza login, uniche restaurabili da un reload a freddo
 // (?section=...) — vedi navigazione mobile via History API più sotto in App()
-const PUBLIC_SECTIONS = ['home', 'about', 'formats', 'most-viewed', 'recent', 'schools', 'inspire'];
+const PUBLIC_SECTIONS = ['home', 'about', 'formats', 'most-viewed', 'recent', 'schools', 'inspire', 'lost2'];
 
 // ─── App ───────────────────────────────────────────────────────────────────────
 function App() {
@@ -8280,6 +8307,7 @@ function App() {
         { section: 'recent',      label: 'Nuovi Inseriti',      icon: Clock },
         { section: 'schools',     label: 'Prodotti dalle Scuole', icon: School },
         { section: 'inspire',     label: 'Lasciati Ispirare',   icon: Sparkles },
+        { section: 'lost2',       label: 'Lost2',               icon: QrCode },
       ].map(({ section, label, icon: Icon }) => (
         <li key={section}>
           <button
@@ -8522,11 +8550,12 @@ function App() {
 {activeSection === 'formats' && <NatureCarousel onSelectNature={(natura) => setSelectedNatura(natura)} selectedNatura={selectedNatura} videos={allVideos} />}
           {activeSection === 'inspire' && <InspireSection onVideoClick={handleVideoClick} onAddToPlaylist={handleAddToPlaylist} isInPlaylist={isInPlaylist} videos={allVideos} />}
           {activeSection === 'about' && <AboutSection onNavigate={setActiveSection} onEsplora={() => { setActiveSection('home'); setTimeout(() => filtersSectionRef.current?.scrollIntoView({ behavior: 'smooth' }), 120); }} />}
+          {activeSection === 'lost2' && <Lost2Section />}
           {activeSection === 'shared-playlist' && sharedPlaylistRaw && <SharedPlaylistView playlistRaw={sharedPlaylistRaw} allVideos={allVideos} onVideoClick={handleVideoClick} onOpenAuth={() => { setAuthMode('login'); setShowAuthModal(true); }} onPlayShared={(vids) => { setLocalPlaylist(vids); setPlayingLocalPlaylist(true); setCurrentPlaylistIndex(0); }} onSaveShared={saveSharedPlaylist} onSaved={() => setSharedPlaylistSaved(true)} user={user} token={sharedPlaylistToken} />}
           {activeSection === 'submit' && <SubmitVideoSection user={user} userProfile={userProfile} onOpenAuth={() => { setAuthMode('login'); setShowAuthModal(true); }} onBack={() => setActiveSection('home')} onDraftSaved={() => setActiveSection('myvideos')} allVideos={allVideos} />}
           {activeSection === 'admin' && <AdminSection userProfile={userProfile} onVideoApproved={loadVideos} allVideos={allVideos} onSelectVideo={setSelectedVideo} />}
           {activeSection === 'myvideos' && <MyVideosSection user={user} onNewVideo={() => setActiveSection('submit')} />}
-          {activeSection !== 'submit' && activeSection !== 'admin' && activeSection !== 'myvideos' && activeSection !== 'about' && activeSection !== 'shared-playlist' && (
+          {activeSection !== 'submit' && activeSection !== 'admin' && activeSection !== 'myvideos' && activeSection !== 'about' && activeSection !== 'lost2' && activeSection !== 'shared-playlist' && (
           <>
           <div className="mb-6">
             <div className="flex items-center justify-between">
