@@ -4383,7 +4383,15 @@ const AuthModal = ({ mode: initialMode, onClose, dismissible = true }) => {
       setError(error.message);
     } else {
       if (data.user) {
-        await supabase.from('profiles').upsert({ id: data.user.id, nome: nome || null, organizzazione: org || null, email: data.user.email }, { onConflict: 'id' });
+        // Un trigger su Supabase crea già la riga profiles (solo id+role) alla
+        // signup — qui va sempre fatto un update, mai un upsert: l'upsert genera
+        // un INSERT che viene bloccato dalla RLS (nessuna policy di insert su
+        // profiles), fallendo silenziosamente e lasciando nome/org/email vuoti.
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .update({ nome: nome || null, organizzazione: org || null, email: data.user.email })
+          .eq('id', data.user.id);
+        if (profileError) console.error('Errore salvataggio profilo:', profileError);
       }
       setRegistered(true);
     }
