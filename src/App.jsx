@@ -8013,7 +8013,10 @@ function App() {
       if (!data.nome && userMeta.nome) patch.nome = userMeta.nome;
       if (!data.organizzazione && userMeta.organizzazione) patch.organizzazione = userMeta.organizzazione;
       if (Object.keys(patch).length) {
-        supabase.from('profiles').update(patch).eq('id', userId);
+        // await obbligatorio: le query supabase-js partono solo quando vengono
+        // attese (.then) — senza, l'update non viene mai inviato.
+        const { error: patchError } = await supabase.from('profiles').update(patch).eq('id', userId);
+        if (patchError) console.error('Errore completamento profilo:', patchError);
         Object.assign(data, patch);
       }
     }
