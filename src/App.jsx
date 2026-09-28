@@ -4382,15 +4382,29 @@ const AuthModal = ({ mode: initialMode, onClose, dismissible = true }) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    // nome/organizzazione viaggiano nei metadati dell'utente: con la conferma
+    // email attiva signUp non restituisce una sessione, quindi l'update su
+    // profiles (che richiede auth.uid()) non può partire qui — lo fa loadProfile
+    // al primo login, leggendo questi metadati. Li usa anche /api/auth-email-hook per la notifica all'admin.
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: window.location.origin,
+        data: { nome: nome || null, organizzazione: org || null },
+      },
+    });
     if (error) {
       setError(error.message);
+    } else if (data.user && data.user.identities?.length === 0) {
+      // Supabase non dà errore su email già registrata (anti-enumerazione):
+      // restituisce un utente senza identità.
+      setError('Questa email è già registrata. Prova ad accedere.');
     } else {
-      if (data.user) {
-        // Un trigger su Supabase crea già la riga profiles (solo id+role) alla
-        // signup — qui va sempre fatto un update, mai un upsert: l'upsert genera
-        // un INSERT che viene bloccato dalla RLS (nessuna policy di insert su
-        // profiles), fallendo silenziosamente e lasciando nome/org/email vuoti.
+      if (data.user && data.session) {
+        // Conferma email disattivata → sessione già attiva, si può scrivere subito.
+        // Sempre update, mai upsert: il trigger su Supabase crea già la riga
+        // profiles e un INSERT verrebbe bloccato dalla RLS.
         const { error: profileError } = await supabase
           .from('profiles')
           .update({ nome: nome || null, organizzazione: org || null, email: data.user.email })
@@ -7989,11 +8003,19 @@ function App() {
   const allVideos = useMemo(() => dbVideos.length > 0 ? dbVideos : mockVideos, [dbVideos]);
 
   // ─── Auth Supabase ────────────────────────────────────────────────────────────
-  const loadProfile = async (userId, userEmail) => {
+  const loadProfile = async (userId, userEmail, userMeta = {}) => {
     const { data } = await supabase.from('profiles').select('*').eq('id', userId).single();
-    if (data && !data.email && userEmail) {
-      supabase.from('profiles').update({ email: userEmail }).eq('id', userId);
-      data.email = userEmail;
+    if (data) {
+      // Backfill al primo login: email da auth, nome/organizzazione dai metadati
+      // salvati alla registrazione (vedi handleRegister).
+      const patch = {};
+      if (!data.email && userEmail) patch.email = userEmail;
+      if (!data.nome && userMeta.nome) patch.nome = userMeta.nome;
+      if (!data.organizzazione && userMeta.organizzazione) patch.organizzazione = userMeta.organizzazione;
+      if (Object.keys(patch).length) {
+        supabase.from('profiles').update(patch).eq('id', userId);
+        Object.assign(data, patch);
+      }
     }
     setUserProfile(data || null);
     setProfileLoaded(true);
@@ -8007,12 +8029,12 @@ function App() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
-      if (session?.user) { loadProfile(session.user.id, session.user.email); loadPlaylists(session.user.id); }
+      if (session?.user) { loadProfile(session.user.id, session.user.email, session.user.user_metadata); loadPlaylists(session.user.id); }
       setAuthChecked(true);
     });
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
-      if (session?.user) { loadProfile(session.user.id, session.user.email); loadPlaylists(session.user.id); }
+      if (session?.user) { loadProfile(session.user.id, session.user.email, session.user.user_metadata); loadPlaylists(session.user.id); }
       else {
         setUserProfile(null);
         setPlaylists([]);
