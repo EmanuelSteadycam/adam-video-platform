@@ -5977,7 +5977,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [], onSelectVi
 
   const loadUsers = async () => {
     setLoadingUsers(true);
-    const { data } = await supabase.from('profiles').select('*').order('nome');
+    const { data } = await supabase.from('profiles').select('*').order('created_at', { ascending: true });
     setUsers(data || []);
     setLoadingUsers(false);
     setUsersLoaded(true);
@@ -7374,7 +7374,8 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [], onSelectVi
             <p className="text-zinc-500 text-sm py-4">Nessun utente registrato.</p>
           ) : (
             <div className="space-y-3">
-              {users.map(u => {
+              {/* Admin per primi, poi in ordine di iscrizione (created_at, già ordinato da loadUsers) */}
+              {[...users].sort((a, b) => (b.role === 'admin') - (a.role === 'admin')).map(u => {
                 const initials = (u.nome || u.email || '?').slice(0, 2).toUpperCase();
                 const isCurrentUser = u.id === userProfile.id;
                 const isDeleteConfirm = deleteUserConfirmId === u.id;
@@ -7392,6 +7393,11 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [], onSelectVi
                         <p className="text-zinc-400 text-xs truncate">{u.email || '—'}</p>
                         <p className="text-zinc-500 text-xs truncate">{u.organizzazione || '—'}</p>
                       </div>
+                      {u.created_at && (
+                        <span className="text-zinc-500 text-xs flex-shrink-0 hidden sm:inline" title="Data di iscrizione">
+                          iscritto il {new Date(u.created_at).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                        </span>
+                      )}
                       <span className="text-xs px-2 py-0.5 rounded-full font-semibold flex-shrink-0"
                         style={{
                           backgroundColor: u.role === 'admin' ? 'rgba(255,218,42,0.15)' : '#27272a',
