@@ -5977,7 +5977,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [], onSelectVi
 
   const loadUsers = async () => {
     setLoadingUsers(true);
-    const { data } = await supabase.from('profiles').select('*').order('created_at', { ascending: true });
+    const { data } = await supabase.from('profiles').select('*').order('created_at', { ascending: false });
     setUsers(data || []);
     setLoadingUsers(false);
     setUsersLoaded(true);
@@ -7374,7 +7374,7 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [], onSelectVi
             <p className="text-zinc-500 text-sm py-4">Nessun utente registrato.</p>
           ) : (
             <div className="space-y-3">
-              {/* Admin per primi, poi in ordine di iscrizione (created_at, già ordinato da loadUsers) */}
+              {/* Admin per primi, poi dal più recente al più vecchio (created_at, già ordinato da loadUsers) */}
               {[...users].sort((a, b) => (b.role === 'admin') - (a.role === 'admin')).map(u => {
                 const initials = (u.nome || u.email || '?').slice(0, 2).toUpperCase();
                 const isCurrentUser = u.id === userProfile.id;
