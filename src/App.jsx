@@ -8002,8 +8002,14 @@ function App() {
     const newViews = (video.views || 0) + 1;
     // Aggiornamento ottimistico locale
     setDbVideos(prev => prev.map(v => v.id === video.id ? { ...v, views: newViews } : v));
-    // Persist su Supabase (fire and forget)
-    supabase.from('videos').update({ views: newViews }).eq('id', video.id);
+    // Persist su Supabase via RPC increment_video_views (SECURITY DEFINER, views+1
+    // atomico lato DB): funziona anche per visitatori non loggati, che per RLS non
+    // possono fare update su `videos`. Non bloccante, ma il .then è obbligatorio:
+    // le query supabase-js senza then/await non vengono mai inviate.
+    supabase.rpc('increment_video_views', { video_id: video.id }).then(({ data, error }) => {
+      if (error) { console.error('Errore salvataggio visualizzazione:', error); return; }
+      if (typeof data === 'number') setDbVideos(prev => prev.map(v => v.id === video.id ? { ...v, views: data } : v));
+    });
   };
 
   const allVideos = useMemo(() => dbVideos.length > 0 ? dbVideos : mockVideos, [dbVideos]);
