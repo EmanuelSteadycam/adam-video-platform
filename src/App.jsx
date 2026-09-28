@@ -2353,6 +2353,10 @@ const QuickServicesScreen = ({ onBack }) => {
               <StatusDot s={sd.anthropic} />
             </div>
             <p className="text-zinc-500 text-[11px] leading-relaxed">Scrive il testo della sinossi e alimenta la ricerca semantica.</p>
+            {typeof sd.anthropic?.monthCostUsd === 'number' && (
+              <p className="text-zinc-400 text-[11px] mt-2">${sd.anthropic.monthCostUsd.toFixed(2)} spesi a {new Date().toLocaleDateString('it-IT', { month: 'long' })}</p>
+            )}
+            {sd.anthropic?.detail && <p className="text-red-400 text-[11px] mt-2">{sd.anthropic.detail}</p>}
           </QuickCard>
 
           <QuickCard>
@@ -7562,8 +7566,15 @@ const AdminSection = ({ userProfile, onVideoApproved, allVideos = [], onSelectVi
 
                 <ServiceCard name="Anthropic (Claude)" url="https://console.anthropic.com" data={sd.anthropic}
                   desc="Scrive il testo della sinossi a partire da fotogrammi e trascrizione — usato dal NAS, dal piano B su Vercel e dalla ricerca semantica del sito.">
-                  {sd.anthropic?.status === 'ok' && (
-                    <p className="text-zinc-500 text-xs">costi e token disponibili su console.anthropic.com → Usage</p>
+                  {typeof sd.anthropic?.monthCostUsd === 'number' ? (
+                    <div className="flex justify-between text-xs text-zinc-400">
+                      <span>${sd.anthropic.monthCostUsd.toFixed(2)} spesi a {new Date().toLocaleDateString('it-IT', { month: 'long' })}</span>
+                      <span className="text-zinc-500">credito residuo su console → Billing</span>
+                    </div>
+                  ) : sd.anthropic?.costError ? (
+                    <p className="text-zinc-500 text-xs">consumo non disponibile ({sd.anthropic.costError})</p>
+                  ) : sd.anthropic?.status === 'ok' && (
+                    <p className="text-zinc-500 text-xs">per vedere il consumo reale serve ANTHROPIC_ADMIN_KEY su Vercel</p>
                   )}
                 </ServiceCard>
 

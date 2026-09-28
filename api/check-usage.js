@@ -34,13 +34,56 @@ async function checkAnthropic() {
   const key = process.env.ANTHROPIC_API_KEY;
   if (!key) return { status: 'not_configured' };
   try {
-    const res = await fetch('https://api.anthropic.com/v1/models', {
-      headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01' },
-      signal: AbortSignal.timeout(8000),
+    // Chiamata minima (1 token di output, costo trascurabile): /v1/models risponde
+    // 200 anche a credito esaurito, solo una vera /v1/messages lo rivela.
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 1, messages: [{ role: 'user', content: 'ok' }] }),
+      signal: AbortSignal.timeout(10000),
     });
-    if (!res.ok) return { status: 'error', detail: `HTTP ${res.status}` };
-    return { status: 'ok' };
+    const cost = await getAnthropicMonthCost();
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      const msg = body?.error?.message || '';
+      if (/credit balance/i.test(msg)) {
+        return { status: 'error', creditExhausted: true, detail: 'Credito esaurito — sinossi e ricerca semantica sono ferme. Ricarica su console.anthropic.com → Billing.', ...cost };
+      }
+      return { status: 'error', detail: `HTTP ${res.status}${msg ? ` — ${msg}` : ''}`, ...cost };
+    }
+    return { status: 'ok', ...cost };
   } catch (e) { return { status: 'error', detail: e.message }; }
+}
+
+// Consumo reale del mese corrente via Cost API (Admin API). Richiede una chiave
+// Admin (sk-ant-admin...) separata: la chiave normale viene rifiutata.
+// Importi in centesimi USD come stringhe decimali.
+async function getAnthropicMonthCost() {
+  const adminKey = process.env.ANTHROPIC_ADMIN_KEY;
+  if (!adminKey) return { costConfigured: false };
+  try {
+    const now = new Date();
+    const start = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
+    const end = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
+    let cents = 0;
+    let page = null;
+    for (let i = 0; i < 5; i++) {
+      const params = new URLSearchParams({ starting_at: start.toISOString(), ending_at: end.toISOString(), limit: '31' });
+      if (page) params.set('page', page);
+      const res = await fetch(`https://api.anthropic.com/v1/organizations/cost_report?${params}`, {
+        headers: { 'x-api-key': adminKey, 'anthropic-version': '2023-06-01' },
+        signal: AbortSignal.timeout(8000),
+      });
+      if (!res.ok) return { costConfigured: true, costError: `HTTP ${res.status}` };
+      const data = await res.json();
+      for (const bucket of data.data || []) {
+        for (const r of bucket.results || []) cents += parseFloat(r.amount) || 0;
+      }
+      if (!data.has_more || !data.next_page) break;
+      page = data.next_page;
+    }
+    return { costConfigured: true, monthCostUsd: cents / 100, monthStart: start.toISOString() };
+  } catch (e) { return { costConfigured: true, costError: e.message }; }
 }
 
 async function checkBlob() {
