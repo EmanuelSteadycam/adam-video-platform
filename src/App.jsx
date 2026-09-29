@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { upload as blobUpload } from '@vercel/blob/client';
-import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown, Send, ShieldCheck, AlertCircle, Loader2, LogIn, Film, BookOpen, Pencil, Trash2, Save, RotateCcw, Archive, Lightbulb, Share2, Link, Activity, Volume2, Copy, Database, QrCode } from 'lucide-react';
+import { Search, Upload, User, PlayCircle, Clock, Calendar, Eye, School, X, LogOut, Video, ChevronLeft, ChevronRight, Shuffle, Menu, Smartphone, Monitor, Plus, Check, List, Play, SkipBack, SkipForward, Home, LayoutGrid, TrendingUp, Sparkles, ArrowUpDown, SlidersHorizontal, ChevronDown, Send, ShieldCheck, AlertCircle, Loader2, LogIn, Film, BookOpen, Pencil, Trash2, Save, RotateCcw, Archive, Lightbulb, Share2, Link, Activity, Volume2, Copy, Database, QrCode, HelpCircle } from 'lucide-react';
 import Lottie from 'lottie-react';
 import { supabase } from './supabase';
 import { videos as videosData } from './videosData';
@@ -1041,7 +1041,7 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
           <div className="h-[3px] transition-colors duration-300" style={{ backgroundColor: activeTema !== 'Tutti' ? activeBorderColor : 'transparent' }} />
           <div className="p-6">
             {/* Campo di ricerca libera */}
-            <div className="relative mb-5">
+            <div className="relative mb-5" data-tour="search">
               <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" />
               <input
                 type="text"
@@ -1121,7 +1121,7 @@ const FiltersSection = ({ onFilterChange, currentFilters, searchQuery, onSearchC
 
             {/* Tema + toggle filtri avanzati sulla stessa riga */}
             <div className="flex items-center justify-between gap-4 flex-wrap">
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2" data-tour="temi">
                 <button
                   onClick={() => onFilterChange({ ...currentFilters, tema: 'Tutti', tema2: null })}
                   onMouseEnter={() => setHoveredTema('Tutti')}
@@ -4794,7 +4794,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
 
         <div>
           <label className="block text-sm font-medium text-zinc-300 mb-1.5">Link Video (YouTube, TikTok o Instagram) *</label>
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2.5" data-tour="submit-link">
             <div className="relative flex-1 min-w-0">
               <input
                 type="url"
@@ -4829,6 +4829,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
             <button
               type="button"
               onClick={handleSendLinkClick}
+              data-tour="submit-sendlink"
               disabled={!form.youtube_url.trim() || loading}
               className="uppercase flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-semibold border border-zinc-600 text-zinc-200 disabled:opacity-40 transition-all"
             >
@@ -4837,6 +4838,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
             <button
               type="button"
               onClick={handleGenerateDescription}
+              data-tour="submit-generate"
               disabled={!form.youtube_url.trim() || generatingDesc}
               className="uppercase flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed"
               style={{ backgroundColor: '#FFDA2A', color: '#000' }}>
@@ -4888,7 +4890,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
 
         <div>
           <label className="block text-sm font-medium text-zinc-300 mb-1.5">Tema * <span className="text-zinc-500 font-normal">(max 2)</span></label>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2" data-tour="submit-tema">
             {TEMI_OPTIONS.map(tema => {
               const c = TEMA_COLORS[tema];
               const active = (form.temi || []).includes(tema);
@@ -4931,7 +4933,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
         </div>
 
         <div>
-          <button type="button" onClick={() => f('prodotto_scuola', !form.prodotto_scuola)}
+          <button type="button" onClick={() => f('prodotto_scuola', !form.prodotto_scuola)} data-tour="submit-scuola"
             className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all border-2"
             style={{ backgroundColor: form.prodotto_scuola ? '#27272a' : 'transparent', borderColor: form.prodotto_scuola ? '#FFDA2A' : '#3f3f46', color: form.prodotto_scuola ? '#FFDA2A' : '#a1a1aa' }}>
             <School size={16} /> Prodotto da studenti / scuola
@@ -4953,7 +4955,7 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
           </div>
         )}
 
-        <div className="flex gap-3">
+        <div className="flex gap-3" data-tour="submit-actions">
           <button type="button" onClick={() => handleSubmit('draft')} disabled={loading}
             className="uppercase flex-1 flex items-center justify-center gap-2 py-3 rounded-lg font-semibold text-zinc-300 border border-zinc-600 hover:bg-zinc-800 transition-all disabled:opacity-50">
             {loading ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
@@ -4969,6 +4971,271 @@ const SubmitVideoSection = ({ user, userProfile, onOpenAuth, onBack, onDraftSave
       </form>
     </div>
   );
+};
+
+// ─── SketchTour ──────────────────────────────────────────────────────────────
+// Tour guidato "disegnato a mano": oscura la pagina, mette in evidenza un
+// elemento alla volta (trovato tramite l'attributo data-tour) con un cerchio e
+// una freccia tracciati in SVG e un testo in font Caveat. Nessuna libreria esterna.
+// I passi il cui elemento non è visibile (es. menu laterale chiuso su mobile)
+// vengono saltati: per questo `target` può essere una lista di alternative.
+const TOUR_ACCENT = '#FFDA2A';
+
+const tourStyles = document.createElement('style');
+tourStyles.textContent = `
+  @keyframes sketchDraw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  .sketch-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: sketchDraw .6s ease-out forwards; }
+  @keyframes sketchPop { from { opacity: 0; transform: translateY(8px) rotate(var(--rot)); } to { opacity: 1; transform: translateY(0) rotate(var(--rot)); } }
+`;
+document.head.appendChild(tourStyles);
+
+// Pseudo-casuale deterministico: lo stesso passo viene disegnato sempre uguale
+// (niente "tremolio" a ogni re-render dovuto a scroll/resize).
+const seededRandom = (seed) => {
+  let s = seed % 2147483647 || 1;
+  return () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
+};
+
+// Ovale a mano libera: poco più di un giro, raggio leggermente variabile e che
+// cresce un po' verso la fine, così i due capi non combaciano come a penna.
+const sketchEllipsePath = (cx, cy, rx, ry, seed) => {
+  const rnd = seededRandom(seed * 7919 + 13);
+  const start = -Math.PI / 2 - 0.5 + rnd() * 0.4;
+  const n = 64;
+  const pts = [];
+  for (let i = 0; i <= n; i++) {
+    const t = start + (i / n) * Math.PI * 2 * 1.12;
+    const k = 1 + (rnd() - 0.5) * 0.05 + (i / n) * 0.06;
+    pts.push(`${(cx + Math.cos(t) * rx * k).toFixed(1)} ${(cy + Math.sin(t) * ry * k).toFixed(1)}`);
+  }
+  return `M${pts.join(' L')}`;
+};
+
+// Freccia curva (Bézier quadratica) + punta a due tratti.
+const sketchArrowPaths = (sx, sy, ex, ey, bend) => {
+  const dx = ex - sx, dy = ey - sy;
+  const cx = (sx + ex) / 2 - dy * bend;
+  const cy = (sy + ey) / 2 + dx * bend;
+  const ang = Math.atan2(ey - cy, ex - cx);
+  const h = 15;
+  const a1 = ang + Math.PI * 0.8, a2 = ang - Math.PI * 0.8;
+  return {
+    line: `M${sx} ${sy} Q${cx} ${cy} ${ex} ${ey}`,
+    head: `M${ex + Math.cos(a1) * h} ${ey + Math.sin(a1) * h} L${ex} ${ey} L${ex + Math.cos(a2) * h} ${ey + Math.sin(a2) * h}`,
+  };
+};
+
+const findTourTarget = (targets) => {
+  for (const id of [].concat(targets || [])) {
+    const el = document.querySelector(`[data-tour="${id}"]`);
+    if (!el) continue;
+    const r = el.getBoundingClientRect();
+    if (r.width === 0 || r.height === 0) continue;
+    if (r.right <= 0 || r.left >= window.innerWidth) continue; // fuori schermo = nascosto
+    return el;
+  }
+  return null;
+};
+
+const clampNum = (v, min, max) => Math.max(min, Math.min(max, v));
+
+const SketchTour = ({ steps, onClose }) => {
+  const [index, setIndex] = useState(0);
+  const [measured, setMeasured] = useState(null); // { index, rect, w, h }
+  const step = steps[index];
+  const isLast = index === steps.length - 1;
+
+  const next = () => { if (isLast) onClose(); else setIndex(i => i + 1); };
+
+  useEffect(() => {
+    const el = step.target ? findTourTarget(step.target) : null;
+    if (step.target && !el) { next(); return; } // elemento non presente in questa vista
+    let cancelled = false;
+    let raf;
+    let settled = !el;
+    const measure = () => {
+      if (cancelled || !settled) return;
+      const rect = el ? el.getBoundingClientRect() : null;
+      const w = window.innerWidth, h = window.innerHeight;
+      setMeasured(prev => {
+        const same = prev && prev.index === index && prev.w === w && prev.h === h
+          && (rect ? prev.rect && prev.rect.top === rect.top && prev.rect.left === rect.left && prev.rect.width === rect.width && prev.rect.height === rect.height : !prev.rect);
+        return same ? prev : { index, rect, w, h };
+      });
+    };
+    // La pagina può spostarsi anche senza scroll (immagini/hero che finiscono di
+    // caricare): ricontrolla la posizione a intervalli, re-render solo se cambia.
+    const follow = setInterval(measure, 250);
+    // Disegna solo a scorrimento finito: aspetta che la posizione dell'elemento
+    // resti ferma per qualche frame (max ~1,5 s), altrimenti cerchio e testo
+    // "inseguirebbero" lo smooth scroll.
+    // Timer normale e non requestAnimationFrame: rAF si ferma nelle schede in
+    // background e il tour resterebbe bloccato senza testo.
+    let lastTop = null, stableChecks = 0, checks = 0, pollTimer;
+    const waitStable = () => {
+      if (cancelled) return;
+      const top = el.getBoundingClientRect().top;
+      stableChecks = lastTop !== null && Math.abs(top - lastTop) < 0.5 ? stableChecks + 1 : 0;
+      lastTop = top;
+      if (stableChecks >= 3 || ++checks > 30) { settled = true; measure(); return; }
+      pollTimer = setTimeout(waitStable, 50);
+    };
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      pollTimer = setTimeout(waitStable, 50);
+    } else {
+      measure();
+    }
+    const onChange = () => { clearTimeout(raf); raf = setTimeout(measure, 16); };
+    window.addEventListener('resize', onChange);
+    window.addEventListener('scroll', onChange, true);
+    return () => {
+      cancelled = true;
+      clearTimeout(pollTimer);
+      clearInterval(follow);
+      clearTimeout(raf);
+      window.removeEventListener('resize', onChange);
+      window.removeEventListener('scroll', onChange, true);
+    };
+  }, [index]);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose();
+      else if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose, index]);
+
+  const ready = measured && measured.index === index;
+  const w = ready ? measured.w : window.innerWidth;
+  const h = ready ? measured.h : window.innerHeight;
+  const r = ready ? measured.rect : null;
+  const isMobile = w < 640;
+  const boxW = Math.min(isMobile ? w - 32 : 340, w - 32);
+  const rot = index % 2 === 0 ? -1.5 : 1.2;
+
+  let boxPos;
+  let arrow = null;
+  let ellipse = null;
+  let spot = null;
+  if (ready && r) {
+    const pad = 10;
+    spot = { left: r.left - pad, top: r.top - pad, width: r.width + pad * 2, height: r.height + pad * 2 };
+    const cx = r.left + r.width / 2;
+    const cy = r.top + r.height / 2;
+    const gap = isMobile ? 72 : 76;
+    // Per elementi molto larghi l'ovale resta dentro lo schermo (taglia un po' le estremità).
+    const rx = Math.min(r.width / 2 + 18, (cx - 6) / 1.1, (w - cx - 6) / 1.1); // 1.1 = margine per il tremolio del tratto
+    ellipse = sketchEllipsePath(cx, cy, rx, r.height / 2 + (rx < r.width / 2 + 18 ? 22 : 16), index + 1);
+    let start, end, bend;
+    if (r.height > h * 0.45 && r.right + gap + boxW + 16 <= w) {
+      // elemento alto (es. menu laterale): testo a destra
+      const top = clampNum(cy - 80, 16, h - 240);
+      boxPos = { left: r.right + gap, top };
+      start = [r.right + gap - 8, top + 30];
+      end = [r.right + 22, clampNum(cy, r.top + 24, r.bottom - 24)];
+      bend = 0.25;
+    } else if (cy < h / 2) {
+      // elemento in alto: testo sotto
+      const left = clampNum(cx - boxW / 2 + (isMobile ? 0 : 50), 16, w - boxW - 16);
+      const top = Math.min(r.bottom + gap, h - 220);
+      boxPos = { left, top };
+      start = [clampNum(cx + (isMobile ? 36 : 56), left + 28, left + boxW - 28), top - 8];
+      end = [cx, r.bottom + 20];
+      bend = cx > w / 2 ? -0.3 : 0.3;
+    } else {
+      // elemento in basso: testo sopra
+      const left = clampNum(cx - boxW / 2 + (isMobile ? 0 : 50), 16, w - boxW - 16);
+      const bottom = Math.min(h - r.top + gap, h - 220);
+      boxPos = { left, bottom };
+      start = [clampNum(cx + (isMobile ? 36 : 56), left + 28, left + boxW - 28), h - bottom + 8];
+      end = [cx, r.top - 20];
+      bend = cx > w / 2 ? 0.3 : -0.3;
+    }
+    arrow = sketchArrowPaths(start[0], start[1], end[0], end[1], bend);
+  } else if (ready) {
+    boxPos = { left: (w - boxW) / 2, top: h * 0.32 };
+  }
+
+  // Ombra scura dietro il testo: resta leggibile anche sopra parti chiare della pagina.
+  const handFont = { fontFamily: "'Caveat', 'Comic Sans MS', cursive", textShadow: '0 1px 2px #000, 0 0 14px rgba(0,0,0,0.95)' };
+
+  return (
+    <div className="fixed inset-0 z-[70]" role="dialog" aria-modal="true" aria-label="Tour guidato">
+      {/* Oscuramento: con un elemento in evidenza il "buco" è fatto con un box-shadow enorme */}
+      {spot ? (
+        <div className="fixed rounded-2xl pointer-events-none"
+          style={{ ...spot, boxShadow: '0 0 0 9999px rgba(0,0,0,0.74)', transition: 'all .35s ease' }} />
+      ) : (
+        <div className="fixed inset-0" style={{ backgroundColor: 'rgba(0,0,0,0.78)' }} />
+      )}
+
+      {ready && (
+        <svg key={`svg-${index}`} className="fixed inset-0 pointer-events-none" width={w} height={h} viewBox={`0 0 ${w} ${h}`}>
+          {ellipse && (
+            <path d={ellipse} pathLength="1" className="sketch-draw" fill="none"
+              stroke={TOUR_ACCENT} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+          )}
+          {arrow && (
+            <>
+              <path d={arrow.line} pathLength="1" className="sketch-draw" fill="none"
+                stroke={TOUR_ACCENT} strokeWidth="3" strokeLinecap="round" style={{ animationDelay: '.45s' }} />
+              <path d={arrow.head} pathLength="1" className="sketch-draw" fill="none"
+                stroke={TOUR_ACCENT} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ animationDelay: '.95s' }} />
+            </>
+          )}
+        </svg>
+      )}
+
+      {ready && (
+        <div key={`box-${index}`} className="fixed" style={{ ...boxPos, width: boxW, '--rot': `${rot}deg`, animation: 'sketchPop .4s ease-out .25s both' }}>
+          <p style={{ ...handFont, color: TOUR_ACCENT, fontSize: isMobile ? 28 : 32, lineHeight: 1.05, fontWeight: 700 }}>{step.title}</p>
+          {step.text && (
+            <p className="mt-1.5" style={{ ...handFont, color: '#fff', fontSize: isMobile ? 22 : 24, lineHeight: 1.15, fontWeight: 500 }}>{step.text}</p>
+          )}
+          <div className="flex items-center gap-4 mt-4" style={{ transform: `rotate(${-rot}deg)`, transformOrigin: 'left center' }}>
+            <button onClick={next}
+              className="px-4 py-2 rounded-lg text-sm font-semibold text-black hover:brightness-95 transition-all"
+              style={{ backgroundColor: TOUR_ACCENT }}>
+              {isLast ? 'Ho capito!' : 'Avanti →'}
+            </button>
+            {!isLast && (
+              <button onClick={onClose} className="text-sm text-zinc-400 hover:text-white underline underline-offset-4 transition-colors">
+                salta il tour
+              </button>
+            )}
+            <span className="ml-auto text-xs text-zinc-500">{index + 1}/{steps.length}</span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Testi dei due tour. `target` = valore dell'attributo data-tour (o alternative).
+const buildTourSteps = (tour, userProfile) => {
+  if (tour === 'partecipa') {
+    return [
+      { target: 'submit-link', title: 'Incolla qui il link', text: 'Vanno bene video di YouTube, TikTok e Instagram.' },
+      { target: 'submit-sendlink', title: 'Vai di fretta?', text: 'Mandaci solo il link: al resto pensiamo noi.' },
+      { target: 'submit-generate', title: 'Oppure fatti aiutare', text: 'ADAM guarda il video e scrive la descrizione al posto tuo.' },
+      { target: 'submit-tema', title: 'Scegli il tema', text: 'Al massimo due.' },
+      { target: 'submit-scuola', title: "L'hanno fatto i tuoi studenti?", text: 'Segnalalo qui: i video delle scuole hanno una sezione tutta loro.' },
+      { target: 'submit-actions', title: 'Bozza o invio', text: "Salva per finire dopo, oppure manda all'admin. Ritrovi tutto in «I miei video»." },
+    ];
+  }
+  const nome = userProfile?.nome?.trim().split(/\s+/)[0];
+  return [
+    { target: null, title: `Ciao${nome ? ` ${nome}` : ''}!`, text: 'Ti faccio fare un giro veloce di ADAM: un minuto e sai dove trovare tutto.' },
+    { target: ['menu', 'menu-mobile'], title: 'Il menu', text: 'Da qui raggiungi tutte le sezioni: i formati, i più visti, i nuovi inseriti, i video fatti dalle scuole…' },
+    { target: 'search', title: 'Cerca con parole tue', text: 'Anche descrivendo una situazione, per esempio «ragazzi che scommettono online».' },
+    { target: 'temi', title: 'Filtra per tema', text: 'Puoi sceglierne anche due insieme.' },
+    { target: 'playlist', title: 'Le tue playlist', text: 'Metti da parte i video per i tuoi incontri e condividile con i colleghi.' },
+    { target: 'partecipa', title: 'Hai trovato un video utile?', text: "Proponilo all'archivio da qui." },
+    { target: 'tour-button', title: 'Ti sei perso?', text: 'Riapri questa guida quando vuoi. Buona esplorazione!' },
+  ];
 };
 
 // ─── MyVideosSection ───────────────────────────────────────────────────────────
@@ -8060,6 +8327,52 @@ function App() {
     return () => subscription.unsubscribe();
   }, []);
 
+  // ─── Tour guidati ─────────────────────────────────────────────────────────────
+  // Due tour: 'welcome' (primo accesso, in Home) e 'partecipa' (prima apertura del
+  // form Partecipa). "Già visto" è salvato sul profilo (colonne tour_welcome_done /
+  // tour_partecipa_done) così vale su tutti i dispositivi; localStorage fa da rete
+  // di sicurezza se l'update su Supabase fallisce, per non riproporlo a ogni visita.
+  const [activeTour, setActiveTour] = useState(null);
+  const TOUR_COLUMNS = { welcome: 'tour_welcome_done', partecipa: 'tour_partecipa_done' };
+  const tourSeen = (tour) => {
+    if (userProfile?.[TOUR_COLUMNS[tour]] === true) return true;
+    try { return localStorage.getItem(`adam-tour-${tour}-${user?.id}`) === '1'; } catch { return false; }
+  };
+  const finishTour = async (tour) => {
+    setActiveTour(null);
+    if (!user) return;
+    const column = TOUR_COLUMNS[tour];
+    setUserProfile(p => (p ? { ...p, [column]: true } : p));
+    try { localStorage.setItem(`adam-tour-${tour}-${user.id}`, '1'); } catch {}
+    const { error } = await supabase.from('profiles').update({ [column]: true }).eq('id', user.id);
+    if (error) console.error('Errore salvataggio tour visto:', error);
+  };
+  const startTourManually = () => {
+    if (activeSection === 'submit') { setActiveTour('partecipa'); return; }
+    if (activeSection !== 'home') setActiveSection('home');
+    window.scrollTo({ top: 0 });
+    setTimeout(() => setActiveTour('welcome'), 400);
+  };
+
+  // Solo in sviluppo: ?tour=welcome|partecipa avvia il tour senza login, per
+  // provarne l'aspetto (import.meta.env.DEV è false nella build di produzione).
+  useEffect(() => {
+    if (!import.meta.env.DEV) return;
+    const t = new URLSearchParams(window.location.search).get('tour');
+    if (t === 'welcome' || t === 'partecipa') setTimeout(() => setActiveTour(t), 1500);
+  }, []);
+
+  useEffect(() => {
+    if (isQuickMode || !user || !profileLoaded || !userProfile) return;
+    if (activeTour || showAuthModal || selectedVideo) return;
+    let tour = null;
+    if (activeSection === 'home' && !tourSeen('welcome')) tour = 'welcome';
+    else if (activeSection === 'submit' && !tourSeen('partecipa')) tour = 'partecipa';
+    if (!tour) return;
+    const t = setTimeout(() => setActiveTour(tour), 1200); // lascia finire il rendering della sezione
+    return () => clearTimeout(t);
+  }, [isQuickMode, user, profileLoaded, userProfile, activeSection, activeTour, showAuthModal, selectedVideo]);
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setShowUserMenu(false);
@@ -8354,7 +8667,7 @@ function App() {
     </div>
   </div>
   <nav className="flex-1 p-4 overflow-y-auto">
-    <ul className="space-y-1">
+    <ul className="space-y-1" data-tour="menu">
       {[
         { section: 'home',        label: 'Home',                icon: Home },
         { section: 'about',       label: 'Scopri ADAM',         icon: Lightbulb },
@@ -8414,6 +8727,7 @@ function App() {
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         className="lg:hidden text-white p-2"
+        data-tour="menu-mobile"
       >
         <Menu size={24} />
       </button>
@@ -8535,6 +8849,7 @@ function App() {
     <div className="flex items-center gap-2 lg:gap-3">
   <button
     onClick={() => setShowPlaylist(true)}
+    data-tour="playlist"
     className="relative flex items-center gap-2 bg-zinc-800 text-zinc-300 px-3 lg:px-4 py-2.5 rounded-lg hover:bg-zinc-700 hover:text-white transition-all font-medium text-sm"
   >
     <List size={18} />
@@ -8549,11 +8864,23 @@ function App() {
  </button>
   <button
     onClick={() => setActiveSection('submit')}
+    data-tour="partecipa"
     className="flex items-center gap-2 text-black px-3 lg:px-4 py-2.5 rounded-lg hover:bg-yellow-500 transition-all font-medium text-sm"
     style={{ backgroundColor: '#FFDA2A' }}>
     <Upload size={18} />
     <span className="hidden sm:inline">Partecipa</span>
   </button>
+  {user && (
+    <button
+      onClick={startTourManually}
+      data-tour="tour-button"
+      title="Rivedi il tour guidato"
+      className="flex items-center gap-2 bg-zinc-800 text-zinc-300 px-3 lg:px-4 py-2.5 rounded-lg hover:bg-zinc-700 hover:text-white transition-all font-medium text-sm"
+    >
+      <HelpCircle size={18} />
+      <span className="hidden sm:inline">Tour</span>
+    </button>
+  )}
   {user ? (
     <div className="relative" ref={userMenuRef}>
       <button onClick={() => setShowUserMenu(!showUserMenu)} className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-white hover:bg-zinc-700 transition-all" title={user.email}>
@@ -8738,6 +9065,10 @@ function App() {
           mode={authMode}
           onClose={() => setShowAuthModal(false)}
         />
+      )}
+
+      {activeTour && (
+        <SketchTour key={activeTour} steps={buildTourSteps(activeTour, userProfile)} onClose={() => finishTour(activeTour)} />
       )}
     </div>
   );
